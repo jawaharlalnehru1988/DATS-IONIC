@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonItem, IonInput, IonTextarea, IonLabel, IonButton } from '@ionic/angular/standalone';
 import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,7 @@ import { AuthService } from '../services/auth.service';
 })
 export class LoginPage implements OnInit {
  loginForm!:FormGroup;
-  constructor(private fb: FormBuilder, private authService: AuthService) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
     this.loginForm = this.fb.group({
       email: [''],
       password: ['']
@@ -24,14 +25,14 @@ export class LoginPage implements OnInit {
   }
 
   onSubmit() {
-    console.log('Login event:', event);
     // Handle login logic here  
     if (this.loginForm.valid) {
     const value = this.loginForm.value;
-    console.log('value :', value);
     this.authService.login(value.email, value.password).subscribe({
       next: (response) => {
         console.log('Login successful', response);
+        this.router.navigate(['/dashboard']);
+
       },
       error: (error) => {
         console.error('Login failed', error);
