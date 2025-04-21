@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { UserData, UserWithRole } from '../Utils/models';
+import { ResponseUserData, UserData, UserWithRole } from '../Utils/models';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,12 +12,12 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-  register( userData: UserData) {
-    return this.http.post<UserWithRole>(this.AuthUrl, {...userData, role: 'devotee'});
+  register( userData: UserData):Observable<ResponseUserData> {
+    return this.http.post<ResponseUserData>(this.AuthUrl, {...userData, role: 'devotee', isActive:true});
   }
 
-  login(username: string, password: string) {
-    return this.http.post(this.AuthUrl, { username, password });
+  login(email: string, password: string) {
+    return this.http.post(`${this.AuthUrl}/login`, { email, password });
   }
 
 }

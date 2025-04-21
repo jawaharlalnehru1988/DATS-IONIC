@@ -1,20 +1,43 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonItem, IonInput, IonTextarea, IonLabel, IonButton } from '@ionic/angular/standalone';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
+  imports: [ReactiveFormsModule, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonItem, IonInput, IonLabel, IonButton]
 })
 export class LoginPage implements OnInit {
-
-  constructor() { }
+ loginForm!:FormGroup;
+  constructor(private fb: FormBuilder, private authService: AuthService) {
+    this.loginForm = this.fb.group({
+      email: [''],
+      password: ['']
+    });
+   }
 
   ngOnInit() {
+  }
+
+  onSubmit() {
+    console.log('Login event:', event);
+    // Handle login logic here  
+    if (this.loginForm.valid) {
+    const value = this.loginForm.value;
+    console.log('value :', value);
+    this.authService.login(value.email, value.password).subscribe({
+      next: (response) => {
+        console.log('Login successful', response);
+      },
+      error: (error) => {
+        console.error('Login failed', error);
+      }
+    });
+    }
   }
 
 }

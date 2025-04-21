@@ -1,0 +1,15 @@
+<form [formGroup]="authForm" (ngSubmit)="submit()">
+  <ng-container *ngFor="let field of fields">
+    <ion-item *ngIf="field.type !== 'textarea'">
+      <ion-label position="floating">{{ field.label }}</ion-label>
+      <ion-input [type]="field.type" [formControlName]="field.name"></ion-input>
+    </ion-item>
+
+    <ion-item *ngIf="field.type === 'textarea'">
+      <ion-label position="floating">{{ field.label }}</ion-label>
+      <ion-textarea [formControlName]="field.name"></ion-textarea>
+    </ion-item>
+  </ng-container>
+
+  <ion-button expand="full" type="submit" [disabled]="!authForm.valid">{{ buttonLabel }}</ion-button>
+</form>
