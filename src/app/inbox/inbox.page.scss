@@ -1,0 +1,68 @@
+/* filepath: c:\Trainings\DATS-IONIC\src\app\inbox\inbox.page.scss */
+.music-gallery {
+  --background: linear-gradient(to bottom, #141e30, #243b55); /* Netflix-like gradient */
+  color: #fff;
+}
+
+.language-card {
+background: linear-gradient(359deg, #1f334c, #4545b4, #654321);
+
+color: #e0e0e0; /* Slightly lighter text for contrast */
+text-align: center;
+border-radius: 10px;
+box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5); /* Slightly darker shadow */
+transition: transform 0.3s ease;
+height: 150px; /* Ensures square shape */
+display: flex;
+justify-content: center;
+align-items: center;
+}
+.language-card:hover {
+  transform: scale(1.05); /* Slight zoom effect on hover */
+}
+
+.language-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.native-script {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.english-script {
+  font-size: 1rem;
+  margin-top: 5px;
+  color: #ccc;
+}
+
+ion-item {
+  --background: #ffffff;
+  --border-color: #e0e0e0;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+ion-avatar img {
+  border-radius: 50%;
+}
+
+ion-label h2 {
+  font-size: 1rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+ion-label p {
+  margin: 0;
+  color: #666;
+}
+
+ion-label .time {
+  font-size: 0.8rem;
+  color: #999;
+  margin-top: 5px;
+}

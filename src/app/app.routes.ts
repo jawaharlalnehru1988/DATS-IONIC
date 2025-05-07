@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'register',
+    redirectTo: 'inbox',
     pathMatch: 'full',
   },
   {
@@ -48,5 +48,13 @@ export const routes: Routes = [
   {
     path: 'register',
     loadComponent: () => import('./register/register.page').then( m => m.RegisterPage)
+  },  {
+    path: 'music',
+    loadComponent: () => import('./music/music.page').then( m => m.MusicPage)
   },
+  {
+    path: 'music-details',
+    loadComponent: () => import('./music-details/music-details.page').then( m => m.MusicDetailsPage)
+  },
+
 ];

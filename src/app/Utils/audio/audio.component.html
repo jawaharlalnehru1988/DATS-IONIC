@@ -1,0 +1,30 @@
+<ion-header [translucent]="true">
+  <!-- <ion-toolbar>
+    <ion-title>Audio</ion-title>
+  </ion-toolbar>
+</ion-header> -->
+<ion-toolbar>
+  <ion-buttons slot="start">
+    <ion-menu-button></ion-menu-button>
+  </ion-buttons>
+  <ion-title>Music</ion-title>
+
+</ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="audio-gallery">
+  <ion-grid>
+    <ion-row>
+      <ion-col size="6" *ngFor="let language of languages">
+        <ion-card class="language-card" (click)="onCardClick(language)">
+          <ion-card-content>
+            <div class="language-title">
+              <span class="native-script">{{ language.native }}</span>
+              <span class="english-script">{{ language.lang }}</span>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

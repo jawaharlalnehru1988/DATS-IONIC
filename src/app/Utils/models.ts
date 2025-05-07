@@ -20,3 +20,7 @@ export interface ResponseUserData extends UserWithRole{
 }
 
 
+export interface Language {
+  native: string;
+  lang: string;
+}

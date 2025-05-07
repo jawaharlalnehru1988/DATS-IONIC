@@ -1,0 +1,10 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>music-details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<app-audio 
+[languages]="languages" 
+(cardSelected)="onCardClick($event)">
+</app-audio> 

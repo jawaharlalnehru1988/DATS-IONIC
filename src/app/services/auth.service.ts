@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, signal, WritableSignal } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { ResponseUserData, UserData, UserWithRole } from '../Utils/models';
+import { Language, ResponseUserData, UserData, UserWithRole } from '../Utils/models';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -18,6 +18,12 @@ export class AuthService {
 
   login(email: string, password: string) {
     return this.http.post(`${this.AuthUrl}/login`, { email, password });
+  }
+
+  language: WritableSignal<Language[]> = signal<Language[]>([{ native: 'தமிழ்', lang: 'Tamil' }]);
+
+  setLanguage(languages: Language[]){
+    this.language.set(languages);
   }
 
 }
