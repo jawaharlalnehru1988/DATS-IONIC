@@ -15,10 +15,10 @@ import { Router } from '@angular/router';
 })
 export class MusicPage implements OnInit {
   languages = [
-    { native: 'தமிழ்', lang: 'Tamil' },
-    { native: 'English', lang: 'English' },
-    { native: 'ಕನ್ನಡ', lang: 'Kannada' },
-    { native: 'हिंदी', lang: 'Hindi' },
+    { topic: 'ஸ்ரீமத் பகவத் கீதை', title: 'Tamil' },
+    { topic: 'Srimad Bhagavat Gita', title: 'English' },
+    { topic: 'ಶ್ರೀಮದ್ ಭಗವದ್ಗೀತಾ', title: 'Kannada' },
+    { topic: 'श्रीमद्भगवद गीता', title: 'Hindi' },
   ];
   isShowGrid: boolean = true; // Flag to control grid visibility
 
@@ -29,8 +29,8 @@ export class MusicPage implements OnInit {
   ngOnInit() {
   }
 
-  onCardClick(language: { native: string; lang: string }) {
-    switch (language.lang) {
+  onCardClick(language: { topic: string; title: string }) {
+    switch (language.topic) {
       case 'Tamil':
         this.router.navigate(['/music-details']);
         this.languageList = [

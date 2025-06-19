@@ -9,27 +9,27 @@ import { IonGrid, IonRow, IonCol, IonButton, IonLabel, IonIcon, IonList, IonItem
   templateUrl: './inbox.page.html',
   styleUrls: ['./inbox.page.scss'],
   standalone: true,
-  imports: [IonContent, IonList, IonItem, IonAvatar, IonLabel, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButtons, IonMenuButton],
+  imports: [IonContent, IonList, IonItem, IonAvatar, IonLabel, IonHeader, IonTitle, IonToolbar, IonImg, CommonModule, FormsModule, IonButtons, IonMenuButton],
 })
 export class InboxPage implements OnInit {
   notifications = [
     {
-      avatar: 'assets/avatar1.png',
-      title: 'New Message from John',
-      message: 'Hey, are you available for a meeting tomorrow?',
-      time: '10:30 AM',
+      avatar: "./assets/prabhupada.png",
+      title: 'Biography of Srila Prabhupada',
+      message: 'Who is Srila Prabhupada? Learn more about his life and his contributions to the world and your life.',
+      alt: 'Srila Prabhupada',
     },
     {
-      avatar: 'assets/avatar2.png',
-      title: 'Promotion Alert',
-      message: 'Get 50% off on your next purchase!',
-      time: '9:15 AM',
+      avatar: './assets/splookingup.jpg',
+      title: 'Important Instructions of Srila Prabhupada',
+      message: 'Follow the teachings of Srila Prabhupada to lead a life to attract Lord Krishna towards you.',
+      alt: 'Srila Prabhupada',
     },
     {
-      avatar: 'assets/avatar3.png',
-      title: 'System Update',
-      message: 'Your system will be updated tonight at 2:00 AM.',
-      time: 'Yesterday',
+      avatar: './assets/prabhupada-namaskar.png',
+      title: 'Vishwa Guru Srila Prabhupada',
+      message: 'How Srila Prabhupada is our eternal spritual master and guide.',
+    alt: 'Srila Prabhupada',
     },
   ];
 

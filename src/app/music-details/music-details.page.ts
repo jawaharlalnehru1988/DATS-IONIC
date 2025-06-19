@@ -12,10 +12,14 @@ import { AudioComponent } from '../Utils/audio/audio.component';
   imports: [AudioComponent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
 })
 export class MusicDetailsPage implements OnInit {
-
+topics = []
   constructor() { }
 
   ngOnInit() {
+  }
+
+  onCardClick(language: any) {
+    console.log(`Card clicked: ${language}`);
   }
 
 }

@@ -11,14 +11,14 @@ import { IonContent, IonGrid, IonRow, IonCol, IonCard, IonCardContent, IonHeader
   imports: [CommonModule, IonButtons, IonMenuButton, FormsModule, IonContent, IonGrid, IonRow, IonCol, IonCard, IonCardContent, IonHeader, IonToolbar, IonTitle],
 })
 export class AudioComponent implements OnInit {
-  @Input() languages: { native: string; lang: string }[] = []; // Input for dynamic data
-  @Output() cardSelected = new EventEmitter<{ native: string; lang: string }>(); // Output for card selection
+  @Input() topics: { topic: string; title: string }[] = []; // Input for dynamic data
+  @Output() cardSelected = new EventEmitter<{ topic: string; title: string }>(); // Output for card selection
 
   constructor() {}
 
   ngOnInit() {}
 
-  onCardClick(language: { native: string; lang: string }) {
-    this.cardSelected.emit(language); // Emit the selected card data
+  onCardClick(selectedTopic: { topic: string; title: string }) {
+    this.cardSelected.emit(selectedTopic); // Emit the selected card data
   }
 }

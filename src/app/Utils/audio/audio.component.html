@@ -15,12 +15,12 @@
 <ion-content [fullscreen]="true" class="audio-gallery">
   <ion-grid>
     <ion-row>
-      <ion-col size="6" *ngFor="let language of languages">
-        <ion-card class="language-card" (click)="onCardClick(language)">
+      <ion-col size="6" *ngFor="let topic of topics">
+        <ion-card class="language-card" (click)="onCardClick(topic)">
           <ion-card-content>
             <div class="language-title">
-              <span class="native-script">{{ language.native }}</span>
-              <span class="english-script">{{ language.lang }}</span>
+              <span class="native-script">{{ topic.topic }}</span>
+              <span class="english-script">{{ topic.title }}</span>
             </div>
           </ion-card-content>
         </ion-card>
