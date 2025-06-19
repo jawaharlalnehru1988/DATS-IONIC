@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'inbox',
+    redirectTo: 'srilaprabhupada',
     pathMatch: 'full',
   },
   {
@@ -17,39 +17,40 @@ export const routes: Routes = [
       import('./login/login.page').then((m) => m.LoginPage),
   },
   {
-    path: 'folder',
+    path: 'practice',
     loadComponent: () =>
       import('./folder/folder.page').then((m) => m.FolderPage),
   },
   {
-    path: 'dashboard',
+    path: 'tutorial',
     loadComponent: () => import('./dashboard/dashboard.page').then( m => m.DashboardPage)
   },
   {
-    path: 'inbox',
+    path: 'srilaprabhupada',
     loadComponent: () => import('./inbox/inbox.page').then( m => m.InboxPage)
   },
   {
-    path: 'outbox',
+    path: 'books',
     loadComponent: () => import('./outbox/outbox.page').then( m => m.OutboxPage)
   },
   {
-    path: 'favorites',
+    path: 'articles',
     loadComponent: () => import('./favorites/favorites.page').then( m => m.FavoritesPage)
   },
   {
-    path: 'archived',
+    path: 'questionanswered',
     loadComponent: () => import('./archived/archived.page').then( m => m.ArchivedPage)
   },
   {
-    path: 'spam',
+    path: 'calender',
     loadComponent: () => import('./spam/spam.page').then( m => m.SpamPage)
   },
   {
     path: 'register',
     loadComponent: () => import('./register/register.page').then( m => m.RegisterPage)
-  },  {
-    path: 'music',
+  },
+  {
+    path: 'audios',
     loadComponent: () => import('./music/music.page').then( m => m.MusicPage)
   },
   {
