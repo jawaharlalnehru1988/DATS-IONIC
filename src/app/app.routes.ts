@@ -23,7 +23,7 @@ export const routes: Routes = [
   },
   {
     path: 'tutorial',
-    loadComponent: () => import('./dashboard/dashboard.page').then( m => m.DashboardPage)
+    loadComponent: () => import('./tutorial/tutorial.page').then( m => m.TutorialPage)
   },
   {
     path: 'srilaprabhupada',
