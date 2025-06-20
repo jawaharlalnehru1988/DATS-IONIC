@@ -35,7 +35,7 @@ export const routes: Routes = [
   },
   {
     path: 'articles',
-    loadComponent: () => import('./favorites/favorites.page').then( m => m.FavoritesPage)
+    loadComponent: () => import('./articles/articles.component').then( m => m.ArticlesComponent)
   },
   {
     path: 'questionanswered',
@@ -57,5 +57,9 @@ export const routes: Routes = [
     path: 'music-details',
     loadComponent: () => import('./music-details/music-details.page').then( m => m.MusicDetailsPage)
   },
+  {
+    path: 'tutorial-details/:id',
+    loadComponent: () => import('./tutorial-details/tutorial-details.page').then(m => m.TutorialDetailsPage)
+  }
 
 ];
