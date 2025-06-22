@@ -15,7 +15,7 @@ export class AppComponent {
     { title: 'Srila Prabhupada', url: '/srilaprabhupada', icon: 'person-circle', iconColor: '#B34E05' },
     { title: 'Audios', url: '/audios', icon: 'musical-notes', iconColor: 'orange' },
     { title: 'Books', url: '/books', icon: 'book', iconColor: '#0E7B8A' },
-    { title: 'articles', url: '/articles', icon: 'document-text', iconColor: '#045B40' },
+    { title: 'Articles', url: '/articles', icon: 'document-text', iconColor: '#045B40' },
     { title: 'Questions Answered', url: '/questionanswered', icon: 'git-pull-request', iconColor: '#5B3D04' },
     { title: 'Practice Tracker', url: '/practice', icon: 'compass', iconColor: '#1A986A' },
     { title: 'Vaishnava Calender', url: '/calender', icon: 'calendar', iconColor: '#230568' },

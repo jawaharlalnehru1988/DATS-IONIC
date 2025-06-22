@@ -8,5 +8,12 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <!-- Tutorial details content goes here -->
+  <ion-accordion-group>
+    <ion-accordion *ngFor="let item of poojaRules" [value]="item.value">
+      <ion-item slot="header" color="light">
+        <ion-label style="font-weight: 700;">{{ item.heading }}</ion-label>
+      </ion-item>
+     <div class="ion-padding" slot="content" [innerHTML]="sanitizeContent(item.content)"></div>
+    </ion-accordion>
+  </ion-accordion-group>
 </ion-content>

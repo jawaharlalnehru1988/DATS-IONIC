@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonMenuButton } from '@ionic/angular/standalone';
 import { IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
+import { TutorialService } from './tutorial.service';
+import { environment } from 'src/environments/environment';
  
 export interface CardModel{
   blogId: number;
@@ -59,9 +61,10 @@ export class TutorialPage implements OnInit {
     }
   ];
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private tutorialService: TutorialService) { }
 
   ngOnInit() {
+   
   }
 
   showFullContent(card: CardModel) {
