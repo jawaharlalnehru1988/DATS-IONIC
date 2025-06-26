@@ -6,7 +6,8 @@
 
 @switch (language) {
   @case ('Tamil') {
-    <ion-accordion-group value="first" multiple="true" style="max-height: 86vh;">
+    <div >
+    <ion-accordion-group value="first" multiple="true" style="max-height: 86vh;" class="scrollable-accordion-group">
   <ion-accordion value="first">
     <ion-item slot="header" color="light">
       <ion-label>அத்தியாயம் ஒன்று ஸ்ரீமத் பகவத் கீதை</ion-label>
@@ -173,6 +174,7 @@
     </div>
   </ion-accordion>
 </ion-accordion-group>
+    </div>
   }
 @case ('English') {
   <ion-accordion-group value="first" multiple="true" style="max-height: 86vh;">
