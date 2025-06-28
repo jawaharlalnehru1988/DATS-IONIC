@@ -11,7 +11,6 @@ export class TutorialService {
   constructor(private http: HttpClient) { }
 
   getTutorials() {
-    console.log('environment.AuthUrl :', environment.AuthUrl);
     return this.http.get<PoojaRulesModel[]>(environment.AuthUrl+'/blog');
   }
 
