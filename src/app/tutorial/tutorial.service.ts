@@ -15,6 +15,6 @@ export class TutorialService {
   }
 
   getTutorialById(_id: string) {
-    return this.http.get<PoojaRulesModel>(`environment.AuthUrl+'/blog/${_id}'`);
+    return this.http.get<PoojaRulesModel>(`${environment.AuthUrl}+'/blog/${_id}'`);
   }
 }
