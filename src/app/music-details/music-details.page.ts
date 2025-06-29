@@ -1,32 +1,38 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import {  IonHeader, IonTitle, IonMenuButton, IonToolbar, IonAccordion, IonAccordionGroup, IonItem, IonLabel, IonButtons } from '@ionic/angular/standalone';
+import {  IonHeader, IonTitle, IonSpinner, IonMenuButton, IonToolbar, IonAccordion, IonAccordionGroup, IonItem, IonLabel, IonButtons } from '@ionic/angular/standalone';
 import { ActivatedRoute } from '@angular/router';
 import { MusicDetailsService } from './music-details.service';
 import { DetailModel } from './music.model';
+import { map } from 'rxjs';
+
 
 @Component({
   selector: 'app-music-details',
   templateUrl: './music-details.page.html',
   styleUrls: ['./music-details.page.scss'],
   standalone: true,
-  imports: [IonButtons, IonMenuButton, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonAccordion, IonAccordionGroup, IonItem, IonLabel]
+  imports: [IonButtons, IonSpinner, IonMenuButton, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonAccordion, IonAccordionGroup, IonItem, IonLabel]
 })
 export class MusicDetailsPage implements OnInit {
   topics:{ title: string; content: string; } = { title: '', content: '' };
   msDatas: DetailModel[] = [];
+    isLoading = true;
   constructor(private route: ActivatedRoute, private mdService: MusicDetailsService) { }
   language:string | null = '';
-
+  
   ngOnInit() {
     this.getRoutingDetails();
-    this.mdService.getAll41Slokas().subscribe({
+    this.mdService.getAll41Slokas().pipe(
+    map(arr => arr.sort((a, b) => (a.orderNo) - (b.orderNo)))
+  ).subscribe({
       next:(res:DetailModel[])=>{
       this.msDatas = res;
-      console.log('this.msDatas :', this.msDatas);
+       this.isLoading = false;
       },
       error:()=>{
+        this.isLoading = false;
         console.log("there is something wrong with the network");
 
         
@@ -42,8 +48,8 @@ this.route.paramMap.subscribe(params => {
       case 'Tamil':
         this.topics =  { title: 'ஸ்ரீமத் பகவத் கீதை', content: 'தமிழில் கேட்டு மகிழுங்கள்' };
           break;
-      case '41sloka':
-        this.topics =  { title: '35 ஸ்ரீமத் பகவத் கீதை ஸ்லோகங்கள்', content: '35 ஸ்லோகங்கள் தமிழில் கேட்டு மனனம் செய்யுங்கள்' };
+      case 'sloka 35':
+        this.topics =  { title: '35 ஸ்ரீமத் பகவத் கீதை ஸ்லோகங்கள்', content: 'தமிழில் கேட்டு மனனம் செய்யுங்கள்' };
           break;
       case 'English':
         this.topics = 

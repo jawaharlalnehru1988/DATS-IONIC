@@ -7,8 +7,13 @@
   </ion-toolbar>
 </ion-header>
 
+<ion-item *ngIf="isLoading">
+  <ion-label>Loading... {{topics.title}}</ion-label>
+  <ion-spinner name="lines-sharp"></ion-spinner>
+</ion-item>
+
 @switch (language) {
-  @case ('41sloka') {
+  @case ('sloka 35') {
     <div>
       <ion-accordion-group value="first" multiple="true" style="max-height: 86vh;" class="scrollable-accordion-group">
         @for(msData of msDatas; track msData){
@@ -19,11 +24,9 @@
             <div class="ion-padding" slot="content">
               <div style="height: auto; width: 100%;">
                 <audio controls [src]="msData.SlokaVoice" #audioPlayer></audio>
-                <p>
-                  {{msData.slokaText}}
-                </p>
-                <h6>மொழிபெயர்ப்பு:</h6>
-                <p>
+                <p class="text-decor">{{msData.slokaText}}</p>
+                <h6 class="translation">மொழிபெயர்ப்பு:</h6>
+                <p class="meaning">
                   {{msData.slokaMeaning}}
                 </p>
               </div>
