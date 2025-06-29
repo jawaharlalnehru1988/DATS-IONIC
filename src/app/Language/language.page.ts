@@ -3,12 +3,12 @@ import { ActivatedRoute } from '@angular/router';
 import { IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonContent } from '@ionic/angular/standalone';
 
 @Component({
-  selector: 'app-folder',
-  templateUrl: './folder.page.html',
-  styleUrls: ['./folder.page.scss'],
+  selector: 'app-language',
+  templateUrl: './language.page.html',
+  styleUrls: ['./language.page.scss'],
   imports: [IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonContent, ],
 })
-export class FolderPage implements OnInit {
+export class LanguagePage implements OnInit {
   public folder!: string;
   // private activatedRoute = inject(ActivatedRoute);
   constructor() {}

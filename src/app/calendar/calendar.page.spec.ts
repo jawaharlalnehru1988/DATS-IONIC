@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ArchivedPage } from './archived.page';
+import { SpamPage } from './calendar.page';
 
-describe('ArchivedPage', () => {
-  let component: ArchivedPage;
-  let fixture: ComponentFixture<ArchivedPage>;
+describe('SpamPage', () => {
+  let component: SpamPage;
+  let fixture: ComponentFixture<SpamPage>;
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ArchivedPage);
+    fixture = TestBed.createComponent(SpamPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

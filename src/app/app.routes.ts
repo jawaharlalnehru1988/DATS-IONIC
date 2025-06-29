@@ -17,9 +17,9 @@ export const routes: Routes = [
       import('./login/login.page').then((m) => m.LoginPage),
   },
   {
-    path: 'practice',
+    path: 'language',
     loadComponent: () =>
-      import('./folder/folder.page').then((m) => m.FolderPage),
+      import('./Language/language.page').then((m) => m.LanguagePage),
   },
   {
     path: 'tutorial',
@@ -30,8 +30,12 @@ export const routes: Routes = [
     loadComponent: () => import('./SrilaPrabhupada/srilaprabhupada.page').then( m => m.InboxPage)
   },
   {
-    path: 'books',
-    loadComponent: () => import('./outbox/outbox.page').then( m => m.OutboxPage)
+    path: 'membership',
+    loadComponent: () => import('./outbox/membership.page').then( m => m.MembershipPage)
+  },
+  {
+    path: 'contacts',
+    loadComponent: () => import('./contacts/contacts.page').then( m => m.ContactsPage)
   },
   {
     path: 'articles',
@@ -39,11 +43,15 @@ export const routes: Routes = [
   },
   {
     path: 'questionanswered',
-    loadComponent: () => import('./archived/archived.page').then( m => m.ArchivedPage)
+    loadComponent: () => import('./questions/questions.page').then( m => m.QuestionsPage)
   },
   {
     path: 'calender',
-    loadComponent: () => import('./spam/spam.page').then( m => m.SpamPage)
+    loadComponent: () => import('./calendar/calendar.page').then( m => m.CalendarPage)
+  },
+  {
+    path: 'ekadasi',
+    loadComponent: () => import('./ekadasi/ekadasi.page').then( m => m.EkadasiPage)
   },
   {
     path: 'register',
@@ -60,6 +68,11 @@ export const routes: Routes = [
   {
     path: 'tutorial-details/:id',
     loadComponent: () => import('./tutorial-details/tutorial-details.page').then(m => m.TutorialDetailsPage)
+  },
+  {
+    path: 'ekadasi',
+    loadComponent: () => import('./ekadasi/ekadasi.page').then( m => m.EkadasiPage)
   }
+
 
 ];

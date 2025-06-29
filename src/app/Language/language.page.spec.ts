@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
-import { FolderPage } from './folder.page';
+import { LanguagePage } from './language.page';
 
-describe('FolderPage', () => {
-  let component: FolderPage;
-  let fixture: ComponentFixture<FolderPage>;
+describe('LanguagePage', () => {
+  let component: LanguagePage;
+  let fixture: ComponentFixture<LanguagePage>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FolderPage],
+      imports: [LanguagePage],
       providers: [provideRouter([])]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(FolderPage);
+    fixture = TestBed.createComponent(LanguagePage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
