@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonMenuButton } from '@ionic/angular/standalone';
-import { IonAccordion, IonAccordionGroup, IonItem, IonLabel } from '@ionic/angular/standalone';
+import { IonAccordion, IonAccordionGroup, IonSpinner, IonItem, IonLabel } from '@ionic/angular/standalone';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { TutorialService } from '../tutorial/tutorial.service';
 import { PoojaRulesModel } from '../tutorial/tutorial.model';
@@ -12,10 +12,10 @@ import { PoojaRulesModel } from '../tutorial/tutorial.model';
   templateUrl: './tutorial-details.page.html',
   styleUrls: ['./tutorial-details.page.scss'],
   standalone: true,
-  imports: [ IonContent, IonAccordion, IonAccordionGroup, IonItem, IonLabel, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButtons, IonMenuButton]
+  imports: [ IonContent,  IonSpinner, IonItem, IonLabel, IonAccordion, IonAccordionGroup, IonItem, IonLabel, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButtons, IonMenuButton]
 })
 export class TutorialDetailsPage implements OnInit {
-
+  isLoading = true;
 
   poojaRules: PoojaRulesModel[] = [];
 
@@ -25,8 +25,10 @@ export class TutorialDetailsPage implements OnInit {
  this.tutorialService.getTutorials().subscribe({
       next: (data) => {
         this.poojaRules = data;
+       this.isLoading = false;
       },
       error: (error) => {
+       this.isLoading = false;
         console.error('Error fetching tutorials:', error);
       }
     });

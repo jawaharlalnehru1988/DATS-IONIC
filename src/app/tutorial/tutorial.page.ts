@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonMenuButton } from '@ionic/angular/standalone';
-import { IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle } from '@ionic/angular/standalone';
+import { IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonSpinner, IonItem, IonLabel,} from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
 import { TutorialService } from './tutorial.service';
 import { environment } from 'src/environments/environment';
@@ -20,9 +20,10 @@ export interface CardModel{
   templateUrl: './tutorial.page.html',
   styleUrls: ['./tutorial.page.scss'],
   standalone: true,
-  imports: [IonCard,  IonCardHeader, IonCardSubtitle, IonCardTitle, IonButtons, IonContent, IonButtons, IonMenuButton, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
+  imports: [IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonButtons, IonContent, IonButtons, IonMenuButton, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
 })
 export class TutorialPage implements OnInit {
+   isLoading = true;
   cards: CardModel[] = [
     {
       blogId: 1,

@@ -7,6 +7,11 @@
   </ion-toolbar>
 </ion-header>
 
+ <ion-item *ngIf="isLoading">
+  <ion-label>Loading...</ion-label>
+  <ion-spinner name="lines-sharp"></ion-spinner>
+</ion-item>
+
 <ion-content [fullscreen]="true">
   <ion-accordion-group>
     <ion-accordion *ngFor="let item of poojaRules" [value]="item.value">
