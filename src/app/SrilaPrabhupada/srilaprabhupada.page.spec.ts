@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { InboxPage } from './inbox.page';
+import { InboxPage } from './srilaprabhupada.page';
 
 describe('InboxPage', () => {
   let component: InboxPage;

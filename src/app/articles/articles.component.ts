@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { IonAccordion, IonAccordionGroup, IonItem, IonLabel } from '@ionic/angular/standalone';
+import { IonAccordion, IonAccordionGroup, IonItem, IonLabel,  IonHeader, IonTitle, IonToolbar, IonMenuButton, IonButtons } from '@ionic/angular/standalone';
 
 
 @Component({
   selector: 'app-articles',
   templateUrl: './articles.component.html',
   styleUrls: ['./articles.component.scss'],
-  imports: [IonAccordion, IonAccordionGroup, IonItem, IonLabel],
+  imports: [IonAccordion, IonAccordionGroup, IonItem, IonLabel,  IonHeader, IonTitle, IonToolbar, IonMenuButton, IonButtons],
 })
 export class ArticlesComponent  implements OnInit {
 

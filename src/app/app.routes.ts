@@ -27,7 +27,7 @@ export const routes: Routes = [
   },
   {
     path: 'srilaprabhupada',
-    loadComponent: () => import('./inbox/inbox.page').then( m => m.InboxPage)
+    loadComponent: () => import('./SrilaPrabhupada/srilaprabhupada.page').then( m => m.InboxPage)
   },
   {
     path: 'books',

@@ -1,18 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonMenuButton, IonButtons } from '@ionic/angular/standalone';
-import { IonGrid, IonRow, IonCol, IonButton, IonLabel, IonIcon, IonList, IonItem, IonAvatar, IonImg, IonCard, IonCardHeader, IonCardTitle, IonCardContent } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonMenuButton, IonButtons, IonAccordion, IonAccordionGroup } from '@ionic/angular/standalone';
+import { IonLabel, IonList, IonItem, IonAvatar, IonImg } from '@ionic/angular/standalone';
 
 @Component({
-  selector: 'app-inbox',
-  templateUrl: './inbox.page.html',
-  styleUrls: ['./inbox.page.scss'],
+  selector: 'app-srilaprabhupada',
+  templateUrl: './srilaprabhupada.page.html',
+  styleUrls: ['./srilaprabhupada.page.scss'],
   standalone: true,
-  imports: [IonContent, IonList, IonItem, IonAvatar, IonLabel, IonHeader, IonTitle, IonToolbar, IonImg, CommonModule, FormsModule, IonButtons, IonMenuButton],
+  imports: [IonContent, IonList, IonItem, IonAvatar, IonLabel, IonHeader, IonTitle, IonToolbar, IonImg, IonAccordion, IonAccordionGroup, CommonModule, FormsModule, IonButtons, IonMenuButton],
 })
 export class InboxPage implements OnInit {
-  notifications = [
+  articles = [
     {
       avatar: "./assets/prabhupada.png",
       title: 'Biography of Srila Prabhupada',

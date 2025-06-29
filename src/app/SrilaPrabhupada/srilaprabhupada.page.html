@@ -1,0 +1,54 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Srila Prabhupada</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Jai Srila Prabhupada</ion-title>
+    </ion-toolbar>
+  </ion-header>
+</ion-content>
+ <!-- <div>
+      <ion-accordion-group value="first" multiple="true" style="max-height: 86vh;" class="scrollable-accordion-group">
+        @for(msData of articles; track $index){
+          <ion-accordion [value]="msData.slokaNo">
+            <ion-item slot="header" color="light">
+              <ion-label>ஸ்ரீமத் பகவத் கீதை - {{msData.slokaNo}}</ion-label>
+            </ion-item>
+            <div class="ion-padding" slot="content">
+              <div style="height: auto; width: 100%;">
+                <audio controls [src]="msData.SlokaVoice" #audioPlayer></audio>
+                <p class="text-decor">{{msData.slokaText}}</p>
+                <h6 class="translation">மொழிபெயர்ப்பு:</h6>
+                <p class="meaning">
+                  {{msData.slokaMeaning}}
+                </p>
+              </div>
+            </div>
+          </ion-accordion>
+        }
+      </ion-accordion-group>
+    </div> -->
+<!-- <ion-accordion-group>
+  @for (article of articles; track $index) {
+  <ion-accordion value="first">
+    <ion-item slot="header" color="light">
+ <ion-label>First Accordion</ion-label> 
+      <ion-avatar slot="start">
+  <ion-img [src]="article.avatar" [alt]="article.alt"></ion-img>
+</ion-avatar>
+      <ion-label>
+        <h2>{{ article.title }}</h2>
+      </ion-label>
+    </ion-item>
+    <div class="ion-padding" slot="content">First Content</div>
+  </ion-accordion>
+
+  
+</ion-accordion-group> -->
