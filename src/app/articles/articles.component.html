@@ -8,22 +8,13 @@
 </ion-header>
 
 <ion-accordion-group>
-  <ion-accordion value="first">
+  <ion-accordion *ngFor="let baby of babyNamesList" [value]="baby.Id">
     <ion-item slot="header" color="light">
-      <ion-label>First Accordion</ion-label>
+      <ion-label>{{ baby.babyName }}</ion-label>
     </ion-item>
-    <div class="ion-padding" slot="content">First Content</div>
-  </ion-accordion>
-  <ion-accordion value="second">
-    <ion-item slot="header" color="light">
-      <ion-label>Second Accordion</ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">Second Content</div>
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>Third Accordion</ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">Third Content</div>
+    <div class="ion-padding" slot="content">
+      <strong>Meaning:</strong> {{ baby.meaning }}<br>
+      <strong>Rashi:</strong> {{ baby.rashi }}
+    </div>
   </ion-accordion>
 </ion-accordion-group>

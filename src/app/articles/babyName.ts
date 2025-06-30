@@ -1,0 +1,455 @@
+
+export class BabyName{
+    babyNames = [
+  {
+    "babyName": "Krishna",
+    "meaning": "The all-attractive one; black or dark blue.",
+    "rashi": "Vrishabha (Taurus)",
+    "Id": "K_001"
+  },
+  {
+    "babyName": "Govinda",
+    "meaning": "One who pleases the cows, the land, and the senses.",
+    "rashi": "Vrishabha (Taurus)",
+    "Id": "K_002"
+  },
+  {
+    "babyName": "Gopal",
+    "meaning": "Protector of cows; a cowherd.",
+    "rashi": "Vrishabha (Taurus)",
+    "Id": "K_003"
+  },
+  {
+    "babyName": "Damodar",
+    "meaning": "One who has a rope tied around his belly.",
+    "rashi": "Dhanu (Sagittarius)",
+    "Id": "K_004"
+  },
+  {
+    "babyName": "Madhav",
+    "meaning": "Husband of Lakshmi; a name for Lord Vishnu.",
+    "rashi": "Simha (Leo)",
+    "Id": "K_005"
+  },
+  {
+    "babyName": "Keshav",
+    "meaning": "One with long, beautiful hair; killer of the demon Keshi.",
+    "rashi": "Mithun (Gemini)",
+    "Id": "K_006"
+  },
+  {
+    "babyName": "Hari",
+    "meaning": "The remover of evil; the one who takes away sin.",
+    "rashi": "Kanya (Virgo)",
+    "Id": "K_007"
+  },
+  {
+    "babyName": "Mukund",
+    "meaning": "The one who gives liberation.",
+    "rashi": "Simha (Leo)",
+    "Id": "K_008"
+  },
+  {
+    "babyName": "Nandkishor",
+    "meaning": "Son of Nanda.",
+    "rashi": "Vrishabha (Taurus)",
+    "Id": "K_009"
+  },
+  {
+    "babyName": "Yadav",
+    "meaning": "A descendant of the Yadu clan.",
+    "rashi": "Vrishabha (Taurus)",
+    "Id": "K_010"
+  },
+  {
+    "babyName": "Mohan",
+    "meaning": "The enchanting one; one who attracts everyone.",
+    "rashi": "Simha (Leo)",
+    "Id": "K_011"
+  },
+  {
+    "babyName": "Shyam",
+    "meaning": "Dark complexioned; another name for Krishna.",
+    "rashi": "Kanya (Virgo)",
+    "Id": "K_012"
+  },
+  {
+    "babyName": "Vardhan",
+    "meaning": "Lord Krishna as a prosperous one.",
+    "rashi": "Vrishabha (Taurus)",
+    "Id": "K_013"
+  },
+  {
+    "babyName": "Anand",
+    "meaning": "Eternal bliss and happiness.",
+    "rashi": "Mesha (Aries)",
+    "Id": "K_014"
+  },
+  {
+    "babyName": "Hrishikesh",
+    "meaning": "Lord of the senses.",
+    "rashi": "Kark (Cancer)",
+    "Id": "K_015"
+  },
+    {
+    "babyName": "Achyut",
+    "meaning": "Infallible; one who never fails.",
+    "rashi": "Mesha (Aries)",
+    "Id": "K_016"
+  },
+  {
+    "babyName": "Vasudev",
+    "meaning": "Son of Vasudev; indwelling spirit.",
+    "rashi": "Vrishabha (Taurus)",
+    "Id": "K_017"
+  },
+  {
+    "babyName": "Ghanshyam",
+    "meaning": "Dark like a cloud.",
+    "rashi": "Kumbha (Aquarius)",
+    "Id": "K_018"
+  },
+  {
+    "babyName": "Jitendra",
+    "meaning": "Conqueror of the senses.",
+    "rashi": "Makar (Capricorn)",
+    "Id": "K_019"
+  },
+  {
+    "babyName": "Kunjbihari",
+    "meaning": "One who enjoys in the groves (Kunj) of Vrindavan.",
+    "rashi": "Mithun (Gemini)",
+    "Id": "K_020"
+  },
+  {
+    "babyName": "Lokesh",
+    "meaning": "Lord of the world.",
+    "rashi": "Simha (Leo)",
+    "Id": "K_021"
+  },
+  {
+    "babyName": "Manohar",
+    "meaning": "One who steals the heart.",
+    "rashi": "Simha (Leo)",
+    "Id": "K_022"
+  },
+  {
+    "babyName": "Murali",
+    "meaning": "One who holds the flute (Murali).",
+    "rashi": "Mithun (Gemini)",
+    "Id": "K_023"
+  },
+  {
+    "babyName": "Parthasarathi",
+    "meaning": "Charioteer of Partha (Arjuna).",
+    "rashi": "Simha (Leo)",
+    "Id": "K_024"
+  },
+  {
+    "babyName": "Ranchhod",
+    "meaning": "One who left the battlefield.",
+    "rashi": "Tula (Libra)",
+    "Id": "K_025"
+  },
+  {
+    "babyName": "Shreedhar",
+    "meaning": "Consort of Goddess Lakshmi.",
+    "rashi": "Kanya (Virgo)",
+    "Id": "K_026"
+  },
+  {
+    "babyName": "Yogesh",
+    "meaning": "Lord of Yoga; Lord of Yogis.",
+    "rashi": "Makar (Capricorn)",
+    "Id": "K_027"
+  },
+  {
+    "babyName": "Giridhar",
+    "meaning": "One who lifted the Govardhan hill.",
+    "rashi": "Kumbha (Aquarius)",
+    "Id": "K_028"
+  },
+  {
+    "babyName": "Vithal",
+    "meaning": "One who stands on a brick.",
+    "rashi": "Tula (Libra)",
+    "Id": "K_029"
+  },
+  {
+    "babyName": "Dwarkesh",
+    "meaning": "Lord of Dwarka.",
+    "rashi": "Meen (Pisces)",
+    "Id": "K_030"
+  },
+   {
+    "babyName": "Akshara",
+    "meaning": "Indestructible; everlasting.",
+    "rashi": "Mesha (Aries)",
+    "Id": "K_031"
+  },
+  {
+    "babyName": "Ajay",
+    "meaning": "Unconquerable; victorious.",
+    "rashi": "Mesha (Aries)",
+    "Id": "K_032"
+  },
+  {
+    "babyName": "Avyukt",
+    "meaning": "Crystal clear; a clear mind.",
+    "rashi": "Mesha (Aries)",
+    "Id": "K_033"
+  },
+  {
+    "babyName": "Balram",
+    "meaning": "Krishna's elder brother; one with divine strength.",
+    "rashi": "Vrishabha (Taurus)",
+    "Id": "K_034"
+  },
+  {
+    "babyName": "Satyadev",
+    "meaning": "Lord of Truth.",
+    "rashi": "Kumbha (Aquarius)",
+    "Id": "K_035"
+  },
+  {
+    "babyName": "Devakinandan",
+    "meaning": "Son of Devaki.",
+    "rashi": "Meen (Pisces)",
+    "Id": "K_036"
+  },
+  {
+    "babyName": "Chakradhar",
+    "meaning": "Holder of the divine disc (chakra).",
+    "rashi": "Meen (Pisces)",
+    "Id": "K_037"
+  },
+  {
+    "babyName": "Sudarshan",
+    "meaning": "The one with beautiful vision; his divine discus.",
+    "rashi": "Kumbha (Aquarius)",
+    "Id": "K_038"
+  },
+  {
+    "babyName": "Murli Manohar",
+    "meaning": "The beautiful flute player.",
+    "rashi": "Mithun (Gemini)",
+    "Id": "K_039"
+  },
+  {
+    "babyName": "Adhokshaj",
+    "meaning": "One whose knowledge cannot be measured.",
+    "rashi": "Mesha (Aries)",
+    "Id": "K_040"
+  },
+  {
+    "babyName": "Kanan",
+    "meaning": "Forest; garden.",
+    "rashi": "Mithun (Gemini)",
+    "Id": "K_041"
+  },
+  {
+    "babyName": "Yadunandan",
+    "meaning": "Son of the Yadu dynasty.",
+    "rashi": "Vrishabha (Taurus)",
+    "Id": "K_042"
+  },
+  {
+    "babyName": "Niranjan",
+    "meaning": "Without any blemish; pure.",
+    "rashi": "Simha (Leo)",
+    "Id": "K_043"
+  },
+  {
+    "babyName": "Upendra",
+    "meaning": "Brother of Indra; a name for Vishnu.",
+    "rashi": "Vrishabha (Taurus)",
+    "Id": "K_044"
+  },
+  {
+    "babyName": "Pitambar",
+    "meaning": "One who wears yellow silk garments.",
+    "rashi": "Kanya (Virgo)",
+    "Id": "K_045"
+  },
+  {
+    "babyName": "Akshara",
+    "meaning": "Indestructible; everlasting.",
+    "rashi": "Mesha (Aries)",
+    "Id": "K_031"
+  },
+  {
+    "babyName": "Ajay",
+    "meaning": "Unconquerable; victorious.",
+    "rashi": "Mesha (Aries)",
+    "Id": "K_032"
+  },
+  {
+    "babyName": "Avyukt",
+    "meaning": "Crystal clear; a clear mind.",
+    "rashi": "Mesha (Aries)",
+    "Id": "K_033"
+  },
+  {
+    "babyName": "Balram",
+    "meaning": "Krishna's elder brother; one with divine strength.",
+    "rashi": "Vrishabha (Taurus)",
+    "Id": "K_034"
+  },
+  {
+    "babyName": "Satyadev",
+    "meaning": "Lord of Truth.",
+    "rashi": "Kumbha (Aquarius)",
+    "Id": "K_035"
+  },
+  {
+    "babyName": "Devakinandan",
+    "meaning": "Son of Devaki.",
+    "rashi": "Meen (Pisces)",
+    "Id": "K_036"
+  },
+  {
+    "babyName": "Chakradhar",
+    "meaning": "Holder of the divine disc (chakra).",
+    "rashi": "Meen (Pisces)",
+    "Id": "K_037"
+  },
+  {
+    "babyName": "Sudarshan",
+    "meaning": "The one with beautiful vision; his divine discus.",
+    "rashi": "Kumbha (Aquarius)",
+    "Id": "K_038"
+  },
+  {
+    "babyName": "Murli Manohar",
+    "meaning": "The beautiful flute player.",
+    "rashi": "Mithun (Gemini)",
+    "Id": "K_039"
+  },
+  {
+    "babyName": "Adhokshaj",
+    "meaning": "One whose knowledge cannot be measured.",
+    "rashi": "Mesha (Aries)",
+    "Id": "K_040"
+  },
+  {
+    "babyName": "Kanan",
+    "meaning": "Forest; garden.",
+    "rashi": "Mithun (Gemini)",
+    "Id": "K_041"
+  },
+  {
+    "babyName": "Yadunandan",
+    "meaning": "Son of the Yadu dynasty.",
+    "rashi": "Vrishabha (Taurus)",
+    "Id": "K_042"
+  },
+  {
+    "babyName": "Niranjan",
+    "meaning": "Without any blemish; pure.",
+    "rashi": "Simha (Leo)",
+    "Id": "K_043"
+  },
+  {
+    "babyName": "Upendra",
+    "meaning": "Brother of Indra; a name for Vishnu.",
+    "rashi": "Vrishabha (Taurus)",
+    "Id": "K_044"
+  },
+  {
+    "babyName": "Pitambar",
+    "meaning": "One who wears yellow silk garments.",
+    "rashi": "Kanya (Virgo)",
+    "Id": "K_045"
+  },
+  {
+  "babyName": "Murlidhar",
+  "meaning": "The one who holds the flute.",
+  "rashi": "Mithun (Gemini)",
+  "Id": "K_046"
+},
+{
+  "babyName": "Banke Bihari",
+  "meaning": "The supreme enjoyer.",
+  "rashi": "Tula (Libra)",
+  "Id": "K_047"
+},
+{
+  "babyName": "Girdhari",
+  "meaning": "Lifter of Govardhan hill.",
+  "rashi": "Kumbha (Aquarius)",
+  "Id": "K_048"
+},
+{
+  "babyName": "Shyamsundar",
+  "meaning": "The beautiful dark one.",
+  "rashi": "Kanya (Virgo)",
+  "Id": "K_049"
+},
+{
+  "babyName": "Navaneet Chora",
+  "meaning": "Butter thief.",
+  "rashi": "Vrishabha (Taurus)",
+  "Id": "K_050"
+},
+{
+  "babyName": "Jagannath",
+  "meaning": "Lord of the universe.",
+  "rashi": "Meen (Pisces)",
+  "Id": "K_051"
+},
+{
+  "babyName": "Radha Raman",
+  "meaning": "Beloved of Radha.",
+  "rashi": "Simha (Leo)",
+  "Id": "K_052"
+},
+{
+  "babyName": "Madhusudan",
+  "meaning": "Slayer of the demon Madhu.",
+  "rashi": "Mesha (Aries)",
+  "Id": "K_053"
+},
+{
+  "babyName": "Vrajraj",
+  "meaning": "King of Vraja.",
+  "rashi": "Kark (Cancer)",
+  "Id": "K_054"
+},
+{
+  "babyName": "Yashodanandan",
+  "meaning": "Son of Yashoda.",
+  "rashi": "Vrishabha (Taurus)",
+  "Id": "K_055"
+},
+{
+  "babyName": "Nandakishore",
+  "meaning": "Son of Nanda.",
+  "rashi": "Kumbha (Aquarius)",
+  "Id": "K_056"
+},
+{
+  "babyName": "Parthasarathi",
+  "meaning": "Charioteer of Arjuna.",
+  "rashi": "Tula (Libra)",
+  "Id": "K_057"
+},
+{
+  "babyName": "Hari Govind",
+  "meaning": "Remover of sins, protector of cows.",
+  "rashi": "Kanya (Virgo)",
+  "Id": "K_058"
+},
+{
+  "babyName": "Rasesh",
+  "meaning": "Lord of the Ras Leela.",
+  "rashi": "Mithun (Gemini)",
+  "Id": "K_059"
+},
+{
+  "babyName": "Kanhaiya",
+  "meaning": "Affectionate name for Krishna.",
+  "rashi": "Meen (Pisces)",
+  "Id": "K_060"
+}
+]
+}
