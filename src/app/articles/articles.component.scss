@@ -1,0 +1,23 @@
+.scrollable-accordion-group {
+  max-height: 80vh;
+  overflow-y: auto;
+  padding-right: 8px;
+  scrollbar-width: thin;
+  scrollbar-color: #bbb #f5f5f5;
+}
+
+.scrollable-accordion-group::-webkit-scrollbar {
+  width: 8px;
+}
+.scrollable-accordion-group::-webkit-scrollbar-thumb {
+  background: #bbb;
+  border-radius: 4px;
+}
+.scrollable-accordion-group::-webkit-scrollbar-track {
+  background: #f5f5f5;
+  border-radius: 4px;
+}
+
+::ng-deep .ion-page{
+    justify-content: unset !important;
+}

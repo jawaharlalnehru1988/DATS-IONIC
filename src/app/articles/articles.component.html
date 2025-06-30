@@ -7,7 +7,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-accordion-group>
+<ion-accordion-group class="scrollable-accordion-group">
   <ion-accordion *ngFor="let baby of babyNamesList" [value]="baby.Id">
     <ion-item slot="header" color="light">
       <ion-label>{{ baby.babyName }}</ion-label>
