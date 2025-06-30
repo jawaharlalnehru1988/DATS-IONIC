@@ -6,6 +6,7 @@ import { IonAccordion, IonAccordionGroup, IonSpinner, IonItem, IonLabel } from '
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { TutorialService } from '../tutorial/tutorial.service';
 import { PoojaRulesModel } from '../tutorial/tutorial.model';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-tutorial-details',
@@ -22,7 +23,9 @@ export class TutorialDetailsPage implements OnInit {
   constructor(private sanitizer: DomSanitizer, private tutorialService: TutorialService) {}
 
   ngOnInit() {
- this.tutorialService.getTutorials().subscribe({
+ this.tutorialService.getTutorials().pipe(
+     map(arr => arr.sort((a, b) => (a.orderNo) - (b.orderNo)))
+   ).subscribe({
       next: (data) => {
         this.poojaRules = data;
        this.isLoading = false;

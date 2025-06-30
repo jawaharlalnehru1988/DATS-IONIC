@@ -17,7 +17,7 @@
  <div>
       <ion-accordion-group multiple="false" style="max-height: 86vh;" class="scrollable-accordion-group">
         @for(article of articles; track $index){
-        <ion-accordion [value]="article.alt">
+        <ion-accordion [value]="$index">
           <ion-item slot="header" color="light">
             <ion-avatar slot="start">
               <ion-img [src]="article.avatar" [alt]="article.alt"></ion-img>

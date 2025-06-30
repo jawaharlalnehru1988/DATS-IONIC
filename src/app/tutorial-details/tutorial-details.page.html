@@ -14,7 +14,7 @@
 
 <ion-content [fullscreen]="true">
   <ion-accordion-group>
-    <ion-accordion *ngFor="let item of poojaRules" [value]="item.value">
+    <ion-accordion *ngFor="let item of poojaRules" [value]="item._id">
       <ion-item slot="header" color="light">
         <ion-label style="font-weight: 700;">{{ item.heading }}</ion-label>
       </ion-item>
