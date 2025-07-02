@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import {  IonHeader, IonTitle, IonSpinner, IonMenuButton, IonToolbar, IonAccordion, IonAccordionGroup, IonItem, IonLabel, IonButtons } from '@ionic/angular/standalone';
 import { ActivatedRoute } from '@angular/router';
 import { MusicDetailsService } from './music-details.service';
-import { DetailModel } from './music.model';
+import { DetailModel, ISlokaChapters } from './music.model';
 import { map } from 'rxjs';
 
 
@@ -21,9 +21,26 @@ export class MusicDetailsPage implements OnInit {
     isLoading = true;
   constructor(private route: ActivatedRoute, private mdService: MusicDetailsService) { }
   language:string | null = '';
-  
+  tamilChapters:ISlokaChapters[] = []
+
   ngOnInit() {
     this.getRoutingDetails();
+    this.getImportantSlokas();
+    this.getAllSlokas();
+  }
+
+  getAllSlokas(){
+    this.mdService.getAllSlokaChapters().subscribe({
+      next:(res:ISlokaChapters[])=>{
+        this.tamilChapters = res;
+      }, 
+      error: (err)=>{
+        console.error(err);
+      }
+    })
+  }
+  
+  getImportantSlokas(){
     this.mdService.getAll41Slokas().pipe(
     map(arr => arr.sort((a, b) => (a.orderNo) - (b.orderNo)))
   ).subscribe({
@@ -33,17 +50,14 @@ export class MusicDetailsPage implements OnInit {
       },
       error:()=>{
         this.isLoading = false;
-        console.log("there is something wrong with the network");
-
-        
+        console.error("there is something wrong with the network");
       }
-    })
+    });
   }
 
   getRoutingDetails(){
 this.route.paramMap.subscribe(params => {
     this.language = params.get('language');
-    console.log('this.language :', this.language);
     switch (this.language) {
       case 'Tamil':
         this.topics =  { title: 'ஸ்ரீமத் பகவத் கீதை', content: 'தமிழில் கேட்டு மகிழுங்கள்' };

@@ -14,4 +14,9 @@ export class MusicDetailsService {
 getAll41Slokas() {
   return this.http.get<DetailModel[]>(environment.AuthUrl + "/bg-sloka");
 }
+
+getAllSlokaChapters(){
+  return this.http.get<any[]>(environment.AuthUrl + "/bg-sloka-chapters");
+}
+
 }
