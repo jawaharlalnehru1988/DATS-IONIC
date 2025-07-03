@@ -17,6 +17,8 @@ export class KrishnaPagePage implements OnInit {
   { value: 'Tamil', label: 'Tamil' },
   { value: 'English', label: 'English' },
   { value: 'Hindi', label: 'Hindi' },
+  { value: 'Telugu', label: 'Telugu' },
+  { value: 'Malayalam', label: 'Malayalam' },
   { value: 'Kannada', label: 'Kannada' }
 ];
 
