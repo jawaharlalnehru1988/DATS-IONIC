@@ -17,36 +17,28 @@
     </div>
   </div>
 
-  <div class="krishna-tabs">
-    <ion-segment value="all">
-      <ion-segment-button value="all">
-        <ion-label>Krishna Lila</ion-label>
-      </ion-segment-button>
-      <ion-segment-button value="child">
-        <ion-label>Why Krishna?</ion-label>
-      </ion-segment-button>
-      <ion-segment-button value="youth">
-        <ion-label>How to attain?</ion-label>
-      </ion-segment-button>
-      <ion-segment-button value="leela">
-        <ion-label>what should I do?</ion-label>
-      </ion-segment-button>
-    </ion-segment>
-  </div>
+<div class="krishna-tabs">
+  <ion-segment value="all">
+    <ion-segment-button *ngFor="let lang of languages" [value]="lang.value">
+      <ion-label>{{ lang.label }}</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+</div>
 
   <div class="krishna-card-list">
     <ion-grid>
       <ion-row>
+        <!-- <h4>{{item.category}}</h4> -->
         <ion-col  *ngFor="let item of krishnaItems">
           <div class="krishna-card">
             <img [src]="item.img" [alt]="item.title" />
-            <div class="krishna-card-rating">
-              <ion-icon name="star"></ion-icon>
-              <span>{{ item.rating }}</span>
-            </div>
             <div class="krishna-card-title">{{ item.title }}</div>
             <div class="krishna-card-desc">{{ item.desc }}</div>
             <div class="krishna-card-footer">
+              <div class="krishna-card-rating">
+                <ion-icon name="star"></ion-icon>
+                <span>{{ item.rating }}</span>
+              </div>
               <div class="krishna-price">{{ item.price }}</div>
               <ion-button size="small" fill="clear" shape="round" class="add-btn">
                 <ion-icon name="add"></ion-icon>
@@ -61,12 +53,10 @@
 
 <ion-footer class="krishna-footer">
   <ion-toolbar>
-    <ion-buttons slot="start">
+    <ion-buttons>
       <ion-button>
         <ion-icon name="home" slot="icon-only"></ion-icon>
       </ion-button>
-    </ion-buttons>
-    <ion-buttons>
       <ion-button>
         <ion-icon name="heart-outline" slot="icon-only"></ion-icon>
       </ion-button>
