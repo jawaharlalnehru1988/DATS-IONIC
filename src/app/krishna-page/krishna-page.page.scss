@@ -1,0 +1,249 @@
+:host {
+  align-items: flex-start;
+  font-size: 1.1rem;
+}
+:host {
+    background: linear-gradient(to bottom, #162447 0%, #1f4068 100%);
+}
+.location-block {
+  display: flex;
+  flex-direction: column;
+  .location-label {
+    font-size: 0.9rem;
+    color: #aaa;
+    margin-bottom: 2px;
+  }
+  .location-value {
+    font-weight: bold;
+    color: #fff;
+    font-size: 1.1rem;
+  }
+}
+
+.krishna-content {
+  --background: var(--primary-bg);
+  padding: 0 0 80px 0;
+}
+
+.krishna-tabs {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 0 10px;
+
+    ion-segment {
+        display: inline-flex;
+        min-width: 100%;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        white-space: nowrap;
+        --background: transparent;
+
+        ion-segment-button {
+            flex: 0 0 auto;
+            min-width: 120px;
+            // margin-right: 8px;
+            color: wheat;
+            white-space: nowrap;
+        }
+    }
+}
+
+.search-block {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  margin: 18px 18px 0 18px;
+  .filter-btn {
+    background: var(--primary-brown);
+    color: #fff;
+    border-radius: 16px;
+    min-width: 44px;
+    min-height: 44px;
+  }
+  ion-searchbar {
+    --background: #eee;
+    --box-shadow: none;
+    --border-radius: 15px;
+    flex: 1 1 auto;
+    margin-right: 0;
+  }
+}
+
+.promo-card {
+  position: relative;
+  height: 140px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--primary-brown);
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.70;
+    position: absolute;
+    left: 0; top: 0;
+    z-index: 1;
+  }
+  .promo-content {
+    position: absolute;
+    z-index: 2;
+    left: 20px; top: 22px;
+    color: #fff;
+    .promo-badge {
+      font-size: 0.7rem;
+      margin-bottom: 10px;
+      padding: 3px 12px;
+      border-radius: 8px;
+      background: #d9534f;
+}
+  }
+}
+
+.krishna-card-list {
+  width: 100vw;
+  overflow-x: auto;
+  padding: 18px 0 18px 0;
+  margin-bottom: 18px;
+  margin-left: 16px;
+  scroll-snap-type: x mandatory;
+
+  ion-grid, ion-row {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 18px;
+    min-width: 100vw;
+    width: max-content;
+    padding: 0;
+    margin: 0;
+  }
+  ion-col {
+    flex: 0 0 180px;
+    max-width: 220px;
+    min-width: 160px;
+    padding: 0;
+    scroll-snap-align: start;
+    transition: transform 0.2s;
+    @media (min-width: 600px) {
+      flex: 0 0 200px;
+      max-width: 240px;
+      min-width: 180px;
+    }
+    @media (min-width: 900px) {
+      flex: 0 0 240px;
+      max-width: 260px;
+      min-width: 200px;
+    }
+  }
+}
+
+.krishna-card {
+    background: #23272f;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px 0 rgba(0,0,0,0.18);
+    overflow: hidden;
+    position: relative;
+    min-height: 320px; // Increased height
+    min-width: 44vw;   // Ensures at least 2 cards per row on mobile
+    max-width: 48vw;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    transition: transform 0.18s, box-shadow 0.18s;
+    cursor: pointer;
+
+    &:hover, &:focus-within {
+        transform: scale(1.06) translateY(-6px);
+        box-shadow: 0 8px 32px 0 rgba(0,0,0,0.28);
+        z-index: 2;
+    }
+
+    img {
+        width: 100%;
+        height: 180px; // Adjusted for new aspect ratio
+        object-fit: cover;
+        display: block;
+        border-radius: 18px 18px 0 0;
+        transition: filter 0.2s;
+        filter: brightness(0.92);
+    }
+
+    .krishna-card-rating {
+        position: absolute;
+        top: 12px;
+        right: 14px;
+        background: rgba(0,0,0,0.7);
+        color: #f7b731;
+        border-radius: 12px;
+        padding: 2px 10px 2px 6px;
+        font-size: 1.05rem;
+        display: flex;
+        align-items: center;
+        ion-icon {
+            font-size: 1.2em;
+            margin-right: 3px;
+        }
+    }
+
+    .krishna-card-title,
+    .krishna-card-desc,
+    .krishna-card-footer {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
+    .krishna-card-title {
+        font-weight: 700;
+        font-size: 1.08rem;
+        margin-bottom: 2px;
+        color: #fff;
+        margin-top: 10px;
+        text-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    }
+    .krishna-card-desc {
+        font-size: 0.97rem;
+        color: #bdbdbd;
+        margin-bottom: 10px;
+        min-height: 32px;
+        text-shadow: 0 1px 4px rgba(0,0,0,0.10);
+    }
+    .krishna-card-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        margin-top: auto;
+        margin-bottom: 10px;
+        .krishna-price {
+            font-weight: bold;
+            color: #f7b731;
+            font-size: 1.1rem;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.10);
+        }
+        .add-btn {
+            --background: #f7b731;
+            --color: #23272f;
+            border-radius: 50%;
+            box-shadow: 0 1px 4px 0 rgba(30,40,90,0.10);
+            margin-left: 8px;
+            font-size: 1.2em;
+        }
+    }
+
+    @media (min-width: 600px) {
+        min-width: 200px;
+        max-width: 240px;
+        img {
+            height: 200px;
+        }
+    }
+    @media (min-width: 900px) {
+        min-width: 240px;
+        max-width: 260px;
+        img {
+            height: 220px;
+        }
+    }
+}
+

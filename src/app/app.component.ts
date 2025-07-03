@@ -12,6 +12,7 @@ import { mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, heartOutlin
 })
 export class AppComponent {
   public appPages = [
+    { title: 'Lord Sri Krishna', url: '/lordkrishna', icon: 'person-circle', iconColor: '#B34E05' },
     { title: 'Srila Prabhupada', url: '/srilaprabhupada', icon: 'person-circle', iconColor: '#B34E05' },
     { title: 'Audios', url: '/audios', icon: 'musical-notes', iconColor: 'orange' },
     { title: 'Baby Names', url: '/articles', icon: 'document-text', iconColor: '#045B40' },

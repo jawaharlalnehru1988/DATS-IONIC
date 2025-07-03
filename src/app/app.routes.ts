@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'srilaprabhupada',
+    redirectTo: 'lordkrishna',
     pathMatch: 'full',
   },
   {
@@ -20,6 +20,10 @@ export const routes: Routes = [
     path: 'language',
     loadComponent: () =>
       import('./Language/language.page').then((m) => m.LanguagePage),
+  },
+  {
+    path: 'lordkrishna',
+    loadComponent: () => import('./krishna-page/krishna-page.page').then( m => m.KrishnaPagePage)
   },
   {
     path: 'tutorial',
@@ -72,7 +76,12 @@ export const routes: Routes = [
   {
     path: 'ekadasi',
     loadComponent: () => import('./ekadasi/ekadasi.page').then( m => m.EkadasiPage)
+  },
+  {
+    path: 'krishna-page',
+    loadComponent: () => import('./krishna-page/krishna-page.page').then( m => m.KrishnaPagePage)
   }
+
 
 
 ];
