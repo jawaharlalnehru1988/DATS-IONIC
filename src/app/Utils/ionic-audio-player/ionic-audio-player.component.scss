@@ -1,0 +1,64 @@
+.audio-player-container {
+  --background: linear-gradient(135deg, #0a2240 80%, #1e3c72 100%);
+  color: #fff;
+  border-radius: 1.5rem;
+  box-shadow: 0 4px 24px 0 #052044c7;
+
+  .audio-img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 1.1rem 1.1rem 0 0;
+    background: #14254a;
+    border-bottom: 2px solid #3b6ad6;
+  }
+
+  ion-card-header, ion-card-content {
+    background: transparent;
+  }
+
+  ion-card-title {
+    color: #4db8ff;
+    font-weight: 600;
+    font-size: 1.1rem;
+    letter-spacing: 0.02em;
+  }
+  ion-card-subtitle {
+    color: #b6c7e6;
+    font-size: 0.95rem;
+  }
+
+  .audio-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 0.5rem;
+
+    ion-button {
+      --background: #113c66;
+      --color: #4db8ff;
+      border-radius: 50%;
+      margin: 0 2px;
+      &.ion-activated, &[color="primary"] {
+        --background: #1e3c72;
+        --color: #fff;
+      }
+      ion-icon {
+        font-size: 1.7rem;
+      }
+    }
+
+    .volume-slider {
+      width: 100px;
+      --bar-background: #4db8ff77;
+      --bar-background-active: #4db8ff;
+      --knob-background: #4db8ff;
+      ion-icon {
+        font-size: 1.1rem;
+        color: #4db8ff;
+      }
+    }
+  }
+}

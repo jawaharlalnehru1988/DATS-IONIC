@@ -1,0 +1,28 @@
+<ion-card class="audio-player-container">
+  <img [src]="audioData.imageSrc" alt="Audio Image" class="audio-img"/>
+  <ion-card-header>
+    <ion-card-title>{{audioData.title}}</ion-card-title>
+    <ion-card-subtitle>{{audioData.auther}}</ion-card-subtitle>
+  </ion-card-header>
+  <audio #audioElement [src]="audioData.audioSrc"></audio>
+  <ion-card-content>
+    <div class="audio-controls">
+      <ion-button fill="clear" (click)="play()" [disabled]="isPlaying">
+        <ion-icon slot="icon-only" name="play"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" (click)="pause()" [disabled]="!isPlaying">
+        <ion-icon slot="icon-only" name="pause"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" (click)="stop()">
+        <ion-icon slot="icon-only" name="stop"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" [color]="isLoop ? 'primary' : 'medium'" (click)="toggleLoop()">
+        <ion-icon slot="icon-only" name="repeat"></ion-icon>
+      </ion-button>
+      <ion-range min="0" max="1" step="0.01" [value]="volume" (ionChange)="onVolumeChange($event)" class="volume-slider">
+        <ion-icon slot="start" name="volume-low"></ion-icon>
+        <ion-icon slot="end" name="volume-high"></ion-icon>
+      </ion-range>
+    </div>
+  </ion-card-content>
+</ion-card>
