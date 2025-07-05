@@ -13,7 +13,7 @@ export class IonicAudioPlayerComponent  {
     imageSrc: string,
     auther: string,
     title: string
-  } = { audioSrc: '', imageSrc: '', auther: '', title: '' };
+  } = { audioSrc: '', imageSrc: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1751499819/birthkrishna_xmngov.jpg', auther: '', title: '' };
 
   @ViewChild('audioElement', { static: false }) audioElement!: ElementRef<HTMLAudioElement>;
   isPlaying = false;
