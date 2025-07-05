@@ -1,4 +1,4 @@
-package ionic.dats;
+package io.ionic.starter;
 
 import com.getcapacitor.BridgeActivity;
 
