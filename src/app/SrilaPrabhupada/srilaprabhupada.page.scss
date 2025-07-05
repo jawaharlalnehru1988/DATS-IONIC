@@ -1,48 +1,18 @@
-/* filepath: c:\Trainings\DATS-IONIC\src\app\inbox\inbox.page.scss */
-.music-gallery {
-  --background: linear-gradient(to bottom, #141e30, #243b55); /* Netflix-like gradient */
-  color: #fff;
-}
+@import '../krishna-page/krishna-page.page.scss';
 
+:host {
+  background: linear-gradient(135deg, #015d8b 0%, #0c4b11 100%);
+  min-height: 100vh;
+}
+.prabhupada-card-list{
+  overflow-y: auto;
+  max-height: 80vh;
+}
 ion-toolbar {
   background-color: antiquewhite;
 }
 ::ng-deep .ion-page{
     justify-content: unset !important;
-}
-
-.language-card {
-background: linear-gradient(359deg, #1f334c, #4545b4, #654321);
-
-color: #e0e0e0; /* Slightly lighter text for contrast */
-text-align: center;
-border-radius: 10px;
-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5); /* Slightly darker shadow */
-transition: transform 0.3s ease;
-height: 150px; /* Ensures square shape */
-display: flex;
-justify-content: center;
-align-items: center;
-}
-.language-card:hover {
-  transform: scale(1.05); /* Slight zoom effect on hover */
-}
-
-.language-title {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.native-script {
-  font-size: 1.5rem;
-  font-weight: bold;
-}
-
-.english-script {
-  font-size: 1rem;
-  margin-top: 5px;
-  color: #ccc;
 }
 
 ion-item {
@@ -94,3 +64,4 @@ ion-label .time {
   background: #f5f5f5;
   border-radius: 4px;
 }
+

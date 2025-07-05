@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { IonApp, IonSplitPane, IonMenu, IonContent, IonList, IonListHeader, IonNote, IonMenuToggle, IonItem, IonIcon, IonLabel, IonRouterOutlet, IonRouterLink } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, heartOutline, heartSharp, archiveOutline, archiveSharp, trashOutline, trashSharp, warningOutline, warningSharp, bookmarkOutline, bookmarkSharp, easel, easelOutline, easelSharp, musicalNotesOutline, musicalNoteSharp, musicalNoteOutline, musicalNotesSharp, bookOutline, bookSharp, documentTextOutline, documentTextSharp, gitPullRequestOutline, gitPullRequestSharp, compassOutline, compassSharp, calendarOutline, calendarSharp, personCircleOutline, personCircleSharp, callOutline, callSharp, personAddOutline, personAddSharp, languageOutline, languageSharp } from 'ionicons/icons';
+import { mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, heartOutline, heartSharp, archiveOutline, archiveSharp, trashOutline, trashSharp, warningOutline, warningSharp, bookmarkOutline, bookmarkSharp, easel, easelOutline, easelSharp, musicalNotesOutline, musicalNoteSharp, musicalNoteOutline, musicalNotesSharp, bookOutline, bookSharp, documentTextOutline, documentTextSharp, gitPullRequestOutline, gitPullRequestSharp, compassOutline, compassSharp, calendarOutline, calendarSharp, personCircleOutline, personCircleSharp, callOutline, callSharp, personAddOutline, personAddSharp, languageOutline, languageSharp, settingsOutline, settingsSharp } from 'ionicons/icons';
 
 @Component({
   selector: 'app-root',
@@ -29,9 +29,9 @@ export class AppComponent {
     // { title: 'Articles', url: '/articles', icon: 'document-text', iconColor: '#045B40' },
     // { title: 'Questions Answered', url: '/questionanswered', icon: 'git-pull-request', iconColor: '#5B3D04' },
     // { title: 'Practice Tracker', url: '/practice', icon: 'compass', iconColor: '#1A986A' },
-    { title: 'Language Selection', url: '/language', icon: 'language', iconColor: '#230568' },
+    { title: 'Settings', url: '/settings', icon: 'settings', iconColor: '#230568' },
   ];
   constructor() {
-    addIcons({ mailOutline, mailSharp, callOutline, personAddOutline, languageOutline, languageSharp, personAddSharp, callSharp, paperPlaneOutline, compassOutline, personCircleOutline, personCircleSharp, calendarOutline, calendarSharp, compassSharp, documentTextOutline, documentTextSharp, gitPullRequestOutline, gitPullRequestSharp, bookOutline, bookSharp, musicalNotesOutline, musicalNotesSharp, paperPlaneSharp, heartOutline, heartSharp, archiveOutline, archiveSharp, trashOutline, trashSharp, warningOutline, warningSharp, bookmarkOutline, bookmarkSharp, easelOutline, easelSharp });
+    addIcons({ mailOutline, mailSharp, callOutline, settingsOutline, settingsSharp, personAddOutline, languageOutline, languageSharp, personAddSharp, callSharp, paperPlaneOutline, compassOutline, personCircleOutline, personCircleSharp, calendarOutline, calendarSharp, compassSharp, documentTextOutline, documentTextSharp, gitPullRequestOutline, gitPullRequestSharp, bookOutline, bookSharp, musicalNotesOutline, musicalNotesSharp, paperPlaneSharp, heartOutline, heartSharp, archiveOutline, archiveSharp, trashOutline, trashSharp, warningOutline, warningSharp, bookmarkOutline, bookmarkSharp, easelOutline, easelSharp });
   }
 }

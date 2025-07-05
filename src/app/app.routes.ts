@@ -22,6 +22,11 @@ export const routes: Routes = [
       import('./Language/language.page').then((m) => m.LanguagePage),
   },
   {
+    path: 'settings',
+    loadComponent: () =>
+      import('./settings/settings.page').then((m) => m.SettingsPage),
+  },
+  {
     path: 'lordkrishna',
     loadComponent: () => import('./krishna-page/krishna-page.page').then( m => m.KrishnaPagePage)
   },
@@ -80,7 +85,12 @@ export const routes: Routes = [
   {
     path: 'krishna-page',
     loadComponent: () => import('./krishna-page/krishna-page.page').then( m => m.KrishnaPagePage)
+  },
+  {
+    path: 'settings',
+    loadComponent: () => import('./settings/settings.page').then( m => m.SettingsPage)
   }
+
 
 
 

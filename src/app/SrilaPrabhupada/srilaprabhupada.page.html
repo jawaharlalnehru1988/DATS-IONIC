@@ -7,31 +7,28 @@
   </ion-toolbar>
 </ion-header>
 
-<!-- <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Jai Srila Prabhupada</ion-title>
-    </ion-toolbar>
-  </ion-header>
-</ion-content> -->
- <div>
-      <ion-accordion-group multiple="false" style="max-height: 86vh;" class="scrollable-accordion-group">
-        @for(article of articles; track $index){
-        <ion-accordion [value]="$index">
-          <ion-item slot="header" color="light">
-            <ion-avatar slot="start">
-              <ion-img [src]="article.avatar" [alt]="article.alt"></ion-img>
-            </ion-avatar>
-            <ion-label>{{article.title}}</ion-label>
-          </ion-item>
-          <div class="ion-padding" slot="content">
-            <div style="height: auto; width: 100%;">
-              <p class="text-decor" [innerHTML]="article.message"></p>
+
+ <div class="krishna-card-list">
+    <ion-grid>
+      <ion-row>
+        <!-- <h4>{{item.category}}</h4> -->
+        <ion-col  *ngFor="let item of krishnaItems">
+          <div class="krishna-card">
+            <img [src]="item.img" [alt]="item.title" />
+            <div class="krishna-card-title">{{ item.title }}</div>
+            <div class="krishna-card-desc">{{ item.desc }}</div>
+            <div class="krishna-card-footer">
+              <div class="krishna-card-rating">
+                <ion-icon name="star"></ion-icon>
+                <span>{{ item.rating }}</span>
+              </div>
+              <div class="krishna-price">{{ item.price }}</div>
+              <ion-button size="small" fill="clear" shape="round" class="add-btn">
+                <ion-icon name="add"></ion-icon>
+              </ion-button>
             </div>
           </div>
-        </ion-accordion>
-        }
-      </ion-accordion-group>
-    </div> 
-
-   
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>

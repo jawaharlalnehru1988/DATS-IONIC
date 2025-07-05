@@ -1,0 +1,118 @@
+:host {
+  --bg-dark: #181b24;
+  --text-main: #b5b6c9;
+  --text-light: #ffffff;
+  --accent: #ff8c32;
+  --section-bg: transparent;
+  --input-bg: #2e3141;
+  --radius: 12px;
+  --font: 'Orbitron', 'Montserrat', Arial, sans-serif;
+}
+.settings-content {
+  --background: var(--bg-dark);
+  min-height: 100vh;
+  font-family: var(--font);
+  color: var(--text-main);
+  padding: 0 0 80px 0;
+}
+.search-bar {
+  background: var(--input-bg);
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  margin: 26px 0 0 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  ion-icon {
+    font-size: 2rem;
+    color: #7c7f98;
+  }
+}
+.settings-title {
+  font-family: var(--font);
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 32px 0 0 26px;
+  letter-spacing: 1px;
+  color: var(--text-main);
+}
+.settings-section {
+  background: var(--section-bg);
+  margin: 40px 0 0 0;
+  padding: 0 26px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.section-label {
+  font-family: var(--font);
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: var(--text-light);
+  margin-bottom: 8px;
+}
+.custom-select {
+  width: 140px;
+  float: right;
+  margin-top: -36px;
+  --background: #535876;
+  --color: #fff;
+  --placeholder-color: #fff;
+  --placeholder-opacity: 1;
+  --border-radius: 9px;
+  --padding-start: 18px;
+  --padding-end: 18px;
+  --padding-top: 8px;
+  --padding-bottom: 8px;
+  ion-label {
+    color: #fff;
+  }
+}
+.section-desc {
+  font-size: 0.9rem;
+  color: var(--text-main);
+  margin: 16px 0 0 0;
+  font-family: var(--font);
+}
+.custom-toggle {
+  float: right;
+  margin-top: -36px;
+  --handle-background-checked: var(--accent);
+  --handle-background: #535876;
+  --track-background-checked: #535876;
+  --track-background: #535876;
+  --background: transparent;
+  --border-radius: 16px;
+  --handle-border-radius: 50%;
+  --handle-width: 26px;
+  --handle-height: 26px;
+  --track-width: 52px;
+  --track-height: 30px;
+}
+.footer {
+  ion-toolbar {
+    --background: #181b24;
+    --color: #fff;
+    border-top: none;
+    box-shadow: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 10px;
+    padding-top: 6px;
+    ion-buttons {
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+      .settings-btn ion-icon {
+        color: var(--accent);
+      }
+      ion-button {
+        --color: #fff;
+        font-size: 1.6rem;
+        padding: 0 12px;
+      }
+    }
+  }
+}
