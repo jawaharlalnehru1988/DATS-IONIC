@@ -14,6 +14,14 @@ import { star, add, home, heartOutline, cafeOutline, personOutline, chevronDownO
   imports: [IonIcon, IonButton, IonButton,  IonCol, IonRow, IonGrid,IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButtons, IonMenuButton],
 })
 export class InboxPage implements OnInit {
+
+audioData: {
+    audioSrc: string,
+    imageSrc: string,
+    auther: string,
+    title: string
+  } = { audioSrc: 'https://jawaharlalnehru1988.github.io/bgsloka/assets/tamilBgChapters/bgTamilChapter-2.mp3', imageSrc: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1751499819/birthkrishna_xmngov.jpg', auther: 'Lord Krishna', title: 'bhagavad gita' };
+
 //   articles = [
 //     {
 //       avatar: "./assets/prabhupada.png",
