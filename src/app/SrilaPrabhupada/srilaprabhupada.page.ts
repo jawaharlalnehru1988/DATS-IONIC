@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonHeader, IonTitle, IonToolbar, IonMenuButton, IonButtons, IonAccordion, IonAccordionGroup, IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardTitle, IonCardContent,IonButton, IonContent } from '@ionic/angular/standalone';
-import { IonLabel, IonIcon, IonItem, IonAvatar, IonImg } from '@ionic/angular/standalone';
+import { IonHeader, IonTitle, IonToolbar, IonMenuButton, IonButtons, IonGrid, IonRow, IonCol, IonButton } from '@ionic/angular/standalone';
+import {  IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { star, add, home, heartOutline, cafeOutline, personOutline, chevronDownOutline, notificationsOutline, optionsOutline } from 'ionicons/icons';
 
@@ -11,7 +11,7 @@ import { star, add, home, heartOutline, cafeOutline, personOutline, chevronDownO
   templateUrl: './srilaprabhupada.page.html',
   styleUrls: ['./srilaprabhupada.page.scss'],
   standalone: true,
-  imports: [IonContent, IonIcon, IonContent, IonButton, IonButton,  IonCol, IonRow, IonGrid,IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButtons, IonMenuButton],
+  imports: [IonIcon, IonButton, IonButton,  IonCol, IonRow, IonGrid,IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButtons, IonMenuButton],
 })
 export class InboxPage implements OnInit {
 //   articles = [
