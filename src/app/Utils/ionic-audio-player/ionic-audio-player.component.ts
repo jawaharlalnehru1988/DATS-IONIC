@@ -13,7 +13,7 @@ export class IonicAudioPlayerComponent  {
     imageSrc: string,
     auther: string,
     title: string
-  } = { audioSrc: '', imageSrc: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1751499819/birthkrishna_xmngov.jpg', auther: 'Lord Krishna', title: 'bhagavad gita' };
+  } = { audioSrc: 'https://jawaharlalnehru1988.github.io/bgsloka/assets/tamilBgChapters/bgTamilChapter-2.mp3', imageSrc: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1751499819/birthkrishna_xmngov.jpg', auther: 'Lord Krishna', title: 'bhagavad gita' };
 
   @ViewChild('audioElement', { static: false }) audioElement!: ElementRef<HTMLAudioElement>;
   isPlaying = false;
