@@ -62,3 +62,23 @@
     }
   }
 }
+.audio-track {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 0.6rem;
+  .audio-time {
+    min-width: 38px;
+    color: #b6c7e6;
+    font-size: 0.89rem;
+    text-align: center;
+  }
+  ion-range {
+    flex: 1 1 auto;
+    margin: 0 0.3rem;
+    --bar-background: #4db8ff77;
+    --bar-background-active: #4db8ff;
+    --knob-background: #4db8ff;
+    height: 16px;
+  }
+}

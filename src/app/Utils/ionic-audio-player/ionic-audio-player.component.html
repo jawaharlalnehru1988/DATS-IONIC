@@ -4,8 +4,22 @@
     <ion-card-title>{{audioData.title}}</ion-card-title>
     <ion-card-subtitle>{{audioData.auther}}</ion-card-subtitle>
   </ion-card-header>
-  <audio #audioElement [src]="audioData.audioSrc"></audio>
-  <ion-card-content>
+  <audio #audioElement [src]="audioData.audioSrc"
+         (timeupdate)="onTimeUpdate()"
+         (loadedmetadata)="onLoadedMetadata($event)"></audio>
+         <ion-card-content>
+           <!-- Audio Track (Progress Bar) -->
+           <div class="audio-track">
+      <span class="audio-time">{{ formatTime(currentTime) }}</span>
+      <ion-range
+      min="0"
+      [max]="duration"
+      step="0.1"
+      [value]="currentTime"
+      (ionChange)="seekTo($event)">
+    </ion-range>
+    <span class="audio-time">{{formatTime(duration)}}</span>
+    </div>
     <div class="audio-controls">
       <ion-button fill="clear" (click)="play()" [disabled]="isPlaying">
         <ion-icon slot="icon-only" name="play"></ion-icon>
