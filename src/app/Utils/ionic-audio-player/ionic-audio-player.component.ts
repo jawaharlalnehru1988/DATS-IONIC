@@ -1,5 +1,7 @@
 import { IonCardHeader, IonCardTitle, IonCard, IonCardSubtitle, IonCardContent, IonButton, IonIcon, IonRange } from '@ionic/angular/standalone';
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { addIcons } from 'ionicons';
+import { pause, play, repeat, stop, stopwatchSharp, volumeHigh, volumeLow } from 'ionicons/icons';
 @Component({
   selector: 'app-ionic-audio-player',
   templateUrl: './ionic-audio-player.component.html',
@@ -7,6 +9,10 @@ import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
   imports: [IonCardHeader, IonCardTitle, IonCard, IonCardSubtitle, IonCardContent, IonButton, IonIcon, IonRange ]
 })
 export class IonicAudioPlayerComponent  {
+
+  constructor(){
+    addIcons( {repeat, play, pause, stop, volumeHigh, volumeLow })
+  }
 
   @Input() audioData: {
     audioSrc: string,

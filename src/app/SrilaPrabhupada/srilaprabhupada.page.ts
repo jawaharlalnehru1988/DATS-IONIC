@@ -4,14 +4,15 @@ import { FormsModule } from '@angular/forms';
 import { IonHeader, IonTitle, IonToolbar, IonMenuButton, IonButtons, IonGrid, IonRow, IonCol, IonButton } from '@ionic/angular/standalone';
 import {  IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { star, add, home, heartOutline, cafeOutline, personOutline, chevronDownOutline, notificationsOutline, optionsOutline } from 'ionicons/icons';
+import { star, add, home, heartOutline, cafeOutline, personOutline, chevronDownOutline, notificationsOutline, optionsOutline, play, playOutline, pause, stop } from 'ionicons/icons';
+import { IonicAudioPlayerComponent } from "../Utils/ionic-audio-player/ionic-audio-player.component";
 
 @Component({
   selector: 'app-srilaprabhupada',
   templateUrl: './srilaprabhupada.page.html',
   styleUrls: ['./srilaprabhupada.page.scss'],
   standalone: true,
-  imports: [IonIcon, IonButton, IonButton,  IonCol, IonRow, IonGrid,IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButtons, IonMenuButton],
+  imports: [IonIcon, IonButton, IonButton, IonCol, IonRow, IonGrid, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButtons, IonMenuButton, IonicAudioPlayerComponent],
 })
 export class InboxPage implements OnInit {
 
@@ -335,7 +336,7 @@ audioData: {
     }
   ];
   constructor() { 
-    addIcons({star,add,home,heartOutline,cafeOutline,personOutline,chevronDownOutline,notificationsOutline,optionsOutline});
+    addIcons({star,add,home, play, playOutline, pause, stop, heartOutline,cafeOutline,personOutline,chevronDownOutline,notificationsOutline,optionsOutline});
   }
 
   ngOnInit() {
