@@ -1,18 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgFor } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonIcon, IonButtons, IonButton, IonMenuButton, IonBadge, IonSegment, IonSegmentButton, IonLabel, IonGrid, IonRow, IonCol, IonFooter } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonIcon, IonButtons, IonButton, IonMenuButton, IonBadge, IonSegment, IonSegmentButton, IonLabel, IonFooter } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { chevronDownOutline, notificationsOutline, optionsOutline, star, add, home, heartOutline, cafeOutline, personOutline } from 'ionicons/icons';
-
+import { chevronDownOutline, notificationsOutline, optionsOutline, home, heartOutline, cafeOutline, personOutline } from 'ionicons/icons';
+import { DisplayCardListComponent, } from '../components/display-card-list/display-card-list.component';
+import { CardItem, InputData } from '../Utils/models';
 @Component({
   selector: 'app-krishna-page',
   templateUrl: './krishna-page.page.html',
   styleUrls: ['./krishna-page.page.scss'],
   standalone: true,
-  imports: [IonFooter, IonCol, IonRow, IonGrid, IonLabel, IonSegmentButton, IonMenuButton, IonSegment, IonBadge, IonButton, IonButtons, IonIcon, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
+  imports: [IonFooter, NgFor, IonLabel, IonSegmentButton, IonMenuButton, IonSegment, IonBadge, IonButton, IonButtons, IonIcon, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, DisplayCardListComponent]
 })
-export class KrishnaPagePage implements OnInit {
+export class KrishnaPagePage  {
   languages = [
   { value: 'Tamil', label: 'Tamil' },
   { value: 'English', label: 'English' },
@@ -22,45 +23,31 @@ export class KrishnaPagePage implements OnInit {
   { value: 'Kannada', label: 'Kannada' }
 ];
 
- krishnaItems = [
-    {
-      img: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1751499819/birthkrishna_xmngov.jpg', // Lord Krishna child image
-      title: 'Baal Krishna',
-      category: "Chilhood Pastimes",
-      desc: 'Abhisheka',
-      rating: '4.9',
-      price: ' read'
-    },
-    {
-      img: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1751499820/carrykrishna_uhy8eg.jpg',
-      title: 'Vasudeva Krishna',
-      category: "Chilhood Pastimes",
-      desc: 'Vasudev Carries',
-      rating: '4.8',
-      price: ' read'
-    },
-    {
-      img: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1751499813/mangokrishna_zgpndj.jpg',
-      title: 'Exchange for Love',
-      category: "Chilhood Pastimes",
-      desc: 'Lord Krishna',
-      rating: '4.7',
-      price: ' read'
-    },
-    {
-      img: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1751499809/flutekrishna_p3jpyh.jpg',
-      title: 'Gopal Krishna',
-      category: "Chilhood Pastimes",
-      desc: 'Protector of cows',
-      rating: '4.9',
-      price: ' read'
-    }
-  ];
+
+inputDatas: InputData[] = [
+  {
+    categoryName: "RamBhajan",
+    cardItems: [
+      {
+        img: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1751499819/birthkrishna_xmngov.jpg',
+        title: 'Baal Krishna',
+        category: "Chilhood Pastimes",
+        desc: 'Abhisheka',
+        audioData: { audioSrc: 'https://jawaharlalnehru1988.github.io/bgsloka/assets/tamilBgChapters/bgTamilChapter-2.mp3', imageSrc: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1751499819/birthkrishna_xmngov.jpg', auther: 'Lord Krishna', title: 'bhagavad gita' },
+        rating: '4.9',
+        price: ' read'
+      }
+      
+    ]
+  }
+];
   constructor() { 
-    addIcons({star,add,home,heartOutline,cafeOutline,personOutline,chevronDownOutline,notificationsOutline,optionsOutline});
+    addIcons({home,heartOutline,cafeOutline,personOutline,chevronDownOutline,notificationsOutline,optionsOutline});
   }
 
-  ngOnInit() {
-  }
+onCardSelected(item: CardItem) {
+  // handle card click
+  console.log('Card selected:', item);
+}
 
 }

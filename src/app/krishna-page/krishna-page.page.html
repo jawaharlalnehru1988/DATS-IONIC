@@ -25,30 +25,9 @@
   </ion-segment>
 </div>
 
-  <div class="krishna-card-list">
-    <ion-grid>
-      <ion-row>
-        <!-- <h4>{{item.category}}</h4> -->
-        <ion-col  *ngFor="let item of krishnaItems">
-          <div class="krishna-card">
-            <img [src]="item.img" [alt]="item.title" />
-            <div class="krishna-card-title">{{ item.title }}</div>
-            <div class="krishna-card-desc">{{ item.desc }}</div>
-            <div class="krishna-card-footer">
-              <div class="krishna-card-rating">
-                <ion-icon name="star"></ion-icon>
-                <span>{{ item.rating }}</span>
-              </div>
-              <div class="krishna-price">{{ item.price }}</div>
-              <ion-button size="small" fill="clear" shape="round" class="add-btn">
-                <ion-icon name="add"></ion-icon>
-              </ion-button>
-            </div>
-          </div>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </div>
+<div *ngFor="let inputData of inputDatas;">
+  <app-display-card-list [inputData]="inputData" (cardSelected)="onCardSelected($event)"></app-display-card-list>
+</div>
 </ion-content>
 
 <ion-footer class="krishna-footer">

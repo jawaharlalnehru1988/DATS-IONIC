@@ -5,7 +5,7 @@ import { IonHeader, IonTitle, IonToolbar, IonMenuButton, IonButtons, IonGrid, Io
 import {  IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { star, add, home, heartOutline, cafeOutline, personOutline, chevronDownOutline, notificationsOutline, optionsOutline, play, playOutline, pause, stop } from 'ionicons/icons';
-import { IonicAudioPlayerComponent } from "../Utils/ionic-audio-player/ionic-audio-player.component";
+import { IonicAudioPlayerComponent } from "../components/ionic-audio-player/ionic-audio-player.component";
 
 @Component({
   selector: 'app-srilaprabhupada',

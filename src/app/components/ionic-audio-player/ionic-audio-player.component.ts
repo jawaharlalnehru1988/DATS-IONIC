@@ -1,14 +1,14 @@
 import { IonCardHeader, IonCardTitle, IonCard, IonCardSubtitle, IonCardContent, IonButton, IonIcon, IonRange } from '@ionic/angular/standalone';
 import { ChangeDetectorRef, Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { addIcons } from 'ionicons';
-import { pause, play, repeat, stop, stopwatchSharp, volumeHigh, volumeLow } from 'ionicons/icons';
-import { DatePipe } from '@angular/common';
+import { pause, play, repeat, stop, volumeHigh, volumeLow } from 'ionicons/icons';
+import { AudioItem } from 'src/app/Utils/models';
 
 @Component({
   selector: 'app-ionic-audio-player',
   templateUrl: './ionic-audio-player.component.html',
   styleUrls: ['./ionic-audio-player.component.scss'],
-  imports: [IonCardHeader, DatePipe, IonCardTitle, IonCard, IonCardSubtitle, IonCardContent, IonButton, IonIcon, IonRange ]
+  imports: [IonCardHeader,  IonCardTitle, IonCard, IonCardSubtitle, IonCardContent, IonButton, IonIcon, IonRange ]
 })
 export class IonicAudioPlayerComponent  {
 
@@ -16,12 +16,7 @@ export class IonicAudioPlayerComponent  {
     addIcons( {repeat, play, pause, stop, volumeHigh, volumeLow })
   }
 
-  @Input() audioData: {
-    audioSrc: string,
-    imageSrc: string,
-    auther: string,
-    title: string
-  } = { audioSrc: 'https://jawaharlalnehru1988.github.io/bgsloka/assets/tamilBgChapters/bgTamilChapter-2.mp3', imageSrc: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1751499819/birthkrishna_xmngov.jpg', auther: 'Lord Krishna', title: 'bhagavad gita' };
+  @Input() audioData: AudioItem = { audioSrc: 'https://jawaharlalnehru1988.github.io/bgsloka/assets/tamilBgChapters/bgTamilChapter-2.mp3', imageSrc: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1751499819/birthkrishna_xmngov.jpg', auther: 'Lord Krishna', title: 'bhagavad gita' };
 
   @ViewChild('audioElement', { static: false }) audioElement!: ElementRef<HTMLAudioElement>;
   isPlaying = false;

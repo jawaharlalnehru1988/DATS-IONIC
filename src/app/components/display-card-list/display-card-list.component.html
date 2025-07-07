@@ -1,0 +1,24 @@
+<div class="display-card-list">
+  <h1>{{ inputData.categoryName }}</h1>
+  <ion-grid>
+    <ion-row>
+      <ion-col *ngFor="let item of inputData.cardItems" (click)="onCardClick(item)">
+        <div class="display-card">
+          <img [src]="item.img" [alt]="item.title" />
+          <div class="display-card-title">{{ item.title }}</div>
+          <div class="display-card-desc">{{ item.desc }}</div>
+          <div class="display-card-footer">
+            <div class="display-card-rating">
+              <ion-icon name="star"></ion-icon>
+              <span>{{ item.rating }}</span>
+            </div>
+            <div class="display-price">{{ item.price }}</div>
+            <ion-button size="small" fill="clear" shape="round" class="add-btn">
+              <ion-icon name="add"></ion-icon>
+            </ion-button>
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</div>
