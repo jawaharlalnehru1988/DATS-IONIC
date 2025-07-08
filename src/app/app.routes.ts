@@ -89,6 +89,10 @@ export const routes: Routes = [
   {
     path: 'settings',
     loadComponent: () => import('./settings/settings.page').then( m => m.SettingsPage)
+  },
+  {
+    path: 'audio-player',
+    loadComponent: () => import('./components/audio-player/audio-player.component').then( m => m.AudioPlayerComponent)
   }
 
 
