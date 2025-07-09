@@ -36,7 +36,7 @@ export interface CardItem {
   desc: string;
   audioData: AudioItem;
   rating: string;
-  price: string;
+  action: string;
   _id: string;
 }
 

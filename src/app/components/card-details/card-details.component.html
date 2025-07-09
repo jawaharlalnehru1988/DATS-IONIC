@@ -14,7 +14,7 @@
 
     <!-- Audio Player Section -->
     <div class="audio-player-section" *ngIf="audioItem() as audio">
-      <h2 class="section-title">Audio Player</h2>
+      <h2 class="section-title">{{card.title}}</h2>
       <app-ionic-audio-player [audioData]="audio"></app-ionic-audio-player>
     </div>
 
@@ -60,8 +60,8 @@
           
           <ion-item lines="none">
             <ion-label>
-              <h3>Price</h3>
-              <p>{{ card.price }}</p>
+              <h3>Action</h3>
+              <p>{{ card.action }}</p>
             </ion-label>
           </ion-item>
         </div>

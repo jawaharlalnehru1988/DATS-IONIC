@@ -5,7 +5,6 @@ import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton,
 import { Router } from '@angular/router';
 import { DataSharingService } from '../../services/data-sharing.service';
 import { IonicAudioPlayerComponent } from '../ionic-audio-player/ionic-audio-player.component';
-import { CardItem, AudioItem } from '../../Utils/models';
 
 @Component({
   selector: 'app-card-details',

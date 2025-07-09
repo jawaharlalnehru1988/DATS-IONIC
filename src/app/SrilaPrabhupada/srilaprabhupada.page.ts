@@ -308,7 +308,7 @@ audioData: {
       category: "Chilhood Pastimes",
       desc: 'Abhisheka',
       rating: '4.9',
-      price: ' read'
+      action: ' read'
     },
     {
       img: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1751499820/carrykrishna_uhy8eg.jpg',
@@ -316,7 +316,7 @@ audioData: {
       category: "Chilhood Pastimes",
       desc: 'Vasudev Carries',
       rating: '4.8',
-      price: ' read'
+      action: ' read'
     },
     {
       img: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1751499813/mangokrishna_zgpndj.jpg',
@@ -324,7 +324,7 @@ audioData: {
       category: "Chilhood Pastimes",
       desc: 'Lord Krishna',
       rating: '4.7',
-      price: ' read'
+      action: ' read'
     },
     {
       img: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1751499809/flutekrishna_p3jpyh.jpg',
@@ -332,7 +332,7 @@ audioData: {
       category: "Chilhood Pastimes",
       desc: 'Protector of cows',
       rating: '4.9',
-      price: ' read'
+      action: ' read'
     }
   ];
   constructor() { 

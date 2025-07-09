@@ -34,13 +34,7 @@ inputDatas: InputData[] = [];
   }
 
 onCardSelected(item: CardItem) {
-  // Set the card data in the signal service
-  console.log('Card selected:', item);
-  
-  // Store the complete card item and audio data in signals
   this.dataSharingService.setSelectedCardItem(item);
-  
-  // Navigate to card details page (no query parameters)
   this.router.navigate(['/card-details']);
 }
 
@@ -48,7 +42,6 @@ ngOnInit() {
   this.krishnaService.getKrishnaData().subscribe({
     next: (data:InputData[]) => {
       this.inputDatas = data;
-      console.log('inputDatas :', this.inputDatas);
     },
     error: (error) => {
       console.error('Error fetching Krishna data:', error);
