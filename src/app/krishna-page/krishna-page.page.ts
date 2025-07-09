@@ -8,6 +8,7 @@ import { DisplayCardListComponent, } from '../components/display-card-list/displ
 import { CardItem, InputData } from '../Utils/models';
 import { KrishnaServiceService } from './krishna-service.service';
 import { Router } from '@angular/router';
+import { DataSharingService } from '../services/data-sharing.service';
 @Component({
   selector: 'app-krishna-page',
   templateUrl: './krishna-page.page.html',
@@ -26,66 +27,28 @@ export class KrishnaPagePage  {
 ];
 
 
-inputDatas: InputData[] = [
-  {
-    categoryName: "ara",
-    cardItems: [
-      {
-        img: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1751499819/birthkrishna_xmngov.jpg',
-        title: 'Baal Krishna',
-        category: "Chilhood Pastimes",
-        desc: 'Abhisheka',
-        audioData: { audioSrc: 'https://jawaharlalnehru1988.github.io/bgsloka/assets/tamilBgChapters/bgTamilChapter-2.mp3', imageSrc: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1751499819/birthkrishna_xmngov.jpg', auther: 'Lord Krishna', title: 'bhagavad gita' },
-        rating: '4.9',
-        price: ' read'
-      }
-      
-    ]
-  }
-];
-  constructor(private krishnaService: KrishnaServiceService, private router: Router) { 
+inputDatas: InputData[] = [];
+
+  constructor(private krishnaService: KrishnaServiceService, private router: Router, private dataSharingService: DataSharingService) { 
     addIcons({home,heartOutline,cafeOutline,personOutline,chevronDownOutline,notificationsOutline,optionsOutline});
   }
 
 onCardSelected(item: CardItem) {
-  // Navigate to audio player with audio data
+  // Set the card data in the signal service
   console.log('Card selected:', item);
   
-  if (item.audioData) {
-    // Navigate to audio player page and pass the audio data
-    this.router.navigate(['/audio-player'], {
-      queryParams: {
-        audioSrc: item.audioData.audioSrc,
-        imageSrc: item.audioData.imageSrc,
-        author: item.audioData.auther,
-        title: item.audioData.title,
-        cardTitle: item.title,
-        description: item.desc,
-        category: item.category
-      }
-    });
-  } else {
-    console.warn('No audio data available for this card');
-  }
+  // Store the complete card item and audio data in signals
+  this.dataSharingService.setSelectedCardItem(item);
+  
+  // Navigate to card details page (no query parameters)
+  this.router.navigate(['/card-details']);
 }
 
 ngOnInit() {
   this.krishnaService.getKrishnaData().subscribe({
-    next: (data) => {
-      console.log('Krishna data:', data);
-      // Process the data as needed
-      this.inputDatas = data.map(item => ({
-        categoryName: item.categoryName,
-        cardItems: item.cardItems.map((card: { img: any; title: any; category: any; desc: any; audioData: any; rating: any; price: any; }) => ({
-          img: card.img,
-          title: card.title,
-          category: card.category,
-          desc: card.desc,
-          audioData: card.audioData,
-          rating: card.rating,
-          price: card.price
-        }))
-      }));
+    next: (data:InputData[]) => {
+      this.inputDatas = data;
+      console.log('inputDatas :', this.inputDatas);
     },
     error: (error) => {
       console.error('Error fetching Krishna data:', error);

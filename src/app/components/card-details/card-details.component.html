@@ -1,0 +1,81 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button (click)="goBack()" defaultHref="/krishna-page"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ cardItem()?.title || 'Card Details' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="card-details-content">
+  <div class="details-container" *ngIf="cardItem() as card">
+    
+  
+
+    <!-- Audio Player Section -->
+    <div class="audio-player-section" *ngIf="audioItem() as audio">
+      <h2 class="section-title">Audio Player</h2>
+      <app-ionic-audio-player [audioData]="audio"></app-ionic-audio-player>
+    </div>
+
+
+    <!-- No Audio Message -->
+    <ion-card *ngIf="!audioItem()" class="no-audio-card">
+      <ion-card-content>
+        <p>No audio data available for this item.</p>
+      </ion-card-content>
+    </ion-card>
+
+      <!-- Card Information Section -->
+    <ion-card class="card-info">
+      <ion-card-header>
+        <ion-card-title>{{ card.title }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="card-image-container">
+          <img [src]="card.img" [alt]="card.title" class="card-image" />
+        </div>
+        
+        <div class="card-details">
+          <ion-item lines="none">
+            <ion-badge color="primary" slot="start">{{ card.category }}</ion-badge>
+            <ion-label>
+              <h3>Category</h3>
+            </ion-label>
+          </ion-item>
+          
+          <ion-item lines="none">
+            <ion-label>
+              <h3>Description</h3>
+              <p>{{ card.desc }}</p>
+            </ion-label>
+          </ion-item>
+          
+          <ion-item lines="none">
+            <ion-label>
+              <h3>Rating</h3>
+              <p>⭐ {{ card.rating }}</p>
+            </ion-label>
+          </ion-item>
+          
+          <ion-item lines="none">
+            <ion-label>
+              <h3>Price</h3>
+              <p>{{ card.price }}</p>
+            </ion-label>
+          </ion-item>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+  </div>
+  
+  <!-- Loading/Error State -->
+  <div class="empty-state" *ngIf="!cardItem()">
+    <ion-card>
+      <ion-card-content>
+        <p>No card data available. Redirecting back...</p>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

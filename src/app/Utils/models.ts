@@ -25,7 +25,8 @@ export interface AudioItem {
     audioSrc: string,
     imageSrc: string,
     auther: string,
-    title: string
+    title: string,
+    _id?: string,
   }
 
 export interface CardItem {
@@ -36,6 +37,7 @@ export interface CardItem {
   audioData: AudioItem;
   rating: string;
   price: string;
+  _id: string;
 }
 
 export interface InputData {

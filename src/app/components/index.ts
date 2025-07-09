@@ -1,2 +1,3 @@
 export * from './display-card-list';
-export * from './audio-player';
+export * from './card-details';
+export * from './ionic-audio-player';

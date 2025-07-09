@@ -91,10 +91,10 @@ export const routes: Routes = [
     loadComponent: () => import('./settings/settings.page').then( m => m.SettingsPage)
   },
   {
-    path: 'audio-player',
-    loadComponent: () => import('./components/audio-player/audio-player.component').then( m => m.AudioPlayerComponent)
+    path: 'card-details',
+    loadComponent: () => import('./components/card-details/card-details.component').then( m => m.CardDetailsComponent)
   }
-
+  
 
 
 
