@@ -54,21 +54,45 @@
           <ion-item lines="none">
             <ion-label>
               <h3>Rating</h3>
-              <p>⭐ {{ card.rating }}</p>
+              <div class="rating-section">
+                <div class="average-rating" *ngIf="totalRatings() > 0">
+                  <span class="rating-text">Average: ⭐ {{ averageRating() | number:'1.1-1' }} ({{ totalRatings() }} ratings)</span>
+                </div>
+                <div class="user-rating">
+                  <span class="rating-label">Your Rating:</span>
+                  <app-star-rating 
+                    [rating]="userRating()"
+                    [readonly]="isRatingLoading()"
+                    size="medium"
+                    (ratingChange)="onRatingChange($event)">
+                  </app-star-rating>
+                  <button 
+                    *ngIf="userRating() > 0" 
+                    class="clear-rating-btn"
+                    (click)="deleteRating()"
+                    [disabled]="isRatingLoading()">
+                    Clear
+                  </button>
+                </div>
+              </div>
             </ion-label>
           </ion-item>
           
-          <ion-item lines="none">
-            <ion-label>
-              <h3>Action</h3>
-              <p>{{ card.action }}</p>
-            </ion-label>
-          </ion-item>
+          
         </div>
       </ion-card-content>
     </ion-card>
 
   </div>
+  
+  <!-- Toast for rating feedback -->
+  <ion-toast
+    [isOpen]="showToast()"
+    [message]="ratingMessage()"
+    duration="3000"
+    position="bottom"
+    (didDismiss)="onToastDismiss()">
+  </ion-toast>
   
   <!-- Loading/Error State -->
   <div class="empty-state" *ngIf="!cardItem()">

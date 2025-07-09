@@ -61,6 +61,54 @@
           line-height: 1.4;
         }
       }
+
+      // Rating section specific styles
+      .rating-section {
+        margin-top: 8px;
+
+        .average-rating {
+          margin-bottom: 12px;
+
+          .rating-text {
+            color: #ffeb3b;
+            font-weight: 500;
+            font-size: 0.9rem;
+          }
+        }
+
+        .user-rating {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          flex-wrap: wrap;
+
+          .rating-label {
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+            font-size: 0.9rem;
+          }
+
+          .clear-rating-btn {
+            background: rgba(244, 67, 54, 0.2);
+            color: #f44336;
+            border: 1px solid rgba(244, 67, 54, 0.3);
+            border-radius: 6px;
+            padding: 4px 8px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+
+            &:hover:not(:disabled) {
+              background: rgba(244, 67, 54, 0.3);
+            }
+
+            &:disabled {
+              opacity: 0.5;
+              cursor: not-allowed;
+            }
+          }
+        }
+      }
     }
   }
 }

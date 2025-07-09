@@ -1,0 +1,139 @@
+.star-rating-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  .stars-wrapper {
+    display: flex;
+    gap: 2px;
+  }
+
+  .star-button {
+    --padding-start: 4px;
+    --padding-end: 4px;
+    --padding-top: 4px;
+    --padding-bottom: 4px;
+    --min-height: auto;
+    --min-width: auto;
+    margin: 0;
+    transition: all 0.2s ease;
+
+    &:not(.readonly) {
+      cursor: pointer;
+
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+
+    &.readonly {
+      cursor: default;
+      pointer-events: none;
+    }
+
+    &.filled {
+      ion-icon {
+        color: #ffd700;
+      }
+    }
+
+    &:not(.filled) {
+      ion-icon {
+        color: #ddd;
+      }
+    }
+
+    &.hovered {
+      ion-icon {
+        color: #ffed4e;
+      }
+    }
+
+    ion-icon {
+      transition: color 0.2s ease;
+    }
+  }
+
+  .rating-text {
+    font-size: 0.9rem;
+    color: #666;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+}
+
+// Size variations
+.star-rating-small {
+  .star-button {
+    --padding-start: 2px;
+    --padding-end: 2px;
+    --padding-top: 2px;
+    --padding-bottom: 2px;
+
+    ion-icon {
+      font-size: 1rem;
+    }
+  }
+
+  .rating-text {
+    font-size: 0.8rem;
+  }
+}
+
+.star-rating-medium {
+  .star-button {
+    --padding-start: 4px;
+    --padding-end: 4px;
+    --padding-top: 4px;
+    --padding-bottom: 4px;
+
+    ion-icon {
+      font-size: 1.2rem;
+    }
+  }
+
+  .rating-text {
+    font-size: 0.9rem;
+  }
+}
+
+.star-rating-large {
+  .star-button {
+    --padding-start: 6px;
+    --padding-end: 6px;
+    --padding-top: 6px;
+    --padding-bottom: 6px;
+
+    ion-icon {
+      font-size: 1.5rem;
+    }
+  }
+
+  .rating-text {
+    font-size: 1rem;
+  }
+}
+
+// Dark theme support
+@media (prefers-color-scheme: dark) {
+  .star-rating-container {
+    .star-button {
+      &:not(.filled) {
+        ion-icon {
+          color: #555;
+        }
+      }
+    }
+
+    .rating-text {
+      color: #ccc;
+    }
+  }
+}
+
+// Disabled state
+.star-rating-container {
+  .star-button[disabled] {
+    opacity: 0.6;
+  }
+}
