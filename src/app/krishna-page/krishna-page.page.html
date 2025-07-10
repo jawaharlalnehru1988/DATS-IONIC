@@ -10,23 +10,53 @@
   
 
   <div class="promo-card">
-    <img src="https://res.cloudinary.com/dbmkctsda/image/upload/v1751499823/balakrishna_i8eykp.jpg" alt="Krishna" />
-    <div class="promo-content">
-      <ion-badge color="danger" class="promo-badge">Dear Devotee !</ion-badge>
-      <div class="promo-title">Could you establish me at<br />your <span class="highlight">Heart?</span></div>
+    <div class="image-carousel" 
+         (mouseenter)="pauseCarousel()" 
+         (mouseleave)="resumeCarousel()">
+      <div class="carousel-container">
+        <img 
+          *ngFor="let image of carouselImages; let i = index"
+          [src]="image.src" 
+          [alt]="image.alt" 
+          class="carousel-image"
+          [class.active]="i === currentImageIndex"
+        />
+      </div>
+      
+      <!-- Navigation arrows -->
+      <button class="carousel-nav prev" (click)="previousImage()" aria-label="Previous image">
+        <ion-icon name="chevron-back"></ion-icon>
+      </button>
+      <button class="carousel-nav next" (click)="nextImage()" aria-label="Next image">
+        <ion-icon name="chevron-forward"></ion-icon>
+      </button>
+      
+      <div class="carousel-indicators">
+        <span 
+          class="indicator" 
+          [class.active]="i === currentImageIndex"
+          *ngFor="let image of carouselImages; let i = index"
+          [attr.data-index]="i"
+          (click)="goToImage(i)">
+        </span>
+      </div>
     </div>
   </div>
 
 <div class="krishna-tabs">
-  <ion-segment value="all">
+  <ion-segment [(ngModel)]="selectedLang">
     <ion-segment-button *ngFor="let lang of languages" [value]="lang.value">
       <ion-label>{{ lang.label }}</ion-label>
     </ion-segment-button>
   </ion-segment>
 </div>
 
-<div *ngFor="let inputData of inputDatas;">
-  <app-display-card-list [inputData]="inputData" (cardSelected)="onCardSelected($event)"></app-display-card-list>
+<div [ngSwitch]="selectedLang">
+  <ng-container *ngSwitchCase="'Arati'">
+    <div *ngFor="let inputData of inputDatas;">
+      <app-display-card-list [inputData]="inputData" (cardSelected)="onCardSelected($event)"></app-display-card-list>
+    </div>
+  </ng-container>
 </div>
 </ion-content>
 

@@ -77,31 +77,252 @@ ion-buttons{
 
 .promo-card {
   position: relative;
-  height: 140px;
-  border-radius: var(--radius);
+  height: 200px;
+  border-radius: 16px;
   overflow: hidden;
+  margin: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
   background: var(--primary-brown);
-  img {
+
+  .image-carousel {
+    position: relative;
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    opacity: 0.70;
-    position: absolute;
-    left: 0; top: 0;
-    z-index: 1;
+
+    .carousel-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+
+      .carousel-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: top;
+        opacity: 0;
+        transform: scale(1.1);
+        transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        filter: brightness(0.85) contrast(1.1);
+        z-index: 1;
+
+        &.active {
+          opacity: 1;
+          transform: scale(1);
+          z-index: 2;
+        }
+      }
+    }
+
+    .carousel-indicators {
+      position: absolute;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+      z-index: 10;
+
+      .indicator {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.4);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 2px solid rgba(255, 255, 255, 0.6);
+
+        &.active {
+          background: #fff;
+          transform: scale(1.2);
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.7);
+        }
+      }
+    }
+
+    .carousel-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.5);
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 10;
+      color: white;
+      font-size: 1.2rem;
+
+      &.prev {
+        left: 16px;
+      }
+
+      &.next {
+        right: 16px;
+      }
+
+      &:hover {
+        background: rgba(0, 0, 0, 0.7);
+        transform: translateY(-50%) scale(1.1);
+      }
+
+      &:active {
+        transform: translateY(-50%) scale(0.95);
+      }
+
+      ion-icon {
+        font-size: 1.2rem;
+      }
+    }
+
+    // Overlay gradient for better text readability
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 50%;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+      pointer-events: none;
+      z-index: 5;
+    }
   }
-  .promo-content {
-    position: absolute;
-    z-index: 2;
-    left: 20px; top: 22px;
-    color: #fff;
-    .promo-badge {
-      font-size: 0.7rem;
-      margin-bottom: 10px;
-      padding: 3px 12px;
-      border-radius: 8px;
-      background: #d9534f;
+
+  // Show navigation arrows on hover
+  &:hover .carousel-nav {
+    opacity: 1;
+  }
 }
+
+// Keyframe animations for different entrance effects
+@keyframes slideInFromLeft {
+  0% {
+    transform: translateX(-100%) scale(1.1);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(100%) scale(1.1);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInFromBottom {
+  0% {
+    transform: translateY(50%) scale(1.1);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInScale {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .promo-card {
+    height: 180px;
+    margin: 12px;
+    border-radius: 12px;
+
+    .image-carousel {
+      .carousel-indicators {
+        bottom: 12px;
+
+        .indicator {
+          width: 8px;
+          height: 8px;
+        }
+      }
+
+      .carousel-nav {
+        width: 36px;
+        height: 36px;
+
+        &.prev {
+          left: 12px;
+        }
+
+        &.next {
+          right: 12px;
+        }
+
+        ion-icon {
+          font-size: 1rem;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .promo-card {
+    height: 160px;
+    margin: 8px;
+
+    .image-carousel {
+      .carousel-indicators {
+        bottom: 8px;
+        gap: 6px;
+
+        .indicator {
+          width: 6px;
+          height: 6px;
+        }
+      }
+
+      .carousel-nav {
+        width: 32px;
+        height: 32px;
+
+        &.prev {
+          left: 8px;
+        }
+
+        &.next {
+          right: 8px;
+        }
+
+        ion-icon {
+          font-size: 0.9rem;
+        }
+      }
+    }
   }
 }
 
