@@ -1,0 +1,286 @@
+// Use theme models (modern Sass syntax)
+@use './theme-models.scss';
+
+// Base contact info styles (will be overridden by themes)
+.contact-info {
+  padding: 16px 0 32px 0;
+  transition: all 0.3s ease;
+
+  ion-list {
+    background: transparent !important;
+    
+    ion-item {
+      --background: transparent !important;
+      --color: inherit !important;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      transition: all 0.3s ease;
+      
+      ion-icon {
+        font-size: 1.5rem;
+        margin-right: 12px;
+        transition: all 0.3s ease;
+      }
+      
+      ion-label {
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+      }
+    }
+  }
+
+  .apps-section {
+    margin-top: 24px;
+    
+    h3 {
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    
+    .apps-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: flex-start;
+      align-items: stretch;
+    }
+    
+    .app-card {
+      border-radius: 14px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+      padding: 16px 12px;
+      flex: 1 1 140px;
+      max-width: 180px;
+      min-width: 120px;
+      margin-bottom: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: all 0.3s ease;
+      
+      &:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+      }
+      
+      .app-icon {
+        font-size: 2.2rem;
+        margin-bottom: 8px;
+        transition: all 0.3s ease;
+      }
+      
+      .app-title {
+        font-size: 1rem;
+        font-weight: 500;
+        margin-bottom: 6px;
+        text-align: center;
+        transition: all 0.3s ease;
+      }
+      
+      .app-link {
+        font-size: 0.95rem;
+        text-decoration: underline;
+        margin-top: 4px;
+        transition: all 0.3s ease;
+      }
+    }
+  }
+
+  .connection-request {
+    margin-top: 32px;
+    border-radius: 16px;
+    padding: 20px 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+    transition: all 0.3s ease;
+    
+    h3 {
+      font-size: 1.1rem;
+      margin-bottom: 12px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    
+    .message-textarea {
+      border-radius: 10px;
+      margin-bottom: 14px;
+      font-size: 1rem;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.10);
+      transition: all 0.3s ease;
+    }
+    
+    ion-button {
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      
+      ion-icon {
+        font-size: 1.2rem;
+        margin-right: 6px;
+      }
+    }
+  }
+}
+
+// Default theme when no theme is selected
+.contact-info:not([class*="theme-"]) {
+  background: linear-gradient(to bottom, #162447 0%, #1f4068 100%);
+  color: #fff;
+
+  ion-item {
+    background: rgba(30, 48, 100, 0.7);
+    color: #fff;
+  }
+
+  .apps-section {
+    h3 {
+      color: #fff;
+    }
+    
+    .app-card {
+      background: #1f4068;
+      
+      .app-icon {
+        color: #00bcd4;
+      }
+      
+      .app-title {
+        color: #fff;
+      }
+      
+      .app-link {
+        color: #00bcd4;
+      }
+    }
+  }
+
+  .connection-request {
+    background: rgba(30, 48, 100, 0.7);
+    
+    h3 {
+      color: #fff;
+    }
+    
+    .message-textarea {
+      background: #162447;
+      color: #fff;
+      border: 1px solid #1f4068;
+    }
+    
+    ion-button {
+      --background: #1f4068;
+      --color: #fff;
+    }
+  }
+}
+
+// Theme Selector Styles
+.theme-selector {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  padding: 20px;
+  border-radius: 20px;
+  margin: 16px;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+
+  h4 {
+    color: #fff;
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+
+  .theme-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+
+    .theme-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      padding: 8px 12px;
+      color: #fff;
+      font-size: 0.85rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+
+      &:hover {
+        transform: translateY(-2px);
+        border-color: rgba(255, 255, 255, 0.4);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      &.active {
+        border-color: #00d4ff;
+        background: rgba(0, 212, 255, 0.2);
+        box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+      }
+
+      .theme-preview {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        display: inline-block;
+
+        &.ocean-preview {
+          background: linear-gradient(45deg, #667eea, #764ba2);
+        }
+
+        &.sunset-preview {
+          background: linear-gradient(45deg, #ff6b6b, #feca57);
+        }
+
+        &.forest-preview {
+          background: linear-gradient(45deg, #134e5e, #71b280);
+        }
+
+        &.cyberpunk-preview {
+          background: linear-gradient(45deg, #00ff41, #00cc33);
+        }
+
+        &.royal-preview {
+          background: linear-gradient(45deg, #667eea, #ffd700);
+        }
+
+        &.midnight-preview {
+          background: linear-gradient(45deg, #2c3e50, #3498db);
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .apps-section .apps-grid {
+    align-items: stretch;
+    gap: 12px;
+  }
+  .apps-section .app-card {
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .theme-selector {
+    margin: 8px;
+    padding: 15px;
+
+    .theme-buttons {
+      gap: 8px;
+
+      .theme-btn {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+      }
+    }
+  }
+}

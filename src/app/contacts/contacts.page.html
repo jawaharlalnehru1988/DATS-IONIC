@@ -13,4 +13,84 @@
       <ion-title size="large">Contacts</ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <!-- Theme Selector -->
+  <div class="theme-selector">
+    <h4>Choose Theme:</h4>
+    <div class="theme-buttons">
+      <button class="theme-btn ocean" (click)="setTheme('theme-ocean')" [class.active]="currentTheme === 'theme-ocean'">
+        <span class="theme-preview ocean-preview"></span>
+        Ocean
+      </button>
+      <button class="theme-btn sunset" (click)="setTheme('theme-sunset')" [class.active]="currentTheme === 'theme-sunset'">
+        <span class="theme-preview sunset-preview"></span>
+        Sunset
+      </button>
+      <button class="theme-btn forest" (click)="setTheme('theme-forest')" [class.active]="currentTheme === 'theme-forest'">
+        <span class="theme-preview forest-preview"></span>
+        Forest
+      </button>
+      <button class="theme-btn cyberpunk" (click)="setTheme('theme-cyberpunk')" [class.active]="currentTheme === 'theme-cyberpunk'">
+        <span class="theme-preview cyberpunk-preview"></span>
+        Cyber
+      </button>
+      <button class="theme-btn royal" (click)="setTheme('theme-royal')" [class.active]="currentTheme === 'theme-royal'">
+        <span class="theme-preview royal-preview"></span>
+        Royal
+      </button>
+      <button class="theme-btn midnight" (click)="setTheme('theme-midnight')" [class.active]="currentTheme === 'theme-midnight'">
+        <span class="theme-preview midnight-preview"></span>
+        Midnight
+      </button>
+    </div>
+  </div>
+
+  <!-- Contact Information Section -->
+  <div class="contact-info" [ngClass]="currentTheme">
+    <ion-list>
+      <ion-item button *ngFor="let method of contactMethods" [href]="method.href">
+        <ion-icon [name]="method.icon" slot="start"></ion-icon>
+        <ion-label>{{ method.label }}</ion-label>
+      </ion-item>
+       <ion-item button href="https://maps.google.com/?q=123+Main+St,+City,+Country">
+      <ion-icon name="map" slot="start"></ion-icon>
+      <ion-label>Bangalore, India</ion-label>
+    </ion-item>
+
+    </ion-list>
+
+     <!-- User Connection Request Section -->
+    <div class="connection-request">
+      <h3>Send Us a Message</h3>
+      <ion-textarea ngDefaultControl
+        [(ngModel)]="userMessage"
+        placeholder="Type your query or message here..."
+        autoGrow="true"
+        rows="4"
+        class="message-textarea">
+      </ion-textarea>
+      <ion-button expand="block" color="primary" (click)="submitMessage()">
+        <ion-icon name="send" slot="start"></ion-icon>
+        Send Message
+      </ion-button>
+    </div>
+
+   
+    <div class="apps-section">
+      <h3>Mobile Apps</h3>
+      <div class="apps-grid">
+        <div class="app-card" *ngFor="let app of mobileApps">
+          <ion-icon [name]="app.icon" class="app-icon"></ion-icon>
+          <div class="app-details">
+            <div class="app-title">{{ app.name }}</div>
+            <a [href]="app.link" target="_blank" class="app-link">Download</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+   
+  </div>
 </ion-content>
+
+

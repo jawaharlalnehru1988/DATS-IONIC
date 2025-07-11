@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonInput, IonItem, IonTextarea, IonLabel, IonButton, IonText } from '@ionic/angular/standalone';
+import { IonContent, IonMenuButton, IonHeader, IonTitle, IonToolbar, IonInput, IonItem, IonTextarea, IonLabel, IonButton, IonText, IonButtons } from '@ionic/angular/standalone';
 import { AuthService } from '../services/auth.service';
 import { ResponseUserData } from '../Utils/models';
 import { Router } from '@angular/router';
@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
   templateUrl: './register.page.html',
   styleUrls: ['./register.page.scss'],
   standalone: true,
-  imports: [IonText, IonContent, ReactiveFormsModule, FormsModule,  IonHeader, IonTitle, IonToolbar, IonText, CommonModule, FormsModule, IonItem, IonInput, IonTextarea, IonLabel, IonButton]
+  imports: [IonButtons, IonMenuButton, IonText, IonContent, ReactiveFormsModule, FormsModule,  IonHeader, IonTitle, IonToolbar, IonText, CommonModule, FormsModule, IonItem, IonInput, IonTextarea, IonLabel, IonButton]
 })
 export class RegisterPage implements OnInit {
   registerForm!: FormGroup;

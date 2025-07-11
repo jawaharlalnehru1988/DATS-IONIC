@@ -8,8 +8,7 @@ export const routes: Routes = [
   },
   {
     path: 'register',
-    loadComponent: () =>
-      import('./register/register.page').then((m) => m.RegisterPage),
+    loadComponent: () => import('./register/register.page').then((m) => m.RegisterPage),
   },
   {
     path: 'login',
@@ -40,7 +39,7 @@ export const routes: Routes = [
   },
   {
     path: 'membership',
-    loadComponent: () => import('./outbox/membership.page').then( m => m.MembershipPage)
+    loadComponent: () => import('./register/register.page').then( m => m.RegisterPage)
   },
   {
     path: 'contacts',

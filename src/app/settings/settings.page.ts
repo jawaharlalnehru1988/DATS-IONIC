@@ -15,7 +15,13 @@ export class SettingsPage implements OnInit {
   displayPanel = true;
   languages = [
     { value: 'en', label: 'English' },
-    { value: 'hi', label: 'Hindi' }
+    { value: 'hi', label: 'Hindi' },
+    { value: 'bn', label: 'Bengali' },
+    { value: 'te', label: 'Telugu' },
+    { value: 'mr', label: 'Marathi' },
+    { value: 'ta', label: 'Tamil' },
+    { value: 'gu', label: 'Gujarati' },
+    { value: 'kn', label: 'Kannada' }
   ];
   constructor() { }
 
