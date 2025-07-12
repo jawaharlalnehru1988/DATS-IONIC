@@ -1,33 +1,113 @@
-<ion-app>
-  <ion-split-pane contentId="main-content">
-    <ion-menu contentId="main-content" type="overlay">
-      <ion-content>
-        <ion-list id="inbox-list">
-          <ion-list-header>Welcome to Devotee App</ion-list-header>
+<ion-app [class]="currentTheme">
+  <ion-split-pane contentId="main-content" [class]="currentTheme">
+    <ion-menu contentId="main-content" type="overlay" [class]="currentTheme">
+      <ion-content [class]="currentTheme">
+        <!-- Theme Selector Header -->
+        <div class="theme-header">
+          <ion-list-header>
+            Welcome to Devotee App
+            <ion-button 
+              fill="clear" 
+              size="small" 
+              [class]="'theme-selector-btn ' + currentTheme"
+              (click)="openThemePopover($event)">
+              <ion-icon name="color-palette-outline"></ion-icon>
+            </ion-button>
+          </ion-list-header>
           <ion-note>askharekrishna.com</ion-note>
+        </div>
 
+        <!-- Theme Selector Popover -->
+        <ion-popover 
+          [isOpen]="isThemePopoverOpen" 
+          (didDismiss)="closeThemePopover()"
+          showBackdrop="true"
+          side="end"
+          alignment="start">
+          <ng-template>
+            <ion-content class="theme-popover-content">
+              <div class="theme-selector-header">
+                <h3>🎨 Choose Your Theme</h3>
+                <p>Select a beautiful theme for your spiritual journey</p>
+              </div>
+              
+              @for (theme of themes; track theme.name) {
+                <ion-item 
+                  button 
+                  (click)="selectTheme(theme.name)"
+                  [class]="'theme-preview-item ' + theme.name">
+                  <div slot="start" class="theme-preview-circle" [class]="theme.name"></div>
+                  <ion-label>
+                    <h3>{{ theme.label }}</h3>
+                    <p>{{ theme.description }}</p>
+                  </ion-label>
+                  <ion-checkbox 
+                    [checked]="currentTheme === theme.name" 
+                    slot="end">
+                  </ion-checkbox>
+                </ion-item>
+              }
+            </ion-content>
+          </ng-template>
+        </ion-popover>
+
+        <!-- Main Navigation -->
+        <ion-list id="inbox-list" [class]="currentTheme">
           @for (p of appPages; track p; let i = $index) {
             <ion-menu-toggle auto-hide="false">
-              <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">
-                <ion-icon aria-hidden="true" slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'" [style.color]="p.iconColor"></ion-icon>
+              <ion-item 
+                routerDirection="root" 
+                [routerLink]="[p.url]" 
+                lines="none" 
+                detail="false" 
+                routerLinkActive="selected"
+                [class]="'menu-item ' + currentTheme">
+                <ion-icon 
+                  aria-hidden="true" 
+                  slot="start" 
+                  [ios]="p.icon + '-outline'" 
+                  [md]="p.icon + '-sharp'" 
+                  [style.color]="p.iconColor">
+                </ion-icon>
                 <ion-label>{{ p.title }}</ion-label>
               </ion-item>
             </ion-menu-toggle>
           }
         </ion-list>
 
-        <ion-list id="labels-list">
-          <ion-list-header>Utilities</ion-list-header>
-
-         @for (p of additionals; track p; let i = $index) {
+        <!-- Utilities Section -->
+        <ion-list id="labels-list" [class]="currentTheme">
+          <ion-list-header>🔧 Utilities</ion-list-header>
+          @for (p of additionals; track p; let i = $index) {
             <ion-menu-toggle auto-hide="false">
-              <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">
-                <ion-icon aria-hidden="true" slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'" [style.color]="p.iconColor"></ion-icon>
+              <ion-item 
+                routerDirection="root" 
+                [routerLink]="[p.url]" 
+                lines="none" 
+                detail="false" 
+                routerLinkActive="selected"
+                [class]="'menu-item ' + currentTheme">
+                <ion-icon 
+                  aria-hidden="true" 
+                  slot="start" 
+                  [ios]="p.icon + '-outline'" 
+                  [md]="p.icon + '-sharp'" 
+                  [style.color]="p.iconColor">
+                </ion-icon>
                 <ion-label>{{ p.title }}</ion-label>
               </ion-item>
             </ion-menu-toggle>
           }
         </ion-list>
+
+        <!-- Spiritual Quote Section -->
+        <div class="spiritual-quote" [class]="currentTheme">
+          <div class="quote-content">
+            <ion-icon name="heart-outline" size="small"></ion-icon>
+            <p>"Hare Krishna Hare Krishna<br>Krishna Krishna Hare Hare<br>Hare Rama Hare Rama<br>Rama Rama Hare Hare"</p>
+            <small>- The Great Mantra for Deliverance</small>
+          </div>
+        </div>
       </ion-content>
     </ion-menu>
     <ion-router-outlet id="main-content"></ion-router-outlet>

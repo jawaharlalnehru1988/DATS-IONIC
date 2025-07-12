@@ -1,0 +1,436 @@
+/* Import theme models from assets */
+@import '../../assets/styles/theme-models.scss';
+
+/* Base Chant Page Styles */
+.chant-page {
+  --background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--background);
+  min-height: 100vh;
+  
+  &.theme-ocean {
+    --background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: var(--background);
+  }
+  
+  &.theme-sunset {
+    --background: linear-gradient(135deg, #ff6b6b 0%, #feca57 50%, #ff9ff3 100%);
+    background: var(--background);
+  }
+  
+  &.theme-forest {
+    --background: linear-gradient(135deg, #134e5e 0%, #71b280 100%);
+    background: var(--background);
+  }
+  
+  &.theme-cyberpunk {
+    --background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 50%, #16213e 100%);
+    background: var(--background);
+  }
+  
+  &.theme-royal {
+    --background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: var(--background);
+  }
+  
+  &.theme-midnight {
+    --background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    background: var(--background);
+  }
+}
+
+/* Header Toolbar Theming */
+ion-toolbar {
+  &.theme-ocean {
+    --background: rgba(102, 126, 234, 0.9);
+    --color: #fff;
+  }
+  
+  &.theme-sunset {
+    --background: rgba(255, 107, 107, 0.9);
+    --color: #fff;
+  }
+  
+  &.theme-forest {
+    --background: rgba(19, 78, 94, 0.9);
+    --color: #fff;
+  }
+  
+  &.theme-cyberpunk {
+    --background: rgba(0, 0, 0, 0.9);
+    --color: #00ff41;
+    border-bottom: 1px solid #00ff41;
+  }
+  
+  &.theme-royal {
+    --background: rgba(118, 75, 162, 0.9);
+    --color: #ffd700;
+  }
+  
+  &.theme-midnight {
+    --background: rgba(44, 62, 80, 0.9);
+    --color: #ecf0f1;
+  }
+}
+
+/* Main Container */
+.chant-container {
+  padding: 20px;
+  padding-bottom: 120px; // Space for chant button
+  min-height: calc(100vh - 56px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Krishna Symbol Section */
+.krishna-symbol {
+  text-align: center;
+  margin-bottom: 30px;
+  
+  ion-icon {
+    font-size: 60px;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 20px;
+    filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.5));
+  }
+  
+  h2 {
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 18px;
+    margin: 10px 0;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    font-weight: 500;
+    line-height: 1.4;
+    
+    @media (max-width: 480px) {
+      font-size: 16px;
+    }
+  }
+}
+
+/* Statistics Container */
+.stats-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+  width: 100%;
+  max-width: 500px;
+  margin-bottom: 30px;
+}
+
+/* Stat Cards */
+.stat-card {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 20px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  }
+  
+  h3 {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 14px;
+    margin: 0 0 10px 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  .stat-number {
+    color: #fff;
+    font-size: 24px;
+    font-weight: bold;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* Progress Containers */
+.progress-container, .daily-goal {
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 25px;
+  
+  .round-progress, .daily-progress {
+    height: 8px;
+    border-radius: 4px;
+    margin: 10px 0;
+  }
+  
+  .progress-text, .goal-text {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+    text-align: center;
+    margin: 5px 0;
+  }
+  
+  h4 {
+    color: rgba(255, 255, 255, 0.9);
+    text-align: center;
+    margin: 0 0 10px 0;
+    font-size: 16px;
+  }
+}
+
+/* Chant Button - Fixed at Bottom */
+.chant-button-container {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+}
+
+.chant-button {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #ff6b6b, #feca57);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 
+    0 15px 35px rgba(0, 0, 0, 0.2),
+    0 5px 15px rgba(255, 107, 107, 0.4);
+  transition: all 0.3s ease;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 
+      0 20px 40px rgba(0, 0, 0, 0.3),
+      0 10px 20px rgba(255, 107, 107, 0.6);
+  }
+  
+  &:active {
+    transform: scale(0.95);
+    transition: all 0.1s ease;
+  }
+  
+  .chant-counter {
+    color: #fff;
+    font-size: 28px;
+    font-weight: bold;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    margin-bottom: 5px;
+  }
+  
+  .chant-text {
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  }
+  
+  .ripple-effect {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(0);
+    animation: ripple 1.5s infinite;
+  }
+}
+
+/* Theme-specific chant button styles */
+.chant-page.theme-ocean .chant-button {
+  background: linear-gradient(145deg, #667eea, #764ba2);
+  box-shadow: 
+    0 15px 35px rgba(0, 0, 0, 0.2),
+    0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.chant-page.theme-sunset .chant-button {
+  background: linear-gradient(145deg, #ff6b6b, #feca57);
+  box-shadow: 
+    0 15px 35px rgba(0, 0, 0, 0.2),
+    0 5px 15px rgba(255, 107, 107, 0.4);
+}
+
+.chant-page.theme-forest .chant-button {
+  background: linear-gradient(145deg, #134e5e, #71b280);
+  box-shadow: 
+    0 15px 35px rgba(0, 0, 0, 0.2),
+    0 5px 15px rgba(113, 178, 128, 0.4);
+}
+
+.chant-page.theme-cyberpunk .chant-button {
+  background: linear-gradient(145deg, #00ff41, #00cc33);
+  border: 3px solid #00ff41;
+  box-shadow: 
+    0 15px 35px rgba(0, 0, 0, 0.4),
+    0 0 30px rgba(0, 255, 65, 0.6);
+  
+  .chant-counter, .chant-text {
+    color: #000;
+    font-family: 'Courier New', monospace;
+  }
+}
+
+.chant-page.theme-royal .chant-button {
+  background: linear-gradient(145deg, #667eea, #ffd700);
+  box-shadow: 
+    0 15px 35px rgba(0, 0, 0, 0.2),
+    0 5px 15px rgba(255, 215, 0, 0.4);
+}
+
+.chant-page.theme-midnight .chant-button {
+  background: linear-gradient(145deg, #2c3e50, #3498db);
+  box-shadow: 
+    0 15px 35px rgba(0, 0, 0, 0.2),
+    0 5px 15px rgba(52, 152, 219, 0.4);
+}
+
+/* Ripple Animation */
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+/* Reset Button */
+ion-fab {
+  --background: rgba(231, 76, 60, 0.9);
+  --color: #fff;
+}
+
+/* Theme Selector Modal */
+.theme-preview {
+  margin: 5px 0;
+  border-radius: 10px;
+  
+  &.theme-ocean {
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+  }
+  
+  &.theme-sunset {
+    background: linear-gradient(90deg, #ff6b6b 0%, #feca57 100%);
+    color: #fff;
+  }
+  
+  &.theme-forest {
+    background: linear-gradient(90deg, #134e5e 0%, #71b280 100%);
+    color: #fff;
+  }
+  
+  &.theme-cyberpunk {
+    background: linear-gradient(90deg, #0f0f0f 0%, #1a1a2e 100%);
+    color: #00ff41;
+    border: 1px solid #00ff41;
+  }
+  
+  &.theme-royal {
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    color: #ffd700;
+  }
+  
+  &.theme-midnight {
+    background: linear-gradient(90deg, #2c3e50 0%, #34495e 100%);
+    color: #ecf0f1;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .stats-container {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  
+  .stat-card {
+    padding: 15px;
+    
+    .stat-number {
+      font-size: 20px;
+    }
+  }
+  
+  .chant-button {
+    width: 100px;
+    height: 100px;
+    
+    .chant-counter {
+      font-size: 24px;
+    }
+    
+    .chant-text {
+      font-size: 10px;
+    }
+  }
+  
+  .krishna-symbol {
+    h2 {
+      font-size: 14px;
+    }
+  }
+}
+
+/* Additional Animations */
+.stat-card {
+  animation: fadeInUp 0.6s ease-out;
+  animation-fill-mode: both;
+  
+  &:nth-child(1) { animation-delay: 0.1s; }
+  &:nth-child(2) { animation-delay: 0.2s; }
+  &:nth-child(3) { animation-delay: 0.3s; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.krishna-symbol {
+  animation: fadeIn 1s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Progress bar styling */
+ion-progress-bar {
+  --progress-background: rgba(255, 255, 255, 0.8);
+  --buffer-background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+}
+
+/* Toast styling */
+ion-toast {
+  --background: rgba(46, 204, 113, 0.95);
+  --color: #fff;
+  font-weight: 500;
+}
+
+/* Alert styling */
+ion-alert {
+  --background: rgba(255, 255, 255, 0.95);
+  --color: #333;
+}

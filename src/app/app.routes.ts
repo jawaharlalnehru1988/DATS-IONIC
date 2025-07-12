@@ -58,10 +58,6 @@ export const routes: Routes = [
     loadComponent: () => import('./calendar/calendar.page').then( m => m.CalendarPage)
   },
   {
-    path: 'ekadasi',
-    loadComponent: () => import('./ekadasi/ekadasi.page').then( m => m.EkadasiPage)
-  },
-  {
     path: 'register',
     loadComponent: () => import('./register/register.page').then( m => m.RegisterPage)
   },
@@ -78,8 +74,8 @@ export const routes: Routes = [
     loadComponent: () => import('./tutorial-details/tutorial-details.page').then(m => m.TutorialDetailsPage)
   },
   {
-    path: 'ekadasi',
-    loadComponent: () => import('./ekadasi/ekadasi.page').then( m => m.EkadasiPage)
+    path: 'chant',
+    loadComponent: () => import('./chant/chant.page').then( m => m.ChantPage)
   },
   {
     path: 'krishna-page',

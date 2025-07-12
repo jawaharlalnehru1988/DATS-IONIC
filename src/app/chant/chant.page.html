@@ -1,0 +1,144 @@
+<ion-header [translucent]="true">
+  <ion-toolbar [class]="currentTheme">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>🕉️ Mahamantra Chanting</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="showThemeSelector()">
+        <ion-icon name="color-palette-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" [class]="'chant-page ' + currentTheme">
+  <!-- Theme Selector Modal -->
+  <ion-modal [isOpen]="isThemeSelectorOpen" (didDismiss)="closeThemeSelector()">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Choose Theme</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeThemeSelector()">
+              <ion-icon name="close"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <ion-list>
+          <ion-item button (click)="setTheme('theme-ocean')" [class]="'theme-preview theme-ocean'">
+            <ion-label>🌊 Ocean Breeze</ion-label>
+            <ion-checkbox [checked]="currentTheme === 'theme-ocean'" slot="end"></ion-checkbox>
+          </ion-item>
+          <ion-item button (click)="setTheme('theme-sunset')" [class]="'theme-preview theme-sunset'">
+            <ion-label>🌅 Sunset Vibes</ion-label>
+            <ion-checkbox [checked]="currentTheme === 'theme-sunset'" slot="end"></ion-checkbox>
+          </ion-item>
+          <ion-item button (click)="setTheme('theme-forest')" [class]="'theme-preview theme-forest'">
+            <ion-label>🌲 Forest Mystic</ion-label>
+            <ion-checkbox [checked]="currentTheme === 'theme-forest'" slot="end"></ion-checkbox>
+          </ion-item>
+          <ion-item button (click)="setTheme('theme-cyberpunk')" [class]="'theme-preview theme-cyberpunk'">
+            <ion-label>🔮 Cyberpunk Neon</ion-label>
+            <ion-checkbox [checked]="currentTheme === 'theme-cyberpunk'" slot="end"></ion-checkbox>
+          </ion-item>
+          <ion-item button (click)="setTheme('theme-royal')" [class]="'theme-preview theme-royal'">
+            <ion-label>👑 Royal Purple</ion-label>
+            <ion-checkbox [checked]="currentTheme === 'theme-royal'" slot="end"></ion-checkbox>
+          </ion-item>
+          <ion-item button (click)="setTheme('theme-midnight')" [class]="'theme-preview theme-midnight'">
+            <ion-label>🌙 Midnight Blue</ion-label>
+            <ion-checkbox [checked]="currentTheme === 'theme-midnight'" slot="end"></ion-checkbox>
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <!-- Main Content -->
+  <div class="chant-container">
+    <!-- Krishna Image/Symbol -->
+    <div class="krishna-symbol">
+      <ion-icon name="flower-outline" size="large"></ion-icon>
+      <h2>हरे कृष्ण हरे कृष्ण कृष्ण कृष्ण हरे हरे</h2>
+      <h2>हरे राम हरे राम राम राम हरे हरे</h2>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="stats-container">
+      <div class="stat-card">
+        <h3>Current Round</h3>
+        <div class="stat-number">{{currentRound}}/108</div>
+      </div>
+      
+      <div class="stat-card">
+        <h3>Rounds Completed</h3>
+        <div class="stat-number">{{roundsCompleted}}</div>
+      </div>
+      
+      <div class="stat-card">
+        <h3>Maha Rounds</h3>
+        <div class="stat-number">{{mahaRounds}}</div>
+      </div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-container">
+      <ion-progress-bar 
+        [value]="currentRound / 108" 
+        color="primary"
+        class="round-progress">
+      </ion-progress-bar>
+      <p class="progress-text">{{currentRound}} / 108 chants in current round</p>
+    </div>
+
+    <!-- Daily Goal Progress -->
+    <div class="daily-goal">
+      <h4>Daily Goal (16 Rounds)</h4>
+      <ion-progress-bar 
+        [value]="roundsCompleted / 16" 
+        color="success"
+        class="daily-progress">
+      </ion-progress-bar>
+      <p class="goal-text">{{roundsCompleted}} / 16 rounds completed</p>
+    </div>
+  </div>
+
+  <!-- Chant Button - Fixed at bottom -->
+  <div class="chant-button-container">
+    <div class="chant-button" (click)="chant()">
+      <div class="chant-counter">{{currentRound}}</div>
+      <div class="chant-text">CHANT</div>
+      <div class="ripple-effect"></div>
+    </div>
+  </div>
+
+  <!-- Reset Button -->
+  <ion-fab vertical="top" horizontal="end" slot="fixed">
+    <ion-fab-button color="danger" (click)="showResetConfirmation()">
+      <ion-icon name="refresh-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <!-- Reset Confirmation Alert -->
+  <ion-alert
+    [isOpen]="showResetAlert"
+    header="Reset Confirmation"
+    message="Are you sure you want to reset all your chanting progress? This action cannot be undone."
+    [buttons]="alertButtons"
+    (didDismiss)="showResetAlert = false">
+  </ion-alert>
+
+  <!-- Congratulations Toast -->
+  <ion-toast
+    [isOpen]="showToast"
+    [message]="toastMessage"
+    duration="3000"
+    position="top"
+    color="success"
+    [buttons]="toastButtons"
+    (didDismiss)="showToast = false">
+  </ion-toast>
+</ion-content>
