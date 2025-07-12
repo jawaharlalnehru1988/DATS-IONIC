@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {  IonHeader, IonTitle, IonToolbar, IonButtons, IonButton, IonIcon, IonContent, IonAlert } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { chevronBack, chevronForward, calendarOutline, searchOutline, settingsOutline, sunnyOutline, moonOutline, ellipsisHorizontal, closeOutline } from 'ionicons/icons';
-import { AlertController } from '@ionic/angular';
+import { chevronBack, chevronForward, calendarOutline, searchOutline, settingsOutline, sunnyOutline, moonOutline, ellipsisHorizontal, closeOutline, arrowBackOutline, shareOutline, todayOutline, heart, heartOutline } from 'ionicons/icons';
+import { AlertController, ToastController } from '@ionic/angular';
 
 interface FestivalEvent {
   id: string;
@@ -75,6 +75,7 @@ export class CalendarPage implements OnInit {
   currentYear = this.currentDate.getFullYear();
   selectedDate: Date | null = null; // Track selected date
   selectedFestivalInfo: FestivalInfo | null = null; // Track selected festival info
+  favoriteDates: string[] = []; // Track favorite dates
   calendarDays: CalendarDay[] = [];
   monthNames = [
     'January', 'February', 'March', 'April', 'May', 'June',
@@ -193,10 +194,11 @@ export class CalendarPage implements OnInit {
     }
   ];
 
-  constructor(private alertController: AlertController) { 
-    addIcons({calendarOutline,searchOutline,settingsOutline,chevronBack,chevronForward,closeOutline,ellipsisHorizontal,sunnyOutline,moonOutline});
+  constructor(private alertController: AlertController, private toastController: ToastController) { 
+    addIcons({calendarOutline,searchOutline,settingsOutline,chevronBack,chevronForward,closeOutline,ellipsisHorizontal,sunnyOutline,moonOutline,arrowBackOutline,shareOutline,todayOutline,heart,heartOutline});
   }
   ngOnInit() {
+    this.loadFavorites();
     this.requestLocationPermission();
     this.generateCalendar();
   }
@@ -939,5 +941,129 @@ export class CalendarPage implements OnInit {
   // Format date for display
   formatDateString(date: Date): string {
     return `${date.getDate()} ${this.monthNames[date.getMonth()]} ${date.getFullYear()}`;
+  }
+
+  // Footer navigation methods
+  goBack() {
+    // Navigate back to previous page
+    window.history.back();
+  }
+
+  isCurrentDateFavorited(): boolean {
+    if (!this.selectedDate) return false;
+    const dateKey = this.formatDateKey(this.selectedDate);
+    return this.favoriteDates.includes(dateKey);
+  }
+
+  toggleFavorite() {
+    if (!this.selectedDate) return;
+    
+    const dateKey = this.formatDateKey(this.selectedDate);
+    const index = this.favoriteDates.indexOf(dateKey);
+    
+    if (index > -1) {
+      // Remove from favorites
+      this.favoriteDates.splice(index, 1);
+      this.showToast('Date removed from favorites');
+    } else {
+      // Add to favorites
+      this.favoriteDates.push(dateKey);
+      this.showToast('Date added to favorites');
+    }
+    
+    // Save to localStorage
+    localStorage.setItem('calendar-favorites', JSON.stringify(this.favoriteDates));
+  }
+
+  async shareEvent() {
+    if (!this.selectedDate) {
+      this.showToast('Please select a date first');
+      return;
+    }
+
+    const dateStr = this.formatDateString(this.selectedDate);
+    let shareText = `📅 Vaishnava Calendar - ${dateStr}\n\n`;
+    
+    // Add Vaishnava info
+    shareText += `🕉️ Gaurabda: ${this.vaishnavData.gaurabda}\n`;
+    shareText += `📅 Masa: ${this.vaishnavData.masa}\n`;
+    shareText += `🌙 Tithi: ${this.vaishnavData.tithi}\n`;
+    shareText += `🌅 Sunrise: ${this.vaishnavData.sunrise}\n`;
+    shareText += `🌇 Sunset: ${this.vaishnavData.sunset}\n`;
+    
+    // Add festival info if available
+    if (this.selectedFestivalInfo) {
+      shareText += `\n🎉 Festival: ${this.selectedFestivalInfo.title}\n`;
+      if (this.selectedFestivalInfo.significance) {
+        shareText += `✨ ${this.selectedFestivalInfo.significance}\n`;
+      }
+    }
+
+    shareText += `\n🙏 Hare Krishna!`;
+
+    // Try native share API if available
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'Vaishnava Calendar',
+          text: shareText
+        });
+      } catch (error) {
+        // Fall back to clipboard
+        this.copyToClipboard(shareText);
+      }
+    } else {
+      // Fall back to clipboard
+      this.copyToClipboard(shareText);
+    }
+  }
+
+  goToToday() {
+    this.currentDate = new Date();
+    this.currentMonth = this.currentDate.getMonth();
+    this.currentYear = this.currentDate.getFullYear();
+    this.selectedDate = new Date(this.currentDate);
+    this.generateCalendar();
+    this.calculateVaishnavData();
+    this.showToast('Navigated to today');
+  }
+
+  // Helper methods
+  private formatDateKey(date: Date): string {
+    return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+  }
+
+  private async showToast(message: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000,
+      position: 'bottom',
+      cssClass: 'toast-alert'
+    });
+    await toast.present();
+  }
+
+  private async copyToClipboard(text: string) {
+    try {
+      await navigator.clipboard.writeText(text);
+      this.showToast('Event details copied to clipboard');
+    } catch (error) {
+      // Fallback for older browsers
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      this.showToast('Event details copied to clipboard');
+    }
+  }
+
+  // Load favorites from localStorage on init
+  private loadFavorites() {
+    const saved = localStorage.getItem('calendar-favorites');
+    if (saved) {
+      this.favoriteDates = JSON.parse(saved);
+    }
   }
 }

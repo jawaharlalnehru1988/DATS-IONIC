@@ -747,3 +747,198 @@
     }
   }
 }
+
+/* Footer Navigation Bar */
+.footer-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.95) 0%, 
+    rgba(248, 250, 252, 0.98) 100%);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+  padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
+  z-index: 1000;
+  
+  .footer-nav-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+  
+  .footer-nav-btn {
+    --color: #666;
+    --background: transparent;
+    --border-radius: 12px;
+    --padding-top: 8px;
+    --padding-bottom: 8px;
+    --padding-start: 12px;
+    --padding-end: 12px;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    margin: 0;
+    height: auto;
+    min-height: 48px;
+    transition: all 0.3s ease;
+    
+    ion-icon {
+      font-size: 20px;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-label {
+      font-size: 10px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      margin-top: 2px;
+      opacity: 0.8;
+      transition: all 0.3s ease;
+    }
+    
+    &:hover {
+      --background: rgba(0, 0, 0, 0.05);
+      transform: translateY(-2px);
+      
+      ion-icon {
+        transform: scale(1.1);
+      }
+      
+      .btn-label {
+        opacity: 1;
+      }
+    }
+    
+    // Back button styling
+    &.back-btn {
+      --color: #2196F3;
+      
+      &:hover {
+        --background: rgba(33, 150, 243, 0.1);
+      }
+    }
+    
+    // Favorite button styling
+    &.favorite-btn {
+      --color: #FF5722;
+      
+      &:hover {
+        --background: rgba(255, 87, 34, 0.1);
+      }
+      
+      &.favorited {
+        --color: #E91E63;
+        --background: rgba(233, 30, 99, 0.1);
+        
+        ion-icon {
+          color: #E91E63;
+          animation: heartbeat 0.5s ease;
+        }
+        
+        .btn-label {
+          color: #E91E63;
+          font-weight: 600;
+        }
+      }
+    }
+    
+    // Share button styling
+    &.share-btn {
+      --color: #4CAF50;
+      
+      &:hover {
+        --background: rgba(76, 175, 80, 0.1);
+      }
+    }
+    
+    // Today button styling
+    &.today-btn {
+      --color: #FF9800;
+      
+      &:hover {
+        --background: rgba(255, 152, 0, 0.1);
+      }
+    }
+  }
+}
+
+/* Heart beat animation for favorite button */
+@keyframes heartbeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+/* Adjust content padding to account for footer */
+.calendar-container {
+  padding-bottom: 80px; /* Add space for footer */
+}
+
+/* Responsive adjustments for larger screens */
+@media (min-width: 768px) {
+  .footer-nav {
+    .footer-nav-container {
+      max-width: 600px;
+    }
+    
+    .footer-nav-btn {
+      --padding-start: 16px;
+      --padding-end: 16px;
+      min-height: 52px;
+      
+      ion-icon {
+        font-size: 22px;
+      }
+      
+      .btn-label {
+        font-size: 11px;
+      }
+    }
+  }
+}
+
+/* Dark theme support */
+@media (prefers-color-scheme: dark) {
+  .footer-nav {
+    background: linear-gradient(135deg, 
+      rgba(30, 30, 30, 0.95) 0%, 
+      rgba(20, 20, 20, 0.98) 100%);
+    border-top-color: rgba(255, 255, 255, 0.1);
+    
+    .footer-nav-btn {
+      --color: #ccc;
+      
+      &:hover {
+        --background: rgba(255, 255, 255, 0.1);
+      }
+      
+      &.back-btn {
+        --color: #64B5F6;
+      }
+      
+      &.favorite-btn.favorited {
+        --color: #F48FB1;
+      }
+      
+      &.share-btn {
+        --color: #81C784;
+      }
+      
+      &.today-btn {
+        --color: #FFB74D;
+      }
+    }
+  }
+}

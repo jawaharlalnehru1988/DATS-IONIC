@@ -197,4 +197,46 @@
       </div>
     </div>
   </div>
+
+  <!-- Footer Navigation Bar -->
+  <div class="footer-nav">
+    <div class="footer-nav-container">
+      <ion-button 
+        fill="clear" 
+        class="footer-nav-btn back-btn"
+        (click)="goBack()">
+        <ion-icon name="arrow-back-outline" slot="icon-only"></ion-icon>
+        <span class="btn-label">Back</span>
+      </ion-button>
+      
+      <ion-button 
+        fill="clear" 
+        class="footer-nav-btn favorite-btn"
+        [class.favorited]="isCurrentDateFavorited()"
+        (click)="toggleFavorite()">
+        <ion-icon 
+          [name]="isCurrentDateFavorited() ? 'heart' : 'heart-outline'" 
+          slot="icon-only">
+        </ion-icon>
+        <span class="btn-label">{{ isCurrentDateFavorited() ? 'Favorited' : 'Favorite' }}</span>
+      </ion-button>
+      
+      <ion-button 
+        fill="clear" 
+        class="footer-nav-btn share-btn"
+        (click)="shareEvent()">
+        <ion-icon name="share-outline" slot="icon-only"></ion-icon>
+        <span class="btn-label">Share</span>
+      </ion-button>
+      
+      <ion-button 
+        fill="clear" 
+        class="footer-nav-btn today-btn"
+        (click)="goToToday()">
+        <ion-icon name="today-outline" slot="icon-only"></ion-icon>
+        <span class="btn-label">Today</span>
+      </ion-button>
+    </div>
+  </div>
 </ion-content>
+
