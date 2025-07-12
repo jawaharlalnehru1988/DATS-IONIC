@@ -1,34 +1,145 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar [class]="currentTheme">
     <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
+      <ion-back-button defaultHref="/"></ion-back-button>
     </ion-buttons>
-    <ion-title>Srila Prabhupada</ion-title>
+    <ion-title>🕉️ Srila Prabhupada</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear">
+        <ion-icon name="search-outline"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear">
+        <ion-icon name="heart-outline"></ion-icon>
+      </ion-button>
+      <!-- Theme Selector Button -->
+      <ion-button 
+        fill="clear" 
+        [class]="'theme-selector-btn ' + currentTheme"
+        (click)="showThemeSelector($event)">
+        <ion-icon name="color-palette-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
+<ion-content [fullscreen]="true" [class]="currentTheme">
+  <!-- Theme Selector Popover -->
+  <ion-popover 
+    [isOpen]="isThemeSelectorOpen" 
+    (didDismiss)="closeThemeSelector()"
+    showBackdrop="true"
+    side="bottom"
+    alignment="end">
+    <ng-template>
+      <ion-content class="theme-popover-content">
+        <div class="theme-selector-header">
+          <h3>🎨 Choose Your Theme</h3>
+          <p>Select a beautiful theme for your spiritual journey</p>
+        </div>
+        
+        <div class="themes-grid">
+          <div 
+            *ngFor="let theme of themes" 
+            class="theme-option"
+            [class]="'theme-preview ' + theme.name"
+            (click)="selectTheme(theme.name)">
+            <div class="theme-preview-circle" [class]="theme.name"></div>
+            <div class="theme-info">
+              <h4>{{ theme.label }}</h4>
+            </div>
+            <ion-checkbox 
+              [checked]="currentTheme === theme.name"
+              slot="end">
+            </ion-checkbox>
+          </div>
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-popover>
 
- <div class="krishna-card-list">
-    <ion-grid>
-      <ion-row>
-        <ion-col  *ngFor="let item of krishnaItems">
-          <div class="krishna-card">
-            <img [src]="item.img" [alt]="item.title" />
-            <div class="krishna-card-title">{{ item.title }}</div>
-            <div class="krishna-card-desc">{{ item.desc }}</div>
-            <div class="krishna-card-footer">
-              <div class="krishna-card-rating">
-                <ion-icon name="star"></ion-icon>
-                <span>{{ item.rating }}</span>
-              </div>
-              <div class="krishna-action">{{ item.action }}</div>
-              <ion-button size="small" fill="clear" shape="round" class="add-btn">
-                <ion-icon name="add"></ion-icon>
-              </ion-button>
+  <div class="content-container">
+    <!-- ...existing code... -->
+    
+    <!-- Featured Tags -->
+    <div class="featured-tags">
+      <div class="tag-chip">Daily Quotes</div>
+      <div class="tag-chip">Morning Classes</div>
+      <div class="tag-chip">Evening Kirtans</div>
+      <div class="tag-chip">Special Events</div>
+    </div>
+
+    <!-- Categories Section -->
+    <div class="categories-container" *ngFor="let category of categories">
+      
+      <!-- Category Header -->
+      <div class="category-header">
+        <h2 class="category-title">{{ category.name }}</h2>
+        <ion-button fill="clear" size="small" (click)="onCategoryAction(category)">
+          <span>View All</span>
+          <ion-icon name="chevron-forward-outline"></ion-icon>
+        </ion-button>
+      </div>
+
+      <!-- Cards Grid -->
+      <div class="cards-grid">
+        <div class="content-card" 
+             *ngFor="let card of category.cards" 
+             (click)="onCardClick(card)"
+             [class]="'card-' + card.type">
+          
+          <!-- Card Image -->
+          <div class="card-image-container">
+            <img [src]="card.imageUrl" [alt]="card.title" class="card-image">
+            <div class="image-overlay"></div>
+            
+            <!-- Duration Badge (for videos/audio) -->
+            <div class="duration-badge" *ngIf="card.duration">
+              {{ card.duration }}
+            </div>
+
+            <!-- Type Icon -->
+            <div class="type-icon">
+              <ion-icon 
+                [name]="getTypeIcon(card.type)" 
+                class="icon">
+              </ion-icon>
             </div>
           </div>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+
+          <!-- Card Content -->
+          <div class="card-content">
+            <!-- <div class="card-brand" *ngIf="card.subtitle">{{ card.subtitle }}</div> -->
+            <h3 class="card-title">{{ card.title }}</h3>
+            
+            <!-- Action Button -->
+            <div class="card-action">
+              <span class="action-text">{{ card.actionText }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Special Promotion Section -->
+    <div class="special-section">
+      <div class="special-header">
+        <h2>Special Collections</h2>
+      </div>
+      
+      <div class="special-card">
+        <div class="special-content">
+          <h3>Complete Bhagavatam Series</h3>
+          <p>Access all Srimad Bhagavatam classes and commentaries</p>
+          <ion-button color="secondary" fill="solid" size="small">
+            Explore Collection
+          </ion-button>
+        </div>
+        <div class="special-image">
+          <img src="https://res.cloudinary.com/dbmkctsda/image/upload/v1751699516/sitting_with_books_ova3dl.jpg" 
+               alt="Bhagavatam Collection">
+        </div>
+      </div>
+    </div>
+
   </div>
-  <app-ionic-audio-player [audioData]="audioData" />
+</ion-content>
