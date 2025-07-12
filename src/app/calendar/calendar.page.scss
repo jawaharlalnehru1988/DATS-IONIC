@@ -115,6 +115,16 @@
     }
   }
   
+  &.major-festival {
+    background-color: #2e7d32;
+    color: white;
+    
+    .date-number {
+      color: white;
+      font-weight: 700;
+    }
+  }
+  
   &.festival {
     background-color: #ffb74d;
     color: white;
@@ -240,6 +250,11 @@
     flex-direction: row;
     gap: 20px;
     
+    // Desktop layout by default (side by side)
+    @media (min-width: 769px) {
+      flex-direction: row;
+    }
+    
     // Sun Section
     .sun-section {
       flex: 1;
@@ -350,8 +365,142 @@
   }
 }
 
+// Festival Details Section
+.festival-details {
+  background: linear-gradient(135deg, rgba(255, 183, 77, 0.1), rgba(255, 111, 0, 0.05));
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-left: 4px solid #FF6F00;
+  animation: slideDown 0.3s ease-out;
+  
+  .festival-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid rgba(255, 183, 77, 0.3);
+    
+    h3 {
+      margin: 0;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #E65100;
+      display: flex;
+      align-items: center;
+      
+      &::before {
+        content: "🎉";
+        margin-right: 8px;
+        font-size: 1.3rem;
+      }
+    }
+    
+    ion-button {
+      --color: #FF6F00;
+      --background: rgba(255, 111, 0, 0.1);
+      --border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      
+      &:hover {
+        --background: rgba(255, 111, 0, 0.2);
+      }
+    }
+  }
+  
+  .festival-content {
+    .festival-info-item {
+      display: flex;
+      margin-bottom: 12px;
+      align-items: flex-start;
+      
+      .info-label {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #BF360C;
+        min-width: 120px;
+        margin-right: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      
+      .info-value {
+        font-size: 0.95rem;
+        color: #333;
+        flex: 1;
+        line-height: 1.4;
+        
+        &.festival-type {
+          font-weight: 600;
+          padding: 3px 8px;
+          border-radius: 6px;
+          display: inline-block;
+          
+          &.ekadasi-type {
+            background: #ff5722;
+            color: white;
+          }
+          
+          &.major-festival-type {
+            background: #2e7d32;
+            color: white;
+          }
+          
+          &.festival-type {
+            background: #ffb74d;
+            color: white;
+          }
+        }
+        
+        &.festival-description {
+          font-style: italic;
+          background: rgba(255, 255, 255, 0.7);
+          padding: 8px 12px;
+          border-radius: 8px;
+          border-left: 3px solid #FFB74D;
+        }
+      }
+      
+      .observances-list {
+        flex: 1;
+        
+        .observance-item {
+          background: rgba(255, 255, 255, 0.6);
+          padding: 6px 12px;
+          margin-bottom: 4px;
+          border-radius: 6px;
+          border-left: 3px solid #FFB74D;
+          font-size: 0.9rem;
+          color: #555;
+          transition: all 0.2s ease;
+          
+          &:hover {
+            background: rgba(255, 255, 255, 0.9);
+            transform: translateX(2px);
+          }
+        }
+      }
+    }
+  }
+}
+
+// Animation for festival details
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 // Responsive design for medium screens (tablets)
-@media (max-width: 768px) and (min-width: 481px) {
+@media (min-width: 769px) and (max-width: 1024px) {
   .astro-section {
     flex-direction: row;
     gap: 16px;
@@ -369,7 +518,7 @@
 }
 
 // Responsive design for smaller screens (mobile)
-@media (max-width: 480px) {
+@media (max-width: 768px) {
   .calendar-container {
     padding: 8px;
   }
@@ -377,6 +526,52 @@
   .calendar-day {
     .date-number {
       font-size: 0.9rem;
+    }
+  }
+  
+  .festival-details {
+    padding: 12px;
+    margin-bottom: 12px;
+    
+    .festival-header {
+      margin-bottom: 12px;
+      
+      h3 {
+        font-size: 1rem;
+        
+        &::before {
+          font-size: 1.1rem;
+        }
+      }
+    }
+    
+    .festival-content {
+      .festival-info-item {
+        flex-direction: column;
+        margin-bottom: 10px;
+        
+        .info-label {
+          font-size: 0.8rem;
+          min-width: auto;
+          margin-right: 0;
+          margin-bottom: 4px;
+        }
+        
+        .info-value {
+          font-size: 0.9rem;
+          
+          &.festival-description {
+            padding: 6px 10px;
+          }
+        }
+        
+        .observances-list {
+          .observance-item {
+            font-size: 0.85rem;
+            padding: 5px 10px;
+          }
+        }
+      }
     }
   }
   
@@ -415,8 +610,8 @@
     }
   }
   
-  .astro-section {
-    flex-direction: column;
+  .astro-info .astro-section {
+    flex-direction: column !important;
     gap: 20px;
     
     .sun-section,

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {  IonHeader, IonTitle, IonToolbar, IonButtons, IonButton, IonIcon, IonContent, IonAlert } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { chevronBack, chevronForward, calendarOutline, searchOutline, settingsOutline, sunnyOutline, moonOutline, ellipsisHorizontal } from 'ionicons/icons';
+import { chevronBack, chevronForward, calendarOutline, searchOutline, settingsOutline, sunnyOutline, moonOutline, ellipsisHorizontal, closeOutline } from 'ionicons/icons';
 import { AlertController } from '@ionic/angular';
 
 interface FestivalEvent {
@@ -51,6 +51,17 @@ interface LocationData {
   longitude: number;
   timezone: string;
 }
+
+interface FestivalInfo {
+  title: string;
+  date: string;
+  type: string;
+  typeClass: string;
+  significance?: string;
+  description?: string;
+  observances?: string[];
+  additionalInfo?: string;
+}
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.page.html',
@@ -63,6 +74,7 @@ export class CalendarPage implements OnInit {
   currentMonth = this.currentDate.getMonth();
   currentYear = this.currentDate.getFullYear();
   selectedDate: Date | null = null; // Track selected date
+  selectedFestivalInfo: FestivalInfo | null = null; // Track selected festival info
   calendarDays: CalendarDay[] = [];
   monthNames = [
     'January', 'February', 'March', 'April', 'May', 'June',
@@ -114,28 +126,37 @@ export class CalendarPage implements OnInit {
     pada: 0
   };
 
-  // Sample festival data
+  // Important Vaishnava festival data (excluding Ekadasi which is calculated dynamically)
   festivals: FestivalEvent[] = [
     {
       id: '1',
-      startDate: '2025-07-06',
-      endDate: '2025-07-06',
-      startTime: '05:00',
+      startDate: '2025-08-16',
+      endDate: '2025-08-16',
+      startTime: '06:00',
       endTime: '23:59',
-      festivalName: 'Ekadasi',
-      importance: 'ekadasi'
+      festivalName: 'Krishna Janmashtami',
+      importance: 'major-festival'
     },
     {
       id: '2',
-      startDate: '2025-07-21',
-      endDate: '2025-07-21',
-      startTime: '05:00',
+      startDate: '2025-03-13',
+      endDate: '2025-03-13',
+      startTime: '06:00',
       endTime: '23:59',
-      festivalName: 'Ekadasi',
-      importance: 'ekadasi'
+      festivalName: 'Gaura Purnima',
+      importance: 'major-festival'
     },
     {
       id: '3',
+      startDate: '2025-04-13',
+      endDate: '2025-04-13',
+      startTime: '06:00',
+      endTime: '23:59',
+      festivalName: 'Rama Navami',
+      importance: 'major-festival'
+    },
+    {
+      id: '4',
       startDate: '2025-07-01',
       endDate: '2025-07-01',
       startTime: '06:00',
@@ -144,72 +165,36 @@ export class CalendarPage implements OnInit {
       importance: 'festival'
     },
     {
-      id: '4',
-      startDate: '2025-07-05',
-      endDate: '2025-07-05',
-      startTime: '06:00',
-      endTime: '18:00',
-      festivalName: 'Gundica Marjana',
-      importance: 'festival'
-    },
-    {
       id: '5',
-      startDate: '2025-07-10',
-      endDate: '2025-07-10',
-      startTime: '06:00',
-      endTime: '18:00',
-      festivalName: 'Krishna Janmashtami',
-      importance: 'festival'
-    },
-    {
-      id: '6',
-      startDate: '2025-07-15',
-      endDate: '2025-07-15',
+      startDate: '2025-09-01',
+      endDate: '2025-09-01',
       startTime: '06:00',
       endTime: '18:00',
       festivalName: 'Radhashtami',
       importance: 'festival'
     },
     {
-      id: '7',
-      startDate: '2025-07-18',
-      endDate: '2025-07-18',
+      id: '6',
+      startDate: '2025-11-02',
+      endDate: '2025-11-02',
       startTime: '06:00',
       endTime: '18:00',
       festivalName: 'Govardhana Puja',
       importance: 'festival'
     },
     {
-      id: '8',
-      startDate: '2025-07-19',
-      endDate: '2025-07-19',
+      id: '7',
+      startDate: '2025-11-15',
+      endDate: '2025-11-15',
       startTime: '06:00',
       endTime: '18:00',
-      festivalName: 'Govinda Dwadasi',
-      importance: 'festival'
-    },
-    {
-      id: '9',
-      startDate: '2025-07-28',
-      endDate: '2025-07-28',
-      startTime: '06:00',
-      endTime: '18:00',
-      festivalName: 'Sharad Purnima',
+      festivalName: 'Tulsi Vivaha',
       importance: 'festival'
     }
   ];
 
   constructor(private alertController: AlertController) { 
-    addIcons({
-      chevronBack,
-      chevronForward,
-      calendarOutline,
-      searchOutline,
-      settingsOutline,
-      sunnyOutline,
-      moonOutline,
-      ellipsisHorizontal
-    });
+    addIcons({calendarOutline,searchOutline,settingsOutline,chevronBack,chevronForward,closeOutline,ellipsisHorizontal,sunnyOutline,moonOutline});
   }
   ngOnInit() {
     this.requestLocationPermission();
@@ -688,7 +673,8 @@ export class CalendarPage implements OnInit {
       date.setDate(startDate.getDate() + i);
       
       const dayFestivals = this.getFestivalsForDate(date);
-      const hasEkadasi = dayFestivals.some(f => f.importance === 'ekadasi');
+      const isEkadasi = this.isEkadasiDate(date);
+      const hasMajorFestival = dayFestivals.some(f => f.importance === 'major-festival');
       const hasOtherFestival = dayFestivals.some(f => f.importance === 'festival');
 
       this.calendarDays.push({
@@ -698,8 +684,8 @@ export class CalendarPage implements OnInit {
         isCurrentMonth: date.getMonth() === this.currentMonth,
         isToday: this.isToday(date),
         festivals: dayFestivals,
-        hasEkadasi,
-        hasOtherFestival
+        hasEkadasi: isEkadasi,
+        hasOtherFestival: hasOtherFestival || hasMajorFestival
       });
     }
   }
@@ -754,12 +740,14 @@ export class CalendarPage implements OnInit {
     // Calculate Vaishnava data for the clicked date
     this.calculateVaishnavData(clickedDate);
     
+    // Check if it's a special day and show festival details
+    this.checkAndShowFestivalDetails(day, clickedDate);
+    
     console.log('Date clicked:', clickedDate);
     console.log('Updated Vaishnava data for selected date');
     
     if (day.festivals.length > 0) {
       console.log('Festivals on this date:', day.festivals);
-      // You can show a modal or navigate to festival details
     }
   }
 
@@ -781,5 +769,175 @@ export class CalendarPage implements OnInit {
     const year = this.selectedDate.getFullYear();
     
     return `${day} ${month} ${year}`;
+  }
+
+  // Method to dynamically check if a date is Ekadasi
+  isEkadasiDate(date: Date): boolean {
+    // Get Julian day number for the date
+    const jd = this.getJulianDay(date);
+    
+    // Calculate Sun and Moon positions
+    const sunLongitude = this.getSunLongitude(jd);
+    const moonLongitude = this.getMoonLongitude(jd);
+    
+    // Calculate Tithi
+    const tithiData = this.calculateTithi(moonLongitude, sunLongitude);
+    
+    // Ekadasi is the 11th tithi in both Shukla (bright) and Krishna (dark) paksha
+    // This means tithi numbers 11 and 26 (11 + 15)
+    return tithiData.number === 11 || tithiData.number === 26;
+  }
+
+  // Helper methods for festival detection
+  hasMajorFestival(day: CalendarDay): boolean {
+    return day.festivals.some(f => f.importance === 'major-festival');
+  }
+
+  hasOtherFestival(day: CalendarDay): boolean {
+    return day.festivals.some(f => f.importance === 'festival') && !this.hasMajorFestival(day) && !day.hasEkadasi;
+  }
+
+  // Method to check and show festival details for special days
+  checkAndShowFestivalDetails(day: CalendarDay, date: Date) {
+    // Check if it's Ekadasi
+    if (day.hasEkadasi) {
+      this.selectedFestivalInfo = this.getEkadasiDetails(date);
+      return;
+    }
+    
+    // Check if it has major festival
+    if (this.hasMajorFestival(day)) {
+      const majorFestival = day.festivals.find(f => f.importance === 'major-festival');
+      if (majorFestival) {
+        this.selectedFestivalInfo = this.getMajorFestivalDetails(majorFestival, date);
+        return;
+      }
+    }
+    
+    // Check if it has other festival
+    if (this.hasOtherFestival(day)) {
+      const festival = day.festivals.find(f => f.importance === 'festival');
+      if (festival) {
+        this.selectedFestivalInfo = this.getOtherFestivalDetails(festival, date);
+        return;
+      }
+    }
+    
+    // Clear festival info if no special day
+    this.selectedFestivalInfo = null;
+  }
+
+  // Get Ekadasi details
+  getEkadasiDetails(date: Date): FestivalInfo {
+    const paksa = this.vaishnavData.paksa;
+    const ekadasiName = paksa === 'Shukla' ? 'Shukla Ekadasi' : 'Krishna Ekadasi';
+    
+    return {
+      title: `${ekadasiName} (Ekadasi)`,
+      date: this.formatDateString(date),
+      type: 'Ekadasi',
+      typeClass: 'ekadasi-type',
+      significance: 'Sacred fasting day for devotees of Lord Vishnu',
+      description: 'Ekadasi is the 11th lunar day of each fortnight in the Hindu calendar. It is considered highly auspicious for spiritual practices and devotion to Lord Vishnu.',
+      observances: [
+        'Complete fasting or eating only fruits/milk',
+        'Increased chanting and meditation',
+        'Reading spiritual texts',
+        'Staying awake through the night (for some Ekadasis)',
+        'Breaking fast on Dwadashi (next day) after sunrise'
+      ],
+      additionalInfo: `This is ${paksa} Paksa Ekadasi occurring during ${this.vaishnavData.masa} month.`
+    };
+  }
+
+  // Get major festival details
+  getMajorFestivalDetails(festival: FestivalEvent, date: Date): FestivalInfo {
+    const festivalDetails: {[key: string]: any} = {
+      'Krishna Janmashtami': {
+        significance: 'Birth anniversary of Lord Krishna, the eighth avatar of Vishnu',
+        description: 'Krishna Janmashtami celebrates the birth of Lord Krishna, who appeared on earth to establish dharma and guide humanity towards spiritual enlightenment.',
+        observances: [
+          'Fasting until midnight',
+          'Devotional singing and dancing',
+          'Reading Bhagavad Gita and Srimad Bhagavatam',
+          'Decorating Krishna temples',
+          'Midnight celebration marking Krishna\'s birth time'
+        ]
+      },
+      'Gaura Purnima': {
+        significance: 'Appearance day of Sri Chaitanya Mahaprabhu',
+        description: 'Gaura Purnima celebrates the appearance of Sri Chaitanya Mahaprabhu, who spread the chanting of the Holy Names and pure devotional service.',
+        observances: [
+          'Fasting until moonrise',
+          'Congregational chanting (Sankirtan)',
+          'Reading about Sri Chaitanya\'s pastimes',
+          'Offering prayers and flowers',
+          'Community feasting and celebration'
+        ]
+      },
+      'Rama Navami': {
+        significance: 'Birth anniversary of Lord Rama, the seventh avatar of Vishnu',
+        description: 'Rama Navami celebrates the birth of Lord Rama, the ideal king and perfect devotee, whose life exemplifies dharma and righteousness.',
+        observances: [
+          'Fasting and prayers',
+          'Reading Ramayana',
+          'Visiting Rama temples',
+          'Chanting Rama\'s holy names',
+          'Community celebrations and processions'
+        ]
+      }
+    };
+
+    const details = festivalDetails[festival.festivalName] || {};
+    
+    return {
+      title: festival.festivalName,
+      date: this.formatDateString(date),
+      type: 'Major Festival',
+      typeClass: 'major-festival-type',
+      significance: details.significance || 'Important Vaishnava festival',
+      description: details.description || 'A sacred day of celebration and spiritual observance.',
+      observances: details.observances || ['Fasting and prayers', 'Temple worship', 'Spiritual study'],
+      additionalInfo: `Time: ${festival.startTime} - ${festival.endTime}`
+    };
+  }
+
+  // Get other festival details
+  getOtherFestivalDetails(festival: FestivalEvent, date: Date): FestivalInfo {
+    const festivalDetails: {[key: string]: any} = {
+      'Ratha Yatra': {
+        significance: 'Festival of Chariots celebrating Lord Jagannatha',
+        description: 'Ratha Yatra commemorates Krishna\'s journey from Gokul to Mathura, symbolizing the soul\'s journey back to the spiritual world.',
+        observances: ['Pulling the chariot', 'Kirtan and devotional songs', 'Prasadam distribution']
+      },
+      'Radhashtami': {
+        significance: 'Appearance day of Srimati Radharani',
+        description: 'Radhashtami celebrates the appearance of Srimati Radharani, the eternal consort of Lord Krishna and embodiment of pure devotional love.',
+        observances: ['Fasting until noon', 'Offering prayers to Radharani', 'Decorating altars with flowers']
+      }
+    };
+
+    const details = festivalDetails[festival.festivalName] || {};
+    
+    return {
+      title: festival.festivalName,
+      date: this.formatDateString(date),
+      type: 'Festival',
+      typeClass: 'festival-type',
+      significance: details.significance || 'Auspicious Vaishnava celebration',
+      description: details.description || 'A day of spiritual celebration and devotion.',
+      observances: details.observances || ['Prayers and worship', 'Community gathering', 'Spiritual practices'],
+      additionalInfo: `Time: ${festival.startTime} - ${festival.endTime}`
+    };
+  }
+
+  // Close festival details
+  closeFestivalDetails() {
+    this.selectedFestivalInfo = null;
+  }
+
+  // Format date for display
+  formatDateString(date: Date): string {
+    return `${date.getDate()} ${this.monthNames[date.getMonth()]} ${date.getFullYear()}`;
   }
 }

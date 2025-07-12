@@ -46,9 +46,56 @@
         [class.today]="day.isToday"
         [class.selected]="isDateSelected(day)"
         [class.ekadasi]="day.hasEkadasi"
-        [class.festival]="day.hasOtherFestival && !day.hasEkadasi"
+        [class.major-festival]="hasMajorFestival(day)"
+        [class.festival]="hasOtherFestival(day)"
         (click)="onDateClick(day)">
         <span class="date-number">{{ day.date }}</span>
+      </div>
+    </div>
+
+    <!-- Festival/Special Day Details Section -->
+    <div class="festival-details" *ngIf="selectedFestivalInfo">
+      <div class="festival-header">
+        <h3>{{ selectedFestivalInfo.title }}</h3>
+        <ion-button fill="clear" size="small" (click)="closeFestivalDetails()">
+          <ion-icon name="close-outline"></ion-icon>
+        </ion-button>
+      </div>
+      
+      <div class="festival-content">
+        <div class="festival-info-item" *ngIf="selectedFestivalInfo.date">
+          <span class="info-label">Date:</span>
+          <span class="info-value">{{ selectedFestivalInfo.date }}</span>
+        </div>
+        
+        <div class="festival-info-item" *ngIf="selectedFestivalInfo.type">
+          <span class="info-label">Type:</span>
+          <span class="info-value festival-type" [class]="selectedFestivalInfo.typeClass">{{ selectedFestivalInfo.type }}</span>
+        </div>
+        
+        <div class="festival-info-item" *ngIf="selectedFestivalInfo.significance">
+          <span class="info-label">Significance:</span>
+          <span class="info-value">{{ selectedFestivalInfo.significance }}</span>
+        </div>
+        
+        <div class="festival-info-item" *ngIf="selectedFestivalInfo.description">
+          <span class="info-label">Description:</span>
+          <span class="info-value festival-description">{{ selectedFestivalInfo.description }}</span>
+        </div>
+        
+        <div class="festival-info-item" *ngIf="selectedFestivalInfo.observances && selectedFestivalInfo.observances.length > 0">
+          <span class="info-label">Observances:</span>
+          <div class="observances-list">
+            <div class="observance-item" *ngFor="let observance of selectedFestivalInfo.observances">
+              • {{ observance }}
+            </div>
+          </div>
+        </div>
+        
+        <div class="festival-info-item" *ngIf="selectedFestivalInfo.additionalInfo">
+          <span class="info-label">Additional Info:</span>
+          <span class="info-value">{{ selectedFestivalInfo.additionalInfo }}</span>
+        </div>
       </div>
     </div>
 
