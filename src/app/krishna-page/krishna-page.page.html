@@ -53,8 +53,19 @@
 
 <div [ngSwitch]="selectedLang">
   <ng-container *ngSwitchCase="'Arati'">
-    <div *ngFor="let inputData of inputDatas;">
-      <app-display-card-list [inputData]="inputData" (cardSelected)="onCardSelected($event)"></app-display-card-list>
+    <!-- Loading Spinner -->
+    <div *ngIf="isLoading" class="loading-container">
+      <ion-item lines="none" class="loading-item">
+        <ion-label>Loading content...</ion-label>
+        <ion-spinner name="lines" slot="end"></ion-spinner>
+      </ion-item>
+    </div>
+    
+    <!-- Content (shown when not loading) -->
+    <div *ngIf="!isLoading">
+      <div *ngFor="let inputData of inputDatas;">
+        <app-display-card-list [inputData]="inputData" (cardSelected)="onCardSelected($event)"></app-display-card-list>
+      </div>
     </div>
   </ng-container>
 </div>

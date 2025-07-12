@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule, NgFor } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonIcon, IonButtons, IonButton, IonMenuButton, IonSegment, IonSegmentButton, IonLabel, IonFooter } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonIcon, IonButtons, IonButton, IonMenuButton, IonSegment, IonSegmentButton, IonLabel, IonFooter, IonItem, IonSpinner } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { chevronDownOutline, notificationsOutline, optionsOutline, home, heartOutline, cafeOutline, personOutline, chevronBack, chevronForward } from 'ionicons/icons';
 import { DisplayCardListComponent, } from '../components/display-card-list/display-card-list.component';
@@ -14,7 +14,7 @@ import { DataSharingService } from '../services/data-sharing.service';
   templateUrl: './krishna-page.page.html',
   styleUrls: ['./krishna-page.page.scss'],
   standalone: true,
-  imports: [IonFooter, NgFor, IonLabel, IonSegmentButton, IonMenuButton, IonSegment, IonButton, IonButtons, IonIcon, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, DisplayCardListComponent]
+  imports: [IonSpinner, IonItem, IonFooter, NgFor, IonLabel, IonSegmentButton, IonMenuButton, IonSegment, IonButton, IonButtons, IonIcon, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, DisplayCardListComponent]
 })
 export class KrishnaPagePage implements OnInit, OnDestroy {
   languages = [
@@ -27,6 +27,7 @@ export class KrishnaPagePage implements OnInit, OnDestroy {
 ];
 
 inputDatas: InputData[] = [];
+isLoading: boolean = true; // Add loading state
 
 // Carousel properties
 currentImageIndex = 0;
@@ -59,12 +60,15 @@ selectedLang: string = 'Arati';
 
 ngOnInit() {
   this.startCarousel();
+  this.isLoading = true; // Set loading to true before fetching data
   this.krishnaService.getKrishnaData().subscribe({
     next: (data:InputData[]) => {
       this.inputDatas = data;
+      this.isLoading = false; // Set loading to false when data is received
     },
     error: (error) => {
       console.error('Error fetching Krishna data:', error);
+      this.isLoading = false; // Set loading to false even on error
     }
   })
 }

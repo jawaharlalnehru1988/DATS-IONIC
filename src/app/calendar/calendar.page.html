@@ -1,19 +1,153 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
+  <ion-toolbar color="primary">
+    <ion-title>{{ getCurrentMonthYear() }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear">
+        <ion-icon name="calendar-outline"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear">
+        <ion-icon name="search-outline"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear">
+        <ion-icon name="settings-outline"></ion-icon>
+      </ion-button>
     </ion-buttons>
-    <ion-title>Vaishnava Calendar</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<!-- <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">spam</ion-title>
-    </ion-toolbar>
-  </ion-header>
-</ion-content> -->
-<div class="calendar-section">
+<!-- <div class="calendar-section">
   <ion-datetime minuteValues="0,15,30,45" dayValues="5,10,15,20,25,30"></ion-datetime>
-</div>
+</div> -->
+
+<ion-content [fullscreen]="true">
+  <div class="calendar-container">
+    <!-- Calendar Navigation -->
+    <div class="calendar-nav">
+      <ion-button fill="clear" (click)="previousMonth()">
+        <ion-icon name="chevron-back"></ion-icon>
+      </ion-button>
+      <h2>{{ monthNames[currentMonth] }} {{ currentYear }}</h2>
+      <ion-button fill="clear" (click)="nextMonth()">
+        <ion-icon name="chevron-forward"></ion-icon>
+      </ion-button>
+    </div>
+
+    <!-- Calendar Header -->
+    <div class="calendar-header">
+      <div class="day-name" *ngFor="let day of dayNames">{{ day }}</div>
+    </div>
+
+    <!-- Calendar Grid -->
+    <div class="calendar-grid">
+      <div 
+        class="calendar-day" 
+        *ngFor="let day of calendarDays"
+        [class.other-month]="!day.isCurrentMonth"
+        [class.today]="day.isToday"
+        [class.selected]="isDateSelected(day)"
+        [class.ekadasi]="day.hasEkadasi"
+        [class.festival]="day.hasOtherFestival && !day.hasEkadasi"
+        (click)="onDateClick(day)">
+        <span class="date-number">{{ day.date }}</span>
+      </div>
+    </div>
+
+    <!-- Vaishnava Information -->
+    <div class="vaishnava-info">
+      <div class="vaishnava-header">
+        <h3>{{ selectedDate ? 'Selected Date: ' + getFormattedSelectedDate() : 'Vaishnava Calendar' }}</h3>
+        <ion-button fill="clear" size="small">
+          <ion-icon name="ellipsis-horizontal"></ion-icon>
+        </ion-button>
+      </div>
+      
+      <div class="vaishnava-grid">
+        <div class="vaishnava-item">
+          <span class="vaishnava-label">Year:</span>
+          <span class="vaishnava-value">Gaurabda {{ vaishnavData.gaurabda }}</span>
+        </div>
+        <div class="vaishnava-item">
+          <span class="vaishnava-label">Month:</span>
+          <span class="vaishnava-value">{{ vaishnavData.masa }}</span>
+        </div>
+        <div class="vaishnava-item">
+          <span class="vaishnava-label">Period:</span>
+          <span class="vaishnava-value period-value">{{ vaishnavData.masaDateRange }}</span>
+        </div>
+        <div class="vaishnava-item">
+          <span class="vaishnava-label">Tithi:</span>
+          <span class="vaishnava-value">{{ vaishnavData.tithi }}</span>
+        </div>
+        <div class="vaishnava-item">
+          <span class="vaishnava-label">Paksha:</span>
+          <span class="vaishnava-value">{{ vaishnavData.paksa }} Paksa</span>
+        </div>
+        <div class="vaishnava-item">
+          <span class="vaishnava-label">Nakshatra:</span>
+          <span class="vaishnava-value">{{ vaishnavData.nakshatra }} ({{ vaishnavData.pada }})</span>
+        </div>
+        <div class="vaishnava-item">
+          <span class="vaishnava-label">Tithi Left:</span>
+          <span class="vaishnava-value">{{ vaishnavData.tithiPercentageLeft.toFixed(1) }}%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Astronomical Information -->
+    <div class="astro-info">
+      <div class="astro-section">
+        <!-- Sun Section -->
+        <div class="sun-section">
+          <div class="section-header">
+            <ion-icon name="sunny-outline" class="sun-icon"></ion-icon>
+            <h3>Solar Times</h3>
+          </div>
+          <div class="time-grid">
+            <div class="time-item">
+              <span class="time-label">Brahma muhurta:</span>
+              <span class="time-value">{{ vaishnavData.brahmahmuhurta }}</span>
+            </div>
+            <div class="time-item">
+              <span class="time-label">Sunrise:</span>
+              <span class="time-value">{{ vaishnavData.sunrise }}</span>
+            </div>
+            <div class="time-item">
+              <span class="time-label">Noon:</span>
+              <span class="time-value">{{ vaishnavData.noon }}</span>
+            </div>
+            <div class="time-item">
+              <span class="time-label">Sunset:</span>
+              <span class="time-value">{{ vaishnavData.sunset }}</span>
+            </div>
+            <div class="time-item">
+              <span class="time-label">Daylight:</span>
+              <span class="time-value">{{ vaishnavData.daylight }}</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Moon Section -->
+        <div class="moon-section">
+          <div class="section-header">
+            <ion-icon name="moon-outline" class="moon-icon"></ion-icon>
+            <h3>Lunar Times</h3>
+          </div>
+          <div class="time-grid">
+            <div class="time-item">
+              <span class="time-label">Paksa:</span>
+              <span class="time-value">{{ vaishnavData.paksa }}</span>
+            </div>
+            <div class="time-item">
+              <span class="time-label">Moonrise:</span>
+              <span class="time-value">{{ vaishnavData.moonrise }}</span>
+            </div>
+            <div class="time-item">
+              <span class="time-label">Moonset:</span>
+              <span class="time-value">{{ vaishnavData.moonset }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

@@ -24,27 +24,27 @@ export class ContactsPage implements OnInit {
 
   contactMethods = [
     {
-      label: 'Phone: +1 234 567 890',
+      label: 'Phone: +91 6382043976',
       icon: 'call',
-      href: 'tel:+1234567890',
+      href: 'tel:+916382043976',
       color: ''
     },
     {
-      label: 'WhatsApp: +1 234 567 890',
+      label: 'WhatsApp: +91 6382043976',
       icon: 'logo-whatsapp',
       href: 'https://wa.me/1234567890',
       color: 'success'
     },
     {
-      label: 'Email: info@example.com',
+      label: 'Email: askharekrishna@gmail.com',
       icon: 'mail',
-      href: 'mailto:info@example.com',
+      href: 'mailto:askharekrishna@gmail.com',
       color: ''
     },
     {
-      label: 'Website: example.com',
+      label: 'Website: askharekrishna.com',
       icon: 'globe',
-      href: 'https://example.com',
+      href: 'https://askharekrishna.com',
       color: ''
     }
   ];

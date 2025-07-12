@@ -1,7 +1,554 @@
 ::ng-deep .ion-page{
     justify-content: unset !important;
 }
-.calendar-section{
-display: flex;
-justify-content: center;
+
+
+.calendar-container {
+  padding: 16px;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
+.calendar-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    
+    h2 {
+        margin: 0;
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #333;
+    }
+    
+    ion-button {
+        --color: #333 !important;
+        --background: rgba(0, 0, 0, 0.05);
+        --border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        margin: 0;
+        
+        &:hover {
+            --background: rgba(0, 0, 0, 0.1);
+            transform: scale(1.1);
+        }
+        
+        ion-icon {
+            color: #333 !important;
+            font-size: 1.6rem; // doubled from 0.8rem
+            font-weight: bold;
+        }
+    }
+}
+
+.calendar-header {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  margin-bottom: 8px;
+  
+  .day-name {
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #666;
+    padding: 8px;
+  }
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  
+  .date-number {
+    font-size: 1rem;
+    font-weight: 500;
+    z-index: 1;
+  }
+  
+  &.other-month {
+    opacity: 0.3;
+  }
+  
+  &.today {
+    border: 2px solid #000;
+    font-weight: 700;
+    
+    .date-number {
+      color: #000;
+    }
+  }
+  
+  &.selected {
+    background-color: var(--ion-color-primary);
+    color: white;
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    
+    .date-number {
+      color: white;
+      font-weight: 600;
+    }
+  }
+  
+  &.ekadasi {
+    background-color: #ff5722;
+    color: white;
+    
+    .date-number {
+      color: white;
+    }
+  }
+  
+  &.festival {
+    background-color: #ffb74d;
+    color: white;
+    
+    .date-number {
+      color: white;
+    }
+  }
+  
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+.vaishnava-info {
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-top: 4px solid #FF6F00;
+  
+  .vaishnava-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #FFE0B2;
+    
+    h3 {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #FF6F00;
+      display: flex;
+      align-items: center;
+      
+      &::before {
+        content: "🕉️";
+        margin-right: 8px;
+        font-size: 1.2rem;
+      }
+    }
+    
+    ion-button {
+      --color: #FF6F00;
+      --background: rgba(255, 111, 0, 0.1);
+      --border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      
+      &:hover {
+        --background: rgba(255, 111, 0, 0.2);
+      }
+    }
+  }
+  
+  .vaishnava-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    
+    .vaishnava-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 14px;
+      background: linear-gradient(135deg, rgba(255, 183, 77, 0.1), rgba(255, 111, 0, 0.05));
+      border-radius: 10px;
+      border-left: 3px solid #FFB74D;
+      transition: all 0.3s ease;
+      
+      &:hover {
+        background: linear-gradient(135deg, rgba(255, 183, 77, 0.2), rgba(255, 111, 0, 0.1));
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(255, 111, 0, 0.2);
+      }
+      
+      .vaishnava-label {
+        font-size: 0.85rem;
+        color: #BF360C;
+        font-weight: 600;
+        margin-right: 12px;
+        white-space: nowrap;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      
+      .vaishnava-value {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #FF6F00;
+        text-align: right;
+        flex-shrink: 0;
+        background: rgba(255, 255, 255, 0.7);
+        padding: 4px 8px;
+        border-radius: 6px;
+        border: 1px solid rgba(255, 183, 77, 0.3);
+        
+        // Style for period/date range values
+        &.period-value {
+          font-size: 0.8rem;
+          color: #E65100;
+          font-style: italic;
+          background: rgba(230, 81, 0, 0.1);
+          border-color: rgba(230, 81, 0, 0.3);
+        }
+      }
+    }
+  }
+}
+
+.astro-info {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  
+  .astro-section {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    
+    // Sun Section
+    .sun-section {
+      flex: 1;
+      
+      .section-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 12px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #FFB74D;
+        
+        .sun-icon {
+          font-size: 1.5rem;
+          color: #ffa726;
+          margin-right: 8px;
+        }
+        
+        h3 {
+          margin: 0;
+          font-size: 1rem;
+          font-weight: 600;
+          color: #FF8F00;
+        }
+      }
+    }
+    
+    // Moon Section
+    .moon-section {
+      flex: 1;
+      
+      .section-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 12px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #90A4AE;
+        
+        .moon-icon {
+          font-size: 1.5rem;
+          color: #90a4ae;
+          margin-right: 8px;
+        }
+        
+        h3 {
+          margin: 0;
+          font-size: 1rem;
+          font-weight: 600;
+          color: #546E7A;
+        }
+      }
+    }
+    
+    // Time grid for both sections
+    .time-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+      
+      .time-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 12px;
+        background-color: rgba(255, 255, 255, 0.6);
+        border-radius: 8px;
+        transition: all 0.2s ease;
+        
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.9);
+          transform: translateY(-1px);
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .time-label {
+          font-size: 0.85rem;
+          color: #555;
+          font-weight: 500;
+          margin-right: 12px;
+          white-space: nowrap;
+        }
+        
+        .time-value {
+          font-size: 0.9rem;
+          font-weight: 600;
+          text-align: right;
+          flex-shrink: 0;
+        }
+      }
+    }
+  }
+  
+  // Sun section specific styling
+  .sun-section .time-item {
+    border-left: 3px solid #FFB74D;
+    
+    .time-value {
+      color: #FF8F00;
+    }
+  }
+  
+  // Moon section specific styling
+  .moon-section .time-item {
+    border-left: 3px solid #90A4AE;
+    
+    .time-value {
+      color: #546E7A;
+    }
+  }
+}
+
+// Responsive design for medium screens (tablets)
+@media (max-width: 768px) and (min-width: 481px) {
+  .astro-section {
+    flex-direction: row;
+    gap: 16px;
+    
+    .sun-section,
+    .moon-section {
+      flex: 1;
+    }
+  }
+  
+  .vaishnava-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+}
+
+// Responsive design for smaller screens (mobile)
+@media (max-width: 480px) {
+  .calendar-container {
+    padding: 8px;
+  }
+  
+  .calendar-day {
+    .date-number {
+      font-size: 0.9rem;
+    }
+  }
+  
+  .vaishnava-info {
+    padding: 12px;
+    
+    .vaishnava-header {
+      margin-bottom: 12px;
+      
+      h3 {
+        font-size: 1rem;
+        
+        &::before {
+          font-size: 1rem;
+        }
+      }
+    }
+    
+    .vaishnava-grid {
+      grid-template-columns: 1fr;
+      gap: 8px;
+      
+      .vaishnava-item {
+        padding: 8px 12px;
+        
+        .vaishnava-label {
+          font-size: 0.8rem;
+          margin-right: 8px;
+        }
+        
+        .vaishnava-value {
+          font-size: 0.85rem;
+          padding: 3px 6px;
+        }
+      }
+    }
+  }
+  
+  .astro-section {
+    flex-direction: column;
+    gap: 20px;
+    
+    .sun-section,
+    .moon-section {
+      width: 100%;
+      
+      .section-header {
+        h3 {
+          font-size: 0.95rem;
+        }
+      }
+      
+      .time-grid .time-item {
+        padding: 6px 10px;
+        
+        .time-label {
+          font-size: 0.8rem;
+          margin-right: 8px;
+        }
+        
+        .time-value {
+          font-size: 0.85rem;
+        }
+      }
+    }
+  }
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+  .calendar-container {
+    background-color: #1a1a1a;
+  }
+  
+  .vaishnava-info {
+    background-color: #2d2d2d;
+    border-top-color: #FFB74D;
+    
+    .vaishnava-header {
+      border-bottom-color: rgba(255, 183, 77, 0.3);
+      
+      h3 {
+        color: #FFB74D;
+      }
+      
+      ion-button {
+        --color: #FFB74D;
+        --background: rgba(255, 183, 77, 0.1);
+        
+        &:hover {
+          --background: rgba(255, 183, 77, 0.2);
+        }
+      }
+    }
+    
+    .vaishnava-item {
+      background: linear-gradient(135deg, rgba(255, 183, 77, 0.15), rgba(255, 111, 0, 0.1)) !important;
+      border-left-color: #FFB74D;
+      
+      &:hover {
+        background: linear-gradient(135deg, rgba(255, 183, 77, 0.25), rgba(255, 111, 0, 0.15)) !important;
+        box-shadow: 0 4px 12px rgba(255, 183, 77, 0.3);
+      }
+      
+      .vaishnava-label {
+        color: #FFB74D;
+      }
+      
+      .vaishnava-value {
+        color: #FFB74D;
+        background: rgba(0, 0, 0, 0.3);
+        border-color: rgba(255, 183, 77, 0.4);
+      }
+    }
+  }
+  
+  .astro-info {
+    background-color: #2d2d2d;
+    color: #ffffff;
+    
+    .sun-section {
+      .section-header {
+        border-bottom-color: #FFB74D;
+        
+        h3 {
+          color: #FFB74D;
+        }
+      }
+      
+      .time-item {
+        background-color: rgba(255, 183, 77, 0.1);
+        border-left-color: #FFB74D;
+        
+        &:hover {
+          background-color: rgba(255, 183, 77, 0.2);
+        }
+        
+        .time-label {
+          color: #cccccc;
+        }
+        
+        .time-value {
+          color: #FFB74D;
+        }
+      }
+    }
+    
+    .moon-section {
+      .section-header {
+        border-bottom-color: #90A4AE;
+        
+        h3 {
+          color: #90A4AE;
+        }
+      }
+      
+      .time-item {
+        background-color: rgba(144, 164, 174, 0.1);
+        border-left-color: #90A4AE;
+        
+        &:hover {
+          background-color: rgba(144, 164, 174, 0.2);
+        }
+        
+        .time-label {
+          color: #cccccc;
+        }
+        
+        .time-value {
+          color: #90A4AE;
+        }
+      }
+    }
+  }
 }

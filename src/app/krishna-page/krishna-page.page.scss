@@ -326,3 +326,32 @@ ion-buttons{
   }
 }
 
+// Loading container styles
+.loading-container {
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+
+  .loading-item {
+    --background: rgba(255, 255, 255, 0.1);
+    --color: #fff;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    margin: 0 16px;
+
+    ion-label {
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 500;
+    }
+
+    ion-spinner {
+      --color: #00bcd4;
+      margin-left: 16px;
+    }
+  }
+}
+
