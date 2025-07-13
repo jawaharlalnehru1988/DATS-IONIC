@@ -1,30 +1,97 @@
 <ion-header [translucent]="true">
-  <!-- <ion-toolbar>
-    <ion-title>Audio</ion-title>
+  <ion-toolbar class="stunning-header">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title class="header-title">
+      <ion-icon name="musical-notes" class="title-icon"></ion-icon>
+      Music Gallery
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" class="search-btn">
+        <ion-icon name="search-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
-</ion-header> -->
-<ion-toolbar>
-  <ion-buttons slot="start">
-    <ion-menu-button></ion-menu-button>
-  </ion-buttons>
-  <ion-title>Music</ion-title>
-
-</ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" class="audio-gallery">
-  <ion-grid>
-    <ion-row>
-      <ion-col size="6" *ngFor="let topic of topics">
-        <ion-card class="language-card" (click)="onCardClick(topic)">
-          <ion-card-content>
-            <div class="language-title">
-              <span class="native-script">{{ topic.topic }}</span>
-              <span class="english-script">{{ topic.title }}</span>
+  <!-- Hero Section -->
+  <div class="hero-section">
+    <div class="hero-content">
+      <h1 class="hero-title">Discover Sacred Sounds</h1>
+      <p class="hero-subtitle">Immerse yourself in divine melodies and spiritual audio content</p>
+    </div>
+    <div class="hero-graphic">
+      <ion-icon name="musical-notes" class="floating-note note-1"></ion-icon>
+      <ion-icon name="musical-note" class="floating-note note-2"></ion-icon>
+      <ion-icon name="musical-notes" class="floating-note note-3"></ion-icon>
+    </div>
+  </div>
+
+  <!-- Categories Grid -->
+  <div class="categories-section">
+    <h2 class="section-title">
+      <ion-icon name="library-outline" class="section-icon"></ion-icon>
+      Audio Categories
+    </h2>
+    
+    <ion-grid class="categories-grid">
+      <ion-row>
+        <ion-col size="6" size-md="4" size-lg="3" *ngFor="let topic of topics; let i = index">
+          <div class="category-card" (click)="onCardClick(topic)" 
+               [style.animation-delay]="(i * 0.1) + 's'">
+            
+            <!-- Card Background Gradient -->
+            <div class="card-background"></div>
+            
+            <!-- Music Icon Container -->
+            <div class="icon-container">
+              <div class="icon-wrapper">
+                <ion-icon name="musical-notes" class="category-icon"></ion-icon>
+              </div>
+              <div class="sound-waves">
+                <div class="wave wave-1"></div>
+                <div class="wave wave-2"></div>
+                <div class="wave wave-3"></div>
+              </div>
             </div>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+            
+            <!-- Content -->
+            <div class="card-content">
+              <div class="category-title">
+                <h3 class="native-text">{{ topic.topic }}</h3>
+                <p class="english-text">{{ topic.title }}</p>
+              </div>
+              
+              <!-- Play Button -->
+              <div class="play-button">
+                <ion-icon name="play" class="play-icon"></ion-icon>
+              </div>
+            </div>
+            
+            <!-- Hover Effects -->
+            <div class="hover-overlay">
+              <div class="ripple-effect"></div>
+            </div>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <!-- Featured Section -->
+  <div class="featured-section">
+    <h2 class="section-title">
+      <ion-icon name="star" class="section-icon"></ion-icon>
+      Featured Audio
+    </h2>
+    <div class="featured-card">
+      <div class="featured-content">
+        <ion-icon name="headset" class="featured-icon"></ion-icon>
+        <h3>Premium Audio Experience</h3>
+        <p>High-quality spiritual audio content curated for your journey</p>
+      </div>
+    </div>
+  </div>
 </ion-content>

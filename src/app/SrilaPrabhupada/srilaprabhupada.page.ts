@@ -32,7 +32,7 @@ interface Category {
   templateUrl: './srilaprabhupada.page.html',
   styleUrls: ['./srilaprabhupada.page.scss'],
   standalone: true,
-  imports: [IonCheckbox, IonPopover, IonContent, IonBackButton, IonIcon, IonButton, IonButton, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButtons],
+  imports: [IonCheckbox, IonMenuButton, IonPopover, IonContent, IonIcon, IonButton, IonButton, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButtons],
 })
 export class InboxPage implements OnInit {
   // Theme management properties

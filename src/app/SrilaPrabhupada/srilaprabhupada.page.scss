@@ -1,5 +1,5 @@
-/* Import theme models from assets */
-@import '../../assets/styles/theme-models.scss';
+/* Use theme models from assets */
+@use '../../assets/styles/theme-models.scss';
 
 /* Base page styling */
 ion-content {

@@ -1,564 +1,213 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar class="stunning-header">
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>{{topics.title}}-{{topics.content}}</ion-title>
+    <ion-title class="header-title">
+      <ion-icon name="musical-notes" class="title-icon"></ion-icon>
+      {{topics.title}}
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" class="action-btn">
+        <ion-icon name="heart-outline"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" class="action-btn">
+        <ion-icon name="share-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-item *ngIf="isLoading">
-  <ion-label>Loading... {{topics.title}}</ion-label>
-  <ion-spinner name="lines-sharp"></ion-spinner>
-</ion-item>
+<ion-content [fullscreen]="true" class="music-details-page">
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="loading-content">
+      <ion-spinner name="circular" class="loading-spinner"></ion-spinner>
+      <p class="loading-text">Loading {{topics.title}}...</p>
+    </div>
+  </div>
 
-@switch (language) {
-  @case ('sloka 35') {
-    <div>
-      <ion-accordion-group value="first" multiple="true" style="max-height: 86vh;" class="scrollable-accordion-group">
-        @for(msData of msDatas; track msData){
-          <ion-accordion [value]="msData.slokaNo">
-            <ion-item slot="header" color="light">
-              <ion-label>ஸ்ரீமத் பகவத் கீதை - {{msData.slokaNo}}</ion-label>
-            </ion-item>
-            <div class="ion-padding" slot="content">
-              <div style="height: auto; width: 100%;">
-                <audio controls [src]="msData.SlokaVoice" #audioPlayer></audio>
-                <p class="text-decor">{{msData.slokaText}}</p>
-                <h6 class="translation">மொழிபெயர்ப்பு:</h6>
-                <p class="meaning">
-                  {{msData.slokaMeaning}}
-                </p>
-              </div>
+  <!-- Content Container -->
+  <div *ngIf="!isLoading" class="content-container">
+    <!-- Hero Section -->
+    <div class="hero-section">
+      <div class="hero-content">
+        <h1 class="hero-title">{{topics.title}}</h1>
+        <p class="hero-subtitle">{{topics.content}}</p>
+      </div>
+      <div class="hero-graphic">
+        <ion-icon name="musical-notes" class="floating-note note-1"></ion-icon>
+        <ion-icon name="musical-note" class="floating-note note-2"></ion-icon>
+        <ion-icon name="musical-notes" class="floating-note note-3"></ion-icon>
+      </div>
+    </div>
+
+    <!-- Audio Player Component (Hidden by default) -->
+    <div *ngIf="selectedAudio" class="audio-player-section">
+      <div class="audio-player-header">
+        <ion-button 
+          fill="clear" 
+          size="small" 
+          class="back-to-cards-btn"
+          (click)="backToCards()">
+          <ion-icon name="arrow-back" slot="start"></ion-icon>
+          Back to {{getContentTypeName()}}
+        </ion-button>
+      </div>
+      
+      <app-ionic-audio-player 
+        [audioData]="selectedAudio"
+        (onClose)="closeAudioPlayer()">
+      </app-ionic-audio-player>
+    </div>
+
+    <!-- Content Sections (Hidden when audio player is open) -->
+    <div *ngIf="!selectedAudio" class="content-sections">
+
+    <!-- Important Slokas Section -->
+    <div *ngIf="language === 'sloka 35'" class="categories-container">
+      <div class="category-header">
+        <h2 class="category-title">
+          <ion-icon name="star" class="category-icon"></ion-icon>
+          Important Slokas Collection
+        </h2>
+        <ion-button fill="clear" size="small" class="view-all-btn">
+          <span>{{msDatas.length}} Slokas</span>
+        </ion-button>
+      </div>
+
+      <div class="cards-grid">
+        <div class="content-card audio-card" 
+             *ngFor="let sloka of msDatas; let i = index" 
+             (click)="playSloka(sloka)"
+             [style.animation-delay]="(i * 0.1) + 's'">
+          
+          <!-- Card Background -->
+          <div class="card-background"></div>
+          
+          <!-- Audio Icon -->
+          <div class="audio-icon-container">
+            <div class="audio-icon-wrapper">
+              <ion-icon name="volume-high" class="audio-icon"></ion-icon>
             </div>
-          </ion-accordion>
-        }
-      </ion-accordion-group>
-    </div>
-  }
-  @case ('Tamil') {
-    <div >
-<ion-accordion-group class="scrollable-accordion-group" style="max-height: 86vh;">
-  <ion-accordion *ngFor="let chapter of tamilChapters" [value]="chapter._id">
-    <ion-item slot="header" color="light">
-      <ion-label>{{ chapter.chapterNo }} - {{ chapter.chapterName }}</ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <audio controls [src]="chapter.slokaAudio" #audioPlayer></audio>
-    </div>
-  </ion-accordion>
-</ion-accordion-group>
-    </div>
-  }
-@case ('English') {
-  <ion-accordion-group value="first" multiple="true" style="max-height: 86vh;">
-  <ion-accordion value="first">
-    <ion-item slot="header" color="light">
-      <ion-label>Chapter One Srimad Bhagavad Gita</ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;">
-        <iframe src="https://audio.com/embed/audio/1835648008406914?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-  <ion-accordion value="second">
-    <ion-item slot="header" color="light">
-      <ion-label>Chapter Two Srimad Bhagavad Gita</ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648095977292?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>Chapter Three Srimad Bhagavad Gita </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648095977292?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>Chapter Four Srimad Bhagavad Gita </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648096152072?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>Chapter Five Srimad Bhagavad Gita </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648102018809?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
+            <div class="sound-waves">
+              <div class="wave wave-1"></div>
+              <div class="wave wave-2"></div>
+              <div class="wave wave-3"></div>
+            </div>
+          </div>
 
-    </div>
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>Chapter Six Srimad Bhagavad Gita </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648105067845?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>Chapter Seven Srimad Bhagavad Gita </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648105524376?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>Chapter Eight Srimad Bhagavad Gita </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648108384389?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>Chapter Nine Srimad Bhagavad Gita </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648111498896?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>Chapter Ten Srimad Bhagavad Gita </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648113778852?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>Chapter Eleven Srimad Bhagavad Gita </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648114517936?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>Chapter Twelve Srimad Bhagavad Gita </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648116422430?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>Chapter Thirteen Srimad Bhagavad Gita </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648120062412?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>Chapter Fourteen Srimad Bhagavad Gita </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648121696680?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-  <ion-accordion value="third">
+          <!-- Card Content -->
+          <div class="card-content">
+            <div class="card-brand">Sloka {{sloka.orderNo}}</div>
+            <h3 class="card-title">{{sloka.slokaNo}}</h3>
+            
+            <!-- Play Button -->
+            <div class="play-button-container">
+              <div class="play-button">
+                <ion-icon name="play" class="play-icon"></ion-icon>
+              </div>
+              <span class="play-text">Listen</span>
+            </div>
+          </div>
 
-    <ion-item slot="header" color="light">
-      <ion-label>Chapter Fifteen Srimad Bhagavad Gita </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648122490869?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>Chapter Sixteen Srimad Bhagavad Gita </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648124589708?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>Chapter Seventeen Srimad Bhagavad Gita </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648125027077?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>Chapter Eighteen Srimad Bhagavad Gita </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648127023378?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-</ion-accordion-group>
-  }
-@case ('Hindi') {
-  <ion-accordion-group value="first" multiple="true" style="max-height: 86vh;">
-  <ion-accordion value="first">
-    <ion-item slot="header" color="light">
-      <ion-label>अध्याय एक श्रीमद भगवद गीता</ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;">
-        <iframe src="https://audio.com/embed/audio/1835648008406914?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-  <ion-accordion value="second">
-    <ion-item slot="header" color="light">
-      <ion-label>अध्याय दो श्रीमद भगवद गीता</ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648095977292?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>अध्याय तीन श्रीमद भगवद गीता </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648095977292?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>अध्याय चार श्रीमद भगवद गीता </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648096152072?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>अध्याय पांच श्रीमद भगवद गीता </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648102018809?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-
-    </div>
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>अध्याय छह श्रीमद भगवद गीता </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648105067845?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>अध्याय सात श्रीमद भगवद गीता </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648105524376?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>अध्याय आठ श्रीमद भगवद गीता </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648108384389?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>अध्याय नौ श्रीमद भगवद गीता </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648111498896?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>अध्याय दस श्रीमद भगवद गीता </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648113778852?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>अध्याय ग्यारह श्रीमद भगवद गीता </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648114517936?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>अध्याय बारह श्रीमद भगवद गीता </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648116422430?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>अध्याय तेरह श्रीमद भगवद गीता </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648120062412?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>अध्याय चौदह श्रीमद भगवद गीता </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648121696680?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>अध्याय पंद्रह श्रीमद भगवद गीता </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648122490869?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>अध्याय सोलह श्रीमद भगवद गीता </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648124589708?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>अध्याय सत्रह श्रीमद भगवद गीता </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648125027077?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>अध्याय अठारह श्रीमद भगवद गीता </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648127023378?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-</ion-accordion-group>
-
-  }
-@case ('Kannada') {
-  <ion-accordion-group value="first" multiple="true" style="max-height: 86vh;">
-  <ion-accordion value="first">
-    <ion-item slot="header" color="light">
-      <ion-label>ಅಧ್ಯಾಯ ಒಂದು ಶ್ರೀಮದ್ ಭಾಗವದ್ಗೀತೆ</ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;">
-        <iframe src="https://audio.com/embed/audio/1835648008406914?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-  <ion-accordion value="second">
-    <ion-item slot="header" color="light">
-      <ion-label>ಅಧ್ಯಾಯ ಎರಡು ಶ್ರೀಮದ್ ಭಾಗವದ್ಗೀತೆ</ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648095977292?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>ಅಧ್ಯಾಯ ಮೂರು ಶ್ರೀಮದ್ ಭಾಗವದ್ಗೀತೆ </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648095977292?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>ಅಧ್ಯಾಯ ನಾಲ್ಕು ಶ್ರೀಮದ್ ಭಾಗವದ್ಗೀತೆ </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648096152072?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>ಅಧ್ಯಾಯ ಐದು ಶ್ರೀಮದ್ ಭಾಗವದ್ಗೀತೆ </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648102018809?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-
-    </div>
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>ಅಧ್ಯಾಯ ಆರು ಶ್ರೀಮದ್ ಭಾಗವದ್ಗೀತೆ </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648105067845?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>ಅಧ್ಯಾಯ ಏಳು ಶ್ರೀಮದ್ ಭಾಗವದ್ಗೀತೆ </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648105524376?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>ಅಧ್ಯಾಯ ಎಂಟು ಶ್ರೀಮದ್ ಭಾಗವದ್ಗೀತೆ </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648108384389?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>ಅಧ್ಯಾಯ ಒಂಬತ್ತು ಶ್ರೀಮದ್ ಭಾಗವದ್ಗೀತೆ </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648111498896?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>ಅಧ್ಯಾಯ ಹತ್ತು ಶ್ರೀಮದ್ ಭಾಗವದ್ಗೀತೆ </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648113778852?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>ಅಧ್ಯಾಯ ಹನ್ನೊಂದು ಶ್ರೀಮದ್ ಭಾಗವದ್ಗೀತೆ </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648114517936?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>ಅಧ್ಯಾಯ ಹನ್ನೆರಡು ಶ್ರೀಮದ್ ಭಾಗವದ್ಗೀತೆ </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648116422430?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>  
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>ಅಧ್ಯಾಯ ಹದಿಮೂರು ಶ್ರೀಮದ್ ಭಾಗವದ್ಗೀತೆ </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648120062412?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>ಅಧ್ಯಾಯ ಹದಿನಾಲ್ಕು ಶ್ರೀಮದ್ ಭಾಗವದ್ಗೀತೆ </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648121696680?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>ಅಧ್ಯಾಯ ಹದಿನೈದು ಶ್ರೀಮದ್ ಭಾಗವದ್ಗೀತೆ </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648122490869?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>ಅಧ್ಯಾಯ ಹದಿನಾರು ಶ್ರೀಮದ್ ಭಾಗವದ್ಗೀತೆ </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648124589708?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
-    </div>
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>ಅಧ್ಯಾಯ ಹದಿನೇಳು ಶ್ರೀಮದ್ ಭಾಗವದ್ಗೀತೆ </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648125027077?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
+          <!-- Hover Effects -->
+          <div class="hover-overlay">
+            <div class="ripple-effect"></div>
+          </div>
+        </div>
+      </div>
     </div>
 
-  </ion-accordion>
-  <ion-accordion value="third">
-    <ion-item slot="header" color="light">
-      <ion-label>ಅಧ್ಯಾಯ ಹದಿನೆಂಟು ಶ್ರೀಮದ್ ಭಾಗವದ್ಗೀತೆ </ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <div style="height: 228px; width: 100%;"><iframe src="https://audio.com/embed/audio/1835648127023378?theme=image"
-    style="display:block; border-radius: 1px; border: none; height: 204px; width: 100%;"></iframe><a href='https://audio.com/ask-hare-krishna' style="text-align: center; display: block; color: #A4ABB6; font-size: 12px; font-family: sans-serif; line-height: 16px; margin-top: 8px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">ask-hare-krishna</a></div>
+    <!-- Tamil Chapters Section -->
+    <div *ngIf="language === 'Tamil'" class="categories-container">
+      <div class="category-header">
+        <h2 class="category-title">
+          <ion-icon name="library" class="category-icon"></ion-icon>
+          {{groupedChapters.length > 0 ? groupedChapters[0].languageType : 'Tamil'}} Chapters
+        </h2>
+        <ion-button fill="clear" size="small" class="view-all-btn">
+          <span>{{tamilChapters.length}} Chapters</span>
+        </ion-button>
+      </div>
+
+      <div class="cards-grid">
+        <div class="content-card chapter-card" 
+             *ngFor="let chapter of tamilChapters; let i = index" 
+             (click)="playChapter(chapter)"
+             [style.animation-delay]="(i * 0.1) + 's'">
+          
+          <!-- Card Background -->
+          <div class="card-background"></div>
+          
+          <!-- Chapter Number Badge -->
+          <div class="chapter-number">
+            {{getChapterNumber(chapter.chapterNo)}}
+          </div>
+          
+          <!-- Audio Icon -->
+          <div class="audio-icon-container">
+            <div class="audio-icon-wrapper">
+              <ion-icon name="book" class="audio-icon"></ion-icon>
+            </div>
+          </div>
+
+          <!-- Card Content -->
+          <div class="card-content">
+            <div class="card-brand">{{chapter.chapterNo}}</div>
+            <h3 class="card-title">{{chapter.chapterName}}</h3>
+            
+            <!-- Play Button -->
+            <div class="play-button-container">
+              <div class="play-button">
+                <ion-icon name="play" class="play-icon"></ion-icon>
+              </div>
+              <span class="play-text">Listen</span>
+            </div>
+          </div>
+
+          <!-- Hover Effects -->
+          <div class="hover-overlay">
+            <div class="ripple-effect"></div>
+          </div>
+        </div>
+      </div>
     </div>
-  </ion-accordion>
-</ion-accordion-group>
 
-}
+    <!-- Other Languages Placeholder -->
+    <div *ngIf="language === 'English' || language === 'Hindi' || language === 'Kannada'" class="categories-container">
+      <div class="category-header">
+        <h2 class="category-title">
+          <ion-icon name="globe" class="category-icon"></ion-icon>
+          {{language}} Content
+        </h2>
+      </div>
 
+      <div class="coming-soon-card">
+        <div class="coming-soon-content">
+          <ion-icon name="construct" class="coming-soon-icon"></ion-icon>
+          <h3>Coming Soon</h3>
+          <p>{{language}} content will be available soon. Stay tuned!</p>
+        </div>
+      </div>
+    </div>
 
+    <!-- Stats Section -->
+    <div class="stats-section">
+      <div class="stat-card">
+        <div class="stat-number">{{getTotalContent()}}</div>
+        <div class="stat-label">Total Content</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">{{language}}</div>
+        <div class="stat-label">Language</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">HD</div>
+        <div class="stat-label">Audio Quality</div>
+      </div>
+    </div>
+    </div> <!-- End of content-sections -->
 
-}
+  </div>
+</ion-content>

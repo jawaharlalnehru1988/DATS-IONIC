@@ -1,5 +1,5 @@
-/* Import theme models from assets */
-@import '../../assets/styles/theme-models.scss';
+/* Use theme models from assets */
+@use '../../assets/styles/theme-models.scss';
 
 /* Base Chant Page Styles */
 .chant-page {
@@ -111,7 +111,7 @@ ion-toolbar {
 /* Statistics Container */
 .stats-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: repeat(3, 1fr); /* Always 3 columns */
   gap: 15px;
   width: 100%;
   max-width: 500px;
@@ -177,7 +177,7 @@ ion-toolbar {
   }
 }
 
-/* Chant Button - Fixed at Bottom */
+/* Chant Button - Fixed at Bottom with Radial Progress */
 .chant-button-container {
   position: fixed;
   bottom: 30px;
@@ -187,8 +187,8 @@ ion-toolbar {
 }
 
 .chant-button {
-  width: 120px;
-  height: 120px;
+  width: 180px;  /* Increased significantly */
+  height: 180px; /* Increased significantly */
   border-radius: 50%;
   background: linear-gradient(145deg, #ff6b6b, #feca57);
   display: flex;
@@ -198,18 +198,18 @@ ion-toolbar {
   cursor: pointer;
   user-select: none;
   position: relative;
-  overflow: hidden;
+  overflow: visible; /* Changed to show progress ring */
   box-shadow: 
-    0 15px 35px rgba(0, 0, 0, 0.2),
-    0 5px 15px rgba(255, 107, 107, 0.4);
+    0 20px 45px rgba(0, 0, 0, 0.25),
+    0 8px 20px rgba(255, 107, 107, 0.5);
   transition: all 0.3s ease;
-  border: 3px solid rgba(255, 255, 255, 0.3);
+  border: 4px solid rgba(255, 255, 255, 0.3);
   
   &:hover {
     transform: scale(1.05);
     box-shadow: 
-      0 20px 40px rgba(0, 0, 0, 0.3),
-      0 10px 20px rgba(255, 107, 107, 0.6);
+      0 25px 50px rgba(0, 0, 0, 0.35),
+      0 12px 25px rgba(255, 107, 107, 0.7);
   }
   
   &:active {
@@ -217,20 +217,37 @@ ion-toolbar {
     transition: all 0.1s ease;
   }
   
+  /* Button Content */
+  .button-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+  }
+  
   .chant-counter {
     color: #fff;
-    font-size: 28px;
+    font-size: 36px; /* Increased for larger button */
     font-weight: bold;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-    margin-bottom: 5px;
+    margin-bottom: 4px;
   }
   
   .chant-text {
     color: #fff;
-    font-size: 12px;
+    font-size: 16px; /* Increased for larger button */
     font-weight: 600;
     letter-spacing: 1px;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    margin-bottom: 2px;
+  }
+  
+  .chant-subtext {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 12px;
+    font-weight: 500;
+    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
   }
   
   .ripple-effect {
@@ -239,56 +256,124 @@ ion-toolbar {
     background: rgba(255, 255, 255, 0.3);
     transform: scale(0);
     animation: ripple 1.5s infinite;
+    z-index: 1;
   }
+}
+
+/* Progress Ring */
+.progress-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 220px;
+  height: 220px;
+  z-index: -1;
+  max-width: 90vw; /* Ensure it doesn't exceed viewport width */
+  max-height: 90vw; /* Ensure it doesn't exceed viewport height */
+}
+
+.progress-ring-circle-bg {
+  transition: all 0.3s ease;
+}
+
+.progress-ring-circle {
+  transition: stroke-dashoffset 0.5s ease;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.6));
 }
 
 /* Theme-specific chant button styles */
-.chant-page.theme-ocean .chant-button {
-  background: linear-gradient(145deg, #667eea, #764ba2);
-  box-shadow: 
-    0 15px 35px rgba(0, 0, 0, 0.2),
-    0 5px 15px rgba(102, 126, 234, 0.4);
-}
-
-.chant-page.theme-sunset .chant-button {
-  background: linear-gradient(145deg, #ff6b6b, #feca57);
-  box-shadow: 
-    0 15px 35px rgba(0, 0, 0, 0.2),
-    0 5px 15px rgba(255, 107, 107, 0.4);
-}
-
-.chant-page.theme-forest .chant-button {
-  background: linear-gradient(145deg, #134e5e, #71b280);
-  box-shadow: 
-    0 15px 35px rgba(0, 0, 0, 0.2),
-    0 5px 15px rgba(113, 178, 128, 0.4);
-}
-
-.chant-page.theme-cyberpunk .chant-button {
-  background: linear-gradient(145deg, #00ff41, #00cc33);
-  border: 3px solid #00ff41;
-  box-shadow: 
-    0 15px 35px rgba(0, 0, 0, 0.4),
-    0 0 30px rgba(0, 255, 65, 0.6);
+.chant-page.theme-ocean {
+  .chant-button {
+    background: linear-gradient(145deg, #667eea, #764ba2);
+    box-shadow: 
+      0 20px 45px rgba(0, 0, 0, 0.25),
+      0 8px 20px rgba(102, 126, 234, 0.5);
+  }
   
-  .chant-counter, .chant-text {
-    color: #000;
-    font-family: 'Courier New', monospace;
+  .progress-ring-circle {
+    stroke: rgba(102, 126, 234, 0.9);
+    filter: drop-shadow(0 0 10px rgba(102, 126, 234, 0.6));
   }
 }
 
-.chant-page.theme-royal .chant-button {
-  background: linear-gradient(145deg, #667eea, #ffd700);
-  box-shadow: 
-    0 15px 35px rgba(0, 0, 0, 0.2),
-    0 5px 15px rgba(255, 215, 0, 0.4);
+.chant-page.theme-sunset {
+  .chant-button {
+    background: linear-gradient(145deg, #ff6b6b, #feca57);
+    box-shadow: 
+      0 20px 45px rgba(0, 0, 0, 0.25),
+      0 8px 20px rgba(255, 107, 107, 0.5);
+  }
+  
+  .progress-ring-circle {
+    stroke: rgba(255, 202, 87, 0.9);
+    filter: drop-shadow(0 0 10px rgba(255, 202, 87, 0.6));
+  }
 }
 
-.chant-page.theme-midnight .chant-button {
-  background: linear-gradient(145deg, #2c3e50, #3498db);
-  box-shadow: 
-    0 15px 35px rgba(0, 0, 0, 0.2),
-    0 5px 15px rgba(52, 152, 219, 0.4);
+.chant-page.theme-forest {
+  .chant-button {
+    background: linear-gradient(145deg, #134e5e, #71b280);
+    box-shadow: 
+      0 20px 45px rgba(0, 0, 0, 0.25),
+      0 8px 20px rgba(113, 178, 128, 0.5);
+  }
+  
+  .progress-ring-circle {
+    stroke: rgba(113, 178, 128, 0.9);
+    filter: drop-shadow(0 0 10px rgba(113, 178, 128, 0.6));
+  }
+}
+
+.chant-page.theme-cyberpunk {
+  .chant-button {
+    background: linear-gradient(145deg, #00ff41, #00cc33);
+    border: 4px solid #00ff41;
+    box-shadow: 
+      0 20px 45px rgba(0, 0, 0, 0.4),
+      0 0 35px rgba(0, 255, 65, 0.7);
+    
+    .chant-counter, .chant-text, .chant-subtext {
+      color: #000;
+      font-family: 'Courier New', monospace;
+    }
+  }
+  
+  .progress-ring-circle {
+    stroke: #00ff41;
+    filter: drop-shadow(0 0 15px rgba(0, 255, 65, 0.8));
+  }
+}
+
+.chant-page.theme-royal {
+  .chant-button {
+    background: linear-gradient(145deg, #667eea, #ffd700);
+    box-shadow: 
+      0 20px 45px rgba(0, 0, 0, 0.25),
+      0 8px 20px rgba(255, 215, 0, 0.5);
+  }
+  
+  .progress-ring-circle {
+    stroke: rgba(255, 215, 0, 0.9);
+    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6));
+  }
+}
+
+.chant-page.theme-midnight {
+  .chant-button {
+    background: linear-gradient(145deg, #2c3e50, #3498db);
+    box-shadow: 
+      0 20px 45px rgba(0, 0, 0, 0.25),
+      0 8px 20px rgba(52, 152, 219, 0.5);
+  }
+  
+  .progress-ring-circle {
+    stroke: rgba(52, 152, 219, 0.9);
+    filter: drop-shadow(0 0 10px rgba(52, 152, 219, 0.6));
+  }
 }
 
 /* Ripple Animation */
@@ -346,38 +431,135 @@ ion-fab {
   }
 }
 
-/* Responsive Design */
-@media (max-width: 480px) {
+/* Medium screens (tablets) */
+@media (max-width: 768px) and (min-width: 481px) {
   .stats-container {
-    grid-template-columns: 1fr;
-    gap: 10px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    max-width: 400px;
   }
   
   .stat-card {
-    padding: 15px;
+    padding: 12px;
+    
+    h3 {
+      font-size: 12px;
+    }
     
     .stat-number {
-      font-size: 20px;
+      font-size: 18px;
+    }
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .stats-container {
+    grid-template-columns: repeat(3, 1fr); /* Keep 3 columns on mobile */
+    gap: 8px; /* Reduce gap */
+    max-width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  .stat-card {
+    padding: 10px; /* Reduce padding */
+    
+    h3 {
+      font-size: 11px; /* Smaller title */
+      margin: 0 0 5px 0;
+    }
+    
+    .stat-number {
+      font-size: 16px; /* Smaller number */
     }
   }
   
+  .chant-button-container {
+    bottom: 20px; /* Reduce bottom spacing on mobile */
+  }
+  
   .chant-button {
-    width: 100px;
-    height: 100px;
+    width: 140px;
+    height: 140px;
     
     .chant-counter {
-      font-size: 24px;
+      font-size: 28px;
     }
     
     .chant-text {
+      font-size: 12px;
+    }
+    
+    .chant-subtext {
       font-size: 10px;
     }
+  }
+  
+  .progress-ring {
+    width: 160px;
+    height: 160px;
   }
   
   .krishna-symbol {
     h2 {
       font-size: 14px;
     }
+  }
+  
+  .chant-container {
+    padding-bottom: 100px; /* Reduce padding for smaller button */
+  }
+}
+
+/* Extra small screens */
+@media (max-width: 360px) {
+  .stats-container {
+    grid-template-columns: repeat(3, 1fr); /* Still keep 3 columns */
+    gap: 5px; /* Even smaller gap */
+  }
+  
+  .stat-card {
+    padding: 8px; /* Even smaller padding */
+    
+    h3 {
+      font-size: 9px; /* Even smaller title */
+      margin: 0 0 3px 0;
+    }
+    
+    .stat-number {
+      font-size: 14px; /* Even smaller number */
+    }
+  }
+  
+  .chant-button-container {
+    bottom: 15px;
+  }
+  
+  .chant-button {
+    width: 120px;
+    height: 120px;
+    
+    .chant-counter {
+      font-size: 24px;
+    }
+    
+    .chant-text {
+      font-size: 11px;
+    }
+    
+    .chant-subtext {
+      font-size: 9px;
+    }
+  }
+  
+  .progress-ring {
+    width: 140px;
+    height: 140px;
+  }
+  
+  .chant-container {
+    padding: 15px;
+    padding-bottom: 85px;
   }
 }
 

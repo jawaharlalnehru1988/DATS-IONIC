@@ -67,6 +67,11 @@ export class ChantPage implements OnInit {
   roundsCompleted: number = 0;
   mahaRounds: number = 0;
 
+  // Radial progress properties
+  circumference: number = 0;
+  strokeDashoffset: number = 0;
+  radius: number = 100; // Updated SVG circle radius for larger button
+
   // UI state
   showResetAlert: boolean = false;
   showToast: boolean = false;
@@ -108,6 +113,10 @@ export class ChantPage implements OnInit {
   }
 
   ngOnInit() {
+    // Initialize radial progress
+    this.circumference = 2 * Math.PI * this.radius;
+    this.updateProgress();
+    
     // Load saved progress from localStorage
     this.loadProgress();
   }
@@ -154,6 +163,9 @@ export class ChantPage implements OnInit {
       }
     }
 
+    // Update radial progress
+    this.updateProgress();
+    
     // Save progress
     this.saveProgress();
   }
@@ -169,6 +181,9 @@ export class ChantPage implements OnInit {
     this.roundsCompleted = 0;
     this.mahaRounds = 0;
     this.showResetAlert = false;
+    
+    // Update radial progress
+    this.updateProgress();
     
     // Clear saved progress
     this.clearProgress();
@@ -203,10 +218,20 @@ export class ChantPage implements OnInit {
     if (savedTheme) {
       this.currentTheme = savedTheme;
     }
+    
+    // Update progress after loading
+    this.updateProgress();
   }
 
   // Clear progress from localStorage
   private clearProgress() {
     localStorage.removeItem('chantProgress');
+  }
+
+  // Update radial progress
+  private updateProgress() {
+    const progress = this.currentRound / 108;
+    const offset = this.circumference - (progress * this.circumference);
+    this.strokeDashoffset = offset;
   }
 }

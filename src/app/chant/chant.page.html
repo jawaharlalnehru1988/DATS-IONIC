@@ -84,14 +84,14 @@
       </div>
     </div>
 
-    <!-- Progress Bar -->
+    <!-- Progress info text only -->
     <div class="progress-container">
+      <p class="progress-text">{{currentRound}} / 108 chants in current round</p>
       <ion-progress-bar 
         [value]="currentRound / 108" 
         color="primary"
-        class="round-progress">
+        class="chant-progress">
       </ion-progress-bar>
-      <p class="progress-text">{{currentRound}} / 108 chants in current round</p>
     </div>
 
     <!-- Daily Goal Progress -->
@@ -106,11 +106,41 @@
     </div>
   </div>
 
-  <!-- Chant Button - Fixed at bottom -->
+  <!-- Chant Button - Fixed at bottom with Radial Progress -->
   <div class="chant-button-container">
+    <!-- Radial Progress Ring -->
+    <svg class="progress-ring" width="220" height="220" viewBox="0 0 220 220">
+      <!-- Background circle -->
+      <circle
+        class="progress-ring-circle-bg"
+        stroke="rgba(255, 255, 255, 0.2)"
+        stroke-width="8"
+        fill="transparent"
+        r="100"
+        cx="110"
+        cy="110"/>
+      <!-- Progress circle -->
+      <circle
+        class="progress-ring-circle"
+        stroke="rgba(255, 255, 255, 0.9)"
+        stroke-width="8"
+        fill="transparent"
+        r="100"
+        cx="110"
+        cy="110"
+        [style.stroke-dasharray]="circumference + ' ' + circumference"
+        [style.stroke-dashoffset]="strokeDashoffset"/>
+    </svg>
+    
+    <!-- Chant Button -->
     <div class="chant-button" (click)="chant()">
-      <div class="chant-counter">{{currentRound}}</div>
-      <div class="chant-text">CHANT</div>
+      <!-- Button Content -->
+      <div class="button-content">
+        <div class="chant-counter">{{currentRound}}</div>
+        <div class="chant-text">CHANT</div>
+        <div class="chant-subtext">हरे कृष्ण</div>
+      </div>
+      
       <div class="ripple-effect"></div>
     </div>
   </div>

@@ -1,11 +1,39 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import {  IonHeader, IonTitle, IonSpinner, IonMenuButton, IonToolbar, IonAccordion, IonAccordionGroup, IonItem, IonLabel, IonButtons } from '@ionic/angular/standalone';
+import {  
+  IonHeader, 
+  IonTitle, 
+  IonSpinner, 
+  IonMenuButton, 
+  IonToolbar, 
+  IonAccordion, 
+  IonAccordionGroup, 
+  IonItem, 
+  IonLabel, 
+  IonButtons,
+  IonContent,
+  IonButton,
+  IonIcon
+} from '@ionic/angular/standalone';
 import { ActivatedRoute } from '@angular/router';
 import { MusicDetailsService } from './music-details.service';
 import { DetailModel, ISlokaChapters } from './music.model';
 import { map } from 'rxjs';
+import { addIcons } from 'ionicons';
+import { 
+  musicalNotes, 
+  musicalNote, 
+  heartOutline, 
+  shareOutline, 
+  star, 
+  library, 
+  volumeHigh, 
+  book, 
+  globe, 
+  construct, 
+  play, arrowBack } from 'ionicons/icons';
+import { IonicAudioPlayerComponent } from '../components/ionic-audio-player/ionic-audio-player.component';
 
 
 @Component({
@@ -13,15 +41,35 @@ import { map } from 'rxjs';
   templateUrl: './music-details.page.html',
   styleUrls: ['./music-details.page.scss'],
   standalone: true,
-  imports: [IonButtons, IonSpinner, IonMenuButton, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonAccordion, IonAccordionGroup, IonItem, IonLabel]
+  imports: [
+    IonButtons, 
+    IonSpinner, 
+    IonMenuButton, 
+    IonHeader, 
+    IonTitle, 
+    IonToolbar, 
+    IonContent,
+    IonButton,
+    IonIcon,
+    CommonModule, 
+    FormsModule,
+    IonicAudioPlayerComponent
+  ]
 })
 export class MusicDetailsPage implements OnInit {
   topics:{ title: string; content: string; } = { title: '', content: '' };
   msDatas: DetailModel[] = [];
-    isLoading = true;
-  constructor(private route: ActivatedRoute, private mdService: MusicDetailsService) { }
+  isLoading = true;
   language:string | null = '';
-  tamilChapters:ISlokaChapters[] = []
+  tamilChapters:ISlokaChapters[] = [];
+  
+  // Audio player properties
+  selectedAudio: any = null;
+  groupedChapters: ISlokaChapters[] = [];
+
+  constructor(private route: ActivatedRoute, private mdService: MusicDetailsService) {
+    addIcons({musicalNotes,heartOutline,shareOutline,musicalNote,arrowBack,star,volumeHigh,play,library,book,globe,construct});
+  }
 
   ngOnInit() {
     this.getRoutingDetails();
@@ -33,6 +81,8 @@ export class MusicDetailsPage implements OnInit {
     this.mdService.getAllSlokaChapters().subscribe({
       next:(res:ISlokaChapters[])=>{
         this.tamilChapters = res;
+        this.groupedChapters = res;
+        console.log('res :', res);
       }, 
       error: (err)=>{
         console.error(err);
@@ -86,6 +136,68 @@ this.route.paramMap.subscribe(params => {
 
   onCardClick(language: any) {
     console.log(`Card clicked: ${language}`);
+  }
+
+  // Audio player methods
+  playSloka(sloka: DetailModel) {
+    this.selectedAudio = {
+      title: sloka.slokaNo,
+      auther: 'Srimad Bhagavad Gita',
+      audioSrc: sloka.SlokaVoice,
+      imageSrc: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1751699516/sitting_with_books_ova3dl.jpg'
+    };
+  }
+
+  playChapter(chapter: ISlokaChapters) {
+    this.selectedAudio = {
+      title: chapter.chapterName,
+      auther: chapter.chapterNo,
+      audioSrc: chapter.slokaAudio,
+      imageSrc: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1751699516/sitting_with_books_ova3dl.jpg'
+    };
+  }
+
+  closeAudioPlayer() {
+    this.selectedAudio = null;
+  }
+
+  // New method to go back to cards
+  backToCards() {
+    this.selectedAudio = null;
+  }
+
+  // Method to get content type name for back button
+  getContentTypeName(): string {
+    switch (this.language) {
+      case 'sloka 35':
+        return 'Slokas';
+      case 'Tamil':
+        return 'Chapters';
+      case 'English':
+        return 'English Content';
+      case 'Hindi':
+        return 'Hindi Content';
+      case 'Kannada':
+        return 'Kannada Content';
+      default:
+        return 'Content';
+    }
+  }
+
+  // Utility methods
+  getChapterNumber(chapterNo: string): string {
+    // Extract number from chapter string like "அத்தியாயம் ஒன்று" -> "1"
+    const numbers = ['ஒன்று', 'இரண்டு', 'மூன்று', 'நான்கு', 'ஐந்து', 'ஆறு', 'ஏழு', 'எட்டு', 'ஒன்பது', 'பத்து'];
+    for (let i = 0; i < numbers.length; i++) {
+      if (chapterNo.includes(numbers[i])) {
+        return (i + 1).toString();
+      }
+    }
+    return '1';
+  }
+
+  getTotalContent(): number {
+    return this.msDatas.length + this.tamilChapters.length;
   }
 
 }
