@@ -33,6 +33,10 @@
       <ion-button fill="clear" [color]="isLoop ? 'primary' : 'medium'" (click)="toggleLoop()">
         <ion-icon slot="icon-only" name="repeat"></ion-icon>
       </ion-button>
+    </div>
+    
+    <!-- Volume Control on separate line -->
+    <div class="volume-control">
       <ion-range min="0" max="1" step="0.01" [value]="volume" (ionChange)="onVolumeChange($event)" class="volume-slider">
         <ion-icon slot="start" name="volume-low"></ion-icon>
         <ion-icon slot="end" name="volume-high"></ion-icon>

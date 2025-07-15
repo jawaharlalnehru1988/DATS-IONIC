@@ -43,7 +43,7 @@
     </div>
 
     <!-- Audio Player Component (Hidden by default) -->
-    <div *ngIf="selectedAudio" class="audio-player-section">
+    <!-- <div *ngIf="selectedAudio" class="audio-player-section">
       <div class="audio-player-header">
         <ion-button 
           fill="clear" 
@@ -59,12 +59,17 @@
         [audioData]="selectedAudio"
         (onClose)="closeAudioPlayer()">
       </app-ionic-audio-player>
-    </div>
+    </div> -->
+    
+      <div *ngFor="let inputData of inputDatas;">
+        <app-display-card-list [inputData]="inputData" (cardSelected)="onCardSelected($event)"></app-display-card-list>
+      </div>
 
     <!-- Content Sections (Hidden when audio player is open) -->
-    <div *ngIf="!selectedAudio" class="content-sections">
+    <!-- <div *ngIf="!selectedAudio" class="content-sections">
 
-    <!-- Important Slokas Section -->
+
+ 
     <div *ngIf="language === 'sloka 35'" class="categories-container">
       <div class="category-header">
         <h2 class="category-title">
@@ -82,10 +87,10 @@
              (click)="playSloka(sloka)"
              [style.animation-delay]="(i * 0.1) + 's'">
           
-          <!-- Card Background -->
+
           <div class="card-background"></div>
           
-          <!-- Audio Icon -->
+
           <div class="audio-icon-container">
             <div class="audio-icon-wrapper">
               <ion-icon name="volume-high" class="audio-icon"></ion-icon>
@@ -97,12 +102,11 @@
             </div>
           </div>
 
-          <!-- Card Content -->
+
           <div class="card-content">
             <div class="card-brand">Sloka {{sloka.orderNo}}</div>
             <h3 class="card-title">{{sloka.slokaNo}}</h3>
-            
-            <!-- Play Button -->
+
             <div class="play-button-container">
               <div class="play-button">
                 <ion-icon name="play" class="play-icon"></ion-icon>
@@ -111,7 +115,7 @@
             </div>
           </div>
 
-          <!-- Hover Effects -->
+
           <div class="hover-overlay">
             <div class="ripple-effect"></div>
           </div>
@@ -119,7 +123,7 @@
       </div>
     </div>
 
-    <!-- Tamil Chapters Section -->
+
     <div *ngIf="language === 'Tamil'" class="categories-container">
       <div class="category-header">
         <h2 class="category-title">
@@ -137,27 +141,27 @@
              (click)="playChapter(chapter)"
              [style.animation-delay]="(i * 0.1) + 's'">
           
-          <!-- Card Background -->
+
           <div class="card-background"></div>
           
-          <!-- Chapter Number Badge -->
+
           <div class="chapter-number">
             {{getChapterNumber(chapter.chapterNo)}}
           </div>
           
-          <!-- Audio Icon -->
+
           <div class="audio-icon-container">
             <div class="audio-icon-wrapper">
               <ion-icon name="book" class="audio-icon"></ion-icon>
             </div>
           </div>
 
-          <!-- Card Content -->
+
           <div class="card-content">
             <div class="card-brand">{{chapter.chapterNo}}</div>
             <h3 class="card-title">{{chapter.chapterName}}</h3>
             
-            <!-- Play Button -->
+
             <div class="play-button-container">
               <div class="play-button">
                 <ion-icon name="play" class="play-icon"></ion-icon>
@@ -166,7 +170,6 @@
             </div>
           </div>
 
-          <!-- Hover Effects -->
           <div class="hover-overlay">
             <div class="ripple-effect"></div>
           </div>
@@ -174,7 +177,7 @@
       </div>
     </div>
 
-    <!-- Other Languages Placeholder -->
+
     <div *ngIf="language === 'English' || language === 'Hindi' || language === 'Kannada'" class="categories-container">
       <div class="category-header">
         <h2 class="category-title">
@@ -192,7 +195,7 @@
       </div>
     </div>
 
-    <!-- Stats Section -->
+
     <div class="stats-section">
       <div class="stat-card">
         <div class="stat-number">{{getTotalContent()}}</div>
@@ -207,7 +210,6 @@
         <div class="stat-label">Audio Quality</div>
       </div>
     </div>
-    </div> <!-- End of content-sections -->
-
+    </div> -->
   </div>
 </ion-content>
