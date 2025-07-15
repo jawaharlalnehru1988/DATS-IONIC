@@ -71,3 +71,6 @@ Thumbs.db
 
 # Environment files
 # environments
+
+# TinyMCE assets
+src/assets/tinymce/

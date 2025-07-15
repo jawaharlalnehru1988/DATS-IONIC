@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonMenuButton } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonMenuButton, IonButton } from '@ionic/angular/standalone';
 import { IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonSpinner, IonItem, IonLabel,} from '@ionic/angular/standalone';
+import { ArticleEditorComponent } from '../shared/components/article-editor/article-editor.component';
 import { Router } from '@angular/router';
 import { TutorialService } from './tutorial.service';
 import { environment } from 'src/environments/environment';
@@ -20,10 +21,27 @@ export interface CardModel{
   templateUrl: './tutorial.page.html',
   styleUrls: ['./tutorial.page.scss'],
   standalone: true,
-  imports: [IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonButtons, IonContent, IonButtons, IonMenuButton, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
+  imports: [
+    IonCard, 
+    IonCardHeader, 
+    IonCardSubtitle, 
+    IonCardTitle, 
+    IonButtons, 
+    IonContent, 
+    IonButton,
+    IonMenuButton, 
+    IonHeader, 
+    IonTitle, 
+    IonToolbar, 
+    CommonModule, 
+    FormsModule,
+    ArticleEditorComponent
+  ]
 })
 export class TutorialPage implements OnInit {
-   isLoading = true;
+  isLoading = true;
+  articleContent = '';
+  currentArticle = '';
   cards: CardModel[] = [
     {
       blogId: 1,
@@ -71,6 +89,31 @@ export class TutorialPage implements OnInit {
   showFullContent(card: CardModel) {
     this.router.navigate(['/tutorial-details', card.blogId]);
 
+  }
+
+  onArticleContentChange(content: string) {
+    this.currentArticle = content;
+    console.log('Article content changed:', content);
+  }
+
+  saveArticle() {
+    // Create a new card with the article content
+    const newCard: CardModel = {
+      blogId: this.cards.length + 1,
+      image: '../../assets/default-article.png', // You can add a default image or let user upload one
+      title: 'New Article', // You can add a title input field
+      subtitle: new Date().toLocaleDateString(), // You can add a subtitle input field
+      content: this.currentArticle
+    };
+
+    // Add the new card to the cards array
+    this.cards = [newCard, ...this.cards];
+    
+    // Reset the editor
+    this.articleContent = '';
+    this.currentArticle = '';
+    
+    console.log('Article saved:', newCard);
   }
 
 }

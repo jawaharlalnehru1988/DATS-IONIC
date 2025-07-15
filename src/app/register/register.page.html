@@ -3,63 +3,106 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>User Registration</ion-title>
+    <ion-title>{{ isLoginMode ? 'Login' : 'Register' }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
   <div class="form-container">
     <img src="../../assets/krishna.jpg" alt="App Logo" class="app-logo" />
-    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-      <ion-item>
-        <ion-label position="floating">Your Name</ion-label>
-        <ion-input formControlName="name"></ion-input>
-      </ion-item>
-      <ion-text color="danger" *ngIf="registerForm.get('name')?.touched && registerForm.get('name')?.hasError('required')">
-        Name is required.
-      </ion-text>
+    <form [formGroup]="authForm" (ngSubmit)="onSubmit()">
+      <!-- Registration fields -->
+      <ng-container *ngIf="!isLoginMode">
+        <ion-item>
+          <ion-label position="floating">Your Name</ion-label>
+          <ion-input formControlName="name"></ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="authForm.get('name')?.touched && authForm.get('name')?.hasError('required')">
+          Name is required.
+        </ion-text>
+      </ng-container>
 
-      <ion-item>
-        <ion-label position="floating">Phone</ion-label>
-        <ion-input type="tel" formControlName="phone"></ion-input>
-      </ion-item>
-      <ion-text color="danger" *ngIf="registerForm.get('phone')?.touched && registerForm.get('phone')?.hasError('required')">
-        Phone is required.
-      </ion-text>
-
+      <!-- Login/Register fields -->
       <ion-item>
         <ion-label position="floating">Email</ion-label>
         <ion-input type="email" formControlName="email"></ion-input>
       </ion-item>
-      <ion-text color="danger" *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.hasError('required')">
-        Email is required.
-      </ion-text>
-      <ion-text color="danger" *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.hasError('email')">
+      <ion-text color="danger" *ngIf="authForm.get('email')?.touched && authForm.get('email')?.hasError('email') && authForm.get('email')?.value?.trim()">
         Enter a valid email.
       </ion-text>
 
-      <ion-item>
-        <ion-label position="floating">Address</ion-label>
-        <ion-textarea formControlName="address"></ion-textarea>
-      </ion-item>
-      <ion-text color="danger" *ngIf="registerForm.get('address')?.touched && registerForm.get('address')?.hasError('required')">
-        Address is required.
+      <div class="or-divider">
+        <p>{{ isLoginMode ? 'OR' : 'OR' }}</p>
+      </div>
+
+      <ngx-intl-tel-input
+        [cssClass]="'custom-phone-input'"
+        [preferredCountries]="['in']"
+        [enableAutoCountrySelect]="true"
+        [enablePlaceholder]="true"
+        [searchCountryFlag]="true"
+        [selectFirstCountry]="true"
+        [maxLength]="15"
+        required="false"
+        [phoneValidation]="false"
+        [separateDialCode]="false"
+        (countryChange)="onPhoneNumberChange($event)"
+        (phoneNumberChange)="onPhoneNumberChange($event)"
+        (hasError)="onPhoneNumberChange($event)"
+        name="code"
+        formControlName="phone">
+      </ngx-intl-tel-input>
+ 
+      <!-- Show message that either email or phone is required -->
+      <ion-text color="danger" *ngIf="authForm.get('email')?.touched && authForm.get('phone')?.touched && !authForm.get('email')?.value?.trim() && !isPhoneValid()">
+        Please provide either email or phone number.
       </ion-text>
+
+      <ng-container *ngIf="!isLoginMode">
+        <ion-item>
+          <ion-label position="floating">Address</ion-label>
+          <ion-textarea formControlName="address"></ion-textarea>
+        </ion-item>
+        <ion-text color="danger" *ngIf="authForm.get('address')?.touched && authForm.get('address')?.hasError('required')">
+          Address is required.
+        </ion-text>
+      </ng-container>
 
       <ion-item>
         <ion-label position="floating">Password</ion-label>
-        <ion-input type="password" formControlName="password"></ion-input>
+        <ion-input 
+          [type]="showPassword ? 'text' : 'password'" 
+          formControlName="password">
+        </ion-input>
+        <ion-button 
+          fill="clear" 
+          slot="end" 
+          (click)="togglePasswordVisibility()"
+          type="button">
+          <ion-icon 
+            [name]="showPassword ? 'eye-off-outline' : 'eye-outline'" 
+            slot="icon-only">
+          </ion-icon>
+        </ion-button>
       </ion-item>
-      <ion-text color="danger" *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.hasError('required')">
+      <ion-text color="danger" *ngIf="authForm.get('password')?.touched && authForm.get('password')?.hasError('required')">
         Password is required.
       </ion-text>
-      <ion-text color="danger" *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.hasError('minlength')">
+      <ion-text color="danger" *ngIf="authForm.get('password')?.touched && authForm.get('password')?.hasError('minlength')">
         Password must be at least 6 characters long.
       </ion-text>
 
-      <ion-button expand="full" type="submit" [disabled]="!registerForm.valid">Register</ion-button>
+      <ion-button expand="full" type="submit" [disabled]="!isFormValid()">
+        {{ isLoginMode ? 'Login' : 'Register' }}
+      </ion-button>
+
       <div class="signup-link">
-        <p>Already have an account? <a href="/login">Login</a>.</p>
+        <p *ngIf="isLoginMode">
+          New to the app? <a (click)="toggleMode()" href="javascript:void(0)">Register</a>
+        </p>
+        <p *ngIf="!isLoginMode">
+          Already have an account? <a (click)="toggleMode()" href="javascript:void(0)">Login</a>
+        </p>
       </div>
     </form>
   </div>

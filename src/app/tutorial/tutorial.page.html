@@ -13,7 +13,18 @@
       <ion-title size="large">Tutorial</ion-title>
     </ion-toolbar>
   </ion-header>
- 
+
+  <div class="editor-container">
+    <app-article-editor
+      [placeholder]="'Write your tutorial here...'"
+      [initialContent]="articleContent"
+      (contentChange)="onArticleContentChange($event)"
+    ></app-article-editor>
+    
+    <ion-button expand="block" class="save-button" (click)="saveArticle()">
+      Save Article
+    </ion-button>
+  </div>
 
   <div class="card-grid">
     @for(card of cards; track card.blogId){
@@ -32,3 +43,4 @@
     }
   </div>
 </ion-content>
+
