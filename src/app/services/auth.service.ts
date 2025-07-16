@@ -13,11 +13,11 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   register( userData: UserData):Observable<ResponseUserData> {
-    return this.http.post<ResponseUserData>(this.AuthUrl, {...userData, role: 'devotee', isActive:true});
+    return this.http.post<ResponseUserData>(`${this.AuthUrl}/user`, {...userData, role: 'devotee', isActive:true});
   }
 
   login(email: string, password: string) {
-    return this.http.post(`${this.AuthUrl}/login`, { email, password });
+    return this.http.post(`${this.AuthUrl}/user/login`, { email, password });
   }
 
   language: WritableSignal<Language[]> = signal<Language[]>([{ native: 'தமிழ்', lang: 'Tamil' }]);

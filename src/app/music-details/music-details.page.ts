@@ -16,7 +16,7 @@ import {
   IonButton,
   IonIcon
 } from '@ionic/angular/standalone';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MusicDetailsService } from './music-details.service';
 import { DetailModel, ISlokaChapters } from './music.model';
 import { map } from 'rxjs';
@@ -34,6 +34,9 @@ import {
   construct, 
   play, arrowBack } from 'ionicons/icons';
 import { IonicAudioPlayerComponent } from '../components/ionic-audio-player/ionic-audio-player.component';
+import { DisplayCardListComponent } from "../components";
+import { CardItem, InputData } from '../Utils/models';
+import { DataSharingService } from '../services/data-sharing.service';
 
 
 @Component({
@@ -42,19 +45,19 @@ import { IonicAudioPlayerComponent } from '../components/ionic-audio-player/ioni
   styleUrls: ['./music-details.page.scss'],
   standalone: true,
   imports: [
-    IonButtons, 
-    IonSpinner, 
-    IonMenuButton, 
-    IonHeader, 
-    IonTitle, 
-    IonToolbar, 
+    IonButtons,
+    IonSpinner,
+    IonMenuButton,
+    IonHeader,
+    IonTitle,
+    IonToolbar,
     IonContent,
     IonButton,
     IonIcon,
-    CommonModule, 
+    CommonModule,
     FormsModule,
-    IonicAudioPlayerComponent
-  ]
+    DisplayCardListComponent
+]
 })
 export class MusicDetailsPage implements OnInit {
   topics:{ title: string; content: string; } = { title: '', content: '' };
@@ -62,12 +65,14 @@ export class MusicDetailsPage implements OnInit {
   isLoading = true;
   language:string | null = '';
   tamilChapters:ISlokaChapters[] = [];
+
+  inputDatas: InputData[] = [];
   
   // Audio player properties
   selectedAudio: any = null;
   groupedChapters: ISlokaChapters[] = [];
 
-  constructor(private route: ActivatedRoute, private mdService: MusicDetailsService) {
+  constructor(private route: ActivatedRoute, private mdService: MusicDetailsService, private dataSharingService: DataSharingService, private router: Router) {
     addIcons({musicalNotes,heartOutline,shareOutline,musicalNote,arrowBack,star,volumeHigh,play,library,book,globe,construct});
   }
 
@@ -198,6 +203,11 @@ this.route.paramMap.subscribe(params => {
 
   getTotalContent(): number {
     return this.msDatas.length + this.tamilChapters.length;
+  }
+
+  onCardSelected(item: CardItem) {
+    this.dataSharingService.setSelectedCardItem(item);
+    this.router.navigate(['/card-details']);
   }
 
 }
