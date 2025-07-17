@@ -1,24 +1,34 @@
 <div class="display-card-list">
-  <h1>{{ inputData.categoryName }}</h1>
-  <ion-grid>
-    <ion-row>
-      <ion-col *ngFor="let item of inputData.cardItems" (click)="onCardClick(item)">
-        <div class="display-card">
-          <img [src]="item.img" [alt]="item.title" />
-          <div class="display-card-title">{{ item.title }}</div>
-          <div class="display-card-desc" [title]="item.desc">
-            {{ item.desc.length > 40 ? (item.desc | slice:0:50) + '...' : item.desc }}
-          </div>
-          <div class="display-card-footer">
-            <div class="display-card-rating">
-              <ion-icon name="star"></ion-icon>
-              <span>{{ item.rating }}</span>
-            </div>
-            <div class="display-action">{{ item.action }}</div>
-          
-          </div>
+  <!-- Header with title and see all button -->
+  <div class="section-header">
+    <h1>{{ inputData.categoryName }}</h1>
+    <div class="see-all-btn" *ngIf="sortedCardItems.length > 3" (click)="onSeeAllClick()">
+      <span>See All</span>
+      <ion-icon name="chevron-forward"></ion-icon>
+    </div>
+  </div>
+  
+  <!-- Horizontal scrollable cards -->
+  <div class="cards-container">
+    <div class="card-wrapper" *ngFor="let item of sortedCardItems" (click)="onCardClick(item)">
+      <div class="display-card">
+        <img [src]="item.img" [alt]="item.title" />
+        <div class="display-card-title">{{ item.title }}</div>
+        <div class="display-card-desc">
+          <ng-container [ngSwitch]="inputData.categoryName">
+            <span *ngSwitchCase="'Bhagavad Gita Tamil'">அத்தியாயம் {{ item.category }}</span>
+            <span *ngSwitchCase="'Bhagavad Gita Kannada'">ಅಧ್ಯಾಯ {{ item.category }}</span>
+            <span *ngSwitchDefault>{{ item.desc }}</span>
+          </ng-container>
         </div>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+        <div class="display-card-footer">
+          <div class="display-card-rating">
+            <ion-icon name="star"></ion-icon>
+            <span>{{ item.rating }}</span>
+          </div>
+          <div class="display-action">{{ item.action }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

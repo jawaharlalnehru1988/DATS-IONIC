@@ -2,7 +2,7 @@ import { Component, OnInit, computed, effect, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonItem, IonLabel, IonBadge, IonToast } from '@ionic/angular/standalone';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { DataSharingService } from '../../services/data-sharing.service';
 import { RatingService } from '../../services/rating.service';
 import { IonicAudioPlayerComponent } from '../ionic-audio-player/ionic-audio-player.component';
@@ -53,6 +53,7 @@ export class CardDetailsComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private activatedRoute: ActivatedRoute,
     private dataSharingService: DataSharingService,
     private ratingService: RatingService
   ) {
@@ -169,10 +170,9 @@ export class CardDetailsComponent implements OnInit {
   onToastDismiss() {
     this.showToast.set(false);
   }
-
   goBack() {
-    // Clear data and navigate back
+    // Clear data and navigate back to previous page
     this.dataSharingService.clearData();
-    this.router.navigate(['/krishna-page']);
+    window.history.back();
   }
-}
+  }

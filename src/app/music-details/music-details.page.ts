@@ -6,22 +6,14 @@ import {
   IonTitle, 
   IonSpinner, 
   IonMenuButton, 
-  IonToolbar, 
-  IonAccordion, 
-  IonAccordionGroup, 
-  IonItem, 
-  IonLabel, 
+  IonToolbar,  
   IonButtons,
   IonContent,
   IonButton,
   IonIcon,
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonCardContent,
   ModalController
 } from '@ionic/angular/standalone';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { MusicDetailsService } from './music-details.service';
 import { DetailModel, ISlokaChapters } from './music.model';
 import { map } from 'rxjs';
@@ -38,12 +30,10 @@ import {
   globe, 
   construct, 
   play, arrowBack, add } from 'ionicons/icons';
-import { IonicAudioPlayerComponent } from '../components/ionic-audio-player/ionic-audio-player.component';
 import { DisplayCardListComponent } from "../components";
 import { CardItem, InputData } from '../Utils/models';
 import { CategoryCard } from '../Utils/models/card.model';
 import { DataSharingService } from '../services/data-sharing.service';
-import { CategoryFormComponent } from "../Utils/components/category-form/category-form.component";
 import { CategoryFormService } from '../Utils/components/category-form/category-form.service';
 
 
@@ -62,10 +52,6 @@ import { CategoryFormService } from '../Utils/components/category-form/category-
     IonContent,
     IonButton,
     IonIcon,
-    // IonCard,
-    // IonCardHeader,
-    // IonCardTitle,
-    // IonCardContent,
     CommonModule,
     FormsModule,
     DisplayCardListComponent
@@ -88,7 +74,6 @@ export class MusicDetailsPage implements OnInit {
   groupedChapters: ISlokaChapters[] = [];
 
   constructor(
-    private route: ActivatedRoute, 
     private mdService: MusicDetailsService, 
     private categoryService: CategoryFormService,
     private dataSharingService: DataSharingService, 
@@ -107,9 +92,7 @@ export class MusicDetailsPage implements OnInit {
   getAllSlokas(){
    this.categoryService.getAllCategories().subscribe({
       next: (data:InputData[]) => {
-      console.log('data :', data);
-      this.inputDatas = data;
-    
+    this.inputDatas = data;
         this.isLoading = false; // Set loading to false when data is received
       },
       error: (error) => {
@@ -135,98 +118,8 @@ export class MusicDetailsPage implements OnInit {
   }
 
   getRoutingDetails(){
-this.route.paramMap.subscribe(params => {
-    this.language = params.get('language');
-    switch (this.language) {
-      case 'Tamil':
-        this.topics =  { title: 'ஸ்ரீமத் பகவத் கீதை', content: 'தமிழில் கேட்டு மகிழுங்கள்' };
-          break;
-      case 'sloka 35':
-        this.topics =  { title: '35 ஸ்ரீமத் பகவத் கீதை ஸ்லோகங்கள்', content: 'தமிழில் கேட்டு மனனம் செய்யுங்கள்' };
-          break;
-      case 'English':
-        this.topics = 
-          { title: 'Srimad Bhagavad Gita', content: 'Enjoy by hearing in English' };
-        break;
-      case 'Kannada':
-        this.topics = { title: 'ಶ್ರೀಮದ್ ಭಗವದ್ಗೀತಾ', content: 'ಕನ್ನಡದಲ್ಲಿ ಕೇಳಿ ಆನಂದಿಸಿ' }
+    this.topics = { title: 'Srimad Bhagavad Gita', content: 'Feel the bliss of necterian words of Lord Krishna' };
 
-        break;
-      case 'Hindi':
-        this.topics = { title: 'श्रीमद्भगवद गीता', content: 'हिन्दी में सुनकर आनंद लें' };
-        break;
-      default:
-        this.topics = { title: 'Unknown Language', content: 'Content not available' };
-        break;
-    }
-     
-    });
-  }
-
-  onCardClick(language: any) {
-    console.log(`Card clicked: ${language}`);
-  }
-
-  // Audio player methods
-  playSloka(sloka: DetailModel) {
-    this.selectedAudio = {
-      title: sloka.slokaNo,
-      auther: 'Srimad Bhagavad Gita',
-      audioSrc: sloka.SlokaVoice,
-      imageSrc: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1751699516/sitting_with_books_ova3dl.jpg'
-    };
-  }
-
-  playChapter(chapter: ISlokaChapters) {
-    this.selectedAudio = {
-      title: chapter.chapterName,
-      auther: chapter.chapterNo,
-      audioSrc: chapter.slokaAudio,
-      imageSrc: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1751699516/sitting_with_books_ova3dl.jpg'
-    };
-  }
-
-  closeAudioPlayer() {
-    this.selectedAudio = null;
-  }
-
-  // New method to go back to cards
-  backToCards() {
-    this.selectedAudio = null;
-  }
-
-  // Method to get content type name for back button
-  getContentTypeName(): string {
-    switch (this.language) {
-      case 'sloka 35':
-        return 'Slokas';
-      case 'Tamil':
-        return 'Chapters';
-      case 'English':
-        return 'English Content';
-      case 'Hindi':
-        return 'Hindi Content';
-      case 'Kannada':
-        return 'Kannada Content';
-      default:
-        return 'Content';
-    }
-  }
-
-  // Utility methods
-  getChapterNumber(chapterNo: string): string {
-    // Extract number from chapter string like "அத்தியாயம் ஒன்று" -> "1"
-    const numbers = ['ஒன்று', 'இரண்டு', 'மூன்று', 'நான்கு', 'ஐந்து', 'ஆறு', 'ஏழு', 'எட்டு', 'ஒன்பது', 'பத்து'];
-    for (let i = 0; i < numbers.length; i++) {
-      if (chapterNo.includes(numbers[i])) {
-        return (i + 1).toString();
-      }
-    }
-    return '1';
-  }
-
-  getTotalContent(): number {
-    return this.msDatas.length + this.tamilChapters.length;
   }
 
   onCardSelected(item: CardItem) {
@@ -247,7 +140,7 @@ this.route.paramMap.subscribe(params => {
 
     modal.onDidDismiss().then((result) => {
       if (result.data && result.data.submitted) {
-        this.onCategoryFormSubmit(result.data.categoryData);
+       
       }
     });
 
@@ -283,36 +176,4 @@ this.route.paramMap.subscribe(params => {
     return presentResult;
   }
 
-  // Handle category form submission
-  onCategoryFormSubmit(categoryData: CategoryCard) {
-    // console.log('=== Category Form Submitted ===');
-    // console.log('Category Name:', categoryData.categoryName);
-    // console.log('Number of Card Items:', categoryData.cardItems.length);
-    // console.log('Full Category Data:', categoryData);
-    
-    // Store the submitted data
-    // this.submittedCategoryData = categoryData;
-    console.log('categoryData :', categoryData);
-    
-    // Log each card item details
-    // categoryData.cardItems.forEach((cardItem, index) => {
-    //   console.log(`\n--- Card Item ${index + 1} ---`);
-    //   console.log('Title:', cardItem.title);
-    //   console.log('Category:', cardItem.category);
-    //   console.log('Description:', cardItem.desc);
-    //   console.log('Image URL:', cardItem.img);
-    //   console.log('Rating:', cardItem.rating);
-    //   console.log('Action:', cardItem.action);
-    //   console.log('Audio Data:', {
-    //     audioSrc: cardItem.audioData.audioSrc,
-    //     imageSrc: cardItem.audioData.imageSrc,
-    //     author: cardItem.audioData.auther,
-    //     title: cardItem.audioData.title
-    //   });
-    // });
-
-    // You can also show an alert or toast to the user
-    // For now, let's just log it to console
-    // You could also save this data to a service or send it to a server
-  }
 }

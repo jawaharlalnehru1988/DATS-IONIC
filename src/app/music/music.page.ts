@@ -15,11 +15,7 @@ import { Router } from '@angular/router';
 })
 export class MusicPage implements OnInit {
   languages = [
-    { topic: 'ஸ்ரீமத் பகவத் கீதை', title: 'Tamil' },
-    { topic: 'ஸ்ரீமத் பகவத் கீதை', title: 'sloka 35' },
-    { topic: 'Srimad Bhagavat Gita', title: 'English' },
-    { topic: 'ಶ್ರೀಮದ್ ಭಗವದ್ಗೀತಾ', title: 'Kannada' },
-    { topic: 'श्रीमद्भगवद गीता', title: 'Hindi' },
+    { topic: 'Srimad Bhagavat Gita', title: 'English' }
   ];
   isShowGrid: boolean = true; // Flag to control grid visibility
 
@@ -31,15 +27,10 @@ export class MusicPage implements OnInit {
   }
 
   onCardClick(language: { topic: string; title: string }) {
-    if (['Tamil', 'English', 'Kannada', 'Hindi', 'sloka 35'].includes(language.title)) {
-      this.router.navigate(['/music-details', language.title]);
-    } else {
-      console.log('Unknown language selected');
-    }
+  console.log('language :', language);
+    this.router.navigate(['/music-details', language.topic]);
+    
   }
 
-  onLanguageSelected(language: { native: string; lang: string }) {
-    console.log('Selected Language:', language);
-  }
-
+  
 }

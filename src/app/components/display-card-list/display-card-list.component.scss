@@ -1,45 +1,95 @@
 .display-card-list {
-  width: 100vw;
-  overflow-x: auto;
-  padding: 18px 0 18px 0;
   margin-bottom: 18px;
-  margin-left: 16px;
-  scroll-snap-type: x mandatory;
-
-  h1 {
-    color: #fff;
-    font-size: 1.2rem;
-    margin: 18px 0;
-  }
-
-  ion-grid, ion-row {
-    display: flex;
-    flex-wrap: nowrap;
-    gap: 18px;
-    min-width: 100vw;
-    width: max-content;
-    padding: 0;
-    margin: 0;
-  }
   
-  ion-col {
-    flex: 0 0 180px;
-    max-width: 220px;
-    min-width: 160px;
-    padding: 0;
-    scroll-snap-align: start;
-    transition: transform 0.2s;
+  // Header with title and see all button
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 16px 0 16px;
+    margin-bottom: 18px;
     
-    @media (min-width: 600px) {
-      flex: 0 0 200px;
-      max-width: 240px;
-      min-width: 180px;
+    h1 {
+      color: #fff;
+      font-size: 1.2rem;
+      margin: 0;
+      flex: 1;
     }
     
-    @media (min-width: 900px) {
-      flex: 0 0 240px;
-      max-width: 260px;
-      min-width: 200px;
+    .see-all-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: rgba(35, 39, 47, 0.8);
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: #f7b731;
+      font-weight: 600;
+      font-size: 0.9rem;
+      
+      &:hover {
+        background: rgba(35, 39, 47, 1);
+        transform: scale(1.05);
+      }
+      
+      ion-icon {
+        font-size: 1.2rem;
+        transition: transform 0.3s ease;
+      }
+      
+      &:hover ion-icon {
+        transform: translateX(4px);
+      }
+    }
+  }
+  
+  // Horizontal scrollable cards container
+  .cards-container {
+    overflow-x: auto;
+    padding: 0 16px;
+    scroll-snap-type: x mandatory;
+    display: flex;
+    gap: 18px;
+    
+    // Show scrollbar
+    &::-webkit-scrollbar {
+      height: 8px;
+    }
+    
+    &::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 4px;
+      
+      &:hover {
+        background: rgba(255, 255, 255, 0.5);
+      }
+    }
+    
+    .card-wrapper {
+      flex: 0 0 180px;
+      max-width: 220px;
+      min-width: 160px;
+      scroll-snap-align: start;
+      transition: transform 0.2s;
+      
+      @media (min-width: 600px) {
+        flex: 0 0 200px;
+        max-width: 240px;
+        min-width: 180px;
+      }
+      
+      @media (min-width: 900px) {
+        flex: 0 0 240px;
+        max-width: 260px;
+        min-width: 200px;
+      }
     }
   }
 }
@@ -101,7 +151,7 @@
 
   .display-card-title {
     font-weight: 700;
-    font-size: 0.8rem;
+    font-size: 0.5rem;
     margin-bottom: 2px;
     color: #fff;
     margin-top: 10px;
