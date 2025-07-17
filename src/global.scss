@@ -35,3 +35,51 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import '@ionic/angular/css/palettes/dark.system.css';
+
+/**
+ * Global Modal Styles
+ * -----------------------------------------------------
+ * Category Form Modal specific styles with high specificity
+ */
+
+// Ensure category form modal takes full size and positions correctly
+ion-modal.category-form-modal {
+  --width: 95% !important;
+  --max-width: 95vw !important;
+  --height: 95% !important;
+  --max-height: 95vh !important;
+  --border-radius: 12px !important;
+
+  .modal-wrapper {
+    width: 95% !important;
+    max-width: 95vw !important;
+    height: 95% !important;
+    max-height: 95vh !important;
+    position: fixed !important;
+    right: 2.5% !important;
+    left: auto !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    border-radius: 12px !important;
+
+    @media (max-width: 768px) {
+      left: 50% !important;
+      right: auto !important;
+      transform: translate(-50%, -50%) !important;
+      width: 95% !important;
+      height: 95% !important;
+    }
+  }
+
+  .modal-shadow {
+    border-radius: 12px !important;
+  }
+}
+
+// Additional fallback styles
+.category-form-modal {
+  --width: 95% !important;
+  --max-width: 95vw !important;
+  --height: 95% !important;
+  --max-height: 95vh !important;
+}

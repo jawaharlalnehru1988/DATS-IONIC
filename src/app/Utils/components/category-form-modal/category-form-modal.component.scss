@@ -1,0 +1,43 @@
+:host {
+  .modal-content {
+    --padding-top: 0;
+    --padding-bottom: 0;
+    --padding-start: 0;
+    --padding-end: 0;
+  }
+
+  .form-wrapper {
+    padding: 1rem;
+    height: 100%;
+    overflow-y: auto;
+  }
+
+  ion-toolbar {
+    --background: var(--ion-color-primary);
+    --color: white;
+
+    ion-title {
+      font-weight: 600;
+    }
+
+    ion-button {
+      --color: white;
+    }
+  }
+}
+
+// Global modal styling with maximum specificity
+.category-form-modal {
+  --width: 95% !important;
+  --max-width: 95vw !important;
+  --height: 95% !important;
+  --max-height: 95vh !important;
+  --border-radius: 12px !important;
+
+  @media (max-width: 768px) {
+    --width: 95% !important;
+    --height: 95% !important;
+    --max-width: 95vw !important;
+    --max-height: 95vh !important;
+  }
+}

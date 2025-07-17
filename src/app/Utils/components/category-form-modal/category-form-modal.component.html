@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>🎵 Create New Category</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="dismissModal()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="modal-content">
+  <div class="form-wrapper">
+    <app-category-form (formSubmit)="onFormSubmit($event)"></app-category-form>
+  </div>
+</ion-content>
