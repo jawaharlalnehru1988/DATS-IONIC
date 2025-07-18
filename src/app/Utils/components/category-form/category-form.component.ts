@@ -30,6 +30,7 @@ import { CategoryFormService } from './category-form.service';
 export class CategoryFormComponent implements OnInit {
   @Input() initialData?: CategoryCard;
   @Input() pageIdentifier: string = 'music-details'; // Default to music-details
+  @Input() isEditMode: boolean = false; // Flag for edit mode
   @Output() formSubmit = new EventEmitter<CategoryCard>();
 
   categoryForm!: FormGroup;
@@ -62,8 +63,24 @@ export class CategoryFormComponent implements OnInit {
       action: ['Play']
     });
 
-    if (this.initialData) {
-      this.categoryForm.patchValue(this.initialData);
+    // Pre-populate form if in edit mode
+    if (this.isEditMode && this.initialData && this.initialData.cardItems && this.initialData.cardItems.length > 0) {
+      const cardItem = this.initialData.cardItems[0]; // Get first card item
+      this.categoryForm.patchValue({
+        categoryName: this.initialData.categoryName,
+        img: cardItem.img,
+        title: cardItem.title,
+        category: cardItem.category,
+        desc: cardItem.desc,
+        audioData: {
+          audioSrc: cardItem.audioData.audioSrc,
+          imageSrc: cardItem.audioData.imageSrc,
+          auther: cardItem.audioData.auther,
+          title: cardItem.audioData.title
+        },
+        rating: cardItem.rating || 0,
+        action: cardItem.action || 'Play'
+      });
     }
   }
 
@@ -86,23 +103,46 @@ export class CategoryFormComponent implements OnInit {
         ]
       };
 
-      this.categoryService.addCategory(result, this.pageIdentifier).subscribe({
-        next: async (response) => {
-          console.log('Category added successfully:', response);
-          
-          // Show success toast
-          await this.showToast('✅ Category added successfully!', 'success');
-          
-          // Emit the result but don't reset the form
-          this.formSubmit.emit(result);
-        }, 
-        error: async (error) => {
-          console.error('Error adding category:', error);
-          
-          // Show error toast
-          await this.showToast('❌ Failed to add category. Please try again.', 'danger');
-        }
-      });
+      // Choose between add or update based on edit mode
+      if (this.isEditMode && this.initialData && this.initialData._id) {
+        // Update existing category
+        this.categoryService.updateCategory(this.initialData._id, result, this.pageIdentifier).subscribe({
+          next: async (response) => {
+            console.log('Category updated successfully:', response);
+            
+            // Show success toast
+            await this.showToast('✅ Category updated successfully!', 'success');
+            
+            // Emit the result but don't reset the form
+            this.formSubmit.emit(result);
+          }, 
+          error: async (error) => {
+            console.error('Error updating category:', error);
+            
+            // Show error toast
+            await this.showToast('❌ Failed to update category. Please try again.', 'danger');
+          }
+        });
+      } else {
+        // Add new category
+        this.categoryService.addCategory(result, this.pageIdentifier).subscribe({
+          next: async (response) => {
+            console.log('Category added successfully:', response);
+            
+            // Show success toast
+            await this.showToast('✅ Category added successfully!', 'success');
+            
+            // Emit the result but don't reset the form
+            this.formSubmit.emit(result);
+          }, 
+          error: async (error) => {
+            console.error('Error adding category:', error);
+            
+            // Show error toast
+            await this.showToast('❌ Failed to add category. Please try again.', 'danger');
+          }
+        });
+      }
 
       // Note: Form values are intentionally NOT cleared to allow easy editing and resubmission
     } else {

@@ -4,6 +4,12 @@
       <ion-back-button (click)="goBack()"></ion-back-button>
     </ion-buttons>
     <ion-title>{{ cardItem()?.title || 'Card Details' }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="openEditModal()" *ngIf="cardItem()">
+        <ion-icon name="create-outline"></ion-icon>
+        Edit Content
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -47,7 +53,7 @@
           <ion-item lines="none">
             <ion-label>
               <h3>Description</h3>
-              <p>{{ card.desc }}</p>
+              <div class="lyrics-container" [innerHTML]="formatLyrics(card.desc)"></div>
             </ion-label>
           </ion-item>
           
@@ -103,3 +109,5 @@
     </ion-card>
   </div>
 </ion-content>
+
+

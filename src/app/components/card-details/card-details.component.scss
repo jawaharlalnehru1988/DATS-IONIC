@@ -48,6 +48,25 @@
         margin-right: 12px;
       }
 
+      // Lyrics styling
+      .lyrics-container {
+        margin-top: 8px;
+        padding: 12px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 8px;
+        line-height: 1.6;
+        
+        white-space: pre-line;
+        text-align: left;
+        color: rgba(255, 255, 255, 0.9);
+        border-left: 3px solid var(--ion-color-primary);
+
+        // Style for better readability of lyrics
+        &::first-line {
+          font-weight: 500;
+        }
+      }
+
       ion-label {
         h3 {
           color: #ffeb3b;

@@ -19,7 +19,7 @@
             <span *ngSwitchCase="'Bhagavad Gita Tamil'">அத்தியாயம் {{ item.category }}</span>
             <span *ngSwitchCase="'Bhagavad Gita Kannada'">ಅಧ್ಯಾಯ {{ item.category }}</span>
             <span *ngSwitchCase="'Bhagavad Gita Sanskrit'">अध्याय {{ item.category }}</span>
-            <span *ngSwitchDefault>{{ item.desc }}</span>
+            <span *ngSwitchDefault>{{ item.desc.length > 20 ? (item.desc | slice:0:20) + '...' : item.desc }}</span>
           </ng-container>
         </div>
         <div class="display-card-footer">

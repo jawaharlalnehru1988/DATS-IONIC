@@ -34,6 +34,8 @@ import { close, checkmark } from 'ionicons/icons';
 })
 export class CategoryFormModalComponent implements OnInit {
   pageIdentifier: string = 'music-details'; // Default to music-details
+  initialData: any = null; // Data for editing
+  isEditMode: boolean = false; // Flag to determine if in edit mode
 
   constructor(private modalController: ModalController) {
     addIcons({ close, checkmark });

@@ -486,3 +486,109 @@ ion-list {
     color: #ecf0f1 !important;
   }
 }
+
+/* Spiritual Quote Section */
+.spiritual-quote {
+  margin: 20px 16px;
+  padding: 20px;
+  border-radius: 16px;
+  text-align: center;
+  
+  .quote-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    
+    ion-icon {
+      color: var(--ion-color-primary, #3880ff);
+      opacity: 0.8;
+    }
+    
+    p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.6;
+      font-style: italic;
+      text-align: center;
+      max-width: 200px;
+    }
+    
+    small {
+      font-size: 11px;
+      opacity: 0.7;
+      font-weight: 500;
+      text-align: center;
+    }
+  }
+}
+
+/* Theme-specific spiritual quote styling */
+.spiritual-quote.theme-ocean {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  
+  .quote-content {
+    color: #fff;
+    
+    ion-icon {
+      color: #ff6b9d;
+    }
+  }
+}
+
+.spiritual-quote.theme-sunset {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  
+  .quote-content {
+    color: #fff;
+    
+    ion-icon {
+      color: #ffd700;
+    }
+  }
+}
+
+.spiritual-quote.theme-forest {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  
+  .quote-content {
+    color: #fff;
+    
+    ion-icon {
+      color: #90ee90;
+    }
+  }
+}
+
+.spiritual-quote.theme-royal {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  
+  .quote-content {
+    color: #fff;
+    
+    ion-icon {
+      color: #ffd700;
+    }
+  }
+}
+
+.spiritual-quote.theme-midnight {
+  background: rgba(52, 152, 219, 0.1);
+  border: 1px solid rgba(52, 152, 219, 0.3);
+  
+  .quote-content {
+    color: #ecf0f1;
+    
+    ion-icon {
+      color: #3498db;
+    }
+  }
+}

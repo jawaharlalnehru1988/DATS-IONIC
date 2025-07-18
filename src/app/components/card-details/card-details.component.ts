@@ -1,12 +1,14 @@
 import { Component, OnInit, computed, effect, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonItem, IonLabel, IonBadge, IonToast } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonItem, IonLabel, IonBadge, IonToast, IonButton, IonIcon, ModalController } from '@ionic/angular/standalone';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DataSharingService } from '../../services/data-sharing.service';
 import { RatingService } from '../../services/rating.service';
 import { IonicAudioPlayerComponent } from '../ionic-audio-player/ionic-audio-player.component';
 import { StarRatingComponent } from '../star-rating/star-rating.component';
+import { addIcons } from 'ionicons';
+import { createOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-card-details',
@@ -30,6 +32,8 @@ import { StarRatingComponent } from '../star-rating/star-rating.component';
     IonLabel, 
     IonBadge,
     IonToast,
+    IonButton,
+    IonIcon,
     IonicAudioPlayerComponent,
     StarRatingComponent
   ]
@@ -55,8 +59,11 @@ export class CardDetailsComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private dataSharingService: DataSharingService,
-    private ratingService: RatingService
+    private ratingService: RatingService,
+    private modalController: ModalController
   ) {
+    addIcons({ createOutline });
+    
     // Effect to handle navigation when no data is available
     effect(() => {
       const card = this.selectedCard();
@@ -72,6 +79,18 @@ export class CardDetailsComponent implements OnInit {
 
   ngOnInit() {
     // Additional initialization if needed
+  }
+
+  // Format description to handle newlines for lyrics display
+  formatLyrics(description: string): string {
+    if (!description) return '';
+    
+    // Replace different types of newline characters with <br> tags
+    return description
+      .replace(/\r\n/g, '<br>')  // Windows line endings
+      .replace(/\r/g, '<br>')    // Mac line endings
+      .replace(/\n/g, '<br>')    // Unix line endings
+      .replace(/\\n/g, '<br>');  // Escaped newlines
   }
 
   private loadRatingData(cardId: string) {
@@ -170,6 +189,80 @@ export class CardDetailsComponent implements OnInit {
   onToastDismiss() {
     this.showToast.set(false);
   }
+
+  // Open edit modal with current card data
+  async openEditModal() {
+    const card = this.cardItem();
+    const audio = this.audioItem();
+    
+    if (!card || !audio) {
+      console.error('No card or audio data available for editing');
+      return;
+    }
+
+    // Determine page identifier based on the current route or card category
+    let pageIdentifier = 'music-details'; // default
+    if (card.category && card.category.toLowerCase().includes('krishna')) {
+      pageIdentifier = 'krishna-page';
+    }
+
+    // Transform card data to match CategoryCard format for editing
+    const editData = {
+      _id: card._id,
+      categoryName: card.category || '',
+      cardItems: [{
+        img: card.img,
+        title: card.title,
+        category: card.category,
+        desc: card.desc,
+        audioData: {
+          audioSrc: audio.audioSrc,
+          imageSrc: audio.imageSrc,
+          auther: audio.auther,
+          title: audio.title
+        },
+        rating: card.rating,
+        action: card.action
+      }]
+    };
+
+    const { CategoryFormModalComponent } = await import('../../Utils/components/category-form-modal/category-form-modal.component');
+    
+    const modal = await this.modalController.create({
+      component: CategoryFormModalComponent,
+      componentProps: {
+        pageIdentifier: pageIdentifier,
+        initialData: editData,
+        isEditMode: true
+      },
+      cssClass: 'category-form-modal',
+      backdropDismiss: false,
+      showBackdrop: true
+    });
+
+    modal.onDidDismiss().then((result) => {
+      if (result.data && result.data.updated) {
+        // Refresh the current card data or navigate back
+        console.log('Card updated successfully');
+        // You might want to refresh the data here
+      }
+    });
+
+    await modal.present();
+
+    // Apply modal styles
+    setTimeout(() => {
+      const modalElement = document.querySelector('ion-modal.category-form-modal') as HTMLElement;
+      if (modalElement) {
+        modalElement.style.setProperty('--width', '95%');
+        modalElement.style.setProperty('--max-width', '95vw');
+        modalElement.style.setProperty('--height', '95%');
+        modalElement.style.setProperty('--max-height', '95vh');
+        modalElement.style.setProperty('--border-radius', '12px');
+      }
+    }, 100);
+  }
+  
   goBack() {
     // Clear data and navigate back to previous page
     this.dataSharingService.clearData();

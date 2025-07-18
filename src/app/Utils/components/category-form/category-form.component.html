@@ -110,7 +110,7 @@
 
     <!-- Submit Button -->
     <ion-button expand="block" type="submit" [disabled]="!categoryForm.valid">
-      Submit
+      {{ isEditMode ? 'Update Category' : 'Create Category' }}
     </ion-button>
   </form>
 </div>

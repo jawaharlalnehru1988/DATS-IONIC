@@ -6,6 +6,7 @@ export interface AudioData {
 }
 
 export interface CardItem {
+  _id?: string; // Optional ID for database records
   img: string;
   title: string;
   category: string;
@@ -16,6 +17,7 @@ export interface CardItem {
 }
 
 export interface CategoryCard {
+  _id?: string; // Optional ID for edit mode
   categoryName: string;
   cardItems: CardItem[];
 }
