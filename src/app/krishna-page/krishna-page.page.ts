@@ -1,14 +1,15 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule, NgFor } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonIcon, IonButtons, IonButton, IonMenuButton, IonSegment, IonSegmentButton, IonLabel, IonFooter, IonItem, IonSpinner } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonIcon, IonButtons, IonButton, IonMenuButton, IonSegment, IonSegmentButton, IonLabel, IonFooter, IonItem, IonSpinner, ModalController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { chevronDownOutline, notificationsOutline, optionsOutline, home, heartOutline, cafeOutline, personOutline, chevronBack, chevronForward } from 'ionicons/icons';
+import { chevronDownOutline, notificationsOutline, optionsOutline, home, heartOutline, cafeOutline, personOutline, chevronBack, chevronForward, add } from 'ionicons/icons';
 import { DisplayCardListComponent, } from '../components/display-card-list/display-card-list.component';
 import { CardItem, InputData } from '../Utils/models';
 import { KrishnaServiceService } from './krishna-service.service';
 import { Router } from '@angular/router';
 import { DataSharingService } from '../services/data-sharing.service';
+import { CategoryFormService } from '../Utils/components/category-form/category-form.service';
 @Component({
   selector: 'app-krishna-page',
   templateUrl: './krishna-page.page.html',
@@ -54,14 +55,14 @@ readonly carouselImages = [
 
 selectedLang: string = 'Arati';
 
-  constructor(private krishnaService: KrishnaServiceService, private router: Router, private dataSharingService: DataSharingService) { 
-    addIcons({chevronBack,chevronForward,home,heartOutline,cafeOutline,personOutline,chevronDownOutline,notificationsOutline,optionsOutline});
+  constructor(private krishnaService: KrishnaServiceService, private categoryService: CategoryFormService, private router: Router, private dataSharingService: DataSharingService, private modalController: ModalController) { 
+    addIcons({chevronBack,chevronForward,add,home,heartOutline,cafeOutline,personOutline,chevronDownOutline,notificationsOutline,optionsOutline});
   }
 
 ngOnInit() {
   this.startCarousel();
   this.isLoading = true; // Set loading to true before fetching data
-  this.krishnaService.getKrishnaData().subscribe({
+  this.categoryService.getAllCategories('krishna-page').subscribe({
     next: (data:InputData[]) => {
       this.inputDatas = data;
       this.isLoading = false; // Set loading to false when data is received
@@ -123,5 +124,43 @@ onCardSelected(item: CardItem) {
   this.dataSharingService.setSelectedCardItem(item);
   this.router.navigate(['/card-details']);
 }
+
+// Open category form in modal
+async openCategoryModal() {
+  const { CategoryFormModalComponent } = await import('../Utils/components/category-form-modal/category-form-modal.component');
+  
+  const modal = await this.modalController.create({
+    component: CategoryFormModalComponent,
+    componentProps: {
+      pageIdentifier: 'krishna-page'
+    },
+    cssClass: 'category-form-modal',
+    backdropDismiss: false,
+    showBackdrop: true
+  });
+
+  modal.onDidDismiss().then((result) => {
+    if (result.data && result.data.submitted) {
+      // Handle submission result if needed
+    }
+  });
+
+  const presentResult = await modal.present();
+  
+  // Apply styles after modal is presented with a small delay
+  setTimeout(() => {
+    const modalElement = document.querySelector('ion-modal.category-form-modal');
+    if (modalElement) {
+      (modalElement as HTMLElement).style.setProperty('--width', '90%');
+      (modalElement as HTMLElement).style.setProperty('--max-width', '500px');
+      (modalElement as HTMLElement).style.setProperty('--height', 'auto');
+      (modalElement as HTMLElement).style.setProperty('--max-height', '90vh');
+    }
+  }, 100);
+
+  return presentResult;
+}
+
+
 
 }

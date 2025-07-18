@@ -66,10 +66,20 @@
       <div *ngFor="let inputData of inputDatas;">
         <app-display-card-list [inputData]="inputData" (cardSelected)="onCardSelected($event)"></app-display-card-list>
       </div>
+      
+      <!-- Add Category Button -->
+      <div class="add-category-section">
+        <ion-button expand="block" fill="solid" color="primary" (click)="openCategoryModal()">
+          <ion-icon name="add" slot="start"></ion-icon>
+          Add New Category
+        </ion-button>
+      </div>
     </div>
   </ng-container>
 </div>
 </ion-content>
+
+
 
 <ion-footer class="krishna-footer">
   <ion-toolbar>

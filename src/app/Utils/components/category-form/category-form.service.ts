@@ -11,22 +11,39 @@ export class CategoryFormService {
 
   constructor(private http: HttpClient) { }
 
-  addCategory(categoryData: CategoryCardInput) {
-
-    return this.http.post(environment.AuthUrl + '/bg-sloka-chapters', categoryData)
+  private getEndpoint(pageIdentifier: string): string {
+    switch (pageIdentifier) {
+      case 'krishna-page':
+        return '/ram-bhajan';
+      case 'music-details':
+      default:
+        return '/bg-sloka-chapters';
+    }
   }
 
-  updateCategory(categoryId: string, categoryData: CategoryCardInput) {
-    return this.http.put(environment.AuthUrl + `/bg-sloka-chapters/${categoryId}`, categoryData);
+  addCategory(categoryData: CategoryCardInput, pageIdentifier: string = 'music-details') {
+    const endpoint = this.getEndpoint(pageIdentifier);
+    return this.http.post(environment.AuthUrl + endpoint, categoryData);
   }
-  deleteCategory(categoryId: string) {
-    return this.http.delete(environment.AuthUrl + `/bg-sloka-chapters/${categoryId}`);
+
+  updateCategory(categoryId: string, categoryData: CategoryCardInput, pageIdentifier: string = 'music-details') {
+    const endpoint = this.getEndpoint(pageIdentifier);
+    return this.http.put(environment.AuthUrl + `${endpoint}/${categoryId}`, categoryData);
   }
-  getCategoryById(categoryId: string) {
-    return this.http.get(environment.AuthUrl + `/bg-sloka-chapters/${categoryId}`);
+  
+  deleteCategory(categoryId: string, pageIdentifier: string = 'music-details') {
+    const endpoint = this.getEndpoint(pageIdentifier);
+    return this.http.delete(environment.AuthUrl + `${endpoint}/${categoryId}`);
   }
-  getAllCategories() {
-    return this.http.get<InputData[]>(environment.AuthUrl + '/bg-sloka-chapters');
+  
+  getCategoryById(categoryId: string, pageIdentifier: string = 'music-details') {
+    const endpoint = this.getEndpoint(pageIdentifier);
+    return this.http.get(environment.AuthUrl + `${endpoint}/${categoryId}`);
+  }
+  
+  getAllCategories(pageIdentifier: string = 'music-details') {
+    const endpoint = this.getEndpoint(pageIdentifier);
+    return this.http.get<InputData[]>(environment.AuthUrl + endpoint);
   }
 
 }

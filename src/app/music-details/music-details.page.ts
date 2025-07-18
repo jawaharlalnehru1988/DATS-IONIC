@@ -90,7 +90,7 @@ export class MusicDetailsPage implements OnInit {
   }
 
   getAllSlokas(){
-   this.categoryService.getAllCategories().subscribe({
+   this.categoryService.getAllCategories('music-details').subscribe({
       next: (data:InputData[]) => {
     this.inputDatas = data;
         this.isLoading = false; // Set loading to false when data is received
@@ -133,6 +133,9 @@ export class MusicDetailsPage implements OnInit {
     
     const modal = await this.modalController.create({
       component: CategoryFormModalComponent,
+      componentProps: {
+        pageIdentifier: 'music-details'
+      },
       cssClass: 'category-form-modal',
       backdropDismiss: false,
       showBackdrop: true

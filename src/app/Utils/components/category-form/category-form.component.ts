@@ -29,6 +29,7 @@ import { CategoryFormService } from './category-form.service';
 })
 export class CategoryFormComponent implements OnInit {
   @Input() initialData?: CategoryCard;
+  @Input() pageIdentifier: string = 'music-details'; // Default to music-details
   @Output() formSubmit = new EventEmitter<CategoryCard>();
 
   categoryForm!: FormGroup;
@@ -85,7 +86,7 @@ export class CategoryFormComponent implements OnInit {
         ]
       };
 
-      this.categoryService.addCategory(result).subscribe({
+      this.categoryService.addCategory(result, this.pageIdentifier).subscribe({
         next: async (response) => {
           console.log('Category added successfully:', response);
           

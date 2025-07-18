@@ -18,6 +18,7 @@
           <ng-container [ngSwitch]="inputData.categoryName">
             <span *ngSwitchCase="'Bhagavad Gita Tamil'">அத்தியாயம் {{ item.category }}</span>
             <span *ngSwitchCase="'Bhagavad Gita Kannada'">ಅಧ್ಯಾಯ {{ item.category }}</span>
+            <span *ngSwitchCase="'Bhagavad Gita Sanskrit'">अध्याय {{ item.category }}</span>
             <span *ngSwitchDefault>{{ item.desc }}</span>
           </ng-container>
         </div>

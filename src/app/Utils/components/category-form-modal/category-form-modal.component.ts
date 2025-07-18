@@ -33,6 +33,7 @@ import { close, checkmark } from 'ionicons/icons';
   ]
 })
 export class CategoryFormModalComponent implements OnInit {
+  pageIdentifier: string = 'music-details'; // Default to music-details
 
   constructor(private modalController: ModalController) {
     addIcons({ close, checkmark });

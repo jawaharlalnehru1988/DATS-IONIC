@@ -11,6 +11,9 @@
 
 <ion-content class="modal-content">
   <div class="form-wrapper">
-    <app-category-form (formSubmit)="onFormSubmit($event)"></app-category-form>
+    <app-category-form 
+      [pageIdentifier]="pageIdentifier" 
+      (formSubmit)="onFormSubmit($event)">
+    </app-category-form>
   </div>
 </ion-content>
