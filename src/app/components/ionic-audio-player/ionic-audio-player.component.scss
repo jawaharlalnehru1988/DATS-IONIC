@@ -4,19 +4,75 @@
   border-radius: 1.5rem;
   box-shadow: 0 4px 24px 0 #052044c7;
 
+  // Image container with click functionality
+  .audio-image-container {
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+    border-radius: 1.1rem 1.1rem 0 0;
+    transition: transform 0.2s ease;
+    
+    &:hover {
+      transform: scale(1.02);
+    }
+    
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+
   .audio-img {
     width: 100%;
     height: auto;
     object-fit: cover;
-    border-radius: 1.1rem 1.1rem 0 0;
     background: #14254a;
     border-bottom: 2px solid #3b6ad6;
+    transition: filter 0.3s ease;
+    
+    .audio-image-container:hover & {
+      filter: brightness(0.9);
+    }
+  }
+
+  // Loading overlay (only for buffering/loading state)
+  .loading-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 15;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    padding: 10px;
+    backdrop-filter: blur(5px);
+    
+    ion-spinner {
+      --color: #4db8ff;
+      width: 40px;
+      height: 40px;
+    }
   }
 
   ion-card-header, ion-card-content {
     background: transparent;
   }
 
+  ion-card-header {
+    .range-indicator {
+      background: rgba(255, 107, 107, 0.2);
+      border: 1px solid #ff6b6b;
+      border-radius: 8px;
+      padding: 6px 10px;
+      margin-top: 8px;
+      
+      small {
+        color: #ff6b6b;
+        font-weight: 500;
+        font-size: 0.8rem;
+      }
+    }
+  }
+  
   ion-card-title {
     color: #4db8ff;
     font-weight: 600;
@@ -80,5 +136,19 @@
     --bar-background-active: #4db8ff;
     --knob-background: #4db8ff;
     height: 16px;
+    
+    // Enhanced styling for range mode
+    &.range-mode {
+      --bar-background: #ff6b6b77;
+      --bar-background-active: #ff6b6b;
+      --knob-background: #ff6b6b;
+      --bar-height: 6px;
+      --knob-size: 20px;
+      
+      // Add glow effect for range mode
+      ion-range::part(bar) {
+        box-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+      }
+    }
   }
 }

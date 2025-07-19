@@ -1,8 +1,21 @@
 <ion-card class="audio-player-container">
-  <img [src]="audioData.imageSrc" alt="Audio Image" class="audio-img"/>
+  <!-- Image with Play/Pause Overlay -->
+  <div class="audio-image-container" (click)="togglePlayPause()">
+    <img [src]="audioData.imageSrc" alt="Audio Image" class="audio-img"/>
+    
+    <!-- Loading/Buffering Indicator (only show when loading) -->
+    <div class="loading-overlay" *ngIf="isLoading">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+  </div>
+  
   <ion-card-header>
     <ion-card-title>{{audioData.title}}</ion-card-title>
     <ion-card-subtitle>{{audioData.auther}}</ion-card-subtitle>
+    <!-- Range indicator -->
+    <div class="range-indicator" *ngIf="isRangeMode">
+      <small>🎯 Playing: {{ selectedRange?.name }} ({{ formatTime(rangeStartTime) }} - {{ formatTime(rangeEndTime) }})</small>
+    </div>
   </ion-card-header>
   <audio #audioElement [src]="audioData.audioSrc"
          (timeupdate)="onTimeUpdate()"
@@ -10,27 +23,38 @@
          <ion-card-content>
            <!-- Audio Track (Progress Bar) -->
            <div class="audio-track">
-      <span class="audio-time">{{ formatTime(currentTime) }}</span>
+      <span class="audio-time">{{ formatTime(getDisplayCurrentTime()) }}</span>
       <ion-range
-      min="0"
-      [max]="duration"
+      [class.range-mode]="isRangeMode"
+      [min]="getProgressMin()"
+      [max]="getProgressMax()"
       step="0.1"
-      [value]="currentTime"
+      [value]="getDisplayCurrentTime()"
       (ionChange)="seekTo($event)">
     </ion-range>
-    <span class="audio-time">{{formatTime(duration)}}</span>
+    <span class="audio-time">{{formatTime(getProgressMax())}}</span>
     </div>
     <div class="audio-controls">
-      <ion-button fill="clear" (click)="play()" [disabled]="isPlaying">
-        <ion-icon slot="icon-only" name="play"></ion-icon>
+      <!-- Previous button -->
+      <ion-button fill="clear" size="small" (click)="playPrevious()" [disabled]="!hasPrevious()">
+        <ion-icon slot="icon-only" name="play-skip-back"></ion-icon>
       </ion-button>
-      <ion-button fill="clear" (click)="pause()" [disabled]="!isPlaying">
-        <ion-icon slot="icon-only" name="pause"></ion-icon>
+      
+      <!-- Single Play/Pause toggle button -->
+      <ion-button fill="clear" size="small" (click)="togglePlayPause()">
+        <ion-icon slot="icon-only" [name]="isPlaying ? 'pause' : 'play'"></ion-icon>
       </ion-button>
-      <ion-button fill="clear" (click)="stop()">
+      
+      <ion-button fill="clear" size="small" (click)="stop()">
         <ion-icon slot="icon-only" name="stop"></ion-icon>
       </ion-button>
-      <ion-button fill="clear" [color]="isLoop ? 'primary' : 'medium'" (click)="toggleLoop()">
+      
+      <!-- Next button -->
+      <ion-button fill="clear" size="small" (click)="playNext()" [disabled]="!hasNext()">
+        <ion-icon slot="icon-only" name="play-skip-forward"></ion-icon>
+      </ion-button>
+      
+      <ion-button fill="clear" size="small" [color]="isLoop ? 'primary' : 'medium'" (click)="toggleLoop()">
         <ion-icon slot="icon-only" name="repeat"></ion-icon>
       </ion-button>
     </div>

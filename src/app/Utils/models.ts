@@ -27,7 +27,13 @@ export interface AudioItem {
     auther: string,
     title: string,
     _id?: string,
-  }
+}
+
+export interface AudioRange {
+  name: string;
+  start: number; // in minutes.seconds format (e.g., 3.36 = 3 minutes 36 seconds)
+  end: number;   // in minutes.seconds format (e.g., 4.25 = 4 minutes 25 seconds)
+}
 
 export interface CardItem {
   img: string;

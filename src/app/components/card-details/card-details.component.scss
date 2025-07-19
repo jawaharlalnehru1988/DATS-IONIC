@@ -8,6 +8,29 @@
   min-height: 100vh;
 }
 
+// Audio Range Selector Styling
+.audio-range-selector {
+  margin-bottom: 16px;
+  
+  ion-item {
+    --background: rgba(255, 255, 255, 0.1);
+    --color: white;
+    border-radius: 12px;
+    margin-bottom: 8px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    
+    ion-select {
+      --color: white;
+      --placeholder-color: rgba(255, 255, 255, 0.7);
+      
+      &::part(icon) {
+        color: white;
+      }
+    }
+  }
+}
+
 .card-info {
   --background: rgba(255, 255, 255, 0.1);
   --color: white;

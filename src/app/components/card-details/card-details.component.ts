@@ -1,7 +1,7 @@
 import { Component, OnInit, computed, effect, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonItem, IonLabel, IonBadge, IonToast, IonButton, IonIcon, ModalController } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonItem, IonLabel, IonBadge, IonToast, IonButton, IonIcon, IonSelect, IonSelectOption, ModalController } from '@ionic/angular/standalone';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DataSharingService } from '../../services/data-sharing.service';
 import { RatingService } from '../../services/rating.service';
@@ -9,6 +9,7 @@ import { IonicAudioPlayerComponent } from '../ionic-audio-player/ionic-audio-pla
 import { StarRatingComponent } from '../star-rating/star-rating.component';
 import { addIcons } from 'ionicons';
 import { createOutline } from 'ionicons/icons';
+import { AudioRange } from '../../Utils/models';
 
 @Component({
   selector: 'app-card-details',
@@ -34,6 +35,8 @@ import { createOutline } from 'ionicons/icons';
     IonToast,
     IonButton,
     IonIcon,
+    IonSelect,
+    IonSelectOption,
     IonicAudioPlayerComponent,
     StarRatingComponent
   ]
@@ -54,6 +57,17 @@ export class CardDetailsComponent implements OnInit {
   isRatingLoading = signal<boolean>(false);
   ratingMessage = signal<string>('');
   showToast = signal<boolean>(false);
+
+  // Audio range selection
+  selectedAudioRange = signal<AudioRange | null>(null);
+  audioRanges: AudioRange[] = [
+    { name: "Introduction", start: 0.00, end: 0.30 },
+    { name: "Sloka 1", start: 0.30, end: 1.15 },
+    { name: "Sloka 2", start: 1.15, end: 2.00 },
+    { name: "Sloka 3", start: 2.00, end: 2.45 },
+    { name: "Sloka 4", start: 2.45, end: 3.30 },
+    { name: "Conclusion", start: 3.30, end: 4.00 }
+  ];
 
   constructor(
     private router: Router,
@@ -261,6 +275,18 @@ export class CardDetailsComponent implements OnInit {
         modalElement.style.setProperty('--border-radius', '12px');
       }
     }, 100);
+  }
+
+  // Handle audio range selection change
+  onAudioRangeChange(event: any) {
+    const selectedRange = event.detail.value;
+    this.selectedAudioRange.set(selectedRange);
+    console.log('Audio range changed:', {
+      selectedRange: selectedRange,
+      rangeName: selectedRange?.name,
+      rangeStart: selectedRange?.start,
+      rangeEnd: selectedRange?.end
+    });
   }
   
   goBack() {

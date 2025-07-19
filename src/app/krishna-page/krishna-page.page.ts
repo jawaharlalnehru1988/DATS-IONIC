@@ -121,8 +121,46 @@ resumeCarousel() {
 }
 
 onCardSelected(item: CardItem) {
+  // Collect all card items from all categories to create playlist
+  const allCardItems: CardItem[] = [];
+  
+  this.inputDatas.forEach(inputData => {
+    if (inputData?.cardItems) {
+      allCardItems.push(...inputData.cardItems);
+    }
+  });
+  
+  // Sort all items same way as display-card-list component
+  const sortedItems = allCardItems.sort((a, b) => {
+    const categoryA = parseInt(a.category, 10);
+    const categoryB = parseInt(b.category, 10);
+    
+    if (isNaN(categoryA) && isNaN(categoryB)) {
+      return a.category.localeCompare(b.category);
+    }
+    if (isNaN(categoryA)) return 1;
+    if (isNaN(categoryB)) return -1;
+    
+    return categoryA - categoryB;
+  });
+  
+  this.dataSharingService.setPlaylistData(sortedItems);
+  console.log('Playlist set for krishna-page with', sortedItems.length, 'items from', this.inputDatas.length, 'categories');
+  
   this.dataSharingService.setSelectedCardItem(item);
   this.router.navigate(['/card-details']);
+}
+
+onPlayAllClicked(cardItems: CardItem[]) {
+  // Set the playlist with the sorted card items from this specific category
+  this.dataSharingService.setPlaylistData(cardItems);
+  console.log('Play All clicked - Playlist set with', cardItems.length, 'items');
+  
+  // Set the first card as selected and navigate to card details
+  if (cardItems.length > 0) {
+    this.dataSharingService.setSelectedCardItem(cardItems[0]);
+    this.router.navigate(['/card-details']);
+  }
 }
 
 // Open category form in modal

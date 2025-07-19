@@ -21,7 +21,28 @@
     <!-- Audio Player Section -->
     <div class="audio-player-section" *ngIf="audioItem() as audio">
       <h2 class="section-title">{{card.title}}</h2>
-      <app-ionic-audio-player [audioData]="audio"></app-ionic-audio-player>
+      
+      <!-- Audio Range Selector -->
+      <div class="audio-range-selector">
+        <ion-item>
+          <ion-select 
+            placeholder="Select Audio Range" 
+            [value]="selectedAudioRange()"
+            (ionChange)="onAudioRangeChange($event)">
+            <ion-select-option value="">Play Full Audio</ion-select-option>
+            <ion-select-option 
+              *ngFor="let range of audioRanges" 
+              [value]="range">
+              {{ range.name }} ({{ range.start }} ~ {{ range.end }})
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+      </div>
+      
+      <app-ionic-audio-player 
+        [audioData]="audio"
+        [selectedRange]="selectedAudioRange()">
+      </app-ionic-audio-player>
     </div>
 
 
@@ -49,6 +70,8 @@
               </ion-label>
             <ion-badge color="primary" slot="start">{{ card.category }}</ion-badge>
           </ion-item>
+
+
           
           <ion-item lines="none">
             <ion-label>

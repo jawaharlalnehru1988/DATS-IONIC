@@ -1,10 +1,16 @@
 <div class="display-card-list">
-  <!-- Header with title and see all button -->
+  <!-- Header with title, play all button, and see all button -->
   <div class="section-header">
     <h1>{{ inputData.categoryName }}</h1>
-    <div class="see-all-btn" *ngIf="sortedCardItems.length > 3" (click)="onSeeAllClick()">
-      <span>See All</span>
-      <ion-icon name="chevron-forward"></ion-icon>
+    <div class="header-buttons">
+      <div class="play-all-btn" (click)="onPlayAllClick()">
+        <ion-icon name="play"></ion-icon>
+        <span>Play All</span>
+      </div>
+      <div class="see-all-btn" *ngIf="sortedCardItems.length > 3" (click)="onSeeAllClick()">
+        <span>See All</span>
+        <ion-icon name="chevron-forward"></ion-icon>
+      </div>
     </div>
   </div>
   
