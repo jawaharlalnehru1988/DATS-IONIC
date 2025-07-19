@@ -3,18 +3,26 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>{{"Articles"}}</ion-title>
+    <ion-title>Articles & Blogs</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-accordion-group class="scrollable-accordion-group">
-  <ion-accordion *ngFor="let baby of babyNamesList" [value]="baby.Id">
-    <ion-item slot="header" color="light">
-      <ion-label>{{ baby.babyName }}</ion-label>
-    </ion-item>
-    <div class="ion-padding" slot="content">
-      <strong>Meaning:</strong> {{ baby.meaning }}<br>
-      <strong>Rashi:</strong> {{ baby.rashi }}
+<ion-content class="articles-content">
+  <div class="articles-container">
+    <!-- Dynamic Category Sections -->
+    <div class="category-section" *ngFor="let category of articleCategories">
+      <h2 class="category-title">{{ category.title }}</h2>
+      <div class="cards-grid">
+        <div class="article-card" 
+             *ngFor="let card of category.cards" 
+             (click)="onCardClick(card.id)">
+          <img [src]="card.imageUrl" [alt]="card.imageAlt">
+          <div class="card-content">
+            <h3>{{ card.title }}</h3>
+            <p>{{ card.description }}</p>
+          </div>
+        </div>
+      </div>
     </div>
-  </ion-accordion>
-</ion-accordion-group>
+  </div>
+</ion-content>

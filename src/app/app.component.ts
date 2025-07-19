@@ -109,7 +109,7 @@ export class AppComponent {
     { title: 'Lord Sri Krishna', url: '/lordkrishna', icon: 'person-circle', iconColor: '#B34E05' },
     { title: 'Srila Prabhupada', url: '/srilaprabhupada', icon: 'person-circle', iconColor: '#B34E05' },
     { title: 'Audios', url: '/audios', icon: 'musical-notes', iconColor: 'orange' },
-    { title: 'Baby Names', url: '/articles', icon: 'document-text', iconColor: '#045B40' },
+    { title: 'Articles', url: '/articles', icon: 'document-text', iconColor: '#045B40' },
     { title: 'Vaishnava Calender', url: '/calender', icon: 'calendar', iconColor: '#230568' },
     { title: 'Tutorial', url: '/tutorial', icon: 'easel', iconColor: '#7D0250' },
     { title: 'Chant Hare Krishna', url: '/chant', icon: 'person-circle', iconColor: '#B34E05' },
