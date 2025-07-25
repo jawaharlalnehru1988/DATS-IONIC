@@ -1,0 +1,293 @@
+<div class="rich-text-editor">
+  <!-- Toolbar -->
+  <div class="editor-toolbar">
+    <!-- Single Row with Wrapping -->
+    <div class="toolbar-row">
+      <!-- Font Family Select -->
+      <ion-select 
+        [value]="selectedFontStyle" 
+        (ionChange)="changeFontFamily($event.detail.value)"
+        (ionFocus)="saveSelection()"
+        (mousedown)="saveSelection()"
+        interface="popover"
+        placeholder="Font"
+        title="Change font family"
+        class="font-select">
+        <ion-select-option *ngFor="let font of fontStyles" [value]="font.value">
+          {{ font.name }}
+        </ion-select-option>
+      </ion-select>
+
+      <!-- Font Size Select -->
+      <ion-select 
+        [value]="selectedFontSize" 
+        (ionChange)="changeFontSize($event.detail.value)"
+        (ionFocus)="saveSelection()"
+        (mousedown)="saveSelection()"
+        interface="popover"
+        placeholder="Size"
+        title="Change font size"
+        class="size-select">
+        <ion-select-option *ngFor="let size of fontSizes" [value]="size.value">
+          {{ size.name }}
+        </ion-select-option>
+      </ion-select>
+
+      <!-- Line Height Select -->
+      <ion-select 
+        [value]="selectedLineHeight" 
+        (ionChange)="changeLineHeight($event.detail.value)"
+        (ionFocus)="saveSelection()"
+        (mousedown)="saveSelection()"
+        interface="popover"
+        placeholder="Line"
+        title="Change line height spacing"
+        class="line-height-select">
+        <ion-select-option *ngFor="let height of lineHeights" [value]="height.value">
+          {{ height.name }}
+        </ion-select-option>
+      </ion-select>
+
+      <!-- Bold -->
+      <ion-button 
+        fill="clear" 
+        size="small" 
+        [color]="isCommandActive('bold') ? 'primary' : 'medium'"
+        (click)="toggleBold()"
+        (mousedown)="saveSelection()"
+        title="Bold text"
+        class="format-btn">
+        <strong>B</strong>
+      </ion-button>
+
+      <!-- Italic -->
+      <ion-button 
+        fill="clear" 
+        size="small" 
+        [color]="isCommandActive('italic') ? 'primary' : 'medium'"
+        (click)="toggleItalic()"
+        (mousedown)="saveSelection()"
+        title="Italic text"
+        class="format-btn">
+        <em>I</em>
+      </ion-button>
+
+      <!-- Underline -->
+      <ion-button 
+        fill="clear" 
+        size="small" 
+        [color]="isCommandActive('underline') ? 'primary' : 'medium'"
+        (click)="toggleUnderline()"
+        (mousedown)="saveSelection()"
+        title="Underline text"
+        class="format-btn">
+        <u>U</u>
+      </ion-button>
+
+      <!-- Subscript -->
+      <ion-button 
+        fill="clear" 
+        size="small" 
+        [color]="isCommandActive('subscript') ? 'primary' : 'medium'"
+        (click)="toggleSubscript()"
+        title="Subscript text"
+        class="format-btn">
+        X<sub>₂</sub>
+      </ion-button>
+
+      <!-- Superscript -->
+      <ion-button 
+        fill="clear" 
+        size="small" 
+        [color]="isCommandActive('superscript') ? 'primary' : 'medium'"
+        (click)="toggleSuperscript()"
+        title="Superscript text"
+        class="format-btn">
+        X<sup>²</sup>
+      </ion-button>
+
+      <!-- Bullet List -->
+      <ion-button 
+        fill="clear" 
+        size="small" 
+        [color]="isCommandActive('insertUnorderedList') ? 'primary' : 'medium'"
+        (click)="toggleBulletList()"
+        title="Bullet point list"
+        class="format-btn">
+        <ion-icon name="list-outline"></ion-icon>
+      </ion-button>
+
+      <!-- Numbered List -->
+      <ion-button 
+        fill="clear" 
+        size="small" 
+        [color]="isCommandActive('insertOrderedList') ? 'primary' : 'medium'"
+        (click)="toggleNumberedList()"
+        title="Numbered list"
+        class="format-btn">
+        <ion-icon name="list"></ion-icon>
+      </ion-button>
+
+      <!-- Text Color -->
+      <ion-button 
+        fill="clear" 
+        size="small" 
+        color="medium"
+        (mousedown)="saveSelection()"
+        (click)="openColorPopover()"
+        title="Change text color"
+        class="format-btn color-btn">
+        <ion-icon name="text-outline"></ion-icon>
+        <div class="color-indicator text-color"></div>
+      </ion-button>
+
+      <!-- Background Color -->
+      <ion-button 
+        fill="clear" 
+        size="small" 
+        color="medium"
+        (mousedown)="saveSelection()"
+        (click)="openBackgroundColorPopover()"
+        title="Change background color"
+        class="format-btn color-btn">
+        <ion-icon name="color-palette"></ion-icon>
+        <div class="color-indicator bg-color"></div>
+      </ion-button>
+
+      <!-- Align Left -->
+      <ion-button 
+        fill="clear" 
+        size="small" 
+        [color]="isCommandActive('justifyLeft') ? 'primary' : 'medium'"
+        (click)="alignLeft()"
+        title="Align text left"
+        class="format-btn">
+        <ion-icon name="chevron-back"></ion-icon>
+      </ion-button>
+
+      <!-- Align Center -->
+      <ion-button 
+        fill="clear" 
+        size="small" 
+        [color]="isCommandActive('justifyCenter') ? 'primary' : 'medium'"
+        (click)="alignCenter()"
+        title="Center text"
+        class="format-btn">
+        <ion-icon name="reorder-three-outline"></ion-icon>
+      </ion-button>
+
+      <!-- Align Right -->
+      <ion-button 
+        fill="clear" 
+        size="small" 
+        [color]="isCommandActive('justifyRight') ? 'primary' : 'medium'"
+        (click)="alignRight()"
+        title="Align text right"
+        class="format-btn">
+        <ion-icon name="chevron-forward"></ion-icon>
+      </ion-button>
+
+      <!-- Justify -->
+      <ion-button 
+        fill="clear" 
+        size="small" 
+        [color]="isCommandActive('justifyFull') ? 'primary' : 'medium'"
+        (click)="justifyText()"
+        title="Justify text"
+        class="format-btn">
+        <ion-icon name="reorder-two"></ion-icon>
+      </ion-button>
+    </div>
+  </div>
+
+  <!-- Editor Content Area -->
+  <div 
+    #editor
+    class="editor-content"
+    [style.height]="height"
+    [attr.contenteditable]="!disabled"
+    [attr.data-placeholder]="placeholder"
+    (input)="onEditorInput()"
+    (blur)="onEditorBlur()"
+    (focus)="onEditorFocus()"
+    (mouseup)="saveSelection()"
+    (keyup)="saveSelection()">
+  </div>
+
+  <!-- Color Popovers -->
+  <!-- Text Color Popover -->
+  <ion-popover 
+    #colorPopover
+    [isOpen]="isColorPopoverOpen"
+    (didDismiss)="closeColorPopover()"
+    showBackdrop="true">
+    <ng-template>
+      <ion-content class="color-popover-content">
+        <div class="color-grid">
+          <div class="color-title">Text Color</div>
+          
+          <!-- Custom Color Picker -->
+          <div class="custom-color-section">
+            <ion-item>
+              <ion-label>Custom Color:</ion-label>
+              <ion-input
+                type="color"
+                [value]="customTextColor"
+                (ionInput)="onCustomTextColorChange($event)"
+                slot="end">
+              </ion-input>
+            </ion-item>
+          </div>
+          
+          <!-- Predefined Colors -->
+          <div class="colors-container">
+            <div 
+              *ngFor="let color of colors"
+              class="color-item"
+              [style.background-color]="color"
+              (click)="changeTextColor(color)">
+            </div>
+          </div>
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-popover>
+
+  <!-- Background Color Popover -->
+  <ion-popover 
+    #backgroundColorPopover
+    [isOpen]="isBackgroundColorPopoverOpen"
+    (didDismiss)="closeBackgroundColorPopover()"
+    showBackdrop="true">
+    <ng-template>
+      <ion-content class="color-popover-content">
+        <div class="color-grid">
+          <div class="color-title">Background Color</div>
+          
+          <!-- Custom Color Picker -->
+          <div class="custom-color-section">
+            <ion-item>
+              <ion-label>Custom Color:</ion-label>
+              <ion-input
+                type="color"
+                [value]="customBackgroundColor"
+                (ionInput)="onCustomBackgroundColorChange($event)"
+                slot="end">
+              </ion-input>
+            </ion-item>
+          </div>
+          
+          <!-- Predefined Colors -->
+          <div class="colors-container">
+            <div 
+              *ngFor="let color of colors"
+              class="color-item"
+              [style.background-color]="color"
+              (click)="changeBackgroundColor(color)">
+            </div>
+          </div>
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-popover>
+</div>

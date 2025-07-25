@@ -45,6 +45,10 @@ export const routes: Routes = [
     loadComponent: () => import('./articles/articles.component').then( m => m.ArticlesComponent)
   },
   {
+    path: 'rich-text-demo',
+    loadComponent: () => import('./rich-text-demo/rich-text-demo.page').then( m => m.RichTextDemoPage)
+  },
+  {
     path: 'questionanswered',
     loadComponent: () => import('./questions/questions.page').then( m => m.QuestionsPage)
   },

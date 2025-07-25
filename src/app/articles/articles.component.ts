@@ -1,19 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonMenuButton, IonButtons } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonMenuButton, IonButtons, IonSegment, IonSegmentButton, IonLabel, IonIcon } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
+import { addIcons } from 'ionicons';
+import { languageOutline } from 'ionicons/icons';
 
 interface ArticleCard {
   id: string;
-  title: string;
+  articleTitle: string;
   description: string;
   imageUrl: string;
   imageAlt: string;
+  content?: string;
 }
 
 interface ArticleCategory {
   id: string;
-  title: string;
+  categoryTitle: string;
   cards: ArticleCard[];
 }
 
@@ -22,152 +25,210 @@ interface ArticleCategory {
   templateUrl: './articles.component.html',
   styleUrls: ['./articles.component.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, IonMenuButton, IonButtons, CommonModule],
+  imports: [IonIcon, IonLabel, IonSegmentButton, IonSegment, IonContent, IonHeader, IonTitle, IonToolbar, IonMenuButton, IonButtons, CommonModule],
 })
 export class ArticlesComponent implements OnInit {
+  selectedLanguage: string = 'english';
    
   articleCategories: ArticleCategory[] = [
     {
+      id: 'memorize-slokas',
+      categoryTitle: 'How to Memorize Slokas',
+      cards: [
+        {
+          id: 'bhagavad-gita',
+          articleTitle: 'Bhagavad Gita',
+          description: 'Tips and techniques to memorize Bhagavad Gita slokas',
+          imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1753315996/bhagavad_gita_sloka_f2eq9e.png',
+          imageAlt: 'Bhagavad Gita Slokas',
+          content: ``
+        },
+        {
+          id: 'bhagavatam',
+          articleTitle: 'Bhagavatam',
+          description: 'Effective ways to remember Bhagavatam verses',
+          imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1753316350/bhagavatam-01_mogmef.jpg',
+          imageAlt: 'Bhagavatam Slokas',
+          content: ``
+        },
+        {
+          id: 'other-slokas',
+          articleTitle: 'Other Slokas',
+          description: 'General methods for memorizing various slokas',
+          imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1753316150/devotee_children_recites_sloka_dcjlnc.png',
+          imageAlt: 'Other Slokas',
+          content: ``
+        }
+      ]
+    },
+    {
       id: 'baby-names',
-      title: 'Baby Names',
+      categoryTitle: 'Baby Names',
       cards: [
         {
           id: 'boy-baby-names',
-          title: 'Boy Baby Names',
+          articleTitle: 'Boy Baby Names',
           description: 'Meaningful and spiritual names for baby boys',
           imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752936751/boy_baby_images_nudsxs.jpg',
-          imageAlt: 'Boy Baby Names'
+          imageAlt: 'Boy Baby Names',
+          content: ``
         },
         {
           id: 'girl-baby-names',
-          title: 'Girl Baby Names',
+          articleTitle: 'Girl Baby Names',
           description: 'Beautiful and divine names for baby girls',
           imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752936752/girlbaby_vbvkdb.jpg',
-          imageAlt: 'Girl Baby Names'
+          imageAlt: 'Girl Baby Names',
+          content: ``
         }
       ]
     },
     {
       id: 'vaishnava-etiquettes',
-      title: 'Vaishnava Etiquettes',
+      categoryTitle: 'Vaishnava Etiquettes',
       cards: [
         {
           id: 'etiquette-men',
-          title: 'For Men',
+          articleTitle: 'For Men',
           description: 'Spiritual guidelines and conduct for men',
           imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752936753/vaishnava_ettiquate_men_ftgqsq.jpg',
-          imageAlt: 'Etiquette for Men'
+          imageAlt: 'Etiquette for Men',
+          content: ``
         },
         {
           id: 'etiquette-women',
-          title: 'For Women',
+          articleTitle: 'For Women',
           description: 'Spiritual guidelines and conduct for women',
           imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752936753/vaishnava_ettiquate_women_e9tieb.jpg',
-          imageAlt: 'Etiquette for Women'
+          imageAlt: 'Etiquette for Women',
+          content: ``
         },
         {
           id: 'etiquette-husband-wife',
-          title: 'Husband & Wife',
+          articleTitle: 'Husband & Wife',
           description: 'Sacred relationship guidelines for couples',
           imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752936752/vaishnava_ettiquate_husband_wife_qa0qp4.jpg',
-          imageAlt: 'Between Husband and Wife'
+          imageAlt: 'Between Husband and Wife',
+          content: ``
         },
         {
           id: 'etiquette-colleagues',
-          title: 'Between Colleagues',
+          articleTitle: 'Between Colleagues',
           description: 'Professional conduct with spiritual awareness',
           imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752936752/vaishnava_ettiquate_colleagues_vhze4i.jpg',
-          imageAlt: 'Between Colleagues'
+          imageAlt: 'Between Colleagues',
+          content: ``
         }
       ]
     },
     {
       id: 'social-issues',
-      title: 'Social Issues Solutions',
+      categoryTitle: 'Social Issues Solutions',
       cards: [
         {
           id: 'social-national',
-          title: 'National Solutions',
+          articleTitle: 'National Solutions',
           description: 'Addressing national challenges with wisdom',
           imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752936752/social_issues_clkl4n.jpg',
-          imageAlt: 'National Issues'
+          imageAlt: 'National Issues',
+          content: ``
         },
         {
           id: 'social-local',
-          title: 'Local Solutions',
+          articleTitle: 'Local Solutions',
           description: 'Community-based problem solving approaches',
           imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752936752/personal_issue_tw8fx4.jpg',
-          imageAlt: 'Local Issues'
+          imageAlt: 'Local Issues',
+          content: ``
         },
         {
           id: 'social-international',
-          title: 'International Solutions',
+          articleTitle: 'International Solutions',
           description: 'Global perspectives on social harmony',
           imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752936752/social_issues_clkl4n.jpg',
-          imageAlt: 'International Issues'
+          imageAlt: 'International Issues',
+          content: ``
         }
       ]
     },
     {
       id: 'life-schedules',
-      title: 'Happy Life Schedule Formulas',
+      categoryTitle: 'Happy Life Schedule Formulas',
       cards: [
         {
           id: 'schedule-students',
-          title: 'For Students',
+          articleTitle: 'For Students',
           description: 'Balanced life schedules for academic success',
           imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752936752/devotee_student_mwfllt.jpg',
-          imageAlt: 'For Students'
+          imageAlt: 'For Students',
+          content: ``
         },
         {
           id: 'schedule-workers',
-          title: 'For Workers',
+          articleTitle: 'For Workers',
           description: 'Work-life balance with spiritual practice',
           imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752936753/workers_wbbkof.jpg',
-          imageAlt: 'For Workers'
+          imageAlt: 'For Workers',
+          content: ``
         },
         {
           id: 'schedule-business',
-          title: 'For Business Men',
+          articleTitle: 'For Business Men',
           description: 'Ethical business practices with success',
           imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752937255/devotee_in_business_cxgec7.png',
-          imageAlt: 'For Business Men'
+          imageAlt: 'For Business Men',
+          content: ``
         },
         {
           id: 'schedule-devotees',
-          title: 'For Devotees',
+          articleTitle: 'For Devotees',
           description: 'Spiritual life balance and daily practices',
           imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752936752/devotee_student_mwfllt.jpg',
-          imageAlt: 'For Devotees'
+          imageAlt: 'For Devotees',
+          content: ``
         }
       ]
     },
     {
       id: 'harinam-kirtan',
-      title: 'Importance of Harinam Kirtan',
+      categoryTitle: 'Importance of Harinam Kirtan',
       cards: [
         {
           id: 'japa-meditation',
-          title: 'Japa Meditation',
+          articleTitle: 'Japa Meditation',
           description: 'The power of personal chanting practice',
           imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752936753/chanting_harekrishna_ukdwhd.jpg',
-          imageAlt: 'Japa Meditation'
+          imageAlt: 'Japa Meditation',
+          content: ``
         },
         {
           id: 'music-kirtan',
-          title: 'Music Kirtan',
+          articleTitle: 'Music Kirtan',
           description: 'Community chanting and devotional music',
           imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752936752/hare_krishna_kirtan_cn4xvk.jpg',
-          imageAlt: 'Music Kirtan'
+          imageAlt: 'Music Kirtan',
+          content: ``
         }
       ]
-    }
+    },
+    
   ];
 
-  constructor(private router: Router) { }
+  constructor(private router: Router) { 
+    addIcons({ languageOutline });
+  }
    
   ngOnInit() {
     // Initialize any needed data here
+  }
+
+  onLanguageChange(event: any) {
+    this.selectedLanguage = event.detail.value;
+    console.log('Language changed to:', this.selectedLanguage);
+  }
+
+  isEnglishSelected(): boolean {
+    return this.selectedLanguage === 'english';
   }
 
   onCardClick(articleId: string) {

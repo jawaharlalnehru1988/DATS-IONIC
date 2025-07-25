@@ -1,0 +1,110 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Rich Text Editor Demo</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="demo-content theme-ocean">
+  <div class="demo-container">
+    
+    <!-- Demo Card -->
+    <ion-card class="demo-card">
+      <ion-card-header>
+        <ion-card-title>Rich Text Editor</ion-card-title>
+      </ion-card-header>
+      
+      <ion-card-content>
+        <form [formGroup]="demoForm" (ngSubmit)="onSave()">
+          <!-- Rich Text Editor -->
+          <div class="editor-section">
+            <ion-label class="section-label">
+              <h3>Rich Text Editor</h3>
+              <p>Use the toolbar to format your text with various styling options.</p>
+            </ion-label>
+            
+            <app-rich-text-editor
+              formControlName="richTextContent"
+              placeholder="Start typing your content here..."
+              height="300px">
+            </app-rich-text-editor>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="action-buttons">
+            <ion-button 
+              type="submit" 
+              [disabled]="!demoForm.valid"
+              color="primary">
+              Save Content
+            </ion-button>
+            
+            <ion-button 
+              type="button" 
+              fill="outline"
+              color="secondary"
+              (click)="onLoadSample()">
+              Load Sample
+            </ion-button>
+            
+            <ion-button 
+              type="button" 
+              fill="clear"
+              color="medium"
+              (click)="onClear()">
+              Clear
+            </ion-button>
+          </div>
+        </form>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Output Preview Cards -->
+    <div class="output-section">
+      <!-- HTML Output -->
+      <ion-card class="output-card">
+        <ion-card-header>
+          <ion-card-title>HTML Output</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-textarea
+            [value]="htmlOutput"
+            readonly="true"
+            rows="8"
+            placeholder="HTML output will appear here..."
+            class="output-textarea">
+          </ion-textarea>
+        </ion-card-content>
+      </ion-card>
+
+      <!-- Plain Text Output -->
+      <ion-card class="output-card">
+        <ion-card-header>
+          <ion-card-title>Plain Text Output</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-textarea
+            [value]="plainTextOutput"
+            readonly="true"
+            rows="6"
+            placeholder="Plain text output will appear here..."
+            class="output-textarea">
+          </ion-textarea>
+        </ion-card-content>
+      </ion-card>
+
+      <!-- Rendered Preview -->
+      <ion-card class="output-card">
+        <ion-card-header>
+          <ion-card-title>Rendered Preview</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <div 
+            class="rendered-preview"
+            [innerHTML]="htmlOutput">
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+  </div>
+</ion-content>

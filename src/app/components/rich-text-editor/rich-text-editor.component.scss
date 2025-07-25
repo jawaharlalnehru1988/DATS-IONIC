@@ -1,0 +1,476 @@
+@use '../../../assets/styles/theme-models.scss';
+
+ ::ng-deep .input-wrapper.sc-ion-input-md input.sc-ion-input-md {
+    -webkit-transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 50%;
+          }
+
+.rich-text-editor {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+
+  .editor-toolbar {
+    background: rgba(255, 255, 255, 0.15);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 8px 12px;
+
+    .toolbar-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+    }
+
+    .font-select,
+    .size-select,
+    .line-height-select {
+      min-width: 80px;
+      max-width: 120px;
+      --background: rgba(255, 255, 255, 0.2);
+      --color: #fff;
+      --border-radius: 8px;
+      --padding: 6px 10px;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+
+      ion-select-option {
+        --color: #333;
+      }
+    }
+
+    .line-height-select {
+      min-width: 60px;
+      max-width: 80px;
+    }
+
+    .format-btn {
+      --border-radius: 8px;
+      --padding-start: 6px;
+      --padding-end: 6px;
+      --padding-top: 4px;
+      --padding-bottom: 4px;
+      min-width: 32px;
+      height: 32px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+
+      &:hover {
+        --background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-1px);
+      }
+
+      &.color-btn {
+        position: relative;
+
+        .color-indicator {
+          position: absolute;
+          bottom: 2px;
+          right: 2px;
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          border: 1px solid rgba(255, 255, 255, 0.5);
+
+          &.text-color {
+            background-color: #000;
+          }
+
+          &.bg-color {
+            background-color: #fff;
+          }
+        }
+      }
+
+      strong, em, u {
+        font-size: 1rem;
+        color: inherit;
+      }
+
+      sub, sup {
+        font-size: 0.7rem;
+      }
+    }
+  }
+
+  .editor-content {
+    min-height: 150px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.95);
+    color: #333;
+    outline: none;
+    border: none;
+    font-family: 'Arial', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    overflow-y: auto;
+    resize: vertical;
+
+    &:empty::before {
+      content: attr(data-placeholder);
+      color: #999;
+      font-style: italic;
+      pointer-events: none;
+    }
+
+    &:focus {
+      background: rgba(255, 255, 255, 1);
+      box-shadow: inset 0 0 0 2px rgba(102, 126, 234, 0.3);
+    }
+
+    // Text formatting styles
+    strong, b {
+      font-weight: bold;
+    }
+
+    em, i {
+      font-style: italic;
+    }
+
+    u {
+      text-decoration: underline;
+    }
+
+    sub {
+      vertical-align: sub;
+      font-size: smaller;
+    }
+
+    sup {
+      vertical-align: super;
+      font-size: smaller;
+    }
+
+    // Alignment styles
+    div[style*="text-align: left"] {
+      text-align: left !important;
+    }
+
+    div[style*="text-align: center"] {
+      text-align: center !important;
+    }
+
+    div[style*="text-align: right"] {
+      text-align: right !important;
+    }
+
+    div[style*="text-align: justify"] {
+      text-align: justify !important;
+    }
+  }
+
+  &.disabled {
+    opacity: 0.6;
+    pointer-events: none;
+
+    .editor-content {
+      background: rgba(255, 255, 255, 0.5);
+      cursor: not-allowed;
+    }
+  }
+}
+
+// Color popover styles
+.color-popover-content {
+  --background: rgba(255, 255, 255, 0.95);
+  --color: #333;
+  backdrop-filter: blur(20px);
+
+  .color-grid {
+    padding: 16px;
+
+    .color-title {
+      font-weight: 600;
+      margin-bottom: 12px;
+      text-align: center;
+      color: #333;
+      font-size: 1rem;
+    }
+
+    .colors-container {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 8px;
+      max-width: 240px;
+
+      .color-item {
+        width: 32px;
+        height: 32px;
+        border-radius: 6px;
+        cursor: pointer;
+        border: 2px solid rgba(255, 255, 255, 0.8);
+        transition: all 0.2s ease;
+        position: relative;
+
+        &:hover {
+          transform: scale(1.1);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+          border-color: #667eea;
+        }
+
+        &:active {
+          transform: scale(0.95);
+        }
+
+        // Special styling for white and light colors
+        &[style*="background-color: #FFFFFF"],
+        &[style*="background-color: #FFE6E6"],
+        &[style*="background-color: #FFCCCC"] {
+          border-color: #ddd;
+        }
+      }
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .rich-text-editor {
+    .editor-toolbar {
+      .toolbar-row {
+        gap: 4px;
+        
+        &::-webkit-scrollbar {
+          display: none;
+        }
+        
+        // Enable horizontal scroll on very small screens
+        @media (max-width: 480px) {
+          overflow-x: auto;
+          white-space: nowrap;
+          
+          &::-webkit-scrollbar {
+            height: 2px;
+          }
+          
+          &::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+          }
+          
+          &::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+          }
+        }
+      }
+
+      .font-select,
+      .size-select,
+      .line-height-select {
+        min-width: 70px;
+        max-width: 100px;
+        font-size: 0.8rem;
+      }
+
+      .line-height-select {
+        min-width: 50px;
+        max-width: 70px;
+      }
+
+      .format-btn {
+        min-width: 28px;
+        height: 28px;
+        flex-shrink: 0;
+        
+        &.color-btn .color-indicator {
+          width: 5px;
+          height: 5px;
+        }
+      }
+    }
+
+    .editor-content {
+      min-height: 120px;
+      padding: 12px;
+      font-size: 13px;
+    }
+  }
+}
+
+// Dark theme support
+@media (prefers-color-scheme: dark) {
+  .rich-text-editor {
+    .editor-content {
+      background: rgba(44, 62, 80, 0.95);
+      color: #ecf0f1;
+
+      &:empty::before {
+        color: #95a5a6;
+      }
+
+      &:focus {
+        background: rgba(44, 62, 80, 1);
+      }
+    }
+  }
+
+  .color-popover-content {
+    --background: rgba(44, 62, 80, 0.95);
+    --color: #ecf0f1;
+
+    .color-grid .color-title {
+      color: #ecf0f1;
+    }
+
+    .custom-color-section {
+      margin: 12px 0;
+      padding: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+      animation: slideInFade 0.3s ease-out;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.12);
+        border-color: rgba(255, 255, 255, 0.4);
+        transform: translateY(-1px);
+      }
+
+      ion-item {
+        --background: transparent;
+        --color: #ecf0f1;
+        --padding-start: 0;
+        --padding-end: 0;
+        --inner-padding-end: 0;
+        --min-height: 45px;
+        margin-bottom: 0;
+
+        ion-label {
+          color: #ecf0f1;
+          font-size: 1rem;
+          font-weight: 600;
+          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        ion-input {
+          --background: rgba(255, 255, 255, 0.2);
+          --color: #ecf0f1;
+          --border-radius: 8px;
+          --padding: 6px 10px;
+          max-width: 70px;
+          height: 40px;
+          border: 2px solid rgba(255, 255, 255, 0.3);
+          border-radius: 8px;
+          background: rgba(255, 255, 255, 0.1);
+          backdrop-filter: blur(5px);
+          transition: all 0.3s ease;
+          
+          &:hover {
+            border-color: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(1.02);
+          }
+
+        
+          
+          input[type="color"] {
+            width: 55px !important;
+            height: 35px !important;
+            border: 3px solid rgba(255, 255, 255, 0.4) !important;
+            border-radius: 8px !important;
+            cursor: pointer;
+            outline: none !important;
+            background: #fff !important;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            
+            &:hover {
+              border-color: rgba(255, 255, 255, 0.7) !important;
+              box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+              transform: scale(1.05);
+            }
+            
+            &:focus {
+              border-color: #3880ff !important;
+              box-shadow: 0 0 0 3px rgba(56, 128, 255, 0.3);
+            }
+            
+            &::-webkit-color-swatch-wrapper {
+              padding: 2px;
+              border: none;
+              border-radius: 6px;
+              background: transparent;
+            }
+            
+            &::-webkit-color-swatch {
+              border: none !important;
+              border-radius: 4px;
+              box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+            }
+            
+            &::-moz-color-swatch {
+              border: none !important;
+              border-radius: 4px;
+              box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+            }
+            
+            /* Firefox specific styling */
+            &::-moz-focus-inner {
+              border: 0;
+            }
+          }
+        }
+      }
+    }
+
+    .colors-container {
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+    }
+  }
+}
+
+// Animation for smooth interactions
+.rich-text-editor {
+  transition: all 0.3s ease;
+
+  .editor-toolbar .format-btn {
+    ion-icon {
+      transition: transform 0.2s ease;
+    }
+
+    &:hover ion-icon {
+      transform: scale(1.1);
+    }
+  }
+
+  // Enhanced tooltip styling
+  [title] {
+    position: relative;
+    cursor: pointer;
+  }
+
+  // Custom tooltip enhancement for better visibility
+  .format-btn,
+  .font-select,
+  .size-select,
+  .line-height-select {
+    &:hover {
+      position: relative;
+      z-index: 100;
+    }
+  }
+}
+
+// Keyframe animations
+@keyframes slideInFade {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -7,21 +7,51 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="articles-content">
+<ion-segment value="english" (ionChange)="onLanguageChange($event)" class="language-segment theme-ocean">
+  <ion-segment-button value="english">
+    <ion-label>English</ion-label>
+  </ion-segment-button>
+  <ion-segment-button value="tamil">
+    <ion-label>Tamil</ion-label>
+  </ion-segment-button>
+  <ion-segment-button value="hindi">
+    <ion-label>Hindi</ion-label>
+  </ion-segment-button>
+  <ion-segment-button value="kannada">
+    <ion-label>Kannada</ion-label>
+  </ion-segment-button>
+  <ion-segment-button value="telugu">
+    <ion-label>Telugu</ion-label>
+  </ion-segment-button>
+</ion-segment>
+
+<ion-content class="articles-content theme-ocean">
   <div class="articles-container">
-    <!-- Dynamic Category Sections -->
-    <div class="category-section" *ngFor="let category of articleCategories">
-      <h2 class="category-title">{{ category.title }}</h2>
-      <div class="cards-grid">
-        <div class="article-card" 
-             *ngFor="let card of category.cards" 
-             (click)="onCardClick(card.id)">
-          <img [src]="card.imageUrl" [alt]="card.imageAlt">
-          <div class="card-content">
-            <h3>{{ card.title }}</h3>
-            <p>{{ card.description }}</p>
+    <!-- English Content - Dynamic Category Sections -->
+    <div *ngIf="isEnglishSelected()" class="english-content">
+      <div class="category-section" *ngFor="let category of articleCategories">
+        <h2 class="category-title">{{ category.categoryTitle }}</h2>
+        <div class="cards-grid">
+          <div class="article-card" 
+               *ngFor="let card of category.cards" 
+               (click)="onCardClick(card.id)">
+            <img [src]="card.imageUrl" [alt]="card.imageAlt">
+            <div class="card-content">
+              <h3>{{ card.articleTitle }}</h3>
+              <p>{{ card.description }}</p>
+            </div>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- Other Languages - Coming Soon Message -->
+    <div *ngIf="!isEnglishSelected()" class="coming-soon-content">
+      <div class="coming-soon-card">
+        <ion-icon name="language-outline" class="coming-soon-icon"></ion-icon>
+        <h2>Articles Yet to be Added</h2>
+        <p>We are working on bringing you amazing content in {{ selectedLanguage === 'tamil' ? 'Tamil' : selectedLanguage === 'hindi' ? 'Hindi' : selectedLanguage === 'kannada' ? 'Kannada' : 'Telugu' }}.</p>
+        <p class="subtitle">Please check back soon!</p>
       </div>
     </div>
   </div>

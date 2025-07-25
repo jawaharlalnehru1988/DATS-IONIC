@@ -1,5 +1,5 @@
 // Import theme models
-@import '../../assets/styles/theme-models.scss';
+@use '../../assets/styles/theme-models.scss';
 
 .tutorial-content {
   --background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
