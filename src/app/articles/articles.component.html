@@ -4,6 +4,11 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>Articles & Blogs</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="openAddArticleForm()" fill="clear">
+        <ion-icon name="add" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -35,6 +40,14 @@
           <div class="article-card" 
                *ngFor="let card of category.cards" 
                (click)="onCardClick(card.id)">
+            <div class="card-actions">
+              <ion-button 
+                fill="clear" 
+                size="small" 
+                (click)="openActionSheet(card.id, $event)">
+                <ion-icon name="ellipsis-vertical"></ion-icon>
+              </ion-button>
+            </div>
             <img [src]="card.imageUrl" [alt]="card.imageAlt">
             <div class="card-content">
               <h3>{{ card.articleTitle }}</h3>
@@ -56,3 +69,19 @@
     </div>
   </div>
 </ion-content>
+
+<!-- Article Form Modal -->
+<app-article-form
+  [isOpen]="isFormOpen"
+  [editingArticle]="editingArticle"
+  (modalClosed)="closeArticleForm()"
+  (articleSaved)="onArticleSaved($event)">
+</app-article-form>
+
+<!-- Action Sheet for Article Actions -->
+<ion-action-sheet
+  [isOpen]="isActionSheetOpen"
+  header="Article Actions"
+  (didDismiss)="closeActionSheet()"
+  [buttons]="actionSheetButtons">
+</ion-action-sheet>

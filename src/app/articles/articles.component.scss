@@ -152,6 +152,33 @@
   cursor: pointer;
   position: relative;
   
+  .card-actions {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 10;
+    
+    ion-button {
+      --background: rgba(0, 0, 0, 0.4);
+      --color: white;
+      --border-radius: 50%;
+      --padding-start: 0;
+      --padding-end: 0;
+      width: 32px;
+      height: 32px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      
+      ion-icon {
+        font-size: 16px;
+      }
+    }
+  }
+  
+  &:hover .card-actions ion-button {
+    opacity: 1;
+  }
+  
   &:hover {
     transform: translateY(-8px) scale(1.02);
     box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);

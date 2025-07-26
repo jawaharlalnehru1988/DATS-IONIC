@@ -1,36 +1,56 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonMenuButton, IonButtons, IonSegment, IonSegmentButton, IonLabel, IonIcon } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonMenuButton, IonButtons, IonSegment, IonSegmentButton, IonLabel, IonIcon, IonButton, IonActionSheet } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { addIcons } from 'ionicons';
-import { languageOutline } from 'ionicons/icons';
-
-interface ArticleCard {
-  id: string;
-  articleTitle: string;
-  description: string;
-  imageUrl: string;
-  imageAlt: string;
-  content?: string;
-}
-
-interface ArticleCategory {
-  id: string;
-  categoryTitle: string;
-  cards: ArticleCard[];
-}
+import { languageOutline, add, ellipsisVertical, create, trash, eye } from 'ionicons/icons';
+import { ArticleService, ArticleCard, ArticleCategory } from '../services/article.service';
+import { ArticleFormComponent } from '../components/article-form/article-form.component';
 
 @Component({
   selector: 'app-articles',
   templateUrl: './articles.component.html',
   styleUrls: ['./articles.component.scss'],
   standalone: true,
-  imports: [IonIcon, IonLabel, IonSegmentButton, IonSegment, IonContent, IonHeader, IonTitle, IonToolbar, IonMenuButton, IonButtons, CommonModule],
+  imports: [IonActionSheet, IonButton, IonIcon, IonLabel, IonSegmentButton, IonSegment, IonContent, IonHeader, IonTitle, IonToolbar, IonMenuButton, IonButtons, CommonModule, ArticleFormComponent],
 })
 export class ArticlesComponent implements OnInit {
   selectedLanguage: string = 'english';
-   
-  articleCategories: ArticleCategory[] = [
+  articleCategories: ArticleCategory[] = [];
+  
+  // Form modal properties
+  isFormOpen = false;
+  editingArticle: ArticleCard | null = null;
+  
+  // Action sheet properties
+  isActionSheetOpen = false;
+  selectedArticleId: string = '';
+  
+  actionSheetButtons = [
+    {
+      text: 'View',
+      icon: 'eye',
+      handler: () => this.viewArticle()
+    },
+    {
+      text: 'Edit',
+      icon: 'create',
+      handler: () => this.editArticle()
+    },
+    {
+      text: 'Delete',
+      icon: 'trash',
+      role: 'destructive',
+      handler: () => this.deleteArticle()
+    },
+    {
+      text: 'Cancel',
+      role: 'cancel'
+    }
+  ];
+  
+  // Original static data for fallback
+  defaultArticleCategories: ArticleCategory[] = [
     {
       id: 'memorize-slokas',
       categoryTitle: 'How to Memorize Slokas',
@@ -41,7 +61,8 @@ export class ArticlesComponent implements OnInit {
           description: 'Tips and techniques to memorize Bhagavad Gita slokas',
           imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1753315996/bhagavad_gita_sloka_f2eq9e.png',
           imageAlt: 'Bhagavad Gita Slokas',
-          content: ``
+          content: ``,
+          categoryTitle: 'How to Memorize Slokas'
         },
         {
           id: 'bhagavatam',
@@ -49,7 +70,8 @@ export class ArticlesComponent implements OnInit {
           description: 'Effective ways to remember Bhagavatam verses',
           imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1753316350/bhagavatam-01_mogmef.jpg',
           imageAlt: 'Bhagavatam Slokas',
-          content: ``
+          content: ``,
+          categoryTitle: 'How to Memorize Slokas'
         },
         {
           id: 'other-slokas',
@@ -57,7 +79,8 @@ export class ArticlesComponent implements OnInit {
           description: 'General methods for memorizing various slokas',
           imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1753316150/devotee_children_recites_sloka_dcjlnc.png',
           imageAlt: 'Other Slokas',
-          content: ``
+          content: ``,
+          categoryTitle: 'How to Memorize Slokas'
         }
       ]
     },
@@ -71,7 +94,8 @@ export class ArticlesComponent implements OnInit {
           description: 'Meaningful and spiritual names for baby boys',
           imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752936751/boy_baby_images_nudsxs.jpg',
           imageAlt: 'Boy Baby Names',
-          content: ``
+          content: ``,
+          categoryTitle: 'Baby Names'
         },
         {
           id: 'girl-baby-names',
@@ -79,7 +103,8 @@ export class ArticlesComponent implements OnInit {
           description: 'Beautiful and divine names for baby girls',
           imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752936752/girlbaby_vbvkdb.jpg',
           imageAlt: 'Girl Baby Names',
-          content: ``
+          content: ``,
+          categoryTitle: 'Baby Names'
         }
       ]
     },
@@ -93,7 +118,8 @@ export class ArticlesComponent implements OnInit {
           description: 'Spiritual guidelines and conduct for men',
           imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752936753/vaishnava_ettiquate_men_ftgqsq.jpg',
           imageAlt: 'Etiquette for Men',
-          content: ``
+          content: ``,
+          categoryTitle: 'Vaishnava Etiquettes'
         },
         {
           id: 'etiquette-women',
@@ -101,7 +127,8 @@ export class ArticlesComponent implements OnInit {
           description: 'Spiritual guidelines and conduct for women',
           imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752936753/vaishnava_ettiquate_women_e9tieb.jpg',
           imageAlt: 'Etiquette for Women',
-          content: ``
+          content: ``,
+          categoryTitle: 'Vaishnava Etiquettes'
         },
         {
           id: 'etiquette-husband-wife',
@@ -109,7 +136,8 @@ export class ArticlesComponent implements OnInit {
           description: 'Sacred relationship guidelines for couples',
           imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752936752/vaishnava_ettiquate_husband_wife_qa0qp4.jpg',
           imageAlt: 'Between Husband and Wife',
-          content: ``
+          content: ``,
+          categoryTitle: 'Vaishnava Etiquettes'
         },
         {
           id: 'etiquette-colleagues',
@@ -117,7 +145,8 @@ export class ArticlesComponent implements OnInit {
           description: 'Professional conduct with spiritual awareness',
           imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752936752/vaishnava_ettiquate_colleagues_vhze4i.jpg',
           imageAlt: 'Between Colleagues',
-          content: ``
+          content: ``,
+          categoryTitle: 'Vaishnava Etiquettes'
         }
       ]
     },
@@ -131,7 +160,8 @@ export class ArticlesComponent implements OnInit {
           description: 'Addressing national challenges with wisdom',
           imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752936752/social_issues_clkl4n.jpg',
           imageAlt: 'National Issues',
-          content: ``
+          content: ``,
+          categoryTitle: 'Social Issues Solutions'
         },
         {
           id: 'social-local',
@@ -139,7 +169,8 @@ export class ArticlesComponent implements OnInit {
           description: 'Community-based problem solving approaches',
           imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752936752/personal_issue_tw8fx4.jpg',
           imageAlt: 'Local Issues',
-          content: ``
+          content: ``,
+          categoryTitle: 'Social Issues Solutions'
         },
         {
           id: 'social-international',
@@ -147,7 +178,8 @@ export class ArticlesComponent implements OnInit {
           description: 'Global perspectives on social harmony',
           imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752936752/social_issues_clkl4n.jpg',
           imageAlt: 'International Issues',
-          content: ``
+          content: ``,
+          categoryTitle: 'Social Issues Solutions'
         }
       ]
     },
@@ -161,7 +193,8 @@ export class ArticlesComponent implements OnInit {
           description: 'Balanced life schedules for academic success',
           imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752936752/devotee_student_mwfllt.jpg',
           imageAlt: 'For Students',
-          content: ``
+          content: ``,
+          categoryTitle: 'Happy Life Schedule Formulas'
         },
         {
           id: 'schedule-workers',
@@ -169,7 +202,8 @@ export class ArticlesComponent implements OnInit {
           description: 'Work-life balance with spiritual practice',
           imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752936753/workers_wbbkof.jpg',
           imageAlt: 'For Workers',
-          content: ``
+          content: ``,
+          categoryTitle: 'Happy Life Schedule Formulas'
         },
         {
           id: 'schedule-business',
@@ -177,7 +211,8 @@ export class ArticlesComponent implements OnInit {
           description: 'Ethical business practices with success',
           imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752937255/devotee_in_business_cxgec7.png',
           imageAlt: 'For Business Men',
-          content: ``
+          content: ``,
+          categoryTitle: 'Happy Life Schedule Formulas'
         },
         {
           id: 'schedule-devotees',
@@ -185,7 +220,8 @@ export class ArticlesComponent implements OnInit {
           description: 'Spiritual life balance and daily practices',
           imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752936752/devotee_student_mwfllt.jpg',
           imageAlt: 'For Devotees',
-          content: ``
+          content: ``,
+          categoryTitle: 'Happy Life Schedule Formulas'
         }
       ]
     },
@@ -199,7 +235,8 @@ export class ArticlesComponent implements OnInit {
           description: 'The power of personal chanting practice',
           imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752936753/chanting_harekrishna_ukdwhd.jpg',
           imageAlt: 'Japa Meditation',
-          content: ``
+          content: ``,
+          categoryTitle: 'Importance of Harinam Kirtan'
         },
         {
           id: 'music-kirtan',
@@ -207,19 +244,28 @@ export class ArticlesComponent implements OnInit {
           description: 'Community chanting and devotional music',
           imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752936752/hare_krishna_kirtan_cn4xvk.jpg',
           imageAlt: 'Music Kirtan',
-          content: ``
+          content: ``,
+          categoryTitle: 'Importance of Harinam Kirtan'
         }
       ]
     },
     
   ];
 
-  constructor(private router: Router) { 
-    addIcons({ languageOutline });
+  constructor(private router: Router, private articleService: ArticleService) { 
+    addIcons({ languageOutline, add, ellipsisVertical, create, trash, eye });
   }
    
   ngOnInit() {
-    // Initialize any needed data here
+    // Load articles from service or initialize with default data
+    this.articleService.getArticles().subscribe(articles => {
+      if (articles.length === 0) {
+        // Initialize with default data if no articles exist
+        this.articleService.setArticles(this.defaultArticleCategories);
+      } else {
+        this.articleCategories = articles;
+      }
+    });
   }
 
   onLanguageChange(event: any) {
@@ -236,5 +282,70 @@ export class ArticlesComponent implements OnInit {
     // TODO: Navigate to specific article page or open article details
     // For now, we'll just log the article ID
     // Example: this.router.navigate(['/article-details', articleId]);
+  }
+
+  // Form related methods
+  openAddArticleForm() {
+    this.editingArticle = null;
+    this.isFormOpen = true;
+  }
+
+  openEditArticleForm(article: ArticleCard) {
+    this.editingArticle = article;
+    this.isFormOpen = true;
+  }
+
+  closeArticleForm() {
+    this.isFormOpen = false;
+    this.editingArticle = null;
+  }
+
+  onArticleSaved(article: ArticleCard) {
+    // Refresh the articles list
+    this.articleService.getArticles().subscribe(articles => {
+      this.articleCategories = articles;
+    });
+  }
+
+  // Action sheet methods
+  openActionSheet(articleId: string, event: Event) {
+    event.stopPropagation(); // Prevent card click
+    this.selectedArticleId = articleId;
+    this.isActionSheetOpen = true;
+  }
+
+  closeActionSheet() {
+    this.isActionSheetOpen = false;
+    this.selectedArticleId = '';
+  }
+
+  viewArticle() {
+    if (this.selectedArticleId) {
+      this.onCardClick(this.selectedArticleId);
+    }
+    this.closeActionSheet();
+  }
+
+  editArticle() {
+    if (this.selectedArticleId) {
+      const article = this.articleService.getArticleById(this.selectedArticleId);
+      if (article) {
+        this.openEditArticleForm(article);
+      }
+    }
+    this.closeActionSheet();
+  }
+
+  deleteArticle() {
+    if (this.selectedArticleId) {
+      if (confirm('Are you sure you want to delete this article?')) {
+        this.articleService.deleteArticle(this.selectedArticleId);
+        // Refresh the articles list
+        this.articleService.getArticles().subscribe(articles => {
+          this.articleCategories = articles;
+        });
+      }
+    }
+    this.closeActionSheet();
   }
 }

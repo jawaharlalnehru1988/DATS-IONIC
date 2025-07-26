@@ -1,0 +1,114 @@
+.article-form-content {
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --padding-top: 16px;
+  --padding-bottom: 16px;
+}
+
+ion-card {
+  margin-bottom: 16px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+ion-card-header {
+  padding-bottom: 8px;
+}
+
+ion-card-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--ion-color-primary);
+}
+
+ion-item {
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  margin-bottom: 8px;
+}
+
+ion-label {
+  font-weight: 500;
+  color: var(--ion-color-dark);
+  margin-bottom: 4px;
+}
+
+ion-input, ion-textarea, ion-select {
+  --border-radius: 8px;
+  --background: var(--ion-color-light);
+  --padding-start: 12px;
+  --padding-end: 12px;
+  font-size: 14px;
+}
+
+ion-input.ion-invalid, 
+ion-textarea.ion-invalid, 
+ion-select.ion-invalid {
+  --border-color: var(--ion-color-danger);
+  --border-width: 2px;
+}
+
+.error-message {
+  color: var(--ion-color-danger);
+  font-size: 0.8rem;
+  margin-top: 4px;
+  margin-bottom: 8px;
+  padding-left: 4px;
+}
+
+.content-editor-container {
+  margin-top: 16px;
+  
+  ion-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--ion-color-dark);
+  }
+}
+
+.form-actions {
+  padding: 16px 0;
+  
+  ion-button {
+    margin-bottom: 12px;
+    --border-radius: 8px;
+    height: 48px;
+    font-weight: 500;
+  }
+  
+  ion-button[color="primary"] {
+    --background: var(--ion-color-primary);
+    --color: white;
+  }
+  
+  ion-button[fill="outline"] {
+    --border-width: 2px;
+  }
+}
+
+/* Responsive design */
+@media (min-width: 768px) {
+  .article-form-content {
+    --padding-start: 24px;
+    --padding-end: 24px;
+  }
+  
+  ion-grid {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  ion-card {
+    --background: var(--ion-color-dark);
+    box-shadow: 0 2px 8px rgba(255, 255, 255, 0.1);
+  }
+  
+  ion-input, ion-textarea, ion-select {
+    --background: var(--ion-color-dark-shade);
+    --color: var(--ion-color-light);
+  }
+}

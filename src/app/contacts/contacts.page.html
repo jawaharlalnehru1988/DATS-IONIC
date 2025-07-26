@@ -4,6 +4,11 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>Contacts</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="openThemeSelector()" fill="clear">
+        <ion-icon name="color-palette-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -13,37 +18,6 @@
       <ion-title size="large">Contacts</ion-title>
     </ion-toolbar>
   </ion-header>
-
-  <!-- Theme Selector -->
-  <div class="theme-selector">
-    <h4>Choose Theme:</h4>
-    <div class="theme-buttons">
-      <button class="theme-btn ocean" (click)="setTheme('theme-ocean')" [class.active]="currentTheme === 'theme-ocean'">
-        <span class="theme-preview ocean-preview"></span>
-        Ocean
-      </button>
-      <button class="theme-btn sunset" (click)="setTheme('theme-sunset')" [class.active]="currentTheme === 'theme-sunset'">
-        <span class="theme-preview sunset-preview"></span>
-        Sunset
-      </button>
-      <button class="theme-btn forest" (click)="setTheme('theme-forest')" [class.active]="currentTheme === 'theme-forest'">
-        <span class="theme-preview forest-preview"></span>
-        Forest
-      </button>
-      <button class="theme-btn cyberpunk" (click)="setTheme('theme-cyberpunk')" [class.active]="currentTheme === 'theme-cyberpunk'">
-        <span class="theme-preview cyberpunk-preview"></span>
-        Cyber
-      </button>
-      <button class="theme-btn royal" (click)="setTheme('theme-royal')" [class.active]="currentTheme === 'theme-royal'">
-        <span class="theme-preview royal-preview"></span>
-        Royal
-      </button>
-      <button class="theme-btn midnight" (click)="setTheme('theme-midnight')" [class.active]="currentTheme === 'theme-midnight'">
-        <span class="theme-preview midnight-preview"></span>
-        Midnight
-      </button>
-    </div>
-  </div>
 
   <!-- Contact Information Section -->
   <div class="contact-info" [ngClass]="currentTheme">
@@ -92,5 +66,52 @@
    
   </div>
 </ion-content>
+
+<!-- Theme Selector Modal -->
+<ion-modal [isOpen]="isThemeModalOpen" (didDismiss)="closeThemeSelector()">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Choose Theme</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="closeThemeSelector()" fill="clear">
+            <ion-icon name="close"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    
+    <ion-content class="theme-modal-content">
+      <div class="theme-selector">
+        <div class="theme-buttons">
+          <button class="theme-btn ocean" (click)="selectTheme('theme-ocean')" [class.active]="currentTheme === 'theme-ocean'">
+            <span class="theme-preview ocean-preview"></span>
+            Ocean
+          </button>
+          <button class="theme-btn sunset" (click)="selectTheme('theme-sunset')" [class.active]="currentTheme === 'theme-sunset'">
+            <span class="theme-preview sunset-preview"></span>
+            Sunset
+          </button>
+          <button class="theme-btn forest" (click)="selectTheme('theme-forest')" [class.active]="currentTheme === 'theme-forest'">
+            <span class="theme-preview forest-preview"></span>
+            Forest
+          </button>
+          <button class="theme-btn cyberpunk" (click)="selectTheme('theme-cyberpunk')" [class.active]="currentTheme === 'theme-cyberpunk'">
+            <span class="theme-preview cyberpunk-preview"></span>
+            Cyber
+          </button>
+          <button class="theme-btn royal" (click)="selectTheme('theme-royal')" [class.active]="currentTheme === 'theme-royal'">
+            <span class="theme-preview royal-preview"></span>
+            Royal
+          </button>
+          <button class="theme-btn midnight" (click)="selectTheme('theme-midnight')" [class.active]="currentTheme === 'theme-midnight'">
+            <span class="theme-preview midnight-preview"></span>
+            Midnight
+          </button>
+        </div>
+      </div>
+    </ion-content>
+  </ng-template>
+</ion-modal>
 
 

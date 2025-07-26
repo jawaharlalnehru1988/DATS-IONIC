@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonMenuButton, IonList, IonItem, IonIcon, IonLabel, IonButton,  IonButtons } from '@ionic/angular/standalone';
-import { call, globe, logoAndroid, logoApple, logoWhatsapp, mail, map, musicalNotes, send } from 'ionicons/icons';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonMenuButton, IonList, IonItem, IonIcon, IonLabel, IonButton, IonButtons, IonModal, IonTextarea } from '@ionic/angular/standalone';
+import { call, globe, logoAndroid, logoApple, logoWhatsapp, mail, map, musicalNotes, send, colorPaletteOutline, close } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
 
 @Component({
@@ -10,7 +10,7 @@ import { addIcons } from 'ionicons';
   templateUrl: './contacts.page.html',
   styleUrls: ['./contacts.page.scss'],
   standalone: true,
-  imports: [IonButtons, IonButtons, IonLabel, IonButton, IonIcon, IonItem, IonList, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonMenuButton]
+  imports: [IonTextarea, IonModal, IonButtons, IonLabel, IonButton, IonIcon, IonItem, IonList, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonMenuButton]
 })
 export class ContactsPage implements OnInit {
   mobileApps = [
@@ -50,9 +50,10 @@ export class ContactsPage implements OnInit {
   ];
 
   currentTheme: string = 'theme-ocean';
+  isThemeModalOpen: boolean = false;
 
   constructor() { 
-    addIcons({call,logoWhatsapp,mail,globe,map,send,musicalNotes,logoApple,logoAndroid});
+    addIcons({colorPaletteOutline,map,send,close,call,logoWhatsapp,mail,globe,musicalNotes,logoApple,logoAndroid});
   }
 
   ngOnInit() {
@@ -77,6 +78,20 @@ export class ContactsPage implements OnInit {
     this.currentTheme = theme;
     // Save theme preference to localStorage
     localStorage.setItem('selectedTheme', theme);
+  }
+
+  // Theme modal methods
+  openThemeSelector() {
+    this.isThemeModalOpen = true;
+  }
+
+  closeThemeSelector() {
+    this.isThemeModalOpen = false;
+  }
+
+  selectTheme(theme: string) {
+    this.setTheme(theme);
+    this.closeThemeSelector();
   }
 
 }

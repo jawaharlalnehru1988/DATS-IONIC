@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
 })
 export class MusicPage implements OnInit {
   languages = [
-    { topic: 'Srimad Bhagavat Gita', title: 'English' }
+    { topic: 'Srimad Bhagavat Gita', title: 'with Music format 🎵' }
   ];
   isShowGrid: boolean = true; // Flag to control grid visibility
 
