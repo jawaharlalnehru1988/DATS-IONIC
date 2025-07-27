@@ -1,6 +1,49 @@
 // Import theme models
 @use '../../assets/styles/theme-models.scss';
 
+// Skeleton Loader Styles
+.skeleton-container {
+  padding: 16px;
+}
+
+.skeleton-category {
+  margin-bottom: 20px;
+  padding: 0 4px;
+}
+
+.skeleton-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.skeleton-card {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 16px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.skeleton-card-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.skeleton-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+// Custom skeleton text styling to match theme
+ion-skeleton-text {
+  --background: rgba(255, 255, 255, 0.2);
+  --background-rgb: 255, 255, 255;
+  border-radius: 8px;
+}
+
 :host {
   align-items: flex-start;
   font-size: 1.1rem;

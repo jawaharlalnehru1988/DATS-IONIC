@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, HostBinding } from '@angular/core';
 import { CommonModule, NgFor } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonIcon, IonButtons, IonButton, IonMenuButton, IonSegment, IonSegmentButton, IonLabel, IonFooter, IonItem, IonSpinner, ModalController } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonIcon, IonButtons, IonButton, IonMenuButton, IonSegment, IonSegmentButton, IonLabel, IonFooter, IonSkeletonText, ModalController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { chevronDownOutline, notificationsOutline, optionsOutline, home, heartOutline, cafeOutline, personOutline, chevronBack, chevronForward, add } from 'ionicons/icons';
 import { DisplayCardListComponent, } from '../components/display-card-list/display-card-list.component';
@@ -17,7 +17,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './krishna-page.page.html',
   styleUrls: ['./krishna-page.page.scss'],
   standalone: true,
-  imports: [IonSpinner, IonItem, IonFooter, NgFor, IonLabel, IonSegmentButton, IonMenuButton, IonSegment, IonButton, IonButtons, IonIcon, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, DisplayCardListComponent]
+  imports: [IonFooter, NgFor, IonLabel, IonSegmentButton, IonMenuButton, IonSegment, IonButton, IonButtons, IonIcon, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, DisplayCardListComponent, IonSkeletonText]
 })
 export class KrishnaPagePage implements OnInit, OnDestroy {
   languages = [
@@ -49,20 +49,20 @@ carouselInterval: any;
 isCarouselPaused = false;
 readonly carouselImages = [
   {
-    src: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1751499823/balakrishna_i8eykp.jpg',
-    alt: 'Bala Krishna'
+    src: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1753597101/allrasas_qlm3xn.png',
+    alt: 'All Rasas of Krishna'
   },
   {
-    src: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752102810/convincing_gopis_ymrmnm.jpg',
+    src: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1753597101/goplakrishna_c7brm3.png',
+    alt: 'Gopala Krishna'
+  },
+  {
+    src: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1753596032/astasaki_ko67v3.png',
     alt: 'Krishna with Gopis'
   },
   {
-    src: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1751941178/astasaki_drhwrf.jpg',
-    alt: 'Astasaki Krishna'
-  },
-  {
-    src: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1751499810/krishnabalaram_iaduro.jpg',
-    alt: 'Astasaki Krishna'
+    src: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1753597100/lordKrishnaMadhurya_nzmhpf.png',
+    alt: 'Lord Krishna Madhurya'
   }
 ];
 
@@ -77,8 +77,11 @@ selectedLang: string = 'Arati';
     private themeService: ThemeService
   ) { 
     addIcons({chevronBack,chevronForward,add,home,heartOutline,cafeOutline,personOutline,chevronDownOutline,notificationsOutline,optionsOutline});
-    console.log('Krishna page constructor - initial theme:', this.currentTheme);
-    console.log('Theme service current theme:', this.themeService.getCurrentTheme());
+    
+    // Set default data from Krishna service
+    this.inputDatas = this.krishnaService.defaultInputData;
+    // Keep loading true initially to show skeleton, will be set to false in ngOnInit
+    this.isLoading = true;
   }
 
 ngOnInit() {
@@ -94,11 +97,21 @@ ngOnInit() {
   this.isLoading = true; // Set loading to true before fetching data
   this.categoryService.getAllCategories('krishna-page').subscribe({
     next: (data:InputData[]) => {
-      this.inputDatas = data;
+      if (data && data.length > 0) {
+        this.inputDatas = data;
+        console.log('API data loaded:', data);
+      } else {
+        // Use default data if API returns empty
+        this.inputDatas = this.krishnaService.defaultInputData;
+        console.log('Using default data from service');
+      }
       this.isLoading = false; // Set loading to false when data is received
     },
     error: (error) => {
       console.error('Error fetching Krishna data:', error);
+      // Fall back to default data on error
+      this.inputDatas = this.krishnaService.defaultInputData;
+      console.log('Error occurred, using default data from service');
       this.isLoading = false; // Set loading to false even on error
     }
   })

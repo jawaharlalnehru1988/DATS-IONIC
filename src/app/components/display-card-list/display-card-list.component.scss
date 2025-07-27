@@ -133,7 +133,9 @@
 .display-card {
   background: #23272f;
   border-radius: 18px;
-  box-shadow: 0 4px 24px 0 rgba(0,0,0,0.18);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25), 
+              0 4px 16px rgba(0, 0, 0, 0.15),
+              0 2px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   position: relative;
   min-height: 320px;
@@ -143,12 +145,15 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  transition: transform 0.18s, box-shadow 0.18s;
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+              box-shadow 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   cursor: pointer;
 
   &:hover, &:focus-within {
-    transform: scale(1.06) translateY(-6px);
-    box-shadow: 0 8px 32px 0 rgba(0,0,0,0.28);
+    transform: scale(1.06) translateY(-8px);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.35),
+                0 8px 24px rgba(0, 0, 0, 0.25),
+                0 4px 12px rgba(0, 0, 0, 0.15);
     z-index: 2;
   }
 

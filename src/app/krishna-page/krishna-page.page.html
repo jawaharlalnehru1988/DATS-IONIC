@@ -53,12 +53,26 @@
 
 <div [ngSwitch]="selectedLang">
   <ng-container *ngSwitchCase="'Arati'">
-    <!-- Loading Spinner -->
-    <div *ngIf="isLoading" class="loading-container">
-      <ion-item lines="none" class="loading-item">
-        <ion-label>Loading content...</ion-label>
-        <ion-spinner name="lines" slot="end"></ion-spinner>
-      </ion-item>
+    <!-- Skeleton Loader -->
+    <div *ngIf="isLoading" class="skeleton-container">
+      <!-- Category Title Skeleton -->
+      <div class="skeleton-category">
+        <ion-skeleton-text animated style="width: 60%; height: 24px; margin-bottom: 16px;"></ion-skeleton-text>
+      </div>
+      
+      <!-- Card Skeletons -->
+      <div class="skeleton-cards">
+        <div class="skeleton-card" *ngFor="let item of [1,2,3]">
+          <div class="skeleton-card-content">
+            <ion-skeleton-text animated style="width: 100%; height: 120px; border-radius: 12px;"></ion-skeleton-text>
+            <div class="skeleton-card-info">
+              <ion-skeleton-text animated style="width: 80%; height: 18px; margin-top: 12px;"></ion-skeleton-text>
+              <ion-skeleton-text animated style="width: 60%; height: 14px; margin-top: 8px;"></ion-skeleton-text>
+              <ion-skeleton-text animated style="width: 40%; height: 14px; margin-top: 8px;"></ion-skeleton-text>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     
     <!-- Content (shown when not loading) -->
@@ -81,8 +95,8 @@
 
 
 
-<ion-footer class="krishna-footer" [ngClass]="currentTheme">
-  <ion-toolbar [ngClass]="currentTheme">
+<ion-footer class="krishna-footer">
+  <ion-toolbar>
     <ion-buttons>
       <ion-button>
         <ion-icon name="home" slot="icon-only"></ion-icon>
