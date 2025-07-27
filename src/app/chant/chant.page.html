@@ -1,92 +1,72 @@
 <ion-header [translucent]="true">
-  <ion-toolbar [class]="currentTheme">
+  <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>🕉️ Mahamantra Chanting</ion-title>
-    <ion-buttons slot="end">
-      <ion-button fill="clear" (click)="showThemeSelector()">
-        <ion-icon name="color-palette-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
+    <ion-title>{{content.pageTitle}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" [class]="'chant-page ' + currentTheme">
-  <!-- Theme Selector Modal -->
-  <ion-modal [isOpen]="isThemeSelectorOpen" (didDismiss)="closeThemeSelector()">
-    <ng-template>
-      <ion-header>
-        <ion-toolbar>
-          <ion-title>Choose Theme</ion-title>
-          <ion-buttons slot="end">
-            <ion-button (click)="closeThemeSelector()">
-              <ion-icon name="close"></ion-icon>
-            </ion-button>
-          </ion-buttons>
-        </ion-toolbar>
-      </ion-header>
-      <ion-content>
-        <ion-list>
-          <ion-item button (click)="setTheme('theme-ocean')" [class]="'theme-preview theme-ocean'">
-            <ion-label>🌊 Ocean Breeze</ion-label>
-            <ion-checkbox [checked]="currentTheme === 'theme-ocean'" slot="end"></ion-checkbox>
-          </ion-item>
-          <ion-item button (click)="setTheme('theme-sunset')" [class]="'theme-preview theme-sunset'">
-            <ion-label>🌅 Sunset Vibes</ion-label>
-            <ion-checkbox [checked]="currentTheme === 'theme-sunset'" slot="end"></ion-checkbox>
-          </ion-item>
-          <ion-item button (click)="setTheme('theme-forest')" [class]="'theme-preview theme-forest'">
-            <ion-label>🌲 Forest Mystic</ion-label>
-            <ion-checkbox [checked]="currentTheme === 'theme-forest'" slot="end"></ion-checkbox>
-          </ion-item>
-          <ion-item button (click)="setTheme('theme-cyberpunk')" [class]="'theme-preview theme-cyberpunk'">
-            <ion-label>🔮 Cyberpunk Neon</ion-label>
-            <ion-checkbox [checked]="currentTheme === 'theme-cyberpunk'" slot="end"></ion-checkbox>
-          </ion-item>
-          <ion-item button (click)="setTheme('theme-royal')" [class]="'theme-preview theme-royal'">
-            <ion-label>👑 Royal Purple</ion-label>
-            <ion-checkbox [checked]="currentTheme === 'theme-royal'" slot="end"></ion-checkbox>
-          </ion-item>
-          <ion-item button (click)="setTheme('theme-midnight')" [class]="'theme-preview theme-midnight'">
-            <ion-label>🌙 Midnight Blue</ion-label>
-            <ion-checkbox [checked]="currentTheme === 'theme-midnight'" slot="end"></ion-checkbox>
-          </ion-item>
-        </ion-list>
-      </ion-content>
-    </ng-template>
-  </ion-modal>
-
-  <!-- Main Content -->
+<ion-content [fullscreen]="true" class="chant-page">
   <div class="chant-container">
     <!-- Krishna Image/Symbol -->
     <div class="krishna-symbol">
       <ion-icon name="flower-outline" size="large"></ion-icon>
-      <h2>हरे कृष्ण हरे कृष्ण कृष्ण कृष्ण हरे हरे</h2>
-      <h2>हरे राम हरे राम राम राम हरे हरे</h2>
+      <h2>{{content.mahamantra1}}</h2>
+      <h2>{{content.mahamantra2}}</h2>
     </div>
 
     <!-- Statistics Cards -->
     <div class="stats-container">
       <div class="stat-card">
-        <h3>Current Round</h3>
+        <div class="stat-header">
+          <h3>{{content.currentRound}}</h3>
+          <ion-button 
+            fill="clear" 
+            size="small" 
+            color="danger" 
+            (click)="resetCurrentRound()"
+            class="reset-btn">
+            <ion-icon name="refresh-outline" slot="icon-only"></ion-icon>
+          </ion-button>
+        </div>
         <div class="stat-number">{{currentRound}}/108</div>
       </div>
       
       <div class="stat-card">
-        <h3>Rounds Completed</h3>
+        <div class="stat-header">
+          <h3>{{content.roundsCompleted}}</h3>
+          <ion-button 
+            fill="clear" 
+            size="small" 
+            color="danger" 
+            (click)="resetRoundsCompleted()"
+            class="reset-btn">
+            <ion-icon name="refresh-outline" slot="icon-only"></ion-icon>
+          </ion-button>
+        </div>
         <div class="stat-number">{{roundsCompleted}}</div>
       </div>
       
       <div class="stat-card">
-        <h3>Maha Rounds</h3>
+        <div class="stat-header">
+          <h3>{{content.mahaRounds}}</h3>
+          <ion-button 
+            fill="clear" 
+            size="small" 
+            color="danger" 
+            (click)="resetMahaRounds()"
+            class="reset-btn">
+            <ion-icon name="refresh-outline" slot="icon-only"></ion-icon>
+          </ion-button>
+        </div>
         <div class="stat-number">{{mahaRounds}}</div>
       </div>
     </div>
 
     <!-- Progress info text only -->
     <div class="progress-container">
-      <p class="progress-text">{{currentRound}} / 108 chants in current round</p>
+      <p class="progress-text">{{currentRound}} / 108 {{content.progressText}}</p>
       <ion-progress-bar 
         [value]="currentRound / 108" 
         color="primary"
@@ -96,13 +76,13 @@
 
     <!-- Daily Goal Progress -->
     <div class="daily-goal">
-      <h4>Daily Goal (16 Rounds)</h4>
+      <h4>{{content.dailyGoal}}</h4>
       <ion-progress-bar 
         [value]="roundsCompleted / 16" 
         color="success"
         class="daily-progress">
       </ion-progress-bar>
-      <p class="goal-text">{{roundsCompleted}} / 16 rounds completed</p>
+      <p class="goal-text">{{roundsCompleted}} / 16 {{content.dailyGoalProgress}}</p>
     </div>
   </div>
 
@@ -137,26 +117,50 @@
       <!-- Button Content -->
       <div class="button-content">
         <div class="chant-counter">{{currentRound}}</div>
-        <div class="chant-text">CHANT</div>
-        <div class="chant-subtext">हरे कृष्ण</div>
+        <div class="chant-text">{{content.chantText}}</div>
+        <div class="chant-subtext">{{content.chantSubtext}}</div>
       </div>
       
       <div class="ripple-effect"></div>
     </div>
   </div>
 
-  <!-- Reset Button -->
+  <!-- Language Selector Button -->
   <ion-fab vertical="top" horizontal="end" slot="fixed">
-    <ion-fab-button color="danger" (click)="showResetConfirmation()">
-      <ion-icon name="refresh-outline"></ion-icon>
+    <ion-fab-button 
+      color="primary" 
+      (click)="showLanguageSelector()"
+      id="language-trigger">
+      <ion-icon name="language-outline"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 
+  <!-- Language Selector Popover -->
+  <ion-popover 
+    [isOpen]="isLanguageSelectorOpen" 
+    (didDismiss)="isLanguageSelectorOpen = false"
+    trigger="language-trigger"
+    placement="bottom-end"
+    [showBackdrop]="true">
+    <ng-template>
+      <ion-content class="language-popover-content">
+        <div class="language-options">
+          <div class="language-item" 
+               *ngFor="let language of languageOptions"
+               (click)="setLanguage(language.key)" 
+               [class.selected]="currentLanguage === language.key">
+            <h3>{{language.flag}} {{language.name}}</h3>
+            <p>{{language.description}}</p>
+          </div>
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-popover>
   <!-- Reset Confirmation Alert -->
   <ion-alert
     [isOpen]="showResetAlert"
-    header="Reset Confirmation"
-    message="Are you sure you want to reset all your chanting progress? This action cannot be undone."
+    [header]="content.resetAllConfirmTitle"
+    [message]="content.resetAllConfirmMessage"
     [buttons]="alertButtons"
     (didDismiss)="showResetAlert = false">
   </ion-alert>
