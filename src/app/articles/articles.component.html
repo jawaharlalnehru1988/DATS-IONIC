@@ -1,5 +1,5 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar [ngClass]="currentTheme">
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
@@ -12,7 +12,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-segment value="english" (ionChange)="onLanguageChange($event)" class="language-segment theme-ocean">
+<ion-segment value="english" (ionChange)="onLanguageChange($event)" class="language-segment" [ngClass]="currentTheme">
   <ion-segment-button value="english">
     <ion-label>English</ion-label>
   </ion-segment-button>
@@ -30,7 +30,7 @@
   </ion-segment-button>
 </ion-segment>
 
-<ion-content class="articles-content theme-ocean">
+<ion-content class="articles-content" [ngClass]="currentTheme">
   <div class="articles-container">
     <!-- English Content - Dynamic Category Sections -->
     <div *ngIf="isEnglishSelected()" class="english-content">

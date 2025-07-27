@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { 
   IonApp, 
@@ -13,12 +13,11 @@ import {
   IonIcon, 
   IonLabel, 
   IonRouterOutlet, 
-  IonRouterLink,
-  IonButton,
-  IonPopover,
-  IonCheckbox
+  IonRouterLink
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
+import { ThemeService, ThemeType } from './services/theme.service';
+import { Subscription } from 'rxjs';
 import { 
   mailOutline, 
   mailSharp, 
@@ -37,9 +36,7 @@ import {
   easel, 
   easelOutline, 
   easelSharp, 
-  musicalNotesOutline, 
-  musicalNoteSharp, 
-  musicalNoteOutline, 
+  musicalNotesOutline,
   musicalNotesSharp, 
   bookOutline, 
   bookSharp, 
@@ -84,26 +81,12 @@ import {
     IonIcon, 
     IonLabel, 
     IonRouterLink, 
-    IonRouterOutlet,
-    IonButton,
-    IonPopover,
-    IonCheckbox
+    IonRouterOutlet
   ],
 })
-export class AppComponent {
-  // Current theme
-  currentTheme: string = 'theme-ocean';
-  isThemePopoverOpen: boolean = false;
-
-  // Available themes
-  themes = [
-    { name: 'theme-ocean', label: '🌊 Ocean Breeze', description: 'Calm blue ocean vibes' },
-    { name: 'theme-sunset', label: '🌅 Sunset Vibes', description: 'Warm sunset colors' },
-    { name: 'theme-forest', label: '🌲 Forest Mystic', description: 'Nature green tones' },
-    { name: 'theme-cyberpunk', label: '🔮 Cyberpunk Neon', description: 'Matrix style green' },
-    { name: 'theme-royal', label: '👑 Royal Purple', description: 'Majestic purple & gold' },
-    { name: 'theme-midnight', label: '🌙 Midnight Blue', description: 'Professional dark blue' }
-  ];
+export class AppComponent implements OnInit, OnDestroy {
+  currentTheme: ThemeType = 'theme-royal';
+  private themeSubscription: Subscription = new Subscription();
 
   public appPages = [
     { title: 'Lord Sri Krishna', url: '/lordkrishna', icon: 'person-circle', iconColor: '#B34E05' },
@@ -121,7 +104,7 @@ export class AppComponent {
     { title: 'Settings', url: '/settings', icon: 'settings', iconColor: '#230568' },
   ];
 
-  constructor() {
+  constructor(private themeService: ThemeService) {
     addIcons({ 
       mailOutline, 
       mailSharp, 
@@ -164,41 +147,19 @@ export class AppComponent {
       colorPaletteOutline,
       colorPalette
     });
-
-    // Load saved theme
-    this.loadTheme();
   }
 
-  // Theme management methods
-  openThemePopover(event: Event) {
-    this.isThemePopoverOpen = true;
+  ngOnInit() {
+    // Subscribe to theme changes
+    this.themeSubscription = this.themeService.currentTheme$.subscribe(theme => {
+      this.currentTheme = theme;
+    });
   }
 
-  closeThemePopover() {
-    this.isThemePopoverOpen = false;
-  }
-
-  selectTheme(themeName: string) {
-    this.currentTheme = themeName;
-    this.saveTheme();
-    this.closeThemePopover();
-    
-    // Apply theme to document body for global effect
-    document.body.className = '';
-    document.body.classList.add(themeName);
-  }
-
-  private loadTheme() {
-    const savedTheme = localStorage.getItem('globalTheme');
-    if (savedTheme) {
-      this.currentTheme = savedTheme;
-      document.body.classList.add(savedTheme);
-    } else {
-      document.body.classList.add(this.currentTheme);
+  ngOnDestroy() {
+    // Clean up subscription
+    if (this.themeSubscription) {
+      this.themeSubscription.unsubscribe();
     }
-  }
-
-  private saveTheme() {
-    localStorage.setItem('globalTheme', this.currentTheme);
   }
 }

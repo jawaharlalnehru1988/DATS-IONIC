@@ -1,0 +1,65 @@
+/* Theme Modal Styles */
+.theme-modal-content {
+  --padding-start: 20px;
+  --padding-end: 20px;
+  --padding-top: 20px;
+  --padding-bottom: 20px;
+}
+
+.theme-modal-content .theme-selector {
+  .theme-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+  }
+  
+  .theme-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px 12px;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    background: var(--ion-color-light);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    min-height: 100px;
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    &.active {
+      border-color: var(--ion-color-primary);
+      box-shadow: 0 0 0 3px rgba(var(--ion-color-primary-rgb), 0.2);
+    }
+    
+    .theme-preview {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-bottom: 8px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .theme-modal-content .theme-selector .theme-buttons {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  
+  .theme-modal-content .theme-selector .theme-btn {
+    padding: 12px 8px;
+    min-height: 80px;
+    
+    .theme-preview {
+      width: 30px;
+      height: 30px;
+    }
+  }
+}

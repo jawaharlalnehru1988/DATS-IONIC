@@ -1,26 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonMenuButton, IonList, IonItem, IonIcon, IonLabel, IonButton, IonButtons, IonModal, IonTextarea } from '@ionic/angular/standalone';
-import { call, globe, logoAndroid, logoApple, logoWhatsapp, mail, map, musicalNotes, send, colorPaletteOutline, close } from 'ionicons/icons';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonMenuButton, IonList, IonItem, IonIcon, IonLabel, IonButton, IonButtons, IonTextarea } from '@ionic/angular/standalone';
+import { call, globe, logoAndroid, logoApple, logoWhatsapp, mail, map, musicalNotes, send } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
+import { ThemeService, ThemeType } from '../services/theme.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-contacts',
   templateUrl: './contacts.page.html',
   styleUrls: ['./contacts.page.scss'],
   standalone: true,
-  imports: [IonTextarea, IonModal, IonButtons, IonLabel, IonButton, IonIcon, IonItem, IonList, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonMenuButton]
+  imports: [IonTextarea, IonButtons, IonLabel, IonButton, IonIcon, IonItem, IonList, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonMenuButton]
 })
-export class ContactsPage implements OnInit {
+export class ContactsPage implements OnInit, OnDestroy {
   mobileApps = [
     { name: 'Bhakti App', icon: 'logo-android', link: 'https://play.google.com/store/apps/details?id=bhakti.app' },
     { name: 'Krishna Connect', icon: 'logo-apple', link: 'https://apps.apple.com/app/krishna-connect/id123456789' },
     { name: 'Temple Locator', icon: 'map', link: 'https://templelocator.example.com' },
     { name: 'Daily Kirtan', icon: 'musical-notes', link: 'https://dailykirtan.example.com' }
   ];
-
-  userMessage: string = '';
 
   contactMethods = [
     {
@@ -49,18 +49,25 @@ export class ContactsPage implements OnInit {
     }
   ];
 
-  currentTheme: string = 'theme-ocean';
-  isThemeModalOpen: boolean = false;
+  userMessage: string = '';
+  currentTheme: ThemeType = 'theme-royal';
+  private themeSubscription: Subscription = new Subscription();
 
-  constructor() { 
-    addIcons({colorPaletteOutline,map,send,close,call,logoWhatsapp,mail,globe,musicalNotes,logoApple,logoAndroid});
+  constructor(private themeService: ThemeService) { 
+    addIcons({call,logoWhatsapp,mail,globe,map,send,musicalNotes,logoApple,logoAndroid});
   }
 
   ngOnInit() {
-    // Load saved theme preference
-    const savedTheme = localStorage.getItem('selectedTheme');
-    if (savedTheme) {
-      this.currentTheme = savedTheme;
+    // Subscribe to theme changes
+    this.themeSubscription = this.themeService.currentTheme$.subscribe(theme => {
+      this.currentTheme = theme;
+    });
+  }
+
+  ngOnDestroy() {
+    // Clean up subscription
+    if (this.themeSubscription) {
+      this.themeSubscription.unsubscribe();
     }
   }
 
@@ -72,26 +79,6 @@ export class ContactsPage implements OnInit {
     } else {
       alert('Please enter a message before submitting.');
     }
-  }
-
-  setTheme(theme: string) {
-    this.currentTheme = theme;
-    // Save theme preference to localStorage
-    localStorage.setItem('selectedTheme', theme);
-  }
-
-  // Theme modal methods
-  openThemeSelector() {
-    this.isThemeModalOpen = true;
-  }
-
-  closeThemeSelector() {
-    this.isThemeModalOpen = false;
-  }
-
-  selectTheme(theme: string) {
-    this.setTheme(theme);
-    this.closeThemeSelector();
   }
 
 }

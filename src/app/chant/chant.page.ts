@@ -59,7 +59,7 @@ import {
 })
 export class ChantPage implements OnInit {
   // Theme management
-  currentTheme: string = 'theme-ocean';
+  currentTheme: string = 'theme-royal';
   isThemeSelectorOpen: boolean = false;
 
   // Chanting counters

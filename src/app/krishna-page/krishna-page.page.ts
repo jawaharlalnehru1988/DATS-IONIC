@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostBinding } from '@angular/core';
 import { CommonModule, NgFor } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonIcon, IonButtons, IonButton, IonMenuButton, IonSegment, IonSegmentButton, IonLabel, IonFooter, IonItem, IonSpinner, ModalController } from '@ionic/angular/standalone';
@@ -10,6 +10,8 @@ import { KrishnaServiceService } from './krishna-service.service';
 import { Router } from '@angular/router';
 import { DataSharingService } from '../services/data-sharing.service';
 import { CategoryFormService } from '../Utils/components/category-form/category-form.service';
+import { ThemeService, ThemeType } from '../services/theme.service';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-krishna-page',
   templateUrl: './krishna-page.page.html',
@@ -29,6 +31,17 @@ export class KrishnaPagePage implements OnInit, OnDestroy {
 
 inputDatas: InputData[] = [];
 isLoading: boolean = true; // Add loading state
+
+// Theme management
+currentTheme: ThemeType = 'theme-royal';
+private themeSubscription: Subscription = new Subscription();
+
+// HostBinding to apply theme class to the component's host element
+@HostBinding('class')
+get themeClass() {
+  console.log('HostBinding class getter called, returning:', this.currentTheme);
+  return this.currentTheme;
+}
 
 // Carousel properties
 currentImageIndex = 0;
@@ -55,11 +68,28 @@ readonly carouselImages = [
 
 selectedLang: string = 'Arati';
 
-  constructor(private krishnaService: KrishnaServiceService, private categoryService: CategoryFormService, private router: Router, private dataSharingService: DataSharingService, private modalController: ModalController) { 
+  constructor(
+    private krishnaService: KrishnaServiceService, 
+    private categoryService: CategoryFormService, 
+    private router: Router, 
+    private dataSharingService: DataSharingService, 
+    private modalController: ModalController,
+    private themeService: ThemeService
+  ) { 
     addIcons({chevronBack,chevronForward,add,home,heartOutline,cafeOutline,personOutline,chevronDownOutline,notificationsOutline,optionsOutline});
+    console.log('Krishna page constructor - initial theme:', this.currentTheme);
+    console.log('Theme service current theme:', this.themeService.getCurrentTheme());
   }
 
 ngOnInit() {
+  // Subscribe to theme changes
+  this.themeSubscription = this.themeService.currentTheme$.subscribe(
+    theme => {
+      console.log('Krishna page theme changed to:', theme);
+      this.currentTheme = theme;
+    }
+  );
+  
   this.startCarousel();
   this.isLoading = true; // Set loading to true before fetching data
   this.categoryService.getAllCategories('krishna-page').subscribe({
@@ -76,6 +106,11 @@ ngOnInit() {
 
 ngOnDestroy() {
   this.stopCarousel();
+  
+  // Unsubscribe from theme changes
+  if (this.themeSubscription) {
+    this.themeSubscription.unsubscribe();
+  }
 }
 
 startCarousel() {

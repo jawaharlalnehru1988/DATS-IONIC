@@ -1,11 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonHeader, IonTitle, IonToolbar, IonMenuButton, IonButtons, IonGrid, IonRow, IonCol, IonButton, IonBackButton, IonContent, IonPopover, IonCheckbox } from '@ionic/angular/standalone';
+import { IonHeader, IonTitle, IonToolbar, IonMenuButton, IonButtons, IonGrid, IonRow, IonCol, IonButton, IonBackButton, IonContent } from '@ionic/angular/standalone';
 import {  IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { star, add, home, heartOutline, cafeOutline, personOutline, chevronDownOutline, notificationsOutline, optionsOutline, play, playOutline, pause, stop, searchOutline, chevronForwardOutline, colorPaletteOutline, chatbubbleOutline, imageOutline, micOutline, videocamOutline, musicalNotesOutline, schoolOutline, documentOutline } from 'ionicons/icons';
 import { ToastController } from '@ionic/angular';
+import { ThemeService, ThemeType } from '../services/theme.service';
+import { Subscription } from 'rxjs';
 
 
 interface ContentCard {
@@ -32,21 +34,12 @@ interface Category {
   templateUrl: './srilaprabhupada.page.html',
   styleUrls: ['./srilaprabhupada.page.scss'],
   standalone: true,
-  imports: [IonCheckbox, IonMenuButton, IonPopover, IonContent, IonIcon, IonButton, IonButton, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButtons],
+  imports: [IonMenuButton, IonContent, IonIcon, IonButton, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButtons],
 })
-export class InboxPage implements OnInit {
+export class InboxPage implements OnInit, OnDestroy, AfterViewInit {
   // Theme management properties
-  currentTheme: string = 'theme-devotion';
-  isThemeSelectorOpen: boolean = false;
-  themePopoverEvent: any;
-  
-  themes = [
-    { name: 'theme-devotion', label: 'Golden Devotion', color: '#d4af37' },
-    { name: 'theme-peace', label: 'Peaceful Blue', color: '#4682b4' },
-    { name: 'theme-nature', label: 'Nature Green', color: '#228b22' },
-    { name: 'theme-wisdom', label: 'Deep Purple', color: '#6a5acd' },
-    { name: 'theme-compassion', label: 'Rose Compassion', color: '#db7093' }
-  ];
+  currentTheme: ThemeType = 'theme-royal';
+  private themeSubscription!: Subscription;
 
 categories: Category[] = [
     {
@@ -438,56 +431,37 @@ categories: Category[] = [
 
 
 
-  constructor(private toastController: ToastController) { 
+  constructor(
+    private toastController: ToastController,
+    private themeService: ThemeService,
+    private cdr: ChangeDetectorRef
+  ) { 
     addIcons({searchOutline,heartOutline,colorPaletteOutline,chevronForwardOutline,star,add,home,play,playOutline,pause,stop,cafeOutline,personOutline,chevronDownOutline,notificationsOutline,optionsOutline,chatbubbleOutline,imageOutline,micOutline,videocamOutline,musicalNotesOutline,schoolOutline,documentOutline});
   }
 
   ngOnInit() {
-    this.loadTheme();
-  }
-
-  // Theme Management Methods
-  loadTheme() {
-    const savedTheme = localStorage.getItem('devotee-app-theme');
-    if (savedTheme) {
-      this.currentTheme = savedTheme;
-    }
-    this.applyTheme();
-  }
-
-  applyTheme() {
-    // Remove all theme classes from body
-    document.body.className = document.body.className.replace(/theme-\w+/g, '');
-    // Add current theme class to body
-    document.body.classList.add(this.currentTheme);
+    // Subscribe to theme changes
+    this.themeSubscription = this.themeService.currentTheme$.subscribe(
+      theme => {
+        this.currentTheme = theme;
+        this.cdr.detectChanges();
+      }
+    );
     
-    // Also trigger change detection by updating a component property
-    this.currentTheme = this.currentTheme;
+    // Set initial theme
+    this.themeService.setTheme(this.currentTheme);
   }
 
-  showThemeSelector(event?: any) {
-    this.isThemeSelectorOpen = true;
+  ngAfterViewInit() {
+    // Any view-specific initialization after DOM is ready
+    this.cdr.detectChanges();
   }
 
-  closeThemeSelector() {
-    this.isThemeSelectorOpen = false;
-  }
-
-  async selectTheme(themeName: string) {
-    console.log('Selecting theme:', themeName);
-    this.currentTheme = themeName;
-    localStorage.setItem('devotee-app-theme', themeName);
-    this.applyTheme();
-    this.closeThemeSelector();
-
-    // Show success toast
-    const toast = await this.toastController.create({
-      message: `🎨 Theme changed to ${this.themes.find(t => t.name === themeName)?.label}`,
-      duration: 2000,
-      position: 'bottom',
-      color: 'success'
-    });
-    toast.present();
+  ngOnDestroy() {
+    // Clean up subscription
+    if (this.themeSubscription) {
+      this.themeSubscription.unsubscribe();
+    }
   }
 
   getTypeIcon(type: string): string {

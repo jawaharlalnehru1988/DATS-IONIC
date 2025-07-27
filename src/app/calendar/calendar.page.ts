@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {  IonHeader, IonTitle, IonToolbar, IonMenuButton, IonButtons, IonButton, IonIcon, IonContent, IonAlert } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { chevronBack, chevronForward, calendarOutline, searchOutline, settingsOutline, sunnyOutline, moonOutline, ellipsisHorizontal, closeOutline, arrowBackOutline, shareOutline, todayOutline, heart, heartOutline } from 'ionicons/icons';
 import { AlertController, ToastController } from '@ionic/angular';
+import { ThemeService, ThemeType } from '../services/theme.service';
+import { Subscription } from 'rxjs';
 
 interface FestivalEvent {
   id: string;
@@ -69,7 +71,7 @@ interface FestivalInfo {
   standalone: true,
   imports: [IonContent, IonMenuButton, IonIcon, IonButton, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButtons]
 })
-export class CalendarPage implements OnInit {
+export class CalendarPage implements OnInit, OnDestroy {
   currentDate = new Date();
   currentMonth = this.currentDate.getMonth();
   currentYear = this.currentDate.getFullYear();
@@ -77,6 +79,13 @@ export class CalendarPage implements OnInit {
   selectedFestivalInfo: FestivalInfo | null = null; // Track selected festival info
   favoriteDates: string[] = []; // Track favorite dates
   calendarDays: CalendarDay[] = [];
+  
+  // Timeout reference for location permission request
+  private locationTimeoutId: number | null = null;
+  
+  // Theme management
+  currentTheme: ThemeType = 'theme-royal';
+  private themeSubscription: Subscription = new Subscription();
   monthNames = [
     'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'
@@ -194,30 +203,64 @@ export class CalendarPage implements OnInit {
     }
   ];
 
-  constructor(private alertController: AlertController, private toastController: ToastController) { 
+  constructor(
+    private alertController: AlertController, 
+    private toastController: ToastController,
+    private themeService: ThemeService
+  ) { 
     addIcons({calendarOutline,searchOutline,settingsOutline,chevronBack,chevronForward,closeOutline,ellipsisHorizontal,sunnyOutline,moonOutline,arrowBackOutline,shareOutline,todayOutline,heart,heartOutline});
   }
   ngOnInit() {
     this.loadFavorites();
-    this.requestLocationPermission();
+    
+    // Subscribe to theme changes
+    this.themeSubscription = this.themeService.currentTheme$.subscribe(
+      theme => this.currentTheme = theme
+    );
+    
+    // Initialize with default location first
+    this.userLocation = this.defaultLocation;
+    this.calculateVaishnavData();
+    
+    // Delay location permission request by 20 seconds, but only if component is still active
+    this.locationTimeoutId = window.setTimeout(() => {
+      // Only show prompt if the component is still active (timeout wasn't cleared)
+      if (this.locationTimeoutId !== null) {
+        this.requestLocationPermission();
+      }
+    }, 20000);
+    
     this.generateCalendar();
+  }
+
+  ngOnDestroy() {
+    // Clear the location timeout to prevent prompt from showing after component is destroyed
+    if (this.locationTimeoutId !== null) {
+      clearTimeout(this.locationTimeoutId);
+      this.locationTimeoutId = null;
+    }
+    
+    // Unsubscribe from theme changes
+    if (this.themeSubscription) {
+      this.themeSubscription.unsubscribe();
+    }
   }
 
   async requestLocationPermission() {
     const alert = await this.alertController.create({
-      header: 'Location Access',
-      message: 'This app would like to access your location to provide accurate astronomical calculations. If you deny, we\'ll use default India location.',
+      header: 'Enhance Your Experience',
+      message: 'Would you like to share your location for more accurate astronomical calculations and personalized Vaishnava calendar data? We\'re currently using Delhi, India as the default location.',
       buttons: [
         {
-          text: 'Deny',
+          text: 'Keep Default',
           role: 'cancel',
           handler: () => {
-            this.userLocation = this.defaultLocation;
-            this.calculateVaishnavData();
+            // Keep using default location - no need to reassign
+            console.log('User chose to keep default location');
           }
         },
         {
-          text: 'Allow',
+          text: 'Use My Location',
           handler: () => {
             this.getCurrentLocation();
           }

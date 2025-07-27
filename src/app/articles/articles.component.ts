@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonMenuButton, IonButtons, IonSegment, IonSegmentButton, IonLabel, IonIcon, IonButton, IonActionSheet } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
@@ -6,6 +6,8 @@ import { addIcons } from 'ionicons';
 import { languageOutline, add, ellipsisVertical, create, trash, eye } from 'ionicons/icons';
 import { ArticleService, ArticleCard, ArticleCategory } from '../services/article.service';
 import { ArticleFormComponent } from '../components/article-form/article-form.component';
+import { ThemeService, ThemeType } from '../services/theme.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-articles',
@@ -14,9 +16,11 @@ import { ArticleFormComponent } from '../components/article-form/article-form.co
   standalone: true,
   imports: [IonActionSheet, IonButton, IonIcon, IonLabel, IonSegmentButton, IonSegment, IonContent, IonHeader, IonTitle, IonToolbar, IonMenuButton, IonButtons, CommonModule, ArticleFormComponent],
 })
-export class ArticlesComponent implements OnInit {
+export class ArticlesComponent implements OnInit, OnDestroy {
   selectedLanguage: string = 'english';
   articleCategories: ArticleCategory[] = [];
+  currentTheme: ThemeType = 'theme-royal';
+  private themeSubscription: Subscription = new Subscription();
   
   // Form modal properties
   isFormOpen = false;
@@ -252,11 +256,16 @@ export class ArticlesComponent implements OnInit {
     
   ];
 
-  constructor(private router: Router, private articleService: ArticleService) { 
+  constructor(private router: Router, private articleService: ArticleService, private themeService: ThemeService) { 
     addIcons({ languageOutline, add, ellipsisVertical, create, trash, eye });
   }
    
   ngOnInit() {
+    // Subscribe to theme changes
+    this.themeSubscription = this.themeService.currentTheme$.subscribe(theme => {
+      this.currentTheme = theme;
+    });
+    
     // Load articles from service or initialize with default data
     this.articleService.getArticles().subscribe(articles => {
       if (articles.length === 0) {
@@ -266,6 +275,13 @@ export class ArticlesComponent implements OnInit {
         this.articleCategories = articles;
       }
     });
+  }
+
+  ngOnDestroy() {
+    // Clean up subscription
+    if (this.themeSubscription) {
+      this.themeSubscription.unsubscribe();
+    }
   }
 
   onLanguageChange(event: any) {

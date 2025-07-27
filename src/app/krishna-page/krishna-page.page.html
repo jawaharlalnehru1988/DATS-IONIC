@@ -81,8 +81,8 @@
 
 
 
-<ion-footer class="krishna-footer">
-  <ion-toolbar>
+<ion-footer class="krishna-footer" [ngClass]="currentTheme">
+  <ion-toolbar [ngClass]="currentTheme">
     <ion-buttons>
       <ion-button>
         <ion-icon name="home" slot="icon-only"></ion-icon>

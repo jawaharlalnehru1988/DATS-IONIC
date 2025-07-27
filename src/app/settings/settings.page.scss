@@ -35,6 +35,106 @@ ion-header {
   }
 }
 
+// Theme Grid Styles
+.theme-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 16px;
+  margin: 16px 0;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.theme-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-height: 120px;
+  
+  &:hover {
+    transform: translateY(-4px);
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 25px rgba(0, 212, 255, 0.2);
+  }
+  
+  &.active {
+    border-color: #00d4ff;
+    background: rgba(0, 212, 255, 0.1);
+    box-shadow: 0 0 0 4px rgba(0, 212, 255, 0.2);
+    
+    .theme-name {
+      color: #00d4ff;
+      font-weight: 600;
+    }
+  }
+  
+  .theme-preview {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-bottom: 12px;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+  }
+  
+  .theme-name {
+    font-size: 12px;
+    font-weight: 500;
+    color: #ffffff;
+    text-align: center;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  
+  .theme-check {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    color: #00d4ff;
+    font-size: 20px;
+    filter: drop-shadow(0 0 6px rgba(0, 212, 255, 0.8));
+  }
+  
+  &:hover .theme-preview {
+    transform: scale(1.1);
+    border-color: rgba(255, 255, 255, 0.4);
+  }
+}
+
+// Responsive design for theme grid
+@media (max-width: 576px) {
+  .theme-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 12px;
+  }
+  
+  .theme-card {
+    padding: 12px;
+    min-height: 100px;
+    
+    .theme-preview {
+      width: 50px;
+      height: 50px;
+      margin-bottom: 8px;
+    }
+    
+    .theme-name {
+      font-size: 11px;
+    }
+  }
+}
+
 .settings-content {
   --background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
   padding: 20px 16px;

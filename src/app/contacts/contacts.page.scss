@@ -1,5 +1,5 @@
-// Use theme models (modern Sass syntax)
-@use './theme-models.scss';
+// Use global theme models from assets
+@use '../../assets/styles/theme-models.scss';
 
 // Base contact info styles (will be overridden by themes)
 .contact-info {
