@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostBinding } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonMenuButton, IonList, IonItem, IonIcon, IonLabel, IonButton, IonButtons, IonTextarea } from '@ionic/angular/standalone';
@@ -15,6 +15,10 @@ import { Subscription } from 'rxjs';
   imports: [IonTextarea, IonButtons, IonLabel, IonButton, IonIcon, IonItem, IonList, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonMenuButton]
 })
 export class ContactsPage implements OnInit, OnDestroy {
+  @HostBinding('class') get themeClass() {
+    return this.currentTheme;
+  }
+
   mobileApps = [
     { name: 'Bhakti App', icon: 'logo-android', link: 'https://play.google.com/store/apps/details?id=bhakti.app' },
     { name: 'Krishna Connect', icon: 'logo-apple', link: 'https://apps.apple.com/app/krishna-connect/id123456789' },

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostBinding } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonMenuButton, IonButtons, IonSegment, IonSegmentButton, IonLabel, IonIcon, IonButton, IonActionSheet } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
@@ -21,6 +21,12 @@ export class ArticlesComponent implements OnInit, OnDestroy {
   articleCategories: ArticleCategory[] = [];
   currentTheme: ThemeType = 'theme-royal';
   private themeSubscription: Subscription = new Subscription();
+  
+  // HostBinding to apply theme class to the component's host element
+  @HostBinding('class')
+  get themeClass() {
+    return this.currentTheme;
+  }
   
   // Form modal properties
   isFormOpen = false;

@@ -1,6 +1,44 @@
 // Import theme models
 @use '../../assets/styles/theme-models.scss';
 
+// Theme styles
+:host {
+  &.theme-ocean,
+  &.theme-sunset,
+  &.theme-forest,
+  &.theme-cyberpunk,
+  &.theme-royal,
+  &.theme-midnight {
+    ion-header {
+      background: transparent !important;
+    }
+    
+    ion-toolbar {
+      --background: transparent !important;
+      --color: white !important;
+      background: transparent !important;
+      
+      ion-title {
+        color: white !important;
+      }
+      
+      ion-buttons ion-button {
+        color: white !important;
+      }
+      
+      ion-menu-button {
+        color: white !important;
+      }
+    }
+    
+    ion-content {
+      --background: transparent !important;
+    }
+  }
+}
+
+// Base styles
+
 .tutorial-content {
   --background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   --padding-start: 0;

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostBinding } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonMenuButton, IonIcon } from '@ionic/angular/standalone';
@@ -8,6 +8,8 @@ import { TutorialService } from './tutorial.service';
 import { environment } from 'src/environments/environment';
 import { addIcons } from 'ionicons';
 import { playCircle, arrowForward } from 'ionicons/icons';
+import { ThemeService, ThemeType } from '../services/theme.service';
+import { Subscription } from 'rxjs';
  
 export interface CardModel{
   blogId: number;
@@ -24,8 +26,18 @@ export interface CardModel{
   standalone: true,
   imports: [IonIcon, IonButtons, IonContent, IonMenuButton, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
 })
-export class TutorialPage implements OnInit {
+export class TutorialPage implements OnInit, OnDestroy {
    isLoading = true;
+   
+  // Theme management
+  currentTheme: ThemeType = 'theme-royal';
+  private themeSubscription: Subscription = new Subscription();
+  
+  // HostBinding to apply theme class to the component's host element
+  @HostBinding('class')
+  get themeClass() {
+    return this.currentTheme;
+  }
    
   cards: CardModel[] = [
     {
@@ -65,12 +77,22 @@ export class TutorialPage implements OnInit {
     }
   ];
 
-  constructor(private router: Router, private tutorialService: TutorialService) {
+  constructor(private router: Router, private tutorialService: TutorialService, private themeService: ThemeService) {
     addIcons({ playCircle, arrowForward });
   }
 
   ngOnInit() {
-   
+    // Subscribe to theme changes
+    this.themeSubscription = this.themeService.currentTheme$.subscribe(
+      theme => this.currentTheme = theme
+    );
+  }
+
+  ngOnDestroy() {
+    // Unsubscribe from theme changes
+    if (this.themeSubscription) {
+      this.themeSubscription.unsubscribe();
+    }
   }
 
   showFullContent(card: CardModel) {

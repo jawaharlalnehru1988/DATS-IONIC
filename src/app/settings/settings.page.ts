@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostBinding } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonContent, IonMenuButton, IonSelectOption, IonHeader, IonTitle, IonToolbar, IonFooter, IonButtons, IonButton, IonIcon, IonSelect, IonToggle, IonGrid, IonRow, IonCol, IonCard, IonCardContent, IonCardTitle } from '@ionic/angular/standalone';
@@ -20,6 +20,12 @@ export class SettingsPage implements OnInit, OnDestroy {
   currentTheme: ThemeType = 'theme-royal';
   themes: ThemeOption[] = [];
   private themeSubscription: Subscription = new Subscription();
+
+  // HostBinding to apply theme class to the component's host element
+  @HostBinding('class')
+  get themeClass() {
+    return this.currentTheme;
+  }
 
   languages = [
     { value: 'en', label: 'English' },

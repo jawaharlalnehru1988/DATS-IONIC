@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostBinding } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {  IonHeader, IonTitle, IonToolbar, IonMenuButton, IonButtons, IonButton, IonIcon, IonContent, IonAlert } from '@ionic/angular/standalone';
@@ -86,6 +86,12 @@ export class CalendarPage implements OnInit, OnDestroy {
   // Theme management
   currentTheme: ThemeType = 'theme-royal';
   private themeSubscription: Subscription = new Subscription();
+  
+  // HostBinding to apply theme class to the component's host element
+  @HostBinding('class')
+  get themeClass() {
+    return this.currentTheme;
+  }
   monthNames = [
     'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'

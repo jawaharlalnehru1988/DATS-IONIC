@@ -1,6 +1,199 @@
 // Use global theme models from assets
 @use '../../assets/styles/theme-models.scss';
 
+// Theme styles
+:host.theme-ocean {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  
+  ion-header {
+    background: transparent !important;
+  }
+  
+  ion-toolbar {
+    --background: transparent !important;
+    --color: white !important;
+    background: transparent !important;
+    
+    ion-title {
+      color: white !important;
+    }
+    
+    ion-buttons ion-button {
+      color: white !important;
+    }
+    
+    ion-menu-button {
+      color: white !important;
+    }
+  }
+  
+  ion-content {
+    --background: transparent !important;
+    background: transparent !important;
+    --color: white !important;
+  }
+}
+
+:host.theme-sunset {
+  background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%) !important;
+  
+  ion-header {
+    background: transparent !important;
+  }
+  
+  ion-toolbar {
+    --background: transparent !important;
+    --color: white !important;
+    background: transparent !important;
+    
+    ion-title {
+      color: white !important;
+    }
+    
+    ion-buttons ion-button {
+      color: white !important;
+    }
+    
+    ion-menu-button {
+      color: white !important;
+    }
+  }
+  
+  ion-content {
+    --background: transparent !important;
+    background: transparent !important;
+    --color: white !important;
+  }
+}
+
+:host.theme-forest {
+  background: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%) !important;
+  
+  ion-header {
+    background: transparent !important;
+  }
+  
+  ion-toolbar {
+    --background: transparent !important;
+    --color: white !important;
+    background: transparent !important;
+    
+    ion-title {
+      color: white !important;
+    }
+    
+    ion-buttons ion-button {
+      color: white !important;
+    }
+    
+    ion-menu-button {
+      color: white !important;
+    }
+  }
+  
+  ion-content {
+    --background: transparent !important;
+    background: transparent !important;
+    --color: white !important;
+  }
+}
+
+:host.theme-cyberpunk {
+  background: linear-gradient(135deg, #ff00ff 0%, #00ffff 100%) !important;
+  
+  ion-header {
+    background: transparent !important;
+  }
+  
+  ion-toolbar {
+    --background: transparent !important;
+    --color: white !important;
+    background: transparent !important;
+    
+    ion-title {
+      color: white !important;
+    }
+    
+    ion-buttons ion-button {
+      color: white !important;
+    }
+    
+    ion-menu-button {
+      color: white !important;
+    }
+  }
+  
+  ion-content {
+    --background: transparent !important;
+    background: transparent !important;
+    --color: white !important;
+  }
+}
+
+:host.theme-royal {
+  background: linear-gradient(135deg, #8e44ad 0%, #3498db 100%) !important;
+  
+  ion-header {
+    background: transparent !important;
+  }
+  
+  ion-toolbar {
+    --background: transparent !important;
+    --color: white !important;
+    background: transparent !important;
+    
+    ion-title {
+      color: white !important;
+    }
+    
+    ion-buttons ion-button {
+      color: white !important;
+    }
+    
+    ion-menu-button {
+      color: white !important;
+    }
+  }
+  
+  ion-content {
+    --background: transparent !important;
+    background: transparent !important;
+    --color: white !important;
+  }
+}
+
+:host.theme-midnight {
+  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%) !important;
+  
+  ion-header {
+    background: transparent !important;
+  }
+  
+  ion-toolbar {
+    --background: transparent !important;
+    --color: white !important;
+    background: transparent !important;
+    
+    ion-title {
+      color: white !important;
+    }
+    
+    ion-buttons ion-button {
+      color: white !important;
+    }
+    
+    ion-menu-button {
+      color: white !important;
+    }
+  }
+  
+  ion-content {
+    --background: transparent !important;
+    background: transparent !important;
+    --color: white !important;
+  }
+}
+
 // Base contact info styles (will be overridden by themes)
 .contact-info {
   padding: 16px 0 32px 0;

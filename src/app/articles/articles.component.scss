@@ -300,3 +300,172 @@
 ::ng-deep .ion-page{
     justify-content: unset !important;
 }
+
+// Global theme integration for Articles component
+:host.theme-ocean {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  
+  ion-header {
+    background: transparent !important;
+  }
+  
+  ion-toolbar {
+    --background: transparent !important;
+    --color: white !important;
+    background: transparent !important;
+    
+    ion-title {
+      color: white !important;
+    }
+    
+    ion-buttons ion-button {
+      color: white !important;
+    }
+  }
+  
+  ion-content {
+    --background: transparent !important;
+    background: transparent !important;
+    --color: white !important;
+  }
+}
+
+:host.theme-sunset {
+  background: linear-gradient(135deg, #ff6b6b 0%, #feca57 50%, #ff9ff3 100%) !important;
+  
+  ion-header {
+    background: transparent !important;
+  }
+  
+  ion-toolbar {
+    --background: transparent !important;
+    --color: white !important;
+    background: transparent !important;
+    
+    ion-title {
+      color: white !important;
+    }
+    
+    ion-buttons ion-button {
+      color: white !important;
+    }
+  }
+  
+  ion-content {
+    --background: transparent !important;
+    background: transparent !important;
+    --color: white !important;
+  }
+}
+
+:host.theme-forest {
+  background: linear-gradient(135deg, #134e5e 0%, #71b280 100%) !important;
+  
+  ion-header {
+    background: transparent !important;
+  }
+  
+  ion-toolbar {
+    --background: transparent !important;
+    --color: white !important;
+    background: transparent !important;
+    
+    ion-title {
+      color: white !important;
+    }
+    
+    ion-buttons ion-button {
+      color: white !important;
+    }
+  }
+  
+  ion-content {
+    --background: transparent !important;
+    background: transparent !important;
+    --color: white !important;
+  }
+}
+
+:host.theme-cyberpunk {
+  background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 50%, #16213e 100%) !important;
+  
+  ion-header {
+    background: transparent !important;
+  }
+  
+  ion-toolbar {
+    --background: transparent !important;
+    --color: #00ff9f !important;
+    background: transparent !important;
+    
+    ion-title {
+      color: #00ff9f !important;
+    }
+    
+    ion-buttons ion-button {
+      color: #00ff9f !important;
+    }
+  }
+  
+  ion-content {
+    --background: transparent !important;
+    background: transparent !important;
+    --color: #00ff9f !important;
+  }
+}
+
+:host.theme-royal {
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #3498db 100%) !important;
+  
+  ion-header {
+    background: transparent !important;
+  }
+  
+  ion-toolbar {
+    --background: transparent !important;
+    --color: white !important;
+    background: transparent !important;
+    
+    ion-title {
+      color: white !important;
+    }
+    
+    ion-buttons ion-button {
+      color: white !important;
+    }
+  }
+  
+  ion-content {
+    --background: transparent !important;
+    background: transparent !important;
+    --color: white !important;
+  }
+}
+
+:host.theme-midnight {
+  background: linear-gradient(135deg, #2c3e50 0%, #34495e 50%, #2c3e50 100%) !important;
+  
+  ion-header {
+    background: transparent !important;
+  }
+  
+  ion-toolbar {
+    --background: transparent !important;
+    --color: #ecf0f1 !important;
+    background: transparent !important;
+    
+    ion-title {
+      color: #ecf0f1 !important;
+    }
+    
+    ion-buttons ion-button {
+      color: #ecf0f1 !important;
+    }
+  }
+  
+  ion-content {
+    --background: transparent !important;
+    background: transparent !important;
+    --color: #ecf0f1 !important;
+  }
+}

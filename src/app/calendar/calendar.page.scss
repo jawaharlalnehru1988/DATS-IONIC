@@ -942,3 +942,466 @@
     }
   }
 }
+
+// Global theme integration for Calendar page
+:host.theme-ocean {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  
+  ion-header {
+    background: transparent !important;
+  }
+  
+  ion-toolbar {
+    --background: transparent !important;
+    --color: white !important;
+    background: transparent !important;
+    
+    ion-title {
+      color: white !important;
+    }
+    
+    ion-buttons ion-button {
+      color: white !important;
+    }
+  }
+  
+  ion-content {
+    --background: transparent !important;
+    background: transparent !important;
+    --color: white !important;
+  }
+  
+  .calendar-container {
+    background: transparent !important;
+    color: white !important;
+  }
+  
+  .calendar-nav h2 {
+    color: white !important;
+  }
+  
+  .calendar-nav ion-button {
+    --color: white !important;
+    --background: rgba(255, 255, 255, 0.2) !important;
+    
+    ion-icon {
+      color: white !important;
+    }
+  }
+  
+  .vaishnava-info, .astro-info {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: white !important;
+    
+    h3 {
+      color: white !important;
+    }
+    
+    .vaishnava-label, .time-label {
+      color: rgba(255, 255, 255, 0.8) !important;
+    }
+    
+    .vaishnava-value, .time-value {
+      color: white !important;
+    }
+  }
+  
+  .footer-nav {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.2) !important;
+    
+    .footer-nav-btn {
+      --color: white !important;
+      
+      .btn-label {
+        color: white !important;
+      }
+    }
+  }
+}
+
+:host.theme-sunset {
+  background: linear-gradient(135deg, #ff6b6b 0%, #feca57 50%, #ff9ff3 100%) !important;
+  
+  ion-header {
+    background: transparent !important;
+  }
+  
+  ion-toolbar {
+    --background: transparent !important;
+    --color: white !important;
+    background: transparent !important;
+    
+    ion-title {
+      color: white !important;
+    }
+    
+    ion-buttons ion-button {
+      color: white !important;
+    }
+  }
+  
+  ion-content {
+    --background: transparent !important;
+    background: transparent !important;
+    --color: white !important;
+  }
+  
+  .calendar-container {
+    background: transparent !important;
+    color: white !important;
+  }
+  
+  .calendar-nav h2 {
+    color: white !important;
+  }
+  
+  .calendar-nav ion-button {
+    --color: white !important;
+    --background: rgba(255, 255, 255, 0.2) !important;
+    
+    ion-icon {
+      color: white !important;
+    }
+  }
+  
+  .vaishnava-info, .astro-info {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: white !important;
+    
+    h3 {
+      color: white !important;
+    }
+    
+    .vaishnava-label, .time-label {
+      color: rgba(255, 255, 255, 0.8) !important;
+    }
+    
+    .vaishnava-value, .time-value {
+      color: white !important;
+    }
+  }
+  
+  .footer-nav {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.2) !important;
+    
+    .footer-nav-btn {
+      --color: white !important;
+      
+      .btn-label {
+        color: white !important;
+      }
+    }
+  }
+}
+
+:host.theme-forest {
+  background: linear-gradient(135deg, #134e5e 0%, #71b280 100%) !important;
+  
+  ion-header {
+    background: transparent !important;
+  }
+  
+  ion-toolbar {
+    --background: transparent !important;
+    --color: white !important;
+    background: transparent !important;
+    
+    ion-title {
+      color: white !important;
+    }
+    
+    ion-buttons ion-button {
+      color: white !important;
+    }
+  }
+  
+  ion-content {
+    --background: transparent !important;
+    background: transparent !important;
+    --color: white !important;
+  }
+  
+  .calendar-container {
+    background: transparent !important;
+    color: white !important;
+  }
+  
+  .calendar-nav h2 {
+    color: white !important;
+  }
+  
+  .calendar-nav ion-button {
+    --color: white !important;
+    --background: rgba(255, 255, 255, 0.2) !important;
+    
+    ion-icon {
+      color: white !important;
+    }
+  }
+  
+  .vaishnava-info, .astro-info {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: white !important;
+    
+    h3 {
+      color: white !important;
+    }
+    
+    .vaishnava-label, .time-label {
+      color: rgba(255, 255, 255, 0.8) !important;
+    }
+    
+    .vaishnava-value, .time-value {
+      color: white !important;
+    }
+  }
+  
+  .footer-nav {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.2) !important;
+    
+    .footer-nav-btn {
+      --color: white !important;
+      
+      .btn-label {
+        color: white !important;
+      }
+    }
+  }
+}
+
+:host.theme-cyberpunk {
+  background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 50%, #16213e 100%) !important;
+  
+  ion-header {
+    background: transparent !important;
+  }
+  
+  ion-toolbar {
+    --background: transparent !important;
+    --color: #00ff9f !important;
+    background: transparent !important;
+    
+    ion-title {
+      color: #00ff9f !important;
+    }
+    
+    ion-buttons ion-button {
+      color: #00ff9f !important;
+    }
+  }
+  
+  ion-content {
+    --background: transparent !important;
+    background: transparent !important;
+    --color: #00ff9f !important;
+  }
+  
+  .calendar-container {
+    background: transparent !important;
+    color: #00ff9f !important;
+  }
+  
+  .calendar-nav h2 {
+    color: #00ff9f !important;
+  }
+  
+  .calendar-nav ion-button {
+    --color: #00ff9f !important;
+    --background: rgba(0, 255, 159, 0.2) !important;
+    
+    ion-icon {
+      color: #00ff9f !important;
+    }
+  }
+  
+  .vaishnava-info, .astro-info {
+    background: rgba(0, 255, 159, 0.1) !important;
+    border: 1px solid rgba(0, 255, 159, 0.3) !important;
+    color: #00ff9f !important;
+    
+    h3 {
+      color: #00ff9f !important;
+    }
+    
+    .vaishnava-label, .time-label {
+      color: rgba(0, 255, 159, 0.8) !important;
+    }
+    
+    .vaishnava-value, .time-value {
+      color: #00ff9f !important;
+    }
+  }
+  
+  .footer-nav {
+    background: rgba(0, 255, 159, 0.1) !important;
+    border-top: 1px solid rgba(0, 255, 159, 0.3) !important;
+    
+    .footer-nav-btn {
+      --color: #00ff9f !important;
+      
+      .btn-label {
+        color: #00ff9f !important;
+      }
+    }
+  }
+}
+
+:host.theme-royal {
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #3498db 100%) !important;
+  
+  ion-header {
+    background: transparent !important;
+  }
+  
+  ion-toolbar {
+    --background: transparent !important;
+    --color: white !important;
+    background: transparent !important;
+    
+    ion-title {
+      color: white !important;
+    }
+    
+    ion-buttons ion-button {
+      color: white !important;
+    }
+  }
+  
+  ion-content {
+    --background: transparent !important;
+    background: transparent !important;
+    --color: white !important;
+  }
+  
+  .calendar-container {
+    background: transparent !important;
+    color: white !important;
+  }
+  
+  .calendar-nav h2 {
+    color: white !important;
+  }
+  
+  .calendar-nav ion-button {
+    --color: white !important;
+    --background: rgba(255, 255, 255, 0.2) !important;
+    
+    ion-icon {
+      color: white !important;
+    }
+  }
+  
+  .vaishnava-info, .astro-info {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: white !important;
+    
+    h3 {
+      color: white !important;
+    }
+    
+    .vaishnava-label, .time-label {
+      color: rgba(255, 255, 255, 0.8) !important;
+    }
+    
+    .vaishnava-value, .time-value {
+      color: white !important;
+    }
+  }
+  
+  .footer-nav {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.2) !important;
+    
+    .footer-nav-btn {
+      --color: white !important;
+      
+      .btn-label {
+        color: white !important;
+      }
+    }
+  }
+}
+
+:host.theme-midnight {
+  background: linear-gradient(135deg, #2c3e50 0%, #34495e 50%, #2c3e50 100%) !important;
+  
+  ion-header {
+    background: transparent !important;
+  }
+  
+  ion-toolbar {
+    --background: transparent !important;
+    --color: #ecf0f1 !important;
+    background: transparent !important;
+    
+    ion-title {
+      color: #ecf0f1 !important;
+    }
+    
+    ion-buttons ion-button {
+      color: #ecf0f1 !important;
+    }
+  }
+  
+  ion-content {
+    --background: transparent !important;
+    background: transparent !important;
+    --color: #ecf0f1 !important;
+  }
+  
+  .calendar-container {
+    background: transparent !important;
+    color: #ecf0f1 !important;
+  }
+  
+  .calendar-nav h2 {
+    color: #ecf0f1 !important;
+  }
+  
+  .calendar-nav ion-button {
+    --color: #ecf0f1 !important;
+    --background: rgba(236, 240, 241, 0.2) !important;
+    
+    ion-icon {
+      color: #ecf0f1 !important;
+    }
+  }
+  
+  .vaishnava-info, .astro-info {
+    background: rgba(236, 240, 241, 0.1) !important;
+    border: 1px solid rgba(236, 240, 241, 0.2) !important;
+    color: #ecf0f1 !important;
+    
+    h3 {
+      color: #ecf0f1 !important;
+    }
+    
+    .vaishnava-label, .time-label {
+      color: rgba(236, 240, 241, 0.8) !important;
+    }
+    
+    .vaishnava-value, .time-value {
+      color: #ecf0f1 !important;
+    }
+  }
+  
+  .footer-nav {
+    background: rgba(236, 240, 241, 0.1) !important;
+    border-top: 1px solid rgba(236, 240, 241, 0.2) !important;
+    
+    .footer-nav-btn {
+      --color: #ecf0f1 !important;
+      
+      .btn-label {
+        color: #ecf0f1 !important;
+      }
+    }
+  }
+}
