@@ -7,7 +7,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="chant-page">
+<ion-content [fullscreen]="true" [class]="'chant-page ' + themeClass">
   <div class="chant-container">
     <!-- Krishna Image/Symbol -->
     <div class="krishna-symbol">
@@ -113,20 +113,41 @@
     </svg>
     
     <!-- Chant Button -->
-    <div class="chant-button" (click)="chant()">
+    <div class="chant-button" 
+         (click)="chant()" 
+         [class.disabled]="isAudioPlaying && currentSoundMode === 'prabhupada'">
       <!-- Button Content -->
       <div class="button-content">
         <div class="chant-counter">{{currentRound}}</div>
         <div class="chant-text">{{content.chantText}}</div>
         <div class="chant-subtext">{{content.chantSubtext}}</div>
+        <!-- Audio playing indicators -->
+        <div class="audio-indicator" *ngIf="isAudioPlaying && currentSoundMode === 'prabhupada'">
+          🎵 Playing...
+        </div>
+        <div class="audio-indicator" *ngIf="currentSoundMode === 'continuous'">
+          <span *ngIf="isContinuousPlaying && !isContinuousPaused">🔄 Continuous...</span>
+          <span *ngIf="isContinuousPlaying && isContinuousPaused">⏸️ Paused...</span>
+          <span *ngIf="!isContinuousPlaying">🔄 Ready...</span>
+        </div>
       </div>
       
       <div class="ripple-effect"></div>
     </div>
   </div>
 
+  <!-- Sound Selector Button -->
+  <ion-fab vertical="top" horizontal="end" slot="fixed" class="sound-fab">
+    <ion-fab-button 
+      color="secondary" 
+      (click)="showSoundSelector()"
+      id="sound-trigger">
+      <ion-icon name="musical-notes-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
   <!-- Language Selector Button -->
-  <ion-fab vertical="top" horizontal="end" slot="fixed">
+  <ion-fab vertical="top" horizontal="end" slot="fixed" class="language-fab">
     <ion-fab-button 
       color="primary" 
       (click)="showLanguageSelector()"
@@ -156,6 +177,42 @@
       </ion-content>
     </ng-template>
   </ion-popover>
+
+  <!-- Sound Selector Popover -->
+  <ion-popover 
+    [isOpen]="isSoundSelectorOpen" 
+    (didDismiss)="isSoundSelectorOpen = false"
+    trigger="sound-trigger"
+    placement="bottom-end"
+    [showBackdrop]="true">
+    <ng-template>
+      <ion-content class="sound-popover-content">
+        <div class="sound-options">
+          <div class="sound-item" 
+               *ngFor="let sound of soundOptions"
+               (click)="setSoundMode(sound.key)" 
+               [class.selected]="currentSoundMode === sound.key">
+            <h3>{{sound.icon}} {{sound.name}}</h3>
+            <p>{{sound.description}}</p>
+            <!-- Play/Pause controls for continuous chanting -->
+            <div class="continuous-controls" *ngIf="sound.key === 'continuous' && currentSoundMode === 'continuous'">
+              <ion-button 
+                fill="clear" 
+                size="small" 
+                (click)="toggleContinuousAudio(); $event.stopPropagation()">
+                <ion-icon 
+                  [name]="(isContinuousPlaying && !isContinuousPaused) ? 'pause-outline' : 'play-outline'"
+                  slot="icon-only">
+                </ion-icon>
+                {{ (isContinuousPlaying && !isContinuousPaused) ? 'Pause' : 'Play' }}
+              </ion-button>
+            </div>
+          </div>
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-popover>
+
   <!-- Reset Confirmation Alert -->
   <ion-alert
     [isOpen]="showResetAlert"
