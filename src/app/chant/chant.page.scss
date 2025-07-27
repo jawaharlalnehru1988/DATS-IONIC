@@ -188,7 +188,6 @@
 /* Krishna Symbol Section */
 .krishna-symbol {
   text-align: center;
-  margin-bottom: 30px;
   
   ion-icon {
     font-size: 60px;
@@ -199,14 +198,14 @@
   
   h2 {
     color: rgba(255, 255, 255, 0.95);
-    font-size: 18px;
+    font-size: 14px;
     margin: 10px 0;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
     font-weight: 500;
     line-height: 1.4;
     
     @media (max-width: 480px) {
-      font-size: 16px;
+      font-size: 12px;
     }
   }
 }
@@ -552,7 +551,21 @@ ion-fab {
   --color: #fff;
 }
 
-/* FAB Button Positioning */
+/* FAB Controls Section */
+.fab-controls {
+   position: fixed;
+    top: 70px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px;
+    z-index: 1000;
+    pointer-events: none;
+}
+
+/* FAB Button Positioning with Better Spacing */
 ion-fab.language-fab {
   top: 20px;
   right: 20px;
@@ -560,7 +573,17 @@ ion-fab.language-fab {
 
 ion-fab.sound-fab {
   top: 20px;
-  right: 90px; /* Position second fab button to the left */
+  right: 100px; /* Increased spacing */
+}
+
+ion-fab.bonfire-fab {
+  top: 20px;
+  right: 180px; /* Increased spacing */
+}
+
+ion-fab.bonfire-fab {
+  top: 20px;
+  right: 160px; /* Position third fab button to the left */
 }
 
 /* Theme Selector Modal */
@@ -671,7 +694,7 @@ ion-fab.sound-fab {
   
   .krishna-symbol {
     h2 {
-      font-size: 14px;
+      font-size: 10px;
     }
   }
   

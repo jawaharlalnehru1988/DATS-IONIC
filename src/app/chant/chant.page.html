@@ -21,46 +21,46 @@
       <div class="stat-card">
         <div class="stat-header">
           <h3>{{content.currentRound}}</h3>
-          <ion-button 
-            fill="clear" 
-            size="small" 
-            color="danger" 
-            (click)="resetCurrentRound()"
-            class="reset-btn">
-            <ion-icon name="refresh-outline" slot="icon-only"></ion-icon>
-          </ion-button>
         </div>
         <div class="stat-number">{{currentRound}}/108</div>
+        <ion-button 
+          fill="clear" 
+          size="small" 
+          color="danger" 
+          (click)="resetCurrentRound()"
+          class="reset-btn">
+          <ion-icon name="refresh-outline" slot="icon-only"></ion-icon>
+        </ion-button>
       </div>
       
       <div class="stat-card">
         <div class="stat-header">
           <h3>{{content.roundsCompleted}}</h3>
-          <ion-button 
-            fill="clear" 
-            size="small" 
-            color="danger" 
-            (click)="resetRoundsCompleted()"
-            class="reset-btn">
-            <ion-icon name="refresh-outline" slot="icon-only"></ion-icon>
-          </ion-button>
         </div>
         <div class="stat-number">{{roundsCompleted}}</div>
+        <ion-button 
+          fill="clear" 
+          size="small" 
+          color="danger" 
+          (click)="resetRoundsCompleted()"
+          class="reset-btn">
+          <ion-icon name="refresh-outline" slot="icon-only"></ion-icon>
+        </ion-button>
       </div>
       
       <div class="stat-card">
         <div class="stat-header">
           <h3>{{content.mahaRounds}}</h3>
-          <ion-button 
-            fill="clear" 
-            size="small" 
-            color="danger" 
-            (click)="resetMahaRounds()"
-            class="reset-btn">
-            <ion-icon name="refresh-outline" slot="icon-only"></ion-icon>
-          </ion-button>
         </div>
         <div class="stat-number">{{mahaRounds}}</div>
+        <ion-button 
+          fill="clear" 
+          size="small" 
+          color="danger" 
+          (click)="resetMahaRounds()"
+          class="reset-btn">
+          <ion-icon name="refresh-outline" slot="icon-only"></ion-icon>
+        </ion-button>
       </div>
     </div>
 
@@ -136,25 +136,37 @@
     </div>
   </div>
 
-  <!-- Sound Selector Button -->
-  <ion-fab vertical="top" horizontal="end" slot="fixed" class="sound-fab">
-    <ion-fab-button 
-      color="secondary" 
-      (click)="showSoundSelector()"
-      id="sound-trigger">
-      <ion-icon name="musical-notes-outline"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
+  <!-- FAB Controls Section -->
+  <section class="fab-controls">
+    <!-- Bonfire (Sri Krishna Caitanya) Button -->
+    <ion-fab style="position: static; pointer-events: auto;">
+      <ion-fab-button 
+        color="tertiary" 
+        (click)="playSriKrishnaCaitanyaAudio()">
+        <img src="https://res.cloudinary.com/dbmkctsda/image/upload/v1751945325/8761009fc82487aec3b4145403b99b79_eeppak.jpg" alt="Krishna" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
+      </ion-fab-button>
+    </ion-fab>
 
-  <!-- Language Selector Button -->
-  <ion-fab vertical="top" horizontal="end" slot="fixed" class="language-fab">
-    <ion-fab-button 
-      color="primary" 
-      (click)="showLanguageSelector()"
-      id="language-trigger">
-      <ion-icon name="language-outline"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
+    <!-- Sound Selector Button -->
+    <ion-fab style="position: static; pointer-events: auto;">
+      <ion-fab-button 
+        color="secondary" 
+        (click)="showSoundSelector()"
+        id="sound-trigger">
+        <ion-icon name="musical-notes-outline"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+
+    <!-- Language Selector Button -->
+    <ion-fab style="position: static; pointer-events: auto;">
+      <ion-fab-button 
+        color="primary" 
+        (click)="showLanguageSelector()"
+        id="language-trigger">
+        <ion-icon name="language-outline"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </section>
 
   <!-- Language Selector Popover -->
   <ion-popover 

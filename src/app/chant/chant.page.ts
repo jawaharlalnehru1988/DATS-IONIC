@@ -3,7 +3,7 @@ import { IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonProgressBar,
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { addIcons } from 'ionicons';
-import { flowerOutline, refreshOutline, languageOutline, closeOutline, musicalNotesOutline, playOutline, pauseOutline } from 'ionicons/icons';
+import { flowerOutline, refreshOutline, languageOutline, closeOutline, musicalNotesOutline, playOutline, pauseOutline, bonfireOutline } from 'ionicons/icons';
 import { ThemeService, ThemeType } from '../services/theme.service';
 
 export type LanguageType = 'english' | 'tamil' | 'hindi' | 'telugu' | 'kannada' | 'malayalam' | 'marathi' | 'gujarati' | 'bengali' | 'punjabi' | 'urdu';
@@ -456,6 +456,7 @@ export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
   private prabhupadaAudio: HTMLAudioElement | null = null;
   private continuousAudio: HTMLAudioElement | null = null;
   private bellAudio: HTMLAudioElement | null = null;
+  private sriKrishnaCaitanyaAudio: HTMLAudioElement | null = null;
   private lastCycleTime: number = 0;
 
   // Alert button configuration
@@ -492,7 +493,8 @@ export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
       closeOutline,
       musicalNotesOutline,
       playOutline,
-      pauseOutline
+      pauseOutline,
+      bonfireOutline
     });
   }
 
@@ -544,6 +546,10 @@ export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
       this.bellAudio.pause();
       this.bellAudio = null;
     }
+    if (this.sriKrishnaCaitanyaAudio) {
+      this.sriKrishnaCaitanyaAudio.pause();
+      this.sriKrishnaCaitanyaAudio = null;
+    }
     
     // Reset continuous playing state
     this.isContinuousPlaying = false;
@@ -559,12 +565,12 @@ export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
       this.tickAudio.volume = 0.7;
       
       // Initialize Prabhupada chanting
-      this.prabhupadaAudio = new Audio('assets/music/Srila Prabhupada Chanting.mp3');
+      this.prabhupadaAudio = new Audio('assets/music/SrilaPrabhupadaChanting.mp3');
       this.prabhupadaAudio.preload = 'auto';
       this.prabhupadaAudio.volume = 0.8;
       
       // Initialize continuous Prabhupada chanting
-      this.continuousAudio = new Audio('assets/music/Srila Prabhupada Chanting.mp3');
+      this.continuousAudio = new Audio('assets/music/SrilaPrabhupadaChanting.mp3');
       this.continuousAudio.preload = 'auto';
       this.continuousAudio.volume = 0.8;
       this.continuousAudio.loop = true; // Enable looping for continuous play
@@ -573,6 +579,11 @@ export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
       this.bellAudio = new Audio('assets/music/bellshort.mp3');
       this.bellAudio.preload = 'auto';
       this.bellAudio.volume = 0.9;
+      
+      // Initialize Sri Krishna Caitanya audio
+      this.sriKrishnaCaitanyaAudio = new Audio('assets/music/sriKrishnaCaitanya.mp3');
+      this.sriKrishnaCaitanyaAudio.preload = 'auto';
+      this.sriKrishnaCaitanyaAudio.volume = 0.8;
       
       // Add event listener for Prabhupada audio completion
       this.prabhupadaAudio.addEventListener('ended', () => {
@@ -618,6 +629,10 @@ export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
       
       this.bellAudio.addEventListener('error', (e) => {
         console.warn('Bell audio failed to load:', e);
+      });
+      
+      this.sriKrishnaCaitanyaAudio.addEventListener('error', (e) => {
+        console.warn('Sri Krishna Caitanya audio failed to load:', e);
       });
       
     } catch (error) {
@@ -801,6 +816,18 @@ export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
       }
     } catch (error) {
       console.warn('Bell audio playback error:', error);
+    }
+  }
+
+  // Play Sri Krishna Caitanya audio
+  playSriKrishnaCaitanyaAudio() {
+    try {
+      if (this.sriKrishnaCaitanyaAudio) {
+        this.sriKrishnaCaitanyaAudio.currentTime = 0;
+        this.sriKrishnaCaitanyaAudio.play().catch(e => console.warn('Sri Krishna Caitanya audio play failed:', e));
+      }
+    } catch (error) {
+      console.warn('Sri Krishna Caitanya audio playback error:', error);
     }
   }
 
