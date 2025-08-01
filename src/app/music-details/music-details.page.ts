@@ -6,6 +6,7 @@ import {
   IonContent,
   IonButton,
   IonIcon,
+  IonSkeletonText,
   ModalController
 } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
@@ -37,7 +38,7 @@ import { CategoryFormService } from '../Utils/components/category-form/category-
   styleUrls: ['./music-details.page.scss'],
   standalone: true,
   imports: [
-    IonSpinner,
+    IonSkeletonText,
     IonContent,
     IonButton,
     IonIcon,
