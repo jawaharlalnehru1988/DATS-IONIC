@@ -5,7 +5,10 @@
     </ion-buttons>
     <ion-title>{{ cardItem()?.title || 'Card Details' }}</ion-title>
     <ion-buttons slot="end">
-      <ion-button fill="clear" (click)="openEditModal()" *ngIf="cardItem()">
+      <ion-button 
+        fill="clear" 
+        (click)="openEditModal()" 
+        *ngIf="cardItem() && canEditContent()">
         <ion-icon name="create-outline"></ion-icon>
         Edit Content
       </ion-button>
@@ -15,8 +18,6 @@
 
 <ion-content [fullscreen]="true" class="card-details-content">
   <div class="details-container" *ngIf="cardItem() as card">
-    
-  
 
     <!-- Audio Player Section -->
     <div class="audio-player-section" *ngIf="audioItem() as audio">

@@ -41,7 +41,6 @@ private themeSubscription: Subscription = new Subscription();
 // HostBinding to apply theme class to the component's host element
 @HostBinding('class')
 get themeClass() {
-  console.log('HostBinding class getter called, returning:', this.currentTheme);
   return this.currentTheme;
 }
 
@@ -90,7 +89,6 @@ ngOnInit() {
   // Subscribe to theme changes
   this.themeSubscription = this.themeService.currentTheme$.subscribe(
     theme => {
-      console.log('Krishna page theme changed to:', theme);
       this.currentTheme = theme;
     }
   );
@@ -101,7 +99,6 @@ ngOnInit() {
     next: (data:InputData[]) => {
       if (data && data.length > 0) {
         this.inputDatas = data;
-        console.log('API data loaded:', data);
       } else {
         // Use default data if API returns empty
         this.inputDatas = this.krishnaService.defaultInputData;

@@ -20,7 +20,7 @@ export class RoleBasedUIService {
 
   canShowDevoteeFeatures(): Observable<boolean> {
     return this.authService.currentUser$.pipe(
-      map(user => user?.role === 'devotee' || user?.role === 'admin')
+      map(user => user?.role === 'guest' || user?.role === 'admin')
     );
   }
 

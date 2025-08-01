@@ -60,6 +60,13 @@ export class ReusableHeaderComponent implements OnInit, OnDestroy {
         // Fallback: decode token if user data is not available
         const token = this.authService.getToken();
         if (token) {
+          // First try to get name from cookie (faster)
+          const nameFromCookie = this.authService.getUserNameFromCookie();
+          if (nameFromCookie) {
+            return JwtUtil.getUserInitials(nameFromCookie);
+          }
+          
+          // If cookie not available, decode token
           const decodedToken = JwtUtil.decodeToken(token);
           if (decodedToken && decodedToken.name) {
             return JwtUtil.getUserInitials(decodedToken.name);

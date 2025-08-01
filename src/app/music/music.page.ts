@@ -27,7 +27,6 @@ export class MusicPage implements OnInit {
   }
 
   onCardClick(language: { topic: string; title: string }) {
-  console.log('language :', language);
     this.router.navigate(['/music-details', language.topic]);
     
   }

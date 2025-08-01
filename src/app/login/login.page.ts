@@ -86,7 +86,6 @@ export class LoginPage implements OnInit, OnDestroy {
       
       this.authService.login(email, password).subscribe({
         next: (response) => {
-          console.log('Login successful', response);
           this.isLoading = false;
           // Redirect to main page or dashboard
           this.router.navigate(['/lordkrishna']);

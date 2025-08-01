@@ -5,11 +5,15 @@ import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton,
 import { Router, ActivatedRoute } from '@angular/router';
 import { DataSharingService } from '../../services/data-sharing.service';
 import { RatingService } from '../../services/rating.service';
+import { AuthService } from '../../services/auth.service';
+import { UserRoleService } from '../../services/user-role.service';
 import { IonicAudioPlayerComponent } from '../ionic-audio-player/ionic-audio-player.component';
 import { StarRatingComponent } from '../star-rating/star-rating.component';
 import { addIcons } from 'ionicons';
 import { createOutline } from 'ionicons/icons';
 import { AudioRange } from '../../Utils/models';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-card-details',
@@ -69,14 +73,41 @@ export class CardDetailsComponent implements OnInit {
     { name: "Conclusion", start: 3.30, end: 4.00 }
   ];
 
+  // Role-based access control
+  isUserAdmin$: Observable<boolean>;
+  canEditContent = signal<boolean>(false);
+  currentUserRole = signal<string>('guest');
+
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private dataSharingService: DataSharingService,
     private ratingService: RatingService,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private authService: AuthService,
+    private userRoleService: UserRoleService
   ) {
     addIcons({ createOutline });
+    
+    // Initialize role-based access control using cookie-based service for better performance
+    this.isUserAdmin$ = this.authService.currentUser$.pipe(
+      map(user => {
+        // First try cookie (faster), then fallback to user object
+        return this.userRoleService.isCurrentUserAdmin() || (user?.role === 'admin');
+      })
+    );
+    
+    // Subscribe to admin status and update signal
+    this.isUserAdmin$.subscribe(isAdmin => {
+      this.canEditContent.set(isAdmin);
+    });
+    
+    // Subscribe to user role and update signal using cookie for better performance
+    this.authService.currentUser$.subscribe(user => {
+      // Use cookie-based service for faster access
+      const role = this.userRoleService.getCurrentUserRole();
+      this.currentUserRole.set(role);
+    });
     
     // Effect to handle navigation when no data is available
     effect(() => {
