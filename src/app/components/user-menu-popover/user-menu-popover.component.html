@@ -1,0 +1,82 @@
+<div class="user-menu-popover" [ngClass]="currentTheme$ | async">
+  <div class="popover-content">
+    
+    @if(isAuthenticated && userInfo) {
+      <!-- Authenticated User Content -->
+      <!-- User Info Section -->
+      <div class="user-info-section">
+        <div class="user-detail">
+          <ion-icon name="person-outline" class="detail-icon"></ion-icon>
+          <div class="detail-content">
+            <span class="detail-label">Name</span>
+            <span class="detail-value">{{ userInfo.name }}</span>
+          </div>
+        </div>
+        
+        <div class="user-detail">
+          <ion-icon name="mail-outline" class="detail-icon"></ion-icon>
+          <div class="detail-content">
+            <span class="detail-label">Email</span>
+            <span class="detail-value">{{ userInfo.email }}</span>
+          </div>
+        </div>
+        
+        <div class="user-detail">
+          <ion-icon name="shield-outline" class="detail-icon"></ion-icon>
+          <div class="detail-content">
+            <span class="detail-label">Role</span>
+            <span class="detail-value role-badge">{{ userInfo.role | titlecase }}</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Divider -->
+      <div class="divider"></div>
+      
+      <!-- Actions Section -->
+      <div class="actions-section">
+        <ion-button 
+          fill="clear" 
+          expand="full" 
+          class="logout-button"
+          (click)="logout()">
+          <ion-icon name="log-out-outline" slot="start"></ion-icon>
+          Log out
+        </ion-button>
+      </div>
+      
+    } @else {
+      <!-- Guest User Content -->
+      <!-- Guest Info Section -->
+      <div class="user-info-section">
+        <div class="user-detail">
+          <ion-icon name="person-outline" class="detail-icon"></ion-icon>
+          <div class="detail-content">
+            <span class="detail-label">Welcome</span>
+            <span class="detail-value">Guest User</span>
+          </div>
+        </div>
+        
+        <div class="guest-message">
+          <p>Sign in to access personalized features and sync your data across devices.</p>
+        </div>
+      </div>
+      
+      <!-- Divider -->
+      <div class="divider"></div>
+      
+      <!-- Actions Section -->
+      <div class="actions-section">
+        <ion-button 
+          fill="solid" 
+          expand="full" 
+          class="login-button"
+          (click)="login()">
+          <ion-icon name="log-in-outline" slot="start"></ion-icon>
+          Log In
+        </ion-button>
+      </div>
+    }
+    
+  </div>
+</div>

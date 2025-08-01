@@ -51,6 +51,38 @@ ion-buttons {
     ion-icon {
       font-size: 24px;
     }
+    
+    .user-initials {
+      width: 36px;
+      height: 36px;
+      min-width: 36px;
+      min-height: 36px;
+      max-width: 36px;
+      max-height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 12px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: rgba(255, 255, 255, 0.2);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      transition: all 0.3s ease;
+      overflow: hidden;
+      text-align: center;
+      letter-spacing: -0.5px;
+      padding: 0;
+      margin: 0;
+      
+      /* Ensure perfect vertical centering */
+      line-height: 1;
+      box-sizing: border-box;
+      
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
   }
 }
 
@@ -88,6 +120,13 @@ ion-menu-button {
         color: #00f5ff !important;
         filter: drop-shadow(0 0 8px rgba(0, 245, 255, 0.5)) !important;
       }
+      
+      .user-initials {
+        background: rgba(0, 245, 255, 0.2) !important;
+        border: 2px solid #00f5ff !important;
+        color: #00f5ff !important;
+        box-shadow: 0 0 15px rgba(0, 245, 255, 0.3) !important;
+      }
     }
   }
 }
@@ -120,6 +159,13 @@ ion-menu-button {
         color: #fff !important;
         filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8)) !important;
       }
+      
+      .user-initials {
+        background: rgba(255, 255, 255, 0.2) !important;
+        border: 2px solid #fff !important;
+        color: #fff !important;
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.4) !important;
+      }
     }
   }
 }
@@ -151,6 +197,13 @@ ion-menu-button {
       ion-icon {
         color: #71b280 !important;
         filter: drop-shadow(0 0 6px rgba(113, 178, 128, 0.6)) !important;
+      }
+      
+      .user-initials {
+        background: rgba(113, 178, 128, 0.2) !important;
+        border: 2px solid #71b280 !important;
+        color: #71b280 !important;
+        box-shadow: 0 0 15px rgba(113, 178, 128, 0.3) !important;
       }
     }
   }
@@ -187,6 +240,15 @@ ion-menu-button {
         color: #00ff41 !important;
         filter: drop-shadow(0 0 10px #00ff41) !important;
       }
+      
+      .user-initials {
+        background: rgba(0, 255, 65, 0.15) !important;
+        border: 2px solid #00ff41 !important;
+        color: #00ff41 !important;
+        font-family: 'Courier New', monospace !important;
+        box-shadow: 0 0 20px rgba(0, 255, 65, 0.4) !important;
+        text-shadow: 0 0 8px rgba(0, 255, 65, 0.6) !important;
+      }
     }
   }
 }
@@ -221,6 +283,14 @@ ion-menu-button {
         color: #ffd700 !important;
         filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.8)) !important;
       }
+      
+      .user-initials {
+        background: rgba(255, 215, 0, 0.2) !important;
+        border: 2px solid #ffd700 !important;
+        color: #ffd700 !important;
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.4) !important;
+        text-shadow: 0 0 10px rgba(255, 215, 0, 0.6) !important;
+      }
     }
   }
 }
@@ -253,6 +323,13 @@ ion-menu-button {
       ion-icon {
         color: #3498db !important;
         filter: drop-shadow(0 0 6px rgba(52, 152, 219, 0.6)) !important;
+      }
+      
+      .user-initials {
+        background: rgba(52, 152, 219, 0.2) !important;
+        border: 2px solid #3498db !important;
+        color: #3498db !important;
+        box-shadow: 0 0 15px rgba(52, 152, 219, 0.3) !important;
       }
     }
   }

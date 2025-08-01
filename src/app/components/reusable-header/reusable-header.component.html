@@ -9,8 +9,14 @@
       <ion-title>{{ title }}</ion-title>
       @if(showPersonIcon) {
         <ion-buttons slot="end">
-          <ion-button fill="clear">
-            <ion-icon name="person-circle-outline"></ion-icon>
+          <ion-button fill="clear" (click)="onPersonIconClicked($event)">
+            @if((isAuthenticated$ | async) && (userInitials$ | async); as initials) {
+              <!-- Show user initials when authenticated -->
+              <div class="user-initials">{{ initials }}</div>
+            } @else {
+              <!-- Show person icon when not authenticated -->
+              <ion-icon name="person-circle-outline"></ion-icon>
+            }
           </ion-button>
         </ion-buttons>
       }
