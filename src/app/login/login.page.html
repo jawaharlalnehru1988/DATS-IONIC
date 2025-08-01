@@ -1,0 +1,49 @@
+<app-reusable-header 
+  [title]="'Login'" 
+  [translucent]="true" 
+  [showMenuButton]="true">
+</app-reusable-header>
+
+<ion-content class="ion-padding">
+  <div class="form-container">
+    <img src="../../assets/krishna.jpg" alt="App Logo" class="app-logo" />
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <ion-item>
+        <ion-label position="floating">Email</ion-label>
+        <ion-input type="email" formControlName="email"></ion-input>
+      </ion-item>
+      <ion-text color="danger" *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.hasError('required')">
+        Email is required.
+      </ion-text>
+      <ion-text color="danger" *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.hasError('email')">
+        Enter a valid email.
+      </ion-text>
+
+      <ion-item>
+        <ion-label position="floating">Password</ion-label>
+        <ion-input type="password" formControlName="password"></ion-input>
+      </ion-item>
+      <ion-text color="danger" *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.hasError('required')">
+        Password is required.
+      </ion-text>
+
+      <!-- Display login error -->
+      <ion-text color="danger" *ngIf="loginError">
+        {{ loginError }}
+      </ion-text>
+
+      <ion-button 
+        expand="full" 
+        type="submit" 
+        [disabled]="!loginForm.valid || isLoading">
+        <ion-spinner name="crescent" *ngIf="isLoading"></ion-spinner>
+        <span *ngIf="!isLoading">Login</span>
+        <span *ngIf="isLoading">Logging in...</span>
+      </ion-button>
+
+      <div class="signup-link">
+        <p>Don't have an account? <a href="/register">Register here</a>.</p>
+      </div>
+    </form>
+  </div>
+</ion-content>

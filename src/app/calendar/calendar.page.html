@@ -1,31 +1,9 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-     <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>Vaishnava Calendar</ion-title>
-  </ion-toolbar>
-</ion-header>
+<app-reusable-header 
+  [title]="'Vaishnava Calendar'" 
+  [translucent]="true" 
+  [showMenuButton]="true">
+</app-reusable-header>
 
-<ion-header [translucent]="true">
-  <ion-toolbar color="primary">
-     <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>{{ getCurrentMonthYear() }}</ion-title>
-    <ion-buttons slot="end">
-      <ion-button fill="clear">
-        <ion-icon name="calendar-outline"></ion-icon>
-      </ion-button>
-      <ion-button fill="clear">
-        <ion-icon name="search-outline"></ion-icon>
-      </ion-button>
-      <ion-button fill="clear">
-        <ion-icon name="settings-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
 
 <!-- <div class="calendar-section">
   <ion-datetime minuteValues="0,15,30,45" dayValues="5,10,15,20,25,30"></ion-datetime>
@@ -38,7 +16,9 @@
       <ion-button fill="clear" (click)="previousMonth()">
         <ion-icon name="chevron-back"></ion-icon>
       </ion-button>
-      <h2>{{ monthNames[currentMonth] }} {{ currentYear }}</h2>
+      <h2>
+        {{ monthNames[currentMonth] }} {{ currentYear }}
+      </h2>
       <ion-button fill="clear" (click)="nextMonth()">
         <ion-icon name="chevron-forward"></ion-icon>
       </ion-button>

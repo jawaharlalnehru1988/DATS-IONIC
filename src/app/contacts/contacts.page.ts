@@ -6,13 +6,14 @@ import { call, globe, logoAndroid, logoApple, logoWhatsapp, mail, map, musicalNo
 import { addIcons } from 'ionicons';
 import { ThemeService, ThemeType } from '../services/theme.service';
 import { Subscription } from 'rxjs';
+import { ReusableHeaderComponent } from '../components';
 
 @Component({
   selector: 'app-contacts',
   templateUrl: './contacts.page.html',
   styleUrls: ['./contacts.page.scss'],
   standalone: true,
-  imports: [IonTextarea, IonButtons, IonLabel, IonButton, IonIcon, IonItem, IonList, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonMenuButton]
+  imports: [IonTextarea, ReusableHeaderComponent, IonLabel, IonButton, IonIcon, IonItem, IonList, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
 })
 export class ContactsPage implements OnInit, OnDestroy {
   @HostBinding('class') get themeClass() {

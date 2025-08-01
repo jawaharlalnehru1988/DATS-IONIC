@@ -6,15 +6,17 @@ import { addIcons } from 'ionicons';
 import { languageOutline, add, ellipsisVertical, create, trash, eye } from 'ionicons/icons';
 import { ArticleService, ArticleCard, ArticleCategory } from '../services/article.service';
 import { ArticleFormComponent } from '../components/article-form/article-form.component';
+import { ChantSectionComponent } from '../components/chant-section/chant-section.component';
 import { ThemeService, ThemeType } from '../services/theme.service';
 import { Subscription } from 'rxjs';
+import { ReusableHeaderComponent } from '../components';
 
 @Component({
   selector: 'app-articles',
   templateUrl: './articles.component.html',
   styleUrls: ['./articles.component.scss'],
   standalone: true,
-  imports: [IonActionSheet, IonButton, IonIcon, IonLabel, IonSegmentButton, IonSegment, IonContent, IonHeader, IonTitle, IonToolbar, IonMenuButton, IonButtons, CommonModule, ArticleFormComponent],
+  imports: [IonActionSheet, ReusableHeaderComponent, IonButton, IonIcon, IonLabel, IonSegmentButton, IonSegment, IonContent, IonButtons, CommonModule, ArticleFormComponent],
 })
 export class ArticlesComponent implements OnInit, OnDestroy {
   selectedLanguage: string = 'english';

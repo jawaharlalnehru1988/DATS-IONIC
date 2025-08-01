@@ -12,12 +12,14 @@ import { DataSharingService } from '../services/data-sharing.service';
 import { CategoryFormService } from '../Utils/components/category-form/category-form.service';
 import { ThemeService, ThemeType } from '../services/theme.service';
 import { Subscription } from 'rxjs';
+import { ReusableHeaderComponent } from '../components/reusable-header/reusable-header.component';
+
 @Component({
   selector: 'app-krishna-page',
   templateUrl: './krishna-page.page.html',
   styleUrls: ['./krishna-page.page.scss'],
   standalone: true,
-  imports: [IonFooter, NgFor, IonLabel, IonSegmentButton, IonMenuButton, IonSegment, IonButton, IonButtons, IonIcon, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, DisplayCardListComponent, IonSkeletonText]
+  imports: [IonFooter, NgFor, IonLabel, IonSegmentButton, IonSegment, IonButton, IonButtons, IonIcon, IonContent, IonToolbar, CommonModule, FormsModule, DisplayCardListComponent, IonSkeletonText, ReusableHeaderComponent]
 })
 export class KrishnaPagePage implements OnInit, OnDestroy {
   languages = [

@@ -111,6 +111,169 @@ ion-menu.theme-midnight {
   }
 }
 
+/* User Info Section */
+.user-info {
+  margin-top: 20px;
+  padding: 16px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  
+  .user-details {
+    text-align: center;
+    margin-bottom: 12px;
+    
+    h4 {
+      margin: 0 0 4px 0;
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+    }
+    
+    p {
+      margin: 0 0 8px 0;
+      font-size: 14px;
+      opacity: 0.8;
+      color: #fff;
+    }
+    
+    .user-role {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  }
+  
+  .logout-item {
+    margin: 0 !important;
+    border-radius: 8px !important;
+    
+    &:hover {
+      background: rgba(244, 67, 54, 0.1) !important;
+    }
+  }
+}
+
+/* Theme-specific user info styling */
+.theme-ocean .user-info {
+  background: rgba(102, 126, 234, 0.2);
+  border-color: rgba(102, 126, 234, 0.3);
+}
+
+.theme-sunset .user-info {
+  background: rgba(255, 107, 107, 0.2);
+  border-color: rgba(255, 107, 107, 0.3);
+}
+
+.theme-forest .user-info {
+  background: rgba(113, 178, 128, 0.2);
+  border-color: rgba(113, 178, 128, 0.3);
+}
+
+.theme-cyberpunk .user-info {
+  background: rgba(0, 255, 65, 0.1);
+  border-color: #00ff41;
+  
+  .user-details {
+    h4, p {
+      color: #00ff41 !important;
+      font-family: 'Courier New', monospace;
+    }
+    
+    .user-role {
+      background: rgba(0, 255, 65, 0.2);
+      color: #00ff41;
+    }
+  }
+}
+
+.theme-royal .user-info {
+  background: rgba(255, 215, 0, 0.2);
+  border-color: rgba(255, 215, 0, 0.3);
+  
+  .user-details {
+    .user-role {
+      background: rgba(255, 215, 0, 0.3);
+      color: #333;
+    }
+  }
+}
+
+.theme-midnight .user-info {
+  background: rgba(52, 152, 219, 0.2);
+  border-color: rgba(52, 152, 219, 0.3);
+  
+  .user-details {
+    h4, p {
+      color: #ecf0f1 !important;
+    }
+    
+    .user-role {
+      background: rgba(52, 152, 219, 0.3);
+      color: #ecf0f1;
+    }
+  }
+}
+
+/* Auth Section - For non-authenticated users */
+.auth-section {
+  margin-top: 20px;
+  padding: 16px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  
+  .auth-item {
+    margin: 8px 0 !important;
+    border-radius: 8px !important;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.1) !important;
+      transform: translateX(5px);
+    }
+  }
+}
+
+/* Theme-specific auth section styling */
+.theme-ocean .auth-section {
+  background: rgba(102, 126, 234, 0.2);
+  border-color: rgba(102, 126, 234, 0.3);
+}
+
+.theme-sunset .auth-section {
+  background: rgba(255, 107, 107, 0.2);
+  border-color: rgba(255, 107, 107, 0.3);
+}
+
+.theme-forest .auth-section {
+  background: rgba(113, 178, 128, 0.2);
+  border-color: rgba(113, 178, 128, 0.3);
+}
+
+.theme-cyberpunk .auth-section {
+  background: rgba(0, 255, 65, 0.1);
+  border-color: #00ff41;
+}
+
+.theme-royal .auth-section {
+  background: rgba(255, 215, 0, 0.2);
+  border-color: rgba(255, 215, 0, 0.3);
+}
+
+.theme-midnight .auth-section {
+  background: rgba(52, 152, 219, 0.2);
+  border-color: rgba(52, 152, 219, 0.3);
+}
+
 /* Theme-specific header styling */
 .theme-ocean .theme-header {
   ion-list-header {

@@ -8,7 +8,32 @@
             Welcome to Devotee App
           </ion-list-header>
           <ion-note>askharekrishna.com</ion-note>
-        </div>
+          
+          <!-- User Info Section - Show only if authenticated -->
+          <div class="user-info" *ngIf="isAuthenticated && currentUser" [class]="currentTheme">
+            <div class="user-details">
+              <h4>{{ currentUser.name }}</h4>
+              <p>{{ currentUser.email }}</p>
+              <span class="user-role">{{ currentUser.role | titlecase }}</span>
+            </div>
+            <ion-menu-toggle auto-hide="false">
+              <ion-item 
+                button
+                (click)="onLogout()"
+                lines="none" 
+                detail="false"
+                [class]="'menu-item logout-item ' + currentTheme">
+                <ion-icon 
+                  aria-hidden="true" 
+                  slot="start" 
+                  name="log-out-outline"
+                  color="danger">
+                </ion-icon>
+                <ion-label color="danger">Logout</ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+          </div>
+          </div>
 
         <!-- Main Navigation -->
         <ion-list id="inbox-list" [class]="currentTheme">

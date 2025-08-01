@@ -1,10 +1,20 @@
 import { Routes } from '@angular/router';
+import { AuthGuard } from './guards/auth.guard';
+import { RoleGuard } from './guards/role.guard';
 
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'lordkrishna',
+    redirectTo: 'dashboard',
     pathMatch: 'full',
+  },
+  {
+    path: 'dashboard',
+    loadComponent: () => import('./dashboard/dashboard.page').then((m) => m.DashboardPage),
+  },
+  {
+    path: 'login',
+    loadComponent: () => import('./login/login.page').then((m) => m.LoginPage),
   },
   {
     path: 'register',
@@ -22,11 +32,11 @@ export const routes: Routes = [
   },
   {
     path: 'lordkrishna',
-    loadComponent: () => import('./krishna-page/krishna-page.page').then( m => m.KrishnaPagePage)
+    loadComponent: () => import('./krishna-page/krishna-page.page').then( m => m.KrishnaPagePage),
   },
   {
     path: 'tutorial',
-    loadComponent: () => import('./tutorial/tutorial.page').then( m => m.TutorialPage)
+    loadComponent: () => import('./tutorial/tutorial.page').then( m => m.TutorialPage),
   },
   {
     path: 'srilaprabhupada',
@@ -46,7 +56,9 @@ export const routes: Routes = [
   },
   {
     path: 'rich-text-demo',
-    loadComponent: () => import('./rich-text-demo/rich-text-demo.page').then( m => m.RichTextDemoPage)
+    loadComponent: () => import('./rich-text-demo/rich-text-demo.page').then( m => m.RichTextDemoPage),
+    canActivate: [AuthGuard, RoleGuard],
+    data: { roles: ['admin'] } // Only admin can access this - keep this restricted
   },
   {
     path: 'questionanswered',
@@ -55,10 +67,6 @@ export const routes: Routes = [
   {
     path: 'calender',
     loadComponent: () => import('./calendar/calendar.page').then( m => m.CalendarPage)
-  },
-  {
-    path: 'register',
-    loadComponent: () => import('./register/register.page').then( m => m.RegisterPage)
   },
   {
     path: 'audios',
@@ -81,15 +89,7 @@ export const routes: Routes = [
     loadComponent: () => import('./krishna-page/krishna-page.page').then( m => m.KrishnaPagePage)
   },
   {
-    path: 'settings',
-    loadComponent: () => import('./settings/settings.page').then( m => m.SettingsPage)
-  },
-  {
     path: 'card-details',
     loadComponent: () => import('./components/card-details/card-details.component').then( m => m.CardDetailsComponent)
   }
-  
-
-
-
 ];

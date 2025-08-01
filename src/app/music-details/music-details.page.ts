@@ -2,12 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {  
-  IonHeader, 
-  IonTitle, 
   IonSpinner, 
-  IonMenuButton, 
-  IonToolbar,  
-  IonButtons,
   IonContent,
   IonButton,
   IonIcon,
@@ -30,12 +25,11 @@ import {
   globe, 
   construct, 
   play, arrowBack, add } from 'ionicons/icons';
-import { DisplayCardListComponent } from "../components";
+import { DisplayCardListComponent, ReusableHeaderComponent } from "../components";
 import { CardItem, InputData } from '../Utils/models';
 import { CategoryCard } from '../Utils/models/card.model';
 import { DataSharingService } from '../services/data-sharing.service';
 import { CategoryFormService } from '../Utils/components/category-form/category-form.service';
-
 
 @Component({
   selector: 'app-music-details',
@@ -43,18 +37,14 @@ import { CategoryFormService } from '../Utils/components/category-form/category-
   styleUrls: ['./music-details.page.scss'],
   standalone: true,
   imports: [
-    IonButtons,
     IonSpinner,
-    IonMenuButton,
-    IonHeader,
-    IonTitle,
-    IonToolbar,
     IonContent,
     IonButton,
     IonIcon,
     CommonModule,
     FormsModule,
-    DisplayCardListComponent
+    DisplayCardListComponent,
+    ReusableHeaderComponent
 ]
 })
 export class MusicDetailsPage implements OnInit {

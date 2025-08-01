@@ -8,6 +8,7 @@ import { star, add, home, heartOutline, cafeOutline, personOutline, chevronDownO
 import { ToastController } from '@ionic/angular';
 import { ThemeService, ThemeType } from '../services/theme.service';
 import { Subscription } from 'rxjs';
+import { ReusableHeaderComponent } from '../components';
 
 
 interface ContentCard {
@@ -34,7 +35,7 @@ interface Category {
   templateUrl: './srilaprabhupada.page.html',
   styleUrls: ['./srilaprabhupada.page.scss'],
   standalone: true,
-  imports: [IonMenuButton, IonContent, IonIcon, IonButton, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButtons],
+  imports: [ReusableHeaderComponent, IonContent, IonIcon, IonButton, CommonModule, FormsModule],
 })
 export class InboxPage implements OnInit, OnDestroy, AfterViewInit {
   // Theme management properties

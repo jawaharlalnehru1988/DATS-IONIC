@@ -7,6 +7,7 @@ import { chevronBack, chevronForward, calendarOutline, searchOutline, settingsOu
 import { AlertController, ToastController } from '@ionic/angular';
 import { ThemeService, ThemeType } from '../services/theme.service';
 import { Subscription } from 'rxjs';
+import { ReusableHeaderComponent } from '../components/reusable-header/reusable-header.component';
 
 interface FestivalEvent {
   id: string;
@@ -69,7 +70,7 @@ interface FestivalInfo {
   templateUrl: './calendar.page.html',
   styleUrls: ['./calendar.page.scss'],
   standalone: true,
-  imports: [IonContent, IonMenuButton, IonIcon, IonButton, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButtons]
+  imports: [IonContent, IonIcon, IonButton, CommonModule, FormsModule, ReusableHeaderComponent]
 })
 export class CalendarPage implements OnInit, OnDestroy {
   currentDate = new Date();

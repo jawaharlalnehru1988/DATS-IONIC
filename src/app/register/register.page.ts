@@ -1,22 +1,25 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { IonContent, IonMenuButton, IonHeader, IonTitle, IonToolbar, IonInput, IonItem, IonTextarea, IonLabel, IonButton, IonText, IonButtons } from '@ionic/angular/standalone';
+import { IonContent, IonMenuButton, IonHeader, IonTitle, IonToolbar, IonInput, IonItem, IonTextarea, IonLabel, IonButton, IonText, IonButtons, IonSpinner } from '@ionic/angular/standalone';
 import { AuthService } from '../services/auth.service';
 import { ResponseUserData } from '../Utils/models';
 import { Router } from '@angular/router';
 import { ThemeService, ThemeType } from '../services/theme.service';
 import { Subscription } from 'rxjs';
+import { ReusableHeaderComponent } from '../components';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
   styleUrls: ['./register.page.scss'],
   standalone: true,
-  imports: [IonButtons, IonMenuButton, IonText, IonContent, ReactiveFormsModule, FormsModule,  IonHeader, IonTitle, IonToolbar, IonText, CommonModule, FormsModule, IonItem, IonInput, IonTextarea, IonLabel, IonButton]
+  imports: [IonSpinner, ReusableHeaderComponent, IonText, IonContent, ReactiveFormsModule, FormsModule,  IonText, CommonModule, FormsModule, IonItem, IonInput, IonTextarea, IonLabel, IonButton]
 })
 export class RegisterPage implements OnInit, OnDestroy {
   registerForm!: FormGroup;
+  registrationError: string = '';
+  isLoading: boolean = false;
   
   // Theme management
   currentTheme: ThemeType = 'theme-royal';
@@ -53,14 +56,23 @@ export class RegisterPage implements OnInit, OnDestroy {
 
   onSubmit() {
     if (this.registerForm.valid) {
+      this.isLoading = true;
+      this.registrationError = '';
+      
       console.log(this.registerForm.value);
       this.authService.register(this.registerForm.value).subscribe({
-        next: (response:ResponseUserData) => {
+        next: (response: ResponseUserData) => {
           console.log('Registration successful', response);
-          this.router.navigate(['/login']);
+          this.isLoading = false;
+          // Navigate to login page with success message
+          this.router.navigate(['/login'], { 
+            queryParams: { registered: 'true' }
+          });
         },
-        error: (error:ResponseUserData) => {
+        error: (error: any) => {
           console.error('Registration failed', error);
+          this.isLoading = false;
+          this.registrationError = error.error?.message || 'Registration failed. Please try again.';
         }
       });
     }

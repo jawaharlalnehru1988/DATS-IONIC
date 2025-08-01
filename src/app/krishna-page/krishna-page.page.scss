@@ -49,6 +49,14 @@ ion-skeleton-text {
   font-size: 1.1rem;
   // Remove hardcoded background - let theme handle it
   
+  // Ensure the reusable header takes full width
+  app-reusable-header {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  
   // Ensure theme classes override default styles
   &.theme-ocean,
   &.theme-sunset,

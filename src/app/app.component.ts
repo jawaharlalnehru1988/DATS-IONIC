@@ -17,6 +17,7 @@ import {
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { ThemeService, ThemeType } from './services/theme.service';
+import { AuthService } from './services/auth.service';
 import { Subscription } from 'rxjs';
 import { 
   mailOutline, 
@@ -59,14 +60,32 @@ import {
   settingsOutline, 
   settingsSharp,
   colorPaletteOutline,
-  colorPalette
+  colorPalette,
+  logOutOutline,
+  logOutSharp,
+  logInOutline,
+  logInSharp,
+  gridOutline,
+  gridSharp,
+  globeOutline,
+  informationCircleOutline,
+  personOutline,
+  diamondOutline,
+  starOutline,
+  peopleOutline,
+  analyticsOutline,
+  constructOutline,
+  menuOutline
 } from 'ionicons/icons';
+import { ResponseUserData } from './Utils/models';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
   imports: [
+    CommonModule,
     RouterLink, 
     RouterLinkActive, 
     IonApp, 
@@ -87,8 +106,13 @@ import {
 export class AppComponent implements OnInit, OnDestroy {
   currentTheme: ThemeType = 'theme-royal';
   private themeSubscription: Subscription = new Subscription();
+  private userSubscription: Subscription = new Subscription();
+  
+  currentUser: ResponseUserData | null = null;
+  isAuthenticated: boolean = false;
 
   public appPages = [
+    { title: 'Dashboard', url: '/dashboard', icon: 'grid', iconColor: '#4CAF50' },
     { title: 'Lord Sri Krishna', url: '/lordkrishna', icon: 'person-circle', iconColor: '#B34E05' },
     { title: 'Srila Prabhupada', url: '/srilaprabhupada', icon: 'person-circle', iconColor: '#B34E05' },
     { title: 'Audios', url: '/audios', icon: 'musical-notes', iconColor: 'orange' },
@@ -104,7 +128,10 @@ export class AppComponent implements OnInit, OnDestroy {
     { title: 'Settings', url: '/settings', icon: 'settings', iconColor: '#230568' },
   ];
 
-  constructor(private themeService: ThemeService) {
+  constructor(
+    private themeService: ThemeService,
+    private authService: AuthService
+  ) {
     addIcons({ 
       mailOutline, 
       mailSharp, 
@@ -145,7 +172,22 @@ export class AppComponent implements OnInit, OnDestroy {
       easelOutline, 
       easelSharp,
       colorPaletteOutline,
-      colorPalette
+      colorPalette,
+      logOutOutline,
+      logOutSharp,
+      logInOutline,
+      logInSharp,
+      gridOutline,
+      gridSharp,
+      globeOutline,
+      informationCircleOutline,
+      personOutline,
+      diamondOutline,
+      starOutline,
+      peopleOutline,
+      analyticsOutline,
+      constructOutline,
+      menuOutline
     });
   }
 
@@ -154,12 +196,32 @@ export class AppComponent implements OnInit, OnDestroy {
     this.themeSubscription = this.themeService.currentTheme$.subscribe(theme => {
       this.currentTheme = theme;
     });
+
+    // Subscribe to authentication state
+    this.userSubscription.add(
+      this.authService.currentUser$.subscribe(user => {
+        this.currentUser = user;
+      })
+    );
+
+    this.userSubscription.add(
+      this.authService.isAuthenticated$.subscribe(isAuth => {
+        this.isAuthenticated = isAuth;
+      })
+    );
   }
 
   ngOnDestroy() {
-    // Clean up subscription
+    // Clean up subscriptions
     if (this.themeSubscription) {
       this.themeSubscription.unsubscribe();
     }
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
+  }
+
+  onLogout() {
+    this.authService.logout();
   }
 }

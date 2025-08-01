@@ -2,14 +2,13 @@ import { Component, OnInit, OnDestroy, HostBinding } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonMenuButton, IonIcon } from '@ionic/angular/standalone';
-import { IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonSpinner, IonItem, IonLabel,} from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
 import { TutorialService } from './tutorial.service';
-import { environment } from 'src/environments/environment';
 import { addIcons } from 'ionicons';
 import { playCircle, arrowForward } from 'ionicons/icons';
 import { ThemeService, ThemeType } from '../services/theme.service';
 import { Subscription } from 'rxjs';
+import { ReusableHeaderComponent } from '../components';
  
 export interface CardModel{
   blogId: number;
@@ -24,7 +23,7 @@ export interface CardModel{
   templateUrl: './tutorial.page.html',
   styleUrls: ['./tutorial.page.scss'],
   standalone: true,
-  imports: [IonIcon, IonButtons, IonContent, IonMenuButton, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
+  imports: [IonIcon, ReusableHeaderComponent, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
 })
 export class TutorialPage implements OnInit, OnDestroy {
    isLoading = true;

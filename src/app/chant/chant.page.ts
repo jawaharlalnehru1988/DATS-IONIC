@@ -4,7 +4,8 @@ import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { addIcons } from 'ionicons';
 import { flowerOutline, refreshOutline, languageOutline, closeOutline, musicalNotesOutline, playOutline, pauseOutline, bonfireOutline } from 'ionicons/icons';
-import { ThemeService, ThemeType } from '../services/theme.service';
+import { ThemeService} from '../services/theme.service';
+import { ReusableHeaderComponent } from '../components';
 
 export type LanguageType = 'english' | 'tamil' | 'hindi' | 'telugu' | 'kannada' | 'malayalam' | 'marathi' | 'gujarati' | 'bengali' | 'punjabi' | 'urdu';
 
@@ -60,9 +61,6 @@ export interface SoundOption {
   styleUrls: ['./chant.page.scss'],
   standalone: true,
   imports: [
-    IonHeader,
-    IonToolbar,
-    IonTitle,
     IonContent,
     IonButton,
     IonProgressBar,
@@ -70,11 +68,10 @@ export interface SoundOption {
     IonAlert,
     IonPopover,
     IonIcon,
-    IonButtons,
-    IonMenuButton,
     IonFab,
     IonFabButton,
-    CommonModule
+    CommonModule,
+    ReusableHeaderComponent
   ]
 })
 export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
