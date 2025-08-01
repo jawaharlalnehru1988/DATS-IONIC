@@ -1,6 +1,44 @@
 @use '../../assets/styles/theme-models.scss';
 
-// Base Content Styling
+// ===========================
+// PULL TO REFRESH STYLING
+// ===========================
+ion-refresher {
+  z-index: 1000;
+}
+
+ion-refresher-content {
+  --background: var(--ion-background-color);
+  --color: var(--ion-color-primary);
+  
+  .refresher-pulling-icon,
+  .refresher-refreshing-icon {
+    color: var(--ion-color-primary);
+    font-size: 24px;
+  }
+  
+  .refresher-pulling-text,
+  .refresher-refreshing-text {
+    color: var(--ion-color-primary);
+    font-weight: 500;
+    font-size: 14px;
+  }
+}
+
+// Enhanced pull-to-refresh animation
+@keyframes pull-refresh-bounce {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }  
+  100% { transform: translateY(0); }
+}
+
+ion-refresher-content[state="pulling"] .refresher-pulling-icon {
+  animation: pull-refresh-bounce 1s ease-in-out infinite;
+}
+
+// ===========================
+// BASE CONTENT STYLING
+// ===========================
 ion-content {
   --background: var(--ion-background-color);
   --padding-start: 0;

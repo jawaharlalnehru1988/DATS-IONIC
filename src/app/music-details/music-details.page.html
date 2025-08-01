@@ -5,6 +5,16 @@
 </app-reusable-header>
 
 <ion-content [fullscreen]="true" class="music-details-page">
+  <!-- Pull to Refresh -->
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)" pullFactor="0.5" pullMin="100" pullMax="200">
+    <ion-refresher-content
+      pullingIcon="chevron-down-circle-outline"
+      pullingText="Pull to refresh"
+      refreshingSpinner="circular"
+      refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+  
   <!-- Skeleton Loader -->
   <div *ngIf="isLoading" class="skeleton-container">
     <!-- Hero Section Skeleton -->

@@ -2,13 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {  
-  IonSpinner, 
+  IonSkeletonText,
   IonContent,
   IonButton,
   IonIcon,
-  IonSkeletonText,
-  IonRefresher,
-  IonRefresherContent,
   ModalController
 } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
@@ -27,7 +24,39 @@ import {
   book, 
   globe, 
   construct, 
-  play, arrowBack, add, chevronDownCircleOutline } from 'ionicons/icons';
+  play, arrowBack, add } from 'ionicons/icons';
+import { DisplayCardListComponent, ReusableHeaderComponent } from "../components";
+import { CardItem, InputData } from '../Utils/models';
+import { CategoryCard } from '../Utils/models/card.model';
+import { DataSharingService } from '../services/data-sharing.service';
+import { CategoryFormService } from '../Utils/components/category-form/category-form.service';
+import { GlobalStateService } from '../services/global-state.service';
+    }); '@angular/forms';
+import {  
+  IonSpinner, 
+  IonContent,
+  IonButton,
+  IonIcon,
+  IonSkeletonText,
+  ModalController
+} from '@ionic/angular/standalone';
+import { Router } from '@angular/router';
+import { MusicDetailsService } from './music-details.service';
+import { DetailModel, ISlokaChapters } from './music.model';
+import { map } from 'rxjs';
+import { addIcons } from 'ionicons';
+import { 
+  musicalNotes, 
+  musicalNote, 
+  heartOutline, 
+  shareOutline, 
+  star, 
+  library, 
+  volumeHigh, 
+  book, 
+  globe, 
+  construct, 
+  play, arrowBack, add } from 'ionicons/icons';
 import { DisplayCardListComponent, ReusableHeaderComponent } from "../components";
 import { CardItem, InputData } from '../Utils/models';
 import { CategoryCard } from '../Utils/models/card.model';
@@ -45,8 +74,6 @@ import { GlobalStateService } from '../services/global-state.service';
     IonContent,
     IonButton,
     IonIcon,
-    IonRefresher,
-    IonRefresherContent,
     CommonModule,
     FormsModule,
     DisplayCardListComponent,
@@ -56,11 +83,8 @@ import { GlobalStateService } from '../services/global-state.service';
 export class MusicDetailsPage implements OnInit {
   topics:{ title: string; content: string; } = { title: '', content: '' };
   msDatas: DetailModel[] = [];
-  isLoading = true;
   language:string | null = '';
   tamilChapters:ISlokaChapters[] = [];
-
-  inputDatas: InputData[] = [];
   
   // Store submitted category data
   submittedCategoryData: CategoryCard | null = null;
@@ -68,6 +92,19 @@ export class MusicDetailsPage implements OnInit {
   // Audio player properties
   selectedAudio: any = null;
   groupedChapters: ISlokaChapters[] = [];
+
+  // Use signals from global state service
+  get inputDatas() {
+    return this.globalStateService.musicDetailsData();
+  }
+
+  get isLoading() {
+    return this.globalStateService.musicDetailsLoading();
+  }
+
+  get hasError() {
+    return this.globalStateService.musicDetailsError();
+  }
 
   constructor(
     private mdService: MusicDetailsService, 
@@ -77,7 +114,7 @@ export class MusicDetailsPage implements OnInit {
     private modalController: ModalController,
     private globalStateService: GlobalStateService
   ) {
-    addIcons({musicalNotes,heartOutline,shareOutline,musicalNote,add,arrowBack,star,volumeHigh,play,library,book,globe,construct,chevronDownCircleOutline});
+    addIcons({musicalNotes,heartOutline,shareOutline,musicalNote,add,arrowBack,star,volumeHigh,play,library,book,globe,construct});
   }
 
   ngOnInit() {
@@ -87,15 +124,9 @@ export class MusicDetailsPage implements OnInit {
   }
 
   getAllSlokas(){
-   this.categoryService.getAllCategories('music-details').subscribe({
-      next: (data:InputData[]) => {
-    this.inputDatas = data;
-        this.isLoading = false; // Set loading to false when data is received
-      },
-      error: (error) => {
-        console.error('Error fetching categories:', error);
-        this.isLoading = false; // Set loading to false even on error
-      }
+    // Use global state service to get data with intelligent caching
+    this.globalStateService.getMusicDetailsData().catch(error => {
+      console.error('Failed to load Music details data:', error);
     });
   }
   
@@ -105,10 +136,8 @@ export class MusicDetailsPage implements OnInit {
   ).subscribe({
       next:(res:DetailModel[])=>{
       this.msDatas = res;
-       this.isLoading = false;
       },
       error:()=>{
-        this.isLoading = false;
         console.error("there is something wrong with the network");
       }
     });
@@ -212,22 +241,6 @@ export class MusicDetailsPage implements OnInit {
     }, 100);
 
     return presentResult;
-  }
-
-  // Pull to refresh handler
-  async handleRefresh(event: any) {
-    console.log('🔄 Pull to refresh triggered on Music Details page');
-    
-    try {
-      // Force refresh data from backend
-      await this.globalStateService.refreshPageData('music-details');
-      console.log('✅ Music Details page data refreshed successfully');
-    } catch (error) {
-      console.error('❌ Error refreshing Music Details page data:', error);
-    } finally {
-      // Complete the refresh animation
-      event.target.complete();
-    }
   }
 
 }

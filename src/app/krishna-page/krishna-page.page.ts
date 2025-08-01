@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy, HostBinding } from '@angular/core';
 import { CommonModule, NgFor } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonIcon, IonButtons, IonButton, IonMenuButton, IonSegment, IonSegmentButton, IonLabel, IonFooter, IonSkeletonText, ModalController } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonIcon, IonButtons, IonButton, IonMenuButton, IonSegment, IonSegmentButton, IonLabel, IonFooter, IonSkeletonText, IonRefresher, IonRefresherContent, ModalController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { chevronDownOutline, notificationsOutline, optionsOutline, home, heartOutline, cafeOutline, personOutline, chevronBack, chevronForward, add } from 'ionicons/icons';
+import { chevronDownOutline, notificationsOutline, optionsOutline, home, heartOutline, cafeOutline, personOutline, chevronBack, chevronForward, add, chevronDownCircleOutline } from 'ionicons/icons';
 import { DisplayCardListComponent, } from '../components/display-card-list/display-card-list.component';
 import { CardItem, InputData } from '../Utils/models';
 import { KrishnaServiceService } from './krishna-service.service';
@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { DataSharingService } from '../services/data-sharing.service';
 import { CategoryFormService } from '../Utils/components/category-form/category-form.service';
 import { ThemeService, ThemeType } from '../services/theme.service';
+import { GlobalStateService } from '../services/global-state.service';
 import { Subscription } from 'rxjs';
 import { ReusableHeaderComponent } from '../components/reusable-header/reusable-header.component';
 
@@ -19,7 +20,7 @@ import { ReusableHeaderComponent } from '../components/reusable-header/reusable-
   templateUrl: './krishna-page.page.html',
   styleUrls: ['./krishna-page.page.scss'],
   standalone: true,
-  imports: [IonFooter, NgFor, IonLabel, IonSegmentButton, IonSegment, IonButton, IonButtons, IonIcon, IonContent, IonToolbar, CommonModule, FormsModule, DisplayCardListComponent, IonSkeletonText, ReusableHeaderComponent]
+  imports: [IonFooter, NgFor, IonLabel, IonSegmentButton, IonSegment, IonButton, IonButtons, IonIcon, IonContent, IonToolbar, IonRefresher, IonRefresherContent, CommonModule, FormsModule, DisplayCardListComponent, IonSkeletonText, ReusableHeaderComponent]
 })
 export class KrishnaPagePage implements OnInit, OnDestroy {
   languages = [
@@ -31,8 +32,18 @@ export class KrishnaPagePage implements OnInit, OnDestroy {
   { value: 'Images', label: 'Images' }
 ];
 
-inputDatas: InputData[] = [];
-isLoading: boolean = true; // Add loading state
+// Use signals from global state service
+get inputDatas() {
+  return this.globalStateService.krishnaPageData();
+}
+
+get isLoading() {
+  return this.globalStateService.krishnaPageLoading();
+}
+
+get hasError() {
+  return this.globalStateService.krishnaPageError();
+}
 
 // Theme management
 currentTheme: ThemeType = 'theme-royal';
@@ -75,14 +86,12 @@ selectedLang: string = 'Arati';
     private router: Router, 
     private dataSharingService: DataSharingService, 
     private modalController: ModalController,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private globalStateService: GlobalStateService
   ) { 
-    addIcons({chevronBack,chevronForward,add,home,heartOutline,cafeOutline,personOutline,chevronDownOutline,notificationsOutline,optionsOutline});
+    addIcons({chevronBack,chevronForward,add,home,heartOutline,cafeOutline,personOutline,chevronDownOutline,notificationsOutline,optionsOutline,chevronDownCircleOutline});
     
-    // Set default data from Krishna service
-    this.inputDatas = this.krishnaService.defaultInputData;
-    // Keep loading true initially to show skeleton, will be set to false in ngOnInit
-    this.isLoading = true;
+    // No need to set default data here - it will be handled by global state service
   }
 
 ngOnInit() {
@@ -94,26 +103,11 @@ ngOnInit() {
   );
   
   this.startCarousel();
-  this.isLoading = true; // Set loading to true before fetching data
-  this.categoryService.getAllCategories('krishna-page').subscribe({
-    next: (data:InputData[]) => {
-      if (data && data.length > 0) {
-        this.inputDatas = data;
-      } else {
-        // Use default data if API returns empty
-        this.inputDatas = this.krishnaService.defaultInputData;
-        console.log('Using default data from service');
-      }
-      this.isLoading = false; // Set loading to false when data is received
-    },
-    error: (error) => {
-      console.error('Error fetching Krishna data:', error);
-      // Fall back to default data on error
-      this.inputDatas = this.krishnaService.defaultInputData;
-      console.log('Error occurred, using default data from service');
-      this.isLoading = false; // Set loading to false even on error
-    }
-  })
+  
+  // Use global state service to get data with intelligent caching
+  this.globalStateService.getKrishnaPageData().catch(error => {
+    console.error('Failed to load Krishna page data:', error);
+  });
 }
 
 ngOnDestroy() {
@@ -171,7 +165,7 @@ onCardSelected(item: CardItem) {
   // Collect all card items from all categories to create playlist
   const allCardItems: CardItem[] = [];
   
-  this.inputDatas.forEach(inputData => {
+  this.inputDatas.forEach((inputData: InputData) => {
     if (inputData?.cardItems) {
       allCardItems.push(...inputData.cardItems);
     }
@@ -192,16 +186,30 @@ onCardSelected(item: CardItem) {
   });
   
   this.dataSharingService.setPlaylistData(sortedItems);
-  console.log('Playlist set for krishna-page with', sortedItems.length, 'items from', this.inputDatas.length, 'categories');
   
   this.dataSharingService.setSelectedCardItem(item);
   this.router.navigate(['/card-details']);
 }
 
+// Pull to refresh handler
+async handleRefresh(event: any) {
+  console.log('🔄 Pull to refresh triggered on Krishna page');
+  
+  try {
+    // Force refresh data from backend
+    await this.globalStateService.refreshPageData('krishna');
+    console.log('✅ Krishna page data refreshed successfully');
+  } catch (error) {
+    console.error('❌ Error refreshing Krishna page data:', error);
+  } finally {
+    // Complete the refresh animation
+    event.target.complete();
+  }
+}
+
 onPlayAllClicked(cardItems: CardItem[]) {
   // Set the playlist with the sorted card items from this specific category
   this.dataSharingService.setPlaylistData(cardItems);
-  console.log('Play All clicked - Playlist set with', cardItems.length, 'items');
   
   // Set the first card as selected and navigate to card details
   if (cardItems.length > 0) {
