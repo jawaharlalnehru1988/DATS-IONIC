@@ -1,0 +1,131 @@
+<ion-modal [isOpen]="isOpen" (didDismiss)="closeModal()">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>{{ isEditing ? 'Edit Blog' : 'Add New Blog' }}</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="closeModal()" fill="clear">
+            <ion-icon name="close"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content class="blog-form-content">
+      <form [formGroup]="blogForm" (ngSubmit)="onSubmit()">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="12">
+              <ion-card>
+                <ion-card-header>
+                  <ion-card-title>Blog Information</ion-card-title>
+                </ion-card-header>
+                <ion-card-content>
+                  
+                  <!-- Blog Title -->
+                  <ion-item>
+                    <ion-label position="stacked">Blog Title *</ion-label>
+                    <ion-input 
+                      formControlName="blogTitle"
+                      placeholder="Enter blog title"
+                      [class.ion-invalid]="blogForm.get('blogTitle')?.invalid && blogForm.get('blogTitle')?.touched">
+                    </ion-input>
+                  </ion-item>
+                  <div class="error-message" *ngIf="getErrorMessage('blogTitle')">
+                    {{ getErrorMessage('blogTitle') }}
+                  </div>
+
+                  <!-- Author -->
+                  <ion-item>
+                    <ion-label position="stacked">Author *</ion-label>
+                    <ion-input 
+                      formControlName="author"
+                      placeholder="Enter author name"
+                      [class.ion-invalid]="blogForm.get('author')?.invalid && blogForm.get('author')?.touched">
+                    </ion-input>
+                  </ion-item>
+                  <div class="error-message" *ngIf="getErrorMessage('author')">
+                    {{ getErrorMessage('author') }}
+                  </div>
+
+                  <!-- Image URL -->
+                  <ion-item>
+                    <ion-label position="stacked">Image URL *</ion-label>
+                    <ion-input 
+                      formControlName="blogImgUrl"
+                      placeholder="https://example.com/image.jpg"
+                      [class.ion-invalid]="blogForm.get('blogImgUrl')?.invalid && blogForm.get('blogImgUrl')?.touched">
+                    </ion-input>
+                  </ion-item>
+                  <div class="error-message" *ngIf="getErrorMessage('blogImgUrl')">
+                    {{ getErrorMessage('blogImgUrl') }}
+                  </div>
+
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="12">
+              <ion-card>
+                <ion-card-header>
+                  <ion-card-title>Blog Content</ion-card-title>
+                </ion-card-header>
+                <ion-card-content>
+                  
+                  <!-- Rich Text Editor for Content -->
+                  <div class="content-editor-container">
+                    <ion-label>Content *</ion-label>
+                    <quill-editor
+                      formControlName="content"
+                      placeholder="Write your blog content here..."
+                      [style.height]="'300px'">
+                    </quill-editor>
+                    <div class="error-message" *ngIf="getErrorMessage('content')">
+                      {{ getErrorMessage('content') }}
+                    </div>
+                  </div>
+
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col size="12">
+              <div class="form-actions">
+                <ion-button 
+                  expand="block" 
+                  type="submit"
+                  [disabled]="blogForm.invalid"
+                  color="primary">
+                  <ion-icon name="save" slot="start"></ion-icon>
+                  {{ isEditing ? 'Update Blog' : 'Save Blog' }}
+                </ion-button>
+                
+                <ion-button 
+                  expand="block" 
+                  fill="outline" 
+                  color="medium"
+                  (click)="closeModal()">
+                  Cancel
+                </ion-button>
+              </div>
+            </ion-col>
+          </ion-row>
+
+        </ion-grid>
+      </form>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
+<!-- Toast for feedback -->
+<ion-toast
+  [isOpen]="isToastOpen"
+  [message]="toastMessage"
+  [color]="toastColor"
+  duration="3000"
+  (didDismiss)="isToastOpen = false">
+</ion-toast>

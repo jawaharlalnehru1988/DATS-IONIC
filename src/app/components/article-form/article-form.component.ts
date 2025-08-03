@@ -26,7 +26,7 @@ import { CommonModule } from '@angular/common';
 import { addIcons } from 'ionicons';
 import { close, save, create } from 'ionicons/icons';
 import { ArticleCard, ArticleService } from '../../services/article.service';
-import { RichTextEditorComponent } from '../rich-text-editor/rich-text-editor.component';
+import { QuillModule } from 'ngx-quill';
 
 @Component({
   selector: 'app-article-form',
@@ -56,7 +56,7 @@ import { RichTextEditorComponent } from '../rich-text-editor/rich-text-editor.co
     IonCardHeader,
     IonCardTitle,
     IonToast,
-    RichTextEditorComponent
+    QuillModule
   ]
 })
 export class ArticleFormComponent implements OnInit {

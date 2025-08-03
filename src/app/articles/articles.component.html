@@ -5,11 +5,17 @@
   [showMenuButton]="true">
 </app-reusable-header>
 
-<ion-buttons slot="end">
-  <ion-button (click)="openAddArticleForm()" fill="clear">
-    <ion-icon name="add" slot="icon-only"></ion-icon>
-  </ion-button>
-</ion-buttons>
+<ion-content>
+  <!-- Temporary Debug Component -->
+  <!-- <app-auth-debug></app-auth-debug> -->
+
+  <!-- Add Blog Button - Only visible for admin users -->
+  <div class="add-blog-section" *appShowForRoles="['admin']">
+    <ion-button (click)="openAddBlogForm()" fill="solid" expand="block" class="add-blog-btn">
+      <ion-icon name="add" slot="start"></ion-icon>
+      Add New Blog
+    </ion-button>
+  </div>
 
 <ion-segment value="english" (ionChange)="onLanguageChange($event)" class="language-segment">
   <ion-segment-button value="english">
@@ -31,26 +37,38 @@
 
 <ion-content class="articles-content">
   <div class="articles-container">
-    <!-- English Content - Dynamic Category Sections -->
+    <!-- English Content - Simple Blog List -->
     <div *ngIf="isEnglishSelected()" class="english-content">
-      <div class="category-section" *ngFor="let category of articleCategories">
-        <h2 class="category-title">{{ category.categoryTitle }}</h2>
-        <div class="cards-grid">
-          <div class="article-card" 
-               *ngFor="let card of category.cards" 
-               (click)="onCardClick(card.id)">
-            <div class="card-actions">
-              <ion-button 
-                fill="clear" 
-                size="small" 
-                (click)="openActionSheet(card.id, $event)">
-                <ion-icon name="ellipsis-vertical"></ion-icon>
-              </ion-button>
-            </div>
-            <img [src]="card.imageUrl" [alt]="card.imageAlt">
-            <div class="card-content">
-              <h3>{{ card.articleTitle }}</h3>
-              <p>{{ card.description }}</p>
+      <div class="blogs-grid">
+        <div class="blog-card" 
+             *ngFor="let blog of blogs" 
+             (click)="onCardClick(blog._id!)">
+          <div class="card-actions" *appShowForRoles="['admin']">
+            <ion-button 
+              fill="clear" 
+              size="small" 
+              (click)="editBlog(blog._id!, $event)"
+              class="edit-btn">
+              <ion-icon name="create-outline"></ion-icon>
+            </ion-button>
+            <ion-button 
+              fill="clear" 
+              size="small" 
+              (click)="confirmDeleteBlog(blog._id!, $event)"
+              class="delete-btn">
+              <ion-icon name="trash-outline"></ion-icon>
+            </ion-button>
+          </div>
+          <img [src]="blog.blogImgUrl" [alt]="blog.blogTitle">
+          <div class="card-content">
+            <h3>{{ blog.blogTitle }}</h3>
+            <p class="author">By {{ blog.author }}</p>
+
+
+            <!-- <p class="content-preview">{{ blog.content | slice:0:100 }}{{ blog.content.length > 100 ? '...' : '' }}</p> -->
+            <div class="comments-count" *ngIf="blog.comments && blog.comments.length > 0">
+              <ion-icon name="chatbubble-outline"></ion-icon>
+              <span>{{ blog.comments.length }} comment{{ blog.comments.length !== 1 ? 's' : '' }}</span>
             </div>
           </div>
         </div>
@@ -69,18 +87,18 @@
   </div>
 </ion-content>
 
-<!-- Article Form Modal -->
-<app-article-form
+<!-- Blog Form Modal -->
+<app-blog-form
   [isOpen]="isFormOpen"
-  [editingArticle]="editingArticle"
-  (modalClosed)="closeArticleForm()"
-  (articleSaved)="onArticleSaved($event)">
-</app-article-form>
+  [editingBlog]="editingBlog"
+  (modalClosed)="closeBlogForm()"
+  (blogSaved)="onBlogSaved($event)">
+</app-blog-form>
 
-<!-- Action Sheet for Article Actions -->
+<!-- Action Sheet for Blog Actions -->
 <ion-action-sheet
   [isOpen]="isActionSheetOpen"
-  header="Article Actions"
+  header="Blog Actions"
   (didDismiss)="closeActionSheet()"
   [buttons]="actionSheetButtons">
 </ion-action-sheet>

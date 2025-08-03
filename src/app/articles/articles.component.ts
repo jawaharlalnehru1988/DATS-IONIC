@@ -1,28 +1,47 @@
 import { Component, OnInit, OnDestroy, HostBinding } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonMenuButton, IonButtons, IonSegment, IonSegmentButton, IonLabel, IonIcon, IonButton, IonActionSheet } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonMenuButton, IonButtons, IonSegment, IonSegmentButton, IonLabel, IonIcon, IonButton, IonActionSheet, AlertController } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { addIcons } from 'ionicons';
-import { languageOutline, add, ellipsisVertical, create, trash, eye } from 'ionicons/icons';
-import { ArticleService, ArticleCard, ArticleCategory } from '../services/article.service';
-import { ArticleFormComponent } from '../components/article-form/article-form.component';
-import { ChantSectionComponent } from '../components/chant-section/chant-section.component';
+import { languageOutline, add, ellipsisVertical, create, trash, eye, chatbubbleOutline, createOutline, trashOutline } from 'ionicons/icons';
+import { Blog, BlogService } from '../services/blog.service';
+import { BlogFormComponent } from '../components/blog-form/blog-form.component';
+import { AuthDebugComponent } from '../components/auth-debug/auth-debug.component';
 import { ThemeService, ThemeType } from '../services/theme.service';
-import { Subscription } from 'rxjs';
+import { RoleBasedUIService } from '../services/role-based-ui.service';
+import { ShowForRolesDirective } from '../directives/show-for-roles.directive';
+import { Subscription, Observable } from 'rxjs';
 import { ReusableHeaderComponent } from '../components';
+
+export interface Blogs {
+  _id: string
+  blogTitle: string
+  blogImgUrl: string
+  content: string
+  author: string
+  comments: any[]
+  createdAt: string
+  updatedAt: string
+  __v: number
+}
+
 
 @Component({
   selector: 'app-articles',
   templateUrl: './articles.component.html',
   styleUrls: ['./articles.component.scss'],
   standalone: true,
-  imports: [IonActionSheet, ReusableHeaderComponent, IonButton, IonIcon, IonLabel, IonSegmentButton, IonSegment, IonContent, IonButtons, CommonModule, ArticleFormComponent],
+  imports: [IonActionSheet, ReusableHeaderComponent, IonButton, IonIcon, IonLabel, IonSegmentButton, IonSegment, IonContent, CommonModule, BlogFormComponent, ShowForRolesDirective],
 })
 export class ArticlesComponent implements OnInit, OnDestroy {
   selectedLanguage: string = 'english';
-  articleCategories: ArticleCategory[] = [];
+  blogs: Blog[] = [];
   currentTheme: ThemeType = 'theme-royal';
   private themeSubscription: Subscription = new Subscription();
+  
+  // Role-based UI properties
+  canShowAdminFeatures$: Observable<boolean>;
+  isAuthenticated$: Observable<boolean>;
   
   // HostBinding to apply theme class to the component's host element
   @HostBinding('class')
@@ -32,28 +51,28 @@ export class ArticlesComponent implements OnInit, OnDestroy {
   
   // Form modal properties
   isFormOpen = false;
-  editingArticle: ArticleCard | null = null;
+  editingBlog: Blog | null = null;
   
   // Action sheet properties
   isActionSheetOpen = false;
-  selectedArticleId: string = '';
+  selectedBlogId: string = '';
   
   actionSheetButtons = [
     {
       text: 'View',
       icon: 'eye',
-      handler: () => this.viewArticle()
+      handler: () => this.viewBlog()
     },
     {
       text: 'Edit',
       icon: 'create',
-      handler: () => this.editArticle()
+      handler: () => this.editBlog()
     },
     {
       text: 'Delete',
       icon: 'trash',
       role: 'destructive',
-      handler: () => this.deleteArticle()
+      handler: () => this.deleteBlog()
     },
     {
       text: 'Cancel',
@@ -62,314 +81,188 @@ export class ArticlesComponent implements OnInit, OnDestroy {
   ];
   
   // Original static data for fallback
-  defaultArticleCategories: ArticleCategory[] = [
+  defaultBlogs: Blog[] = [
     {
-      id: 'memorize-slokas',
-      categoryTitle: 'How to Memorize Slokas',
-      cards: [
+      _id: 'bhagavad-gita-1',
+      blogTitle: 'The Glories of Bhagavad Gita',
+      blogImgUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1753315996/bhagavad_gita_sloka_f2eq9e.png',
+      content: 'The Bhagavad Gita is the conversation between Lord Krishna and His devotee Arjuna. It contains the essence of all Vedic knowledge and provides practical guidance for spiritual life.',
+      author: 'His Divine Grace A.C. Bhaktivedanta Swami Prabhupada',
+      comments: [
         {
-          id: 'bhagavad-gita',
-          articleTitle: 'Bhagavad Gita',
-          description: 'Tips and techniques to memorize Bhagavad Gita slokas',
-          imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1753315996/bhagavad_gita_sloka_f2eq9e.png',
-          imageAlt: 'Bhagavad Gita Slokas',
-          content: ``,
-          categoryTitle: 'How to Memorize Slokas'
-        },
-        {
-          id: 'bhagavatam',
-          articleTitle: 'Bhagavatam',
-          description: 'Effective ways to remember Bhagavatam verses',
-          imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1753316350/bhagavatam-01_mogmef.jpg',
-          imageAlt: 'Bhagavatam Slokas',
-          content: ``,
-          categoryTitle: 'How to Memorize Slokas'
-        },
-        {
-          id: 'other-slokas',
-          articleTitle: 'Other Slokas',
-          description: 'General methods for memorizing various slokas',
-          imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1753316150/devotee_children_recites_sloka_dcjlnc.png',
-          imageAlt: 'Other Slokas',
-          content: ``,
-          categoryTitle: 'How to Memorize Slokas'
+          userName: 'Devotee Radha',
+          comment: 'This explanation beautifully captures the essence of the Gita. Hare Krishna!'
         }
       ]
     },
     {
-      id: 'baby-names',
-      categoryTitle: 'Baby Names',
-      cards: [
-        {
-          id: 'boy-baby-names',
-          articleTitle: 'Boy Baby Names',
-          description: 'Meaningful and spiritual names for baby boys',
-          imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752936751/boy_baby_images_nudsxs.jpg',
-          imageAlt: 'Boy Baby Names',
-          content: ``,
-          categoryTitle: 'Baby Names'
-        },
-        {
-          id: 'girl-baby-names',
-          articleTitle: 'Girl Baby Names',
-          description: 'Beautiful and divine names for baby girls',
-          imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752936752/girlbaby_vbvkdb.jpg',
-          imageAlt: 'Girl Baby Names',
-          content: ``,
-          categoryTitle: 'Baby Names'
-        }
-      ]
+      _id: 'bhagavatam-1',
+      blogTitle: 'Srimad Bhagavatam: The Beautiful Narration',
+      blogImgUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1753316350/bhagavatam-01_mogmef.jpg',
+      content: 'Srimad-Bhagavatam is the spotless Purana. It is most dear to the Vaishnavas because it describes the pure and supreme knowledge of the paramahamsas.',
+      author: 'His Divine Grace A.C. Bhaktivedanta Swami Prabhupada',
+      comments: []
     },
     {
-      id: 'vaishnava-etiquettes',
-      categoryTitle: 'Vaishnava Etiquettes',
-      cards: [
+      _id: 'spiritual-names-1',
+      blogTitle: 'Choosing Spiritual Names for Children',
+      blogImgUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752936751/boy_baby_images_nudsxs.jpg',
+      content: 'Choosing a spiritual name for your child is one of the most important gifts you can give. These names carry divine vibrations and connect the child to the spiritual realm.',
+      author: 'His Divine Grace A.C. Bhaktivedanta Swami Prabhupada',
+      comments: [
         {
-          id: 'etiquette-men',
-          articleTitle: 'For Men',
-          description: 'Spiritual guidelines and conduct for men',
-          imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752936753/vaishnava_ettiquate_men_ftgqsq.jpg',
-          imageAlt: 'Etiquette for Men',
-          content: ``,
-          categoryTitle: 'Vaishnava Etiquettes'
-        },
-        {
-          id: 'etiquette-women',
-          articleTitle: 'For Women',
-          description: 'Spiritual guidelines and conduct for women',
-          imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752936753/vaishnava_ettiquate_women_e9tieb.jpg',
-          imageAlt: 'Etiquette for Women',
-          content: ``,
-          categoryTitle: 'Vaishnava Etiquettes'
-        },
-        {
-          id: 'etiquette-husband-wife',
-          articleTitle: 'Husband & Wife',
-          description: 'Sacred relationship guidelines for couples',
-          imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752936752/vaishnava_ettiquate_husband_wife_qa0qp4.jpg',
-          imageAlt: 'Between Husband and Wife',
-          content: ``,
-          categoryTitle: 'Vaishnava Etiquettes'
-        },
-        {
-          id: 'etiquette-colleagues',
-          articleTitle: 'Between Colleagues',
-          description: 'Professional conduct with spiritual awareness',
-          imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752936752/vaishnava_ettiquate_colleagues_vhze4i.jpg',
-          imageAlt: 'Between Colleagues',
-          content: ``,
-          categoryTitle: 'Vaishnava Etiquettes'
+          userName: 'Krishna Das',
+          comment: 'Very helpful guidance for new parents. Thank you!'
         }
       ]
-    },
-    {
-      id: 'social-issues',
-      categoryTitle: 'Social Issues Solutions',
-      cards: [
-        {
-          id: 'social-national',
-          articleTitle: 'National Solutions',
-          description: 'Addressing national challenges with wisdom',
-          imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752936752/social_issues_clkl4n.jpg',
-          imageAlt: 'National Issues',
-          content: ``,
-          categoryTitle: 'Social Issues Solutions'
-        },
-        {
-          id: 'social-local',
-          articleTitle: 'Local Solutions',
-          description: 'Community-based problem solving approaches',
-          imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752936752/personal_issue_tw8fx4.jpg',
-          imageAlt: 'Local Issues',
-          content: ``,
-          categoryTitle: 'Social Issues Solutions'
-        },
-        {
-          id: 'social-international',
-          articleTitle: 'International Solutions',
-          description: 'Global perspectives on social harmony',
-          imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752936752/social_issues_clkl4n.jpg',
-          imageAlt: 'International Issues',
-          content: ``,
-          categoryTitle: 'Social Issues Solutions'
-        }
-      ]
-    },
-    {
-      id: 'life-schedules',
-      categoryTitle: 'Happy Life Schedule Formulas',
-      cards: [
-        {
-          id: 'schedule-students',
-          articleTitle: 'For Students',
-          description: 'Balanced life schedules for academic success',
-          imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752936752/devotee_student_mwfllt.jpg',
-          imageAlt: 'For Students',
-          content: ``,
-          categoryTitle: 'Happy Life Schedule Formulas'
-        },
-        {
-          id: 'schedule-workers',
-          articleTitle: 'For Workers',
-          description: 'Work-life balance with spiritual practice',
-          imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752936753/workers_wbbkof.jpg',
-          imageAlt: 'For Workers',
-          content: ``,
-          categoryTitle: 'Happy Life Schedule Formulas'
-        },
-        {
-          id: 'schedule-business',
-          articleTitle: 'For Business Men',
-          description: 'Ethical business practices with success',
-          imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752937255/devotee_in_business_cxgec7.png',
-          imageAlt: 'For Business Men',
-          content: ``,
-          categoryTitle: 'Happy Life Schedule Formulas'
-        },
-        {
-          id: 'schedule-devotees',
-          articleTitle: 'For Devotees',
-          description: 'Spiritual life balance and daily practices',
-          imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752936752/devotee_student_mwfllt.jpg',
-          imageAlt: 'For Devotees',
-          content: ``,
-          categoryTitle: 'Happy Life Schedule Formulas'
-        }
-      ]
-    },
-    {
-      id: 'harinam-kirtan',
-      categoryTitle: 'Importance of Harinam Kirtan',
-      cards: [
-        {
-          id: 'japa-meditation',
-          articleTitle: 'Japa Meditation',
-          description: 'The power of personal chanting practice',
-          imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752936753/chanting_harekrishna_ukdwhd.jpg',
-          imageAlt: 'Japa Meditation',
-          content: ``,
-          categoryTitle: 'Importance of Harinam Kirtan'
-        },
-        {
-          id: 'music-kirtan',
-          articleTitle: 'Music Kirtan',
-          description: 'Community chanting and devotional music',
-          imageUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752936752/hare_krishna_kirtan_cn4xvk.jpg',
-          imageAlt: 'Music Kirtan',
-          content: ``,
-          categoryTitle: 'Importance of Harinam Kirtan'
-        }
-      ]
-    },
-    
+    }
   ];
 
-  constructor(private router: Router, private articleService: ArticleService, private themeService: ThemeService) { 
-    addIcons({ languageOutline, add, ellipsisVertical, create, trash, eye });
+  constructor(
+    private router: Router, 
+    private blogService: BlogService, 
+    private themeService: ThemeService,
+    private roleBasedUIService: RoleBasedUIService,
+    private alertController: AlertController
+  ) {
+    addIcons({createOutline,trashOutline,add,ellipsisVertical,chatbubbleOutline,languageOutline,create,trash,eye});
+    
+    // Initialize role-based observables
+    this.canShowAdminFeatures$ = this.roleBasedUIService.canShowAdminFeatures();
+    this.isAuthenticated$ = this.roleBasedUIService.isUserAuthenticated();
   }
-   
+
   ngOnInit() {
     // Subscribe to theme changes
     this.themeSubscription = this.themeService.currentTheme$.subscribe(theme => {
       this.currentTheme = theme;
     });
-    
-    // Load articles from service or initialize with default data
-    this.articleService.getArticles().subscribe(articles => {
-      if (articles.length === 0) {
-        // Initialize with default data if no articles exist
-        this.articleService.setArticles(this.defaultArticleCategories);
-      } else {
-        this.articleCategories = articles;
+
+    // Subscribe to blogs from service
+    this.blogService.getBlogs().subscribe({
+      next: (blogs: Blog[]) => {
+        this.blogs = blogs;
+        console.log('this.blogs :', this.blogs);
+        if (blogs.length === 0) {
+          // Use fallback data if no blogs are available
+          this.blogs = this.defaultBlogs;
+        }
       }
     });
   }
 
   ngOnDestroy() {
-    // Clean up subscription
-    if (this.themeSubscription) {
-      this.themeSubscription.unsubscribe();
-    }
+    this.themeSubscription.unsubscribe();
   }
 
   onLanguageChange(event: any) {
     this.selectedLanguage = event.detail.value;
-    console.log('Language changed to:', this.selectedLanguage);
   }
 
   isEnglishSelected(): boolean {
     return this.selectedLanguage === 'english';
   }
 
-  onCardClick(articleId: string) {
-    console.log('Article card clicked:', articleId);
-    // TODO: Navigate to specific article page or open article details
-    // For now, we'll just log the article ID
-    // Example: this.router.navigate(['/article-details', articleId]);
+  onCardClick(blogId: string) {
+    console.log('Card clicked with blogId:', blogId);
+    // Navigate to blog details page
+    this.router.navigate(['/blog-details', blogId]);
   }
 
-  // Form related methods
-  openAddArticleForm() {
-    this.editingArticle = null;
+  openAddBlogForm() {
+    this.editingBlog = null;
     this.isFormOpen = true;
   }
 
-  openEditArticleForm(article: ArticleCard) {
-    this.editingArticle = article;
-    this.isFormOpen = true;
-  }
-
-  closeArticleForm() {
+  closeBlogForm() {
     this.isFormOpen = false;
-    this.editingArticle = null;
+    this.editingBlog = null;
   }
 
-  onArticleSaved(article: ArticleCard) {
-    // Refresh the articles list
-    this.articleService.getArticles().subscribe(articles => {
-      this.articleCategories = articles;
-    });
+  openEditBlogForm(blog: Blog) {
+    this.editingBlog = blog;
+    this.isFormOpen = true;
   }
 
-  // Action sheet methods
-  openActionSheet(articleId: string, event: Event) {
-    event.stopPropagation(); // Prevent card click
-    this.selectedArticleId = articleId;
+  onBlogSaved(blog: Blog) {
+    // The service will handle the backend call and refresh the list
+    this.closeBlogForm();
+  }
+
+  openActionSheet(blogId: string, event: Event) {
+    event.stopPropagation();
+    this.selectedBlogId = blogId;
     this.isActionSheetOpen = true;
   }
 
   closeActionSheet() {
     this.isActionSheetOpen = false;
-    this.selectedArticleId = '';
+    this.selectedBlogId = '';
   }
 
-  viewArticle() {
-    if (this.selectedArticleId) {
-      this.onCardClick(this.selectedArticleId);
+  viewBlog() {
+    if (this.selectedBlogId) {
+      this.onCardClick(this.selectedBlogId);
     }
-    this.closeActionSheet();
   }
 
-  editArticle() {
-    if (this.selectedArticleId) {
-      const article = this.articleService.getArticleById(this.selectedArticleId);
-      if (article) {
-        this.openEditArticleForm(article);
+  editBlog(blogId?: string, event?: Event) {
+    if (event) {
+      event.stopPropagation(); // Prevent card click when button is clicked
+    }
+    
+    const id = blogId || this.selectedBlogId;
+    if (id) {
+      const blog = this.blogs.find(b => b._id === id);
+      if (blog) {
+        this.openEditBlogForm(blog);
       }
     }
-    this.closeActionSheet();
   }
 
-  deleteArticle() {
-    if (this.selectedArticleId) {
-      if (confirm('Are you sure you want to delete this article?')) {
-        this.articleService.deleteArticle(this.selectedArticleId);
-        // Refresh the articles list
-        this.articleService.getArticles().subscribe(articles => {
-          this.articleCategories = articles;
-        });
-      }
+  async confirmDeleteBlog(blogId: string, event: Event) {
+    event.stopPropagation(); // Prevent card click when button is clicked
+    
+    const blog = this.blogs.find(b => b._id === blogId);
+    if (!blog) return;
+
+    const alert = await this.alertController.create({
+      header: 'Delete Article',
+      message: `Are you sure you want to delete "${blog.blogTitle}"? This action cannot be undone.`,
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+          cssClass: 'secondary'
+        },
+        {
+          text: 'Yes, Delete',
+          role: 'destructive',
+          cssClass: 'danger',
+          handler: () => {
+            this.deleteBlog(blogId);
+          }
+        }
+      ],
+      cssClass: 'delete-confirmation-alert'
+    });
+
+    await alert.present();
+  }
+
+  deleteBlog(blogId?: string) {
+    const id = blogId || this.selectedBlogId;
+    if (id) {
+      this.blogService.deleteBlog(id).subscribe({
+        next: () => {
+          console.log('Blog deleted successfully');
+          this.blogService.refreshBlogs(); // Refresh the list
+        },
+        error: (error) => {
+          console.error('Error deleting blog:', error);
+          alert('Failed to delete blog. Please try again.');
+        }
+      });
     }
-    this.closeActionSheet();
   }
 }

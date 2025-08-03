@@ -109,11 +109,11 @@
                   <!-- Rich Text Editor for Content -->
                   <div class="content-editor-container">
                     <ion-label>Content</ion-label>
-                    <app-rich-text-editor
+                    <quill-editor
                       formControlName="content"
                       placeholder="Write your article content here..."
-                      height="300px">
-                    </app-rich-text-editor>
+                      [style.height]="'300px'">
+                    </quill-editor>
                   </div>
 
                 </ion-card-content>

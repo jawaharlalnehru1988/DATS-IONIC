@@ -55,10 +55,8 @@ export const routes: Routes = [
     loadComponent: () => import('./articles/articles.component').then( m => m.ArticlesComponent)
   },
   {
-    path: 'rich-text-demo',
-    loadComponent: () => import('./rich-text-demo/rich-text-demo.page').then( m => m.RichTextDemoPage),
-    canActivate: [AuthGuard, RoleGuard],
-    data: { roles: ['admin'] } // Only admin can access this - keep this restricted
+    path: 'blog-details/:id',
+    loadComponent: () => import('./components/blog-detail/blog-detail.component').then( m => m.BlogDetailComponent)
   },
   {
     path: 'questionanswered',

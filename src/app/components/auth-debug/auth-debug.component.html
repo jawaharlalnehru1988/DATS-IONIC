@@ -1,0 +1,65 @@
+<ion-card>
+  <ion-card-header>
+    <ion-card-title>Authentication Debug Info</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    <ion-item>
+      <ion-label>
+        <h3>Token Status</h3>
+        <p>Has Token: {{ authInfo.hasToken ? 'Yes' : 'No' }}</p>
+        <p *ngIf="authInfo.hasToken">Token Length: {{ authInfo.tokenLength }}</p>
+        <p>Is Authenticated: {{ authInfo.isAuthenticated ? 'Yes' : 'No' }}</p>
+        <p *ngIf="authInfo.hasToken">Token Expired: {{ authInfo.isTokenExpired ? 'Yes' : 'No' }}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item *ngIf="authInfo.tokenExpiry">
+      <ion-label>
+        <h3>Token Expiry</h3>
+        <p>Expires At: {{ authInfo.tokenExpiry | date:'medium' }}</p>
+        <p>Current Time: {{ authInfo.currentTime | date:'medium' }}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item *ngIf="authInfo.user">
+      <ion-label>
+        <h3>User Info</h3>
+        <p>Name: {{ authInfo.user.name }}</p>
+        <p>Email: {{ authInfo.user.email }}</p>
+        <p>Role: {{ authInfo.user.role }}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>
+        <h3>Storage Status</h3>
+        <p><strong>LocalStorage:</strong></p>
+        <p>• Token: {{ authInfo.localStorage.token ? 'Yes' : 'No' }}</p>
+        <p>• User: {{ authInfo.localStorage.user ? 'Yes' : 'No' }}</p>
+        <p>• TokenExpiry: {{ authInfo.localStorage.tokenExpiry || 'No' }}</p>
+        
+        <p><strong>SessionStorage:</strong></p>
+        <p>• Token: {{ authInfo.sessionStorage.token ? 'Yes' : 'No' }}</p>
+        <p>• User: {{ authInfo.sessionStorage.user ? 'Yes' : 'No' }}</p>
+        <p>• TokenExpiry: {{ authInfo.sessionStorage.tokenExpiry || 'No' }}</p>
+        <p>• AuthTimestamp: {{ authInfo.sessionStorage.authTimestamp || 'No' }}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>
+        <h3>Cookies</h3>
+        <p>User Role: {{ authInfo.cookies.userRole || 'Not set' }}</p>
+        <p>User Name: {{ authInfo.cookies.userName || 'Not set' }}</p>
+        <p>User Email: {{ authInfo.cookies.userEmail || 'Not set' }}</p>
+        <p>User ID: {{ authInfo.cookies.userId || 'Not set' }}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-button expand="block" (click)="refreshAuthInfo()">Refresh Info</ion-button>
+    
+    <ion-button expand="block" color="warning" (click)="forceRestoreAuth()">Force Restore Auth</ion-button>
+    
+    <ion-button expand="block" color="danger" (click)="clearAuth()">Clear All Auth Data</ion-button>
+  </ion-card-content>
+</ion-card>

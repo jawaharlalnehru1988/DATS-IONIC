@@ -1,0 +1,28 @@
+:host {
+  display: block;
+  padding: 16px;
+}
+
+ion-card {
+  margin: 0;
+}
+
+ion-item {
+  --padding-start: 0;
+  --padding-end: 0;
+  --inner-padding-end: 0;
+}
+
+h3 {
+  margin: 0 0 8px 0;
+  color: var(--ion-color-primary);
+}
+
+p {
+  margin: 2px 0;
+  font-size: 0.9em;
+}
+
+ion-button {
+  margin-top: 8px;
+}
