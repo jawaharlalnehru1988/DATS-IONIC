@@ -23,27 +23,27 @@ export class CategoryFormService {
 
   addCategory(categoryData: CategoryCardInput, pageIdentifier: string = 'music-details') {
     const endpoint = this.getEndpoint(pageIdentifier);
-    return this.http.post(environment.AuthUrl + endpoint, categoryData);
+    return this.http.post(environment.apiNestBaseUrl + endpoint, categoryData);
   }
 
   updateCategory(categoryId: string, categoryData: CategoryCardInput, pageIdentifier: string = 'music-details') {
     const endpoint = this.getEndpoint(pageIdentifier);
-    return this.http.put(environment.AuthUrl + `${endpoint}/${categoryId}`, categoryData);
+    return this.http.put(environment.apiNestBaseUrl + `${endpoint}/${categoryId}`, categoryData);
   }
   
   deleteCategory(categoryId: string, pageIdentifier: string = 'music-details') {
     const endpoint = this.getEndpoint(pageIdentifier);
-    return this.http.delete(environment.AuthUrl + `${endpoint}/${categoryId}`);
+    return this.http.delete(environment.apiNestBaseUrl + `${endpoint}/${categoryId}`);
   }
   
   getCategoryById(categoryId: string, pageIdentifier: string = 'music-details') {
     const endpoint = this.getEndpoint(pageIdentifier);
-    return this.http.get(environment.AuthUrl + `${endpoint}/${categoryId}`);
+    return this.http.get(environment.apiNestBaseUrl + `${endpoint}/${categoryId}`);
   }
   
   getAllCategories(pageIdentifier: string = 'music-details') {
     const endpoint = this.getEndpoint(pageIdentifier);
-    return this.http.get<InputData[]>(environment.AuthUrl + endpoint);
+    return this.http.get<InputData[]>(environment.apiNestBaseUrl + endpoint);
   }
 
 }

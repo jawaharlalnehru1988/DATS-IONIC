@@ -11,7 +11,7 @@ import { CookieUtil } from '../Utils/cookie.util';
   providedIn: 'root'
 })
 export class AuthService {
-  AuthUrl = environment.AuthUrl;
+  AuthUrl = environment.apiNestBaseUrl;
   
   // Authentication state management
   private currentUserSubject = new BehaviorSubject<ResponseUserData | null>(null);

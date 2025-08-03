@@ -11,10 +11,10 @@ export class TutorialService {
   constructor(private http: HttpClient) { }
 
   getTutorials() {
-    return this.http.get<PoojaRulesModel[]>(environment.AuthUrl+'/blog');
+    return this.http.get<PoojaRulesModel[]>(environment.apiNestBaseUrl+'/blog');
   }
 
   getTutorialById(_id: string) {
-    return this.http.get<PoojaRulesModel>(`${environment.AuthUrl}+'/blog/${_id}'`);
+    return this.http.get<PoojaRulesModel>(`${environment.apiNestBaseUrl}/blog/${_id}`);
   }
 }

@@ -1,5 +1,5 @@
 <app-reusable-header 
-  [title]="'Welcome'" 
+  [title]="'Chant Hare Krishna'" 
   [translucent]="true" 
   [showMenuButton]="true">
 </app-reusable-header>
@@ -51,14 +51,14 @@
   </div>
 
 <div class="krishna-tabs">
-  <ion-segment [(ngModel)]="selectedLang">
-    <ion-segment-button *ngFor="let lang of languages" [value]="lang.value">
-      <ion-label>{{ lang.label }}</ion-label>
+  <ion-segment [(ngModel)]="selectedTopic">
+    <ion-segment-button *ngFor="let topic of contentCategories" [value]="topic.value">
+      <ion-label>{{ topic.label }}</ion-label>
     </ion-segment-button>
   </ion-segment>
 </div>
 
-<div [ngSwitch]="selectedLang">
+<div [ngSwitch]="selectedTopic">
   <ng-container *ngSwitchCase="'Arati'">
     <!-- Skeleton Loader -->
     <div *ngIf="isLoading" class="skeleton-container">
@@ -96,6 +96,28 @@
         </ion-button>
       </div>
     </div>
+  </ng-container>
+  <ng-container *ngSwitchCase="'Hare Krishna Kirtan'">
+    <section class="coming-soon-section">Content yet to be added</section>
+  </ng-container>
+  <ng-container *ngSwitchCase="'Stories'">
+    <section class="coming-soon-section">Content yet to be added</section>
+  </ng-container>
+  <ng-container *ngSwitchCase="'philosophy'">
+    <section class="coming-soon-section">Content yet to be added</section>
+  </ng-container>
+  <ng-container *ngSwitchCase="'discussion'">
+    <section class="coming-soon-section">Content yet to be added</section>
+  </ng-container>
+  <ng-container *ngSwitchCase="'images'">
+    <section class="coming-soon-section">Content yet to be added</section>
+  </ng-container>
+  <ng-container *ngSwitchCase="'videos'">
+    <section class="coming-soon-section">Content yet to be added</section>
+  </ng-container>
+
+  <ng-container *ngSwitchDefault>
+    <p>Select a category to view content.</p>
   </ng-container>
 </div>
 </ion-content>

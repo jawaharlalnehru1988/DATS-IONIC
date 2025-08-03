@@ -23,13 +23,14 @@ import { ReusableHeaderComponent } from '../components/reusable-header/reusable-
   imports: [IonFooter, NgFor, IonLabel, IonSegmentButton, IonSegment, IonButton, IonButtons, IonIcon, IonContent, IonToolbar, IonRefresher, IonRefresherContent, CommonModule, FormsModule, DisplayCardListComponent, IonSkeletonText, ReusableHeaderComponent]
 })
 export class KrishnaPagePage implements OnInit, OnDestroy {
-  languages = [
+  contentCategories = [
   { value: 'Arati', label: 'Arati' },
   { value: 'Hare Krishna Kirtan', label: 'Hare Krishna Kirtan' },
   { value: 'Stories', label: 'Stories' },
-  { value: 'Philosophy', label: 'Philosophy' },
-  { value: 'Discussion', label: 'Discussion' },
-  { value: 'Images', label: 'Images' }
+  { value: 'philosophy', label: 'Philosophy' },
+  { value: 'discussion', label: 'Discussion' },
+  { value: 'images', label: 'Images' },
+  { value: 'videos', label: 'Videos' },
 ];
 
 // Use signals from global state service
@@ -78,7 +79,7 @@ readonly carouselImages = [
   }
 ];
 
-selectedLang: string = 'Arati';
+selectedTopic: string = 'Arati';
 
   constructor(
     private krishnaService: KrishnaServiceService, 
@@ -107,6 +108,20 @@ ngOnInit() {
   // Use global state service to get data with intelligent caching
   this.globalStateService.getKrishnaPageData().catch(error => {
     console.error('Failed to load Krishna page data:', error);
+  });
+
+  this.getAllStories();
+}
+
+getAllStories(){
+  this.krishnaService.getAllStries().subscribe({
+    next: (stories) => {
+      console.log('Stories loaded successfully:', stories);
+      // Handle stories data if needed
+    },
+    error: (error) => {
+      console.error('Error loading stories:', error);
+    }
   });
 }
 

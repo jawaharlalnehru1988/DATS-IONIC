@@ -1,5 +1,7 @@
 export const environment = {
   production: true,
-  AuthUrl: 'https://dats-backend.vercel.app',
-  // AuthUrl: 'http://localhost:3000', // Uncomment for local development
+    apiNestBaseUrl: 'https://dats-backend.vercel.app',
+    // apiNestBaseUrl: 'http://localhost:3000',
+    apiSpringBaseUrl: 'https://askharekrishna-production.up.railway.app',
+    // apiSpringBaseUrl: 'http://localhost:8080',
 };

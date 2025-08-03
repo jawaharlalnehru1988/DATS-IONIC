@@ -12,11 +12,11 @@ export class MusicDetailsService {
   constructor(private http: HttpClient) { }
 
 getAll41Slokas() {
-  return this.http.get<DetailModel[]>(environment.AuthUrl + "/bg-sloka");
+  return this.http.get<DetailModel[]>(environment.apiNestBaseUrl + "/bg-sloka");
 }
 
 getAllSlokaChapters(){
-  return this.http.get<any[]>(environment.AuthUrl + "/bg-sloka-chapters");
+  return this.http.get<any[]>(environment.apiNestBaseUrl + "/bg-sloka-chapters");
 }
 
 }

@@ -460,7 +460,14 @@ ion-buttons{
     }
   }
 }
-
+.coming-soon-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  text-align: center;
+}
 // Global theme integration for Krishna page - Apply to entire component
 :host.theme-ocean {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;

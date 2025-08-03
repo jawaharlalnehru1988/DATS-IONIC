@@ -23,7 +23,7 @@ export interface RatingResponse {
   providedIn: 'root'
 })
 export class RatingService {
-  private baseUrl = environment.AuthUrl;
+  private baseUrl = environment.apiNestBaseUrl;
   
   // Local storage for ratings when offline or no backend
   private localRatings = new BehaviorSubject<Map<string, number>>(new Map());

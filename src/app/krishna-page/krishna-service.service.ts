@@ -11,7 +11,11 @@ export class KrishnaServiceService {
   constructor(private http: HttpClient) { }
 
   getKrishnaData() {
-    return this.http.get<InputData[]>(environment.AuthUrl+'/ram-bhajan'); 
+    return this.http.get<InputData[]>(environment.apiNestBaseUrl+'/ram-bhajan'); 
+  }
+
+  getAllStries(){
+    return this.http.get<any[]>(environment.apiSpringBaseUrl + "/api/stories")
   }
 
   defaultInputData: InputData[] = [
