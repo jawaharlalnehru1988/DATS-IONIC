@@ -12,7 +12,7 @@
     "lint": "ng lint",
     "ionic:build": "npm run build",
     "ionic:serve": "npm run start -- --open",
-    "vercel-build": "npm install --legacy-peer-deps && npm run build"
+    "vercel-build": "npm install --legacy-peer-deps && ng build --configuration production"
   },
   "private": true,
   "dependencies": {
