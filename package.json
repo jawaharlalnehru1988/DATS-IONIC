@@ -11,7 +11,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "ionic:build": "npm run build",
-    "ionic:serve": "npm run start -- --open"
+    "ionic:serve": "npm run start -- --open",
+    "vercel-build": "npm install --legacy-peer-deps && npm run build"
   },
   "private": true,
   "dependencies": {
