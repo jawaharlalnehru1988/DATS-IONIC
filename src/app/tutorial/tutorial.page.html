@@ -13,9 +13,16 @@
 
   <div class="tutorial-container">
     <div class="hero-section">
-      <h1 class="hero-title">Learn & Grow</h1>
-      <p class="hero-subtitle">Discover spiritual wisdom through our comprehensive tutorials</p>
+      <h1 class="hero-title">Read & Grow</h1>
+      <p class="hero-subtitle">Discover spiritual wisdom through our comprehensive Books</p>
     </div>
+
+    <app-segmented-tabs
+  [tabs]="contentCategories"
+  [selectedTab]="selectedTopic"
+  containerClass="krishna-tabs-container"
+  (tabChanged)="selectedTopic = $event">
+</app-segmented-tabs>
 
     <div class="cards-grid">
       @for(card of cards; track card.blogId){

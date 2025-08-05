@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, HostBinding } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonMenuButton, IonButtons, IonSegment, IonSegmentButton, IonLabel, IonIcon, IonButton, IonActionSheet, AlertController } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonMenuButton, IonButtons, IonSegment, IonSegmentButton, IonLabel, IonIcon, IonButton, IonActionSheet, IonSkeletonText, AlertController } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { addIcons } from 'ionicons';
 import { languageOutline, add, ellipsisVertical, create, trash, eye, chatbubbleOutline, createOutline, trashOutline } from 'ionicons/icons';
@@ -12,6 +12,7 @@ import { RoleBasedUIService } from '../services/role-based-ui.service';
 import { ShowForRolesDirective } from '../directives/show-for-roles.directive';
 import { Subscription, Observable } from 'rxjs';
 import { ReusableHeaderComponent } from '../components';
+import { SegmentedTabsComponent } from "../components/segmented-tabs/segmented-tabs.component";
 
 export interface Blogs {
   _id: string
@@ -31,14 +32,24 @@ export interface Blogs {
   templateUrl: './articles.component.html',
   styleUrls: ['./articles.component.scss'],
   standalone: true,
-  imports: [IonActionSheet, ReusableHeaderComponent, IonButton, IonIcon, IonLabel, IonSegmentButton, IonSegment, IonContent, CommonModule, BlogFormComponent, ShowForRolesDirective],
+  imports: [ReusableHeaderComponent, IonButton, IonIcon, IonContent, CommonModule, BlogFormComponent, ShowForRolesDirective, IonActionSheet, IonSkeletonText, SegmentedTabsComponent],
 })
 export class ArticlesComponent implements OnInit, OnDestroy {
-  selectedLanguage: string = 'english';
+  selectedTopic: string = 'how';
   blogs: Blog[] = [];
+  isLoading: boolean = true;
   currentTheme: ThemeType = 'theme-royal';
   private themeSubscription: Subscription = new Subscription();
-  
+   contentCategories = [
+  { value: 'how', label: 'How to...?' },
+  { value: 'why', label: 'Why...?' },
+  { value: 'when', label: 'When...?' },
+  { value: 'who', label: 'Who...?' },
+  { value: 'where', label: 'Where...?' },
+  { value: 'what', label: 'What...?' },
+
+];
+
   // Role-based UI properties
   canShowAdminFeatures$: Observable<boolean>;
   isAuthenticated$: Observable<boolean>;
@@ -81,42 +92,7 @@ export class ArticlesComponent implements OnInit, OnDestroy {
   ];
   
   // Original static data for fallback
-  defaultBlogs: Blog[] = [
-    {
-      _id: 'bhagavad-gita-1',
-      blogTitle: 'The Glories of Bhagavad Gita',
-      blogImgUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1753315996/bhagavad_gita_sloka_f2eq9e.png',
-      content: 'The Bhagavad Gita is the conversation between Lord Krishna and His devotee Arjuna. It contains the essence of all Vedic knowledge and provides practical guidance for spiritual life.',
-      author: 'His Divine Grace A.C. Bhaktivedanta Swami Prabhupada',
-      comments: [
-        {
-          userName: 'Devotee Radha',
-          comment: 'This explanation beautifully captures the essence of the Gita. Hare Krishna!'
-        }
-      ]
-    },
-    {
-      _id: 'bhagavatam-1',
-      blogTitle: 'Srimad Bhagavatam: The Beautiful Narration',
-      blogImgUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1753316350/bhagavatam-01_mogmef.jpg',
-      content: 'Srimad-Bhagavatam is the spotless Purana. It is most dear to the Vaishnavas because it describes the pure and supreme knowledge of the paramahamsas.',
-      author: 'His Divine Grace A.C. Bhaktivedanta Swami Prabhupada',
-      comments: []
-    },
-    {
-      _id: 'spiritual-names-1',
-      blogTitle: 'Choosing Spiritual Names for Children',
-      blogImgUrl: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1752936751/boy_baby_images_nudsxs.jpg',
-      content: 'Choosing a spiritual name for your child is one of the most important gifts you can give. These names carry divine vibrations and connect the child to the spiritual realm.',
-      author: 'His Divine Grace A.C. Bhaktivedanta Swami Prabhupada',
-      comments: [
-        {
-          userName: 'Krishna Das',
-          comment: 'Very helpful guidance for new parents. Thank you!'
-        }
-      ]
-    }
-  ];
+  defaultBlogs: Blog[] = [];
 
   constructor(
     private router: Router, 
@@ -139,6 +115,7 @@ export class ArticlesComponent implements OnInit, OnDestroy {
     });
 
     // Subscribe to blogs from service
+    this.isLoading = true;
     this.blogService.getBlogs().subscribe({
       next: (blogs: Blog[]) => {
         this.blogs = blogs;
@@ -147,6 +124,11 @@ export class ArticlesComponent implements OnInit, OnDestroy {
           // Use fallback data if no blogs are available
           this.blogs = this.defaultBlogs;
         }
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Error loading blogs:', error);
+        this.isLoading = false;
       }
     });
   }
@@ -156,11 +138,11 @@ export class ArticlesComponent implements OnInit, OnDestroy {
   }
 
   onLanguageChange(event: any) {
-    this.selectedLanguage = event.detail.value;
+    this.selectedTopic = event.detail.value;
   }
 
-  isEnglishSelected(): boolean {
-    return this.selectedLanguage === 'english';
+  isHowSelected(): boolean {
+    return this.selectedTopic === 'how';
   }
 
   onCardClick(blogId: string) {

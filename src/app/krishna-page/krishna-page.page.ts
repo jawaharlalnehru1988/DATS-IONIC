@@ -1,7 +1,8 @@
 import { Component, OnInit, OnDestroy, HostBinding } from '@angular/core';
 import { CommonModule, NgFor } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonIcon, IonButtons, IonButton, IonMenuButton, IonSegment, IonSegmentButton, IonLabel, IonFooter, IonSkeletonText, IonRefresher, IonRefresherContent, ModalController } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonIcon, IonButtons, IonButton, IonMenuButton, IonLabel, IonFooter, IonSkeletonText, IonRefresher, IonRefresherContent, ModalController, IonSegmentButton } from '@ionic/angular/standalone';
+import { SegmentedTabsComponent, TabItem } from '../components/segmented-tabs/segmented-tabs.component';
 import { addIcons } from 'ionicons';
 import { chevronDownOutline, notificationsOutline, optionsOutline, home, heartOutline, cafeOutline, personOutline, chevronBack, chevronForward, add, chevronDownCircleOutline } from 'ionicons/icons';
 import { DisplayCardListComponent, } from '../components/display-card-list/display-card-list.component';
@@ -20,7 +21,7 @@ import { ReusableHeaderComponent } from '../components/reusable-header/reusable-
   templateUrl: './krishna-page.page.html',
   styleUrls: ['./krishna-page.page.scss'],
   standalone: true,
-  imports: [IonFooter, NgFor, IonLabel, IonSegmentButton, IonSegment, IonButton, IonButtons, IonIcon, IonContent, IonToolbar, IonRefresher, IonRefresherContent, CommonModule, FormsModule, DisplayCardListComponent, IonSkeletonText, ReusableHeaderComponent]
+  imports: [IonFooter, IonButton, IonButtons, IonIcon, IonContent, IonToolbar, IonRefresher, IonRefresherContent, CommonModule, FormsModule, DisplayCardListComponent, IonSkeletonText, ReusableHeaderComponent, SegmentedTabsComponent]
 })
 export class KrishnaPagePage implements OnInit, OnDestroy {
   contentCategories = [

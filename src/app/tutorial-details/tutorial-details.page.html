@@ -4,18 +4,4 @@
   [showMenuButton]="true">
 </app-reusable-header>
 
- <ion-item *ngIf="isLoading">
-  <ion-label>Loading...</ion-label>
-  <ion-spinner name="lines-sharp"></ion-spinner>
-</ion-item>
 
-<ion-content [fullscreen]="true">
-  <ion-accordion-group>
-    <ion-accordion *ngFor="let item of poojaRules" [value]="item._id">
-      <ion-item slot="header" color="light">
-        <ion-label style="font-weight: 700;">{{ item.heading }}</ion-label>
-      </ion-item>
-     <div class="ion-padding" slot="content" [innerHTML]="sanitizeContent(item.content)"></div>
-    </ion-accordion>
-  </ion-accordion-group>
-</ion-content>

@@ -118,7 +118,7 @@ export class AppComponent implements OnInit, OnDestroy {
     { title: 'Audios', url: '/audios', icon: 'musical-notes', iconColor: 'orange' },
     { title: 'Articles', url: '/articles', icon: 'document-text', iconColor: '#045B40' },
     { title: 'Vaishnava Calender', url: '/calender', icon: 'calendar', iconColor: '#230568' },
-    { title: 'Tutorial', url: '/tutorial', icon: 'easel', iconColor: '#7D0250' },
+    { title: 'Books', url: '/tutorial', icon: 'easel', iconColor: '#7D0250' },
     { title: 'Chant Hare Krishna', url: '/chant', icon: 'person-circle', iconColor: '#B34E05' },
   ];
 

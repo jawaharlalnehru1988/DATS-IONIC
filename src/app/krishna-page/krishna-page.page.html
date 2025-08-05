@@ -50,13 +50,12 @@
     </div>
   </div>
 
-<div class="krishna-tabs">
-  <ion-segment [(ngModel)]="selectedTopic">
-    <ion-segment-button *ngFor="let topic of contentCategories" [value]="topic.value">
-      <ion-label>{{ topic.label }}</ion-label>
-    </ion-segment-button>
-  </ion-segment>
-</div>
+<app-segmented-tabs
+  [tabs]="contentCategories"
+  [selectedTab]="selectedTopic"
+  containerClass="krishna-tabs-container"
+  (tabChanged)="selectedTopic = $event">
+</app-segmented-tabs>
 
 <div [ngSwitch]="selectedTopic">
   <ng-container *ngSwitchCase="'Arati'">
@@ -70,6 +69,16 @@
       <!-- Card Skeletons -->
       <div class="skeleton-cards">
         <div class="skeleton-card" *ngFor="let item of [1,2,3]">
+          @for(item of [1,2,3]; track item; let i = $index) {
+            <div class="skeleton-card-content">
+              <ion-skeleton-text animated style="width: 100%; height: 120px; border-radius: 12px;"></ion-skeleton-text>
+              <div class="skeleton-card-info">
+                <ion-skeleton-text animated style="width: 80%; height: 18px; margin-top: 12px;"></ion-skeleton-text>
+                <ion-skeleton-text animated style="width: 60%; height: 14px; margin-top: 8px;"></ion-skeleton-text>
+                <ion-skeleton-text animated style="width: 40%; height: 14px; margin-top: 8px;"></ion-skeleton-text>
+              </div>
+            </div>
+          }
           <div class="skeleton-card-content">
             <ion-skeleton-text animated style="width: 100%; height: 120px; border-radius: 12px;"></ion-skeleton-text>
             <div class="skeleton-card-info">

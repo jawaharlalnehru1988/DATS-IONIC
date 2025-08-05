@@ -1,5 +1,34 @@
 @use '../../assets/styles/theme-models.scss';
 
+/* Skeleton Loader Styles */
+.skeleton-container {
+  padding: 16px;
+  
+  .skeleton-category {
+    margin-bottom: 24px;
+  }
+  
+  .skeleton-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    
+    .skeleton-card {
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      background: rgba(255, 255, 255, 0.05);
+      
+      .skeleton-card-content {
+        padding: 0 0 16px 0;
+        
+        .skeleton-card-info {
+          padding: 0 16px;
+        }
+      }
+    }
+  }
+}
 
 /* Add Blog Button Section */
 .add-blog-section {

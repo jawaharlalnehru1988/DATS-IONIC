@@ -51,7 +51,8 @@
           <ion-card-content>
             <ion-item>
               <ion-textarea
-                [(ngModel)]="newComment"
+                [value]="newComment"
+                (ionChange)="newComment = $event.detail.value || ''"
                 placeholder="Share your thoughts, ask questions, or provide insights about this article..."
                 rows="3"
                 fill="outline"
