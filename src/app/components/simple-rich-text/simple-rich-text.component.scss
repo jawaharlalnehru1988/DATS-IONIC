@@ -1,0 +1,105 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.simple-rich-text-container {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.simple-rich-text-editor {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  padding: 12px;
+  outline: none;
+  overflow: auto;
+  background-color: rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
+  
+  &.focused {
+    border-color: var(--ion-color-primary);
+    box-shadow: 0 0 0 2px rgba(var(--ion-color-primary-rgb), 0.3);
+  }
+  
+  &:empty:before {
+    content: attr(data-placeholder);
+    color: rgba(255, 255, 255, 0.5);
+    pointer-events: none;
+  }
+}
+
+// Theme-specific styles
+:host-context(.theme-ocean) {
+  .simple-rich-text-editor {
+    border-color: rgba(0, 245, 255, 0.3);
+    
+    &.focused {
+      border-color: #00f5ff;
+      box-shadow: 0 0 0 2px rgba(0, 245, 255, 0.3);
+    }
+  }
+}
+
+:host-context(.theme-sunset) {
+  .simple-rich-text-editor {
+    border-color: rgba(255, 107, 107, 0.3);
+    
+    &.focused {
+      border-color: #ff6b6b;
+      box-shadow: 0 0 0 2px rgba(255, 107, 107, 0.3);
+    }
+  }
+}
+
+:host-context(.theme-forest) {
+  .simple-rich-text-editor {
+    border-color: rgba(113, 178, 128, 0.3);
+    
+    &.focused {
+      border-color: #71b280;
+      box-shadow: 0 0 0 2px rgba(113, 178, 128, 0.3);
+    }
+  }
+}
+
+:host-context(.theme-cyberpunk) {
+  .simple-rich-text-editor {
+    border-color: #00ff41;
+    border-radius: 0;
+    font-family: 'Courier New', monospace;
+    
+    &.focused {
+      border-color: #00ff41;
+      box-shadow: 0 0 0 2px rgba(0, 255, 65, 0.3);
+    }
+    
+    &:empty:before {
+      color: rgba(0, 255, 65, 0.7);
+    }
+  }
+}
+
+:host-context(.theme-royal) {
+  .simple-rich-text-editor {
+    border-color: rgba(255, 215, 0, 0.3);
+    
+    &.focused {
+      border-color: #ffd700;
+      box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.3);
+    }
+  }
+}
+
+:host-context(.theme-midnight) {
+  .simple-rich-text-editor {
+    border-color: rgba(52, 152, 219, 0.3);
+    
+    &.focused {
+      border-color: #3498db;
+      box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.3);
+    }
+  }
+}

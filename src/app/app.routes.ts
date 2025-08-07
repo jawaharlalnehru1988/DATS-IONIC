@@ -19,11 +19,6 @@ export const routes: Routes = [
     loadComponent: () => import('./register/register.page').then((m) => m.RegisterPage),
   },
   {
-    path: 'language',
-    loadComponent: () =>
-      import('./Language/language.page').then((m) => m.LanguagePage),
-  },
-  {
     path: 'settings',
     loadComponent: () =>
       import('./settings/settings.page').then((m) => m.SettingsPage),
@@ -87,5 +82,9 @@ export const routes: Routes = [
   {
     path: 'card-details',
     loadComponent: () => import('./components/card-details/card-details.component').then( m => m.CardDetailsComponent)
+  },
+  {
+    path: 'rich-text-demo',
+    loadComponent: () => import('./rich-text-demo/rich-text-demo.page').then( m => m.RichTextDemoPage)
   }
 ];

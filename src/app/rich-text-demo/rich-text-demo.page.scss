@@ -1,0 +1,144 @@
+// Rich text demo page styling
+
+:host {
+  display: block;
+}
+
+.editor-container {
+  margin: 16px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.preview-container {
+  margin: 16px;
+  border-radius: 16px;
+  padding: 16px;
+  background-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin: 16px;
+  
+  ion-button {
+    --border-radius: 12px;
+    font-weight: 500;
+    
+    ion-icon {
+      margin-right: 8px;
+    }
+  }
+}
+
+.section-title {
+  margin: 16px;
+  color: var(--ion-color-primary);
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+// Theme-specific styles for the editor
+:host-context(.theme-ocean) {
+  .editor-container {
+    border: 1px solid rgba(0, 245, 255, 0.3);
+  }
+  
+  .preview-container {
+    border: 1px solid rgba(0, 245, 255, 0.3);
+  }
+}
+
+:host-context(.theme-sunset) {
+  .editor-container {
+    border: 1px solid rgba(255, 107, 107, 0.3);
+  }
+  
+  .preview-container {
+    border: 1px solid rgba(255, 107, 107, 0.3);
+  }
+}
+
+:host-context(.theme-forest) {
+  .editor-container {
+    border: 1px solid rgba(113, 178, 128, 0.3);
+  }
+  
+  .preview-container {
+    border: 1px solid rgba(113, 178, 128, 0.3);
+  }
+}
+
+:host-context(.theme-cyberpunk) {
+  .editor-container {
+    border: 1px solid #00ff41;
+    border-radius: 0;
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+  
+  .preview-container {
+    border: 1px solid #00ff41;
+    border-radius: 0;
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+  
+  .section-title {
+    font-family: 'Courier New', monospace;
+    text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+  }
+}
+
+:host-context(.theme-royal) {
+  .editor-container {
+    border: 2px solid rgba(255, 215, 0, 0.3);
+  }
+  
+  .preview-container {
+    border: 2px solid rgba(255, 215, 0, 0.3);
+  }
+}
+
+:host-context(.theme-midnight) {
+  .editor-container {
+    border: 1px solid rgba(52, 152, 219, 0.3);
+  }
+  
+  .preview-container {
+    border: 1px solid rgba(52, 152, 219, 0.3);
+  }
+}
+
+// Additional styling for the Quill editor
+::ng-deep {
+  .ql-toolbar.ql-snow {
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    
+    :host-context(.theme-cyberpunk) & {
+      border-radius: 0;
+      border-color: #00ff41;
+    }
+  }
+  
+  .ql-container.ql-snow {
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+    border-color: rgba(255, 255, 255, 0.2);
+    min-height: 200px;
+    
+    :host-context(.theme-cyberpunk) & {
+      border-radius: 0;
+      border-color: #00ff41;
+    }
+  }
+  
+  .ql-editor {
+    min-height: 200px;
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+}

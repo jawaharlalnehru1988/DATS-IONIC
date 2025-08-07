@@ -125,6 +125,7 @@ export class AppComponent implements OnInit, OnDestroy {
   public additionals = [
     { title: 'Contacts', url: '/contacts', icon: 'call', iconColor: 'orange' },
     { title: 'Free Membership', url: '/membership', icon: 'person-add', iconColor: '#0E7B8A' },
+    { title: 'Rich Text Demo', url: '/rich-text-demo', icon: 'document-text', iconColor: '#9C27B0' },
     { title: 'Settings', url: '/settings', icon: 'settings', iconColor: '#230568' },
   ];
 

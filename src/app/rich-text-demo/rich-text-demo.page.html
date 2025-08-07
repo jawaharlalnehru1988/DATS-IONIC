@@ -1,0 +1,68 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Rich Text Editor Demo</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="section-title">Simple Rich Text Editor</div>
+  
+  <div class="editor-container">
+    <app-simple-rich-text
+      [initialContent]="initialContent"
+      placeholder="Paste content from Word, Google Docs, or type here..."
+      (contentChanged)="onContentChanged($event)">
+    </app-simple-rich-text>
+  </div>
+
+  <div class="action-buttons">
+    <ion-button color="primary" (click)="updatePreview()">
+      <ion-icon name="refresh-outline"></ion-icon>
+      Update Preview
+    </ion-button>
+
+    <div>
+      <ion-button color="secondary" (click)="copyContent()">
+        <ion-icon name="copy-outline"></ion-icon>
+        Copy HTML
+      </ion-button>
+      <ion-button color="tertiary" (click)="resetEditor()">
+        <ion-icon name="refresh-outline"></ion-icon>
+        Reset
+      </ion-button>
+    </div>
+  </div>
+
+  <div class="section-title">Content Preview</div>
+
+  <div class="preview-container">
+    <div [innerHTML]="previewContent"></div>
+  </div>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>About Simple Rich Text Editor</ion-card-title>
+      <ion-card-subtitle>A lightweight editor focused on content pasting</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <p>This simple rich text editor is designed specifically for pasting content from other platforms like MS Word or Google Docs. It cleans up the HTML to include only basic formatting tags.</p>
+      <ion-list>
+        <ion-item>
+          <ion-label>
+            <h3>Key Features</h3>
+            <ul>
+              <li>Paste content from MS Word, Google Docs, etc.</li>
+              <li>Clean HTML output with only basic formatting tags</li>
+              <li>Preserves basic formatting (bold, italic, lists, etc.)</li>
+              <li>Removes complex styling and unwanted tags</li>
+              <li>Lightweight and easy to use</li>
+            </ul>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
