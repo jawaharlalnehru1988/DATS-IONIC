@@ -18,6 +18,7 @@ import {
 import { addIcons } from 'ionicons';
 import { ThemeService, ThemeType } from './services/theme.service';
 import { AuthService } from './services/auth.service';
+import { LanguageService, LanguageTexts } from './services/language.service';
 import { Subscription } from 'rxjs';
 import { 
   mailOutline, 
@@ -107,31 +108,34 @@ export class AppComponent implements OnInit, OnDestroy {
   currentTheme: ThemeType = 'theme-royal';
   private themeSubscription: Subscription = new Subscription();
   private userSubscription: Subscription = new Subscription();
+  private languageSubscription: Subscription = new Subscription();
   
   currentUser: ResponseUserData | null = null;
   isAuthenticated: boolean = false;
+  texts: LanguageTexts = {} as LanguageTexts;
 
   public appPages = [
-    { title: 'Dashboard', url: '/dashboard', icon: 'grid', iconColor: '#4CAF50' },
-    { title: 'Lord Sri Krishna', url: '/lordkrishna', icon: 'person-circle', iconColor: '#B34E05' },
-    { title: 'Srila Prabhupada', url: '/srilaprabhupada', icon: 'person-circle', iconColor: '#B34E05' },
-    { title: 'Audios', url: '/audios', icon: 'musical-notes', iconColor: 'orange' },
-    { title: 'Articles', url: '/articles', icon: 'document-text', iconColor: '#045B40' },
-    { title: 'Vaishnava Calender', url: '/calender', icon: 'calendar', iconColor: '#230568' },
-    { title: 'Books', url: '/tutorial', icon: 'easel', iconColor: '#7D0250' },
-    { title: 'Chant Hare Krishna', url: '/chant', icon: 'person-circle', iconColor: '#B34E05' },
+    { title: 'Dashboard', url: '/dashboard', icon: 'grid', iconColor: '#4CAF50', textKey: 'dashboard' },
+    { title: 'Lord Sri Krishna', url: '/lordkrishna', icon: 'person-circle', iconColor: '#B34E05', textKey: 'lordKrishna' },
+    { title: 'Srila Prabhupada', url: '/srilaprabhupada', icon: 'person-circle', iconColor: '#B34E05', textKey: 'srilaPrabhupada' },
+    { title: 'Audios', url: '/audios', icon: 'musical-notes', iconColor: 'orange', textKey: 'audios' },
+    { title: 'Articles', url: '/articles', icon: 'document-text', iconColor: '#045B40', textKey: 'articles' },
+    { title: 'Vaishnava Calender', url: '/calender', icon: 'calendar', iconColor: '#230568', textKey: 'vaishnavaCalendar' },
+    { title: 'Books', url: '/tutorial', icon: 'easel', iconColor: '#7D0250', textKey: 'books' },
+    { title: 'Chant Hare Krishna', url: '/chant', icon: 'person-circle', iconColor: '#B34E05', textKey: 'chantHareKrishna' },
   ];
 
   public additionals = [
-    { title: 'Contacts', url: '/contacts', icon: 'call', iconColor: 'orange' },
-    { title: 'Free Membership', url: '/membership', icon: 'person-add', iconColor: '#0E7B8A' },
-    { title: 'Rich Text Demo', url: '/rich-text-demo', icon: 'document-text', iconColor: '#9C27B0' },
-    { title: 'Settings', url: '/settings', icon: 'settings', iconColor: '#230568' },
+    { title: 'Contacts', url: '/contacts', icon: 'call', iconColor: 'orange', textKey: 'contacts' },
+    { title: 'Free Membership', url: '/membership', icon: 'person-add', iconColor: '#0E7B8A', textKey: 'freeMembership' },
+    { title: 'Rich Text Demo', url: '/rich-text-demo', icon: 'document-text', iconColor: '#9C27B0', textKey: 'richTextDemo' },
+    { title: 'Settings', url: '/settings', icon: 'settings', iconColor: '#230568', textKey: 'settings' },
   ];
 
   constructor(
     private themeService: ThemeService,
-    private authService: AuthService
+    private authService: AuthService,
+    private languageService: LanguageService
   ) {
     addIcons({ 
       mailOutline, 
@@ -198,6 +202,11 @@ export class AppComponent implements OnInit, OnDestroy {
       this.currentTheme = theme;
     });
 
+    // Subscribe to language changes
+    this.languageSubscription = this.languageService.texts$.subscribe((texts: LanguageTexts) => {
+      this.texts = texts;
+    });
+
     // Subscribe to authentication state
     this.userSubscription.add(
       this.authService.currentUser$.subscribe(user => {
@@ -220,9 +229,17 @@ export class AppComponent implements OnInit, OnDestroy {
     if (this.userSubscription) {
       this.userSubscription.unsubscribe();
     }
+    if (this.languageSubscription) {
+      this.languageSubscription.unsubscribe();
+    }
   }
 
   onLogout() {
     this.authService.logout();
+  }
+
+  // Method to get translated text for menu items
+  getMenuText(textKey: string): string {
+    return this.languageService.getText(textKey as keyof LanguageTexts);
   }
 }

@@ -5,7 +5,7 @@
     </ion-buttons>
     <ion-title class="header-title">
       <ion-icon name="musical-notes" class="title-icon"></ion-icon>
-      Music Gallery
+      {{ musicGalleryText }}
     </ion-title>
     <ion-buttons slot="end">
       <ion-button fill="clear" class="search-btn">
@@ -19,8 +19,8 @@
   <!-- Hero Section -->
   <div class="hero-section">
     <div class="hero-content">
-      <h1 class="hero-title">Discover Sacred Sounds</h1>
-      <p class="hero-subtitle">Immerse yourself in divine melodies and spiritual audio content</p>
+      <h1 class="hero-title">{{ discoverSacredSoundsText }}</h1>
+      <p class="hero-subtitle">{{ immersiveAudioDescriptionText }}</p>
     </div>
     <div class="hero-graphic">
       <ion-icon name="musical-notes" class="floating-note note-1"></ion-icon>
@@ -33,7 +33,7 @@
   <div class="categories-section">
     <h2 class="section-title">
       <ion-icon name="library-outline" class="section-icon"></ion-icon>
-      Audio Categories
+      {{ audioCategoriesText }}
     </h2>
     
     <ion-grid class="categories-grid">
@@ -84,13 +84,13 @@
   <div class="featured-section">
     <h2 class="section-title">
       <ion-icon name="star" class="section-icon"></ion-icon>
-      Featured Audio
+      {{ featuredAudioText }}
     </h2>
     <div class="featured-card">
       <div class="featured-content">
         <ion-icon name="headset" class="featured-icon"></ion-icon>
-        <h3>Premium Audio Experience</h3>
-        <p>High-quality spiritual audio content curated for your journey</p>
+        <h3>{{ premiumAudioExperienceText }}</h3>
+        <p>{{ highQualityAudioDescriptionText }}</p>
       </div>
     </div>
   </div>

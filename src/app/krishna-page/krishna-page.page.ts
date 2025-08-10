@@ -13,6 +13,7 @@ import { DataSharingService } from '../services/data-sharing.service';
 import { CategoryFormService } from '../Utils/components/category-form/category-form.service';
 import { ThemeService, ThemeType } from '../services/theme.service';
 import { GlobalStateService } from '../services/global-state.service';
+import { LanguageService } from '../services/language.service';
 import { Subscription } from 'rxjs';
 import { ReusableHeaderComponent } from '../components/reusable-header/reusable-header.component';
 
@@ -24,15 +25,7 @@ import { ReusableHeaderComponent } from '../components/reusable-header/reusable-
   imports: [IonFooter, IonButton, IonButtons, IonIcon, IonContent, IonToolbar, IonRefresher, IonRefresherContent, CommonModule, FormsModule, DisplayCardListComponent, IonSkeletonText, ReusableHeaderComponent, SegmentedTabsComponent]
 })
 export class KrishnaPagePage implements OnInit, OnDestroy {
-  contentCategories = [
-  { value: 'Arati', label: 'Arati' },
-  { value: 'Hare Krishna Kirtan', label: 'Hare Krishna Kirtan' },
-  { value: 'Stories', label: 'Stories' },
-  { value: 'philosophy', label: 'Philosophy' },
-  { value: 'discussion', label: 'Discussion' },
-  { value: 'images', label: 'Images' },
-  { value: 'videos', label: 'Videos' },
-];
+  contentCategories: TabItem[] = [];
 
 // Use signals from global state service
 get inputDatas() {
@@ -50,6 +43,7 @@ get hasError() {
 // Theme management
 currentTheme: ThemeType = 'theme-royal';
 private themeSubscription: Subscription = new Subscription();
+private languageSubscription: Subscription = new Subscription();
 
 // HostBinding to apply theme class to the component's host element
 @HostBinding('class')
@@ -89,11 +83,13 @@ selectedTopic: string = 'Arati';
     private dataSharingService: DataSharingService, 
     private modalController: ModalController,
     private themeService: ThemeService,
-    private globalStateService: GlobalStateService
+    private globalStateService: GlobalStateService,
+    private languageService: LanguageService
   ) { 
     addIcons({chevronBack,chevronForward,add,home,heartOutline,cafeOutline,personOutline,chevronDownOutline,notificationsOutline,optionsOutline,chevronDownCircleOutline});
     
-    // No need to set default data here - it will be handled by global state service
+    // Initialize categories with current language
+    this.updateContentCategories();
   }
 
 ngOnInit() {
@@ -104,6 +100,11 @@ ngOnInit() {
     }
   );
   
+  // Subscribe to language changes
+  this.languageSubscription = this.languageService.texts$.subscribe(() => {
+    this.updateContentCategories();
+  });
+  
   this.startCarousel();
   
   // Use global state service to get data with intelligent caching
@@ -112,6 +113,19 @@ ngOnInit() {
   });
 
   this.getAllStories();
+}
+
+private updateContentCategories(): void {
+  const texts = this.languageService.getTexts();
+  this.contentCategories = [
+    { value: 'Arati', label: texts.categoryArati },
+    { value: 'Hare Krishna Kirtan', label: texts.categoryHareKrishnaKirtan },
+    { value: 'Stories', label: texts.categoryStories },
+    { value: 'philosophy', label: texts.categoryPhilosophy },
+    { value: 'discussion', label: texts.categoryDiscussion },
+    { value: 'images', label: texts.categoryImages },
+    { value: 'videos', label: texts.categoryVideos },
+  ];
 }
 
 getAllStories(){
@@ -132,6 +146,11 @@ ngOnDestroy() {
   // Unsubscribe from theme changes
   if (this.themeSubscription) {
     this.themeSubscription.unsubscribe();
+  }
+  
+  // Unsubscribe from language changes
+  if (this.languageSubscription) {
+    this.languageSubscription.unsubscribe();
   }
 }
 

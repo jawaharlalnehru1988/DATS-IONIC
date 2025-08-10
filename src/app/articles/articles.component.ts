@@ -8,11 +8,12 @@ import { Blog, BlogService } from '../services/blog.service';
 import { BlogFormComponent } from '../components/blog-form/blog-form.component';
 import { AuthDebugComponent } from '../components/auth-debug/auth-debug.component';
 import { ThemeService, ThemeType } from '../services/theme.service';
+import { LanguageService } from '../services/language.service';
 import { RoleBasedUIService } from '../services/role-based-ui.service';
 import { ShowForRolesDirective } from '../directives/show-for-roles.directive';
 import { Subscription, Observable } from 'rxjs';
 import { ReusableHeaderComponent } from '../components';
-import { SegmentedTabsComponent } from "../components/segmented-tabs/segmented-tabs.component";
+import { SegmentedTabsComponent, TabItem } from "../components/segmented-tabs/segmented-tabs.component";
 
 export interface Blogs {
   _id: string
@@ -40,15 +41,9 @@ export class ArticlesComponent implements OnInit, OnDestroy {
   isLoading: boolean = true;
   currentTheme: ThemeType = 'theme-royal';
   private themeSubscription: Subscription = new Subscription();
-   contentCategories = [
-  { value: 'how', label: 'How to...?' },
-  { value: 'why', label: 'Why...?' },
-  { value: 'when', label: 'When...?' },
-  { value: 'who', label: 'Who...?' },
-  { value: 'where', label: 'Where...?' },
-  { value: 'what', label: 'What...?' },
-
-];
+  private languageSubscription: Subscription = new Subscription();
+  
+  contentCategories: TabItem[] = [];
 
   // Role-based UI properties
   canShowAdminFeatures$: Observable<boolean>;
@@ -98,6 +93,7 @@ export class ArticlesComponent implements OnInit, OnDestroy {
     private router: Router, 
     private blogService: BlogService, 
     private themeService: ThemeService,
+    private languageService: LanguageService,
     private roleBasedUIService: RoleBasedUIService,
     private alertController: AlertController
   ) {
@@ -106,12 +102,20 @@ export class ArticlesComponent implements OnInit, OnDestroy {
     // Initialize role-based observables
     this.canShowAdminFeatures$ = this.roleBasedUIService.canShowAdminFeatures();
     this.isAuthenticated$ = this.roleBasedUIService.isUserAuthenticated();
+    
+    // Initialize categories with current language
+    this.updateContentCategories();
   }
 
   ngOnInit() {
     // Subscribe to theme changes
     this.themeSubscription = this.themeService.currentTheme$.subscribe(theme => {
       this.currentTheme = theme;
+    });
+    
+    // Subscribe to language changes
+    this.languageSubscription = this.languageService.texts$.subscribe(() => {
+      this.updateContentCategories();
     });
 
     // Subscribe to blogs from service
@@ -133,8 +137,25 @@ export class ArticlesComponent implements OnInit, OnDestroy {
     });
   }
 
+  private updateContentCategories(): void {
+    const texts = this.languageService.getTexts();
+    this.contentCategories = [
+      { value: 'how', label: texts.articlesCategoryHow },
+      { value: 'why', label: texts.articlesCategoryWhy },
+      { value: 'when', label: texts.articlesCategoryWhen },
+      { value: 'who', label: texts.articlesCategoryWho },
+      { value: 'where', label: texts.articlesCategoryWhere },
+      { value: 'what', label: texts.articlesCategoryWhat },
+    ];
+  }
+
   ngOnDestroy() {
     this.themeSubscription.unsubscribe();
+    
+    // Unsubscribe from language changes
+    if (this.languageSubscription) {
+      this.languageSubscription.unsubscribe();
+    }
   }
 
   onLanguageChange(event: any) {

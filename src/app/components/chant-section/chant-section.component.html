@@ -3,21 +3,21 @@
     <h3 (click)="onMantraClick('hare-krishna')" 
         class="mantra-line" 
         [class.playing]="isMantraPlaying">
-       Hare Krishna Hare Krishna Krishna Krishna Hare Hare 
+       {{ (texts$ | async)?.hareKrishnaMantra || 'Hare Krishna Hare Krishna Krishna Krishna Hare Hare' }}
     </h3>
     <h3 (click)="onMantraClick('hare-rama')" 
         class="mantra-line" 
         [class.playing]="isMantraPlaying">
-       Hare Rama Hare Rama Rama Rama Hare Hare 
+       {{ (texts$ | async)?.hareRamaMantra || 'Hare Rama Hare Rama Rama Rama Hare Hare' }}
     </h3>
     <p class="chant-instruction" *ngIf="!isMantraPlaying">
       <ion-icon name="hand-left" class="tap-icon"></ion-icon>
-      Tap the mantras above to hear Srila Prabhupada chanting
+      {{ (texts$ | async)?.chantInstruction || 'Tap the mantras above to hear Srila Prabhupada chanting' }}
       <ion-icon name="hand-right" class="tap-icon"></ion-icon>
     </p>
     <p class="playing-message" *ngIf="isMantraPlaying">
       <ion-icon name="musical-note" class="playing-icon"></ion-icon>
-      🕉️ Sacred mantra is playing... Listen with devotion 🕉️
+      {{ (texts$ | async)?.chantPlayingMessage || '🕉️ Sacred mantra is playing... Listen with devotion 🕉️' }}
       <ion-icon name="musical-note" class="playing-icon"></ion-icon>
     </p>
 </section>

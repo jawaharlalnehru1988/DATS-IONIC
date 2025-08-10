@@ -29,7 +29,7 @@
                   name="log-out-outline"
                   color="danger">
                 </ion-icon>
-                <ion-label color="danger">Logout</ion-label>
+                <ion-label color="danger">{{ texts.logout }}</ion-label>
               </ion-item>
             </ion-menu-toggle>
           </div>
@@ -53,7 +53,7 @@
                   [md]="p.icon + '-sharp'" 
                   [style.color]="p.iconColor">
                 </ion-icon>
-                <ion-label>{{ p.title }}</ion-label>
+                <ion-label>{{ getMenuText(p.textKey) }}</ion-label>
               </ion-item>
             </ion-menu-toggle>
           }
@@ -78,7 +78,7 @@
                   [md]="p.icon + '-sharp'" 
                   [style.color]="p.iconColor">
                 </ion-icon>
-                <ion-label>{{ p.title }}</ion-label>
+                <ion-label>{{ getMenuText(p.textKey) }}</ion-label>
               </ion-item>
             </ion-menu-toggle>
           }

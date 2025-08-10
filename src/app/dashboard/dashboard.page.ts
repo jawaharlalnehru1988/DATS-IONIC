@@ -5,10 +5,12 @@ import { Router, RouterLink } from '@angular/router';
 import { RoleBasedUIService } from '../services/role-based-ui.service';
 import { AuthService } from '../services/auth.service';
 import { ThemeService, ThemeType } from '../services/theme.service';
+import { LanguageService, LanguageTexts, SupportedLanguage } from '../services/language.service';
 import { ShowForRolesDirective } from '../directives/show-for-roles.directive';
 import { ChantSectionComponent } from '../components/chant-section/chant-section.component';
 import { ReusableHeaderComponent } from '../components/reusable-header/reusable-header.component';
-import { Observable } from 'rxjs';
+import { Observable, combineLatest, map } from 'rxjs';
+import { FeatureCard, getFeatureCardsByLanguage } from './dashboard.data';
 
 @Component({
   selector: 'app-dashboard',
@@ -31,11 +33,14 @@ export class DashboardPage implements OnInit {
   canShowAdminFeatures$: Observable<boolean>;
   userDisplayName$: Observable<string>;
   currentTheme$: Observable<ThemeType>;
+  texts$: Observable<LanguageTexts>;
+  featureCards$: Observable<FeatureCard[]>;
 
   constructor(
     private roleBasedUIService: RoleBasedUIService,
     private authService: AuthService,
     private themeService: ThemeService,
+    private languageService: LanguageService,
     private router: Router
   ) {
     this.isAuthenticated$ = this.roleBasedUIService.isUserAuthenticated();
@@ -43,6 +48,12 @@ export class DashboardPage implements OnInit {
     this.canShowAdminFeatures$ = this.roleBasedUIService.canShowAdminFeatures();
     this.userDisplayName$ = this.roleBasedUIService.getUserDisplayName();
     this.currentTheme$ = this.themeService.currentTheme$;
+    this.texts$ = this.languageService.texts$;
+    
+    // Create observable for feature cards that updates when language changes
+    this.featureCards$ = this.languageService.currentLanguage$.pipe(
+      map((language: SupportedLanguage) => getFeatureCardsByLanguage(language))
+    );
   }
 
   ngOnInit() {}
@@ -69,5 +80,9 @@ export class DashboardPage implements OnInit {
 
   onGuestAction() {
     console.log('Guest action triggered');
+  }
+
+  getTranslatedTitle(titleKey: keyof LanguageTexts): string {
+    return this.languageService.getText(titleKey);
   }
 }

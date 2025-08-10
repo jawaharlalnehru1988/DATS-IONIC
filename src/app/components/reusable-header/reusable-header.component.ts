@@ -3,6 +3,7 @@ import { IonicModule, PopoverController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { ThemeService, ThemeType } from '../../services/theme.service';
 import { AuthService } from '../../services/auth.service';
+import { LanguageService, LanguageTexts } from '../../services/language.service';
 import { Observable, Subscription, combineLatest } from 'rxjs';
 import { map, first } from 'rxjs/operators';
 import { addIcons } from 'ionicons';
@@ -19,6 +20,7 @@ import { UserMenuPopoverComponent } from '../user-menu-popover/user-menu-popover
 })
 export class ReusableHeaderComponent implements OnInit, OnDestroy {
   @Input() title: string = 'Welcome';
+  @Input() titleKey?: keyof LanguageTexts; // New input for translation key
   @Input() showMenuButton: boolean = true;
   @Input() translucent: boolean = true;
   @Input() showPersonIcon: boolean = true;
@@ -28,6 +30,8 @@ export class ReusableHeaderComponent implements OnInit, OnDestroy {
   userInitials$: Observable<string>;
   isAuthenticated$: Observable<boolean>;
   userInfo$: Observable<DecodedToken | null>;
+  texts$: Observable<LanguageTexts>;
+  dynamicTitle$: Observable<string>;
   private subscriptions = new Subscription();
 
   @HostBinding('class') get themeClass() {
@@ -39,10 +43,22 @@ export class ReusableHeaderComponent implements OnInit, OnDestroy {
   constructor(
     private themeService: ThemeService,
     private authService: AuthService,
+    private languageService: LanguageService,
     private popoverController: PopoverController
   ) {
     this.currentTheme$ = this.themeService.currentTheme$;
     this.isAuthenticated$ = this.authService.isAuthenticated$;
+    this.texts$ = this.languageService.texts$;
+    
+    // Create dynamic title observable that uses either translation key or fallback title
+    this.dynamicTitle$ = this.texts$.pipe(
+      map(texts => {
+        if (this.titleKey && texts[this.titleKey]) {
+          return texts[this.titleKey];
+        }
+        return this.title;
+      })
+    );
     
     // Create observable for user initials
     this.userInitials$ = combineLatest([

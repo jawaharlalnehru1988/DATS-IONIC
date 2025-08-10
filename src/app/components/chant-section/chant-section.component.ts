@@ -2,6 +2,7 @@ import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { ThemeService, ThemeType } from '../../services/theme.service';
+import { LanguageService, LanguageTexts } from '../../services/language.service';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -19,11 +20,16 @@ export class ChantSectionComponent implements OnInit, OnDestroy {
   @Input() title: string = '✨ Chant and Be Happy ✨';
   
   currentTheme$: Observable<ThemeType>;
+  texts$: Observable<LanguageTexts>;
   private mantraAudio: HTMLAudioElement | null = null;
   public isMantraPlaying = false;
 
-  constructor(private themeService: ThemeService) {
+  constructor(
+    private themeService: ThemeService,
+    private languageService: LanguageService
+  ) {
     this.currentTheme$ = this.themeService.currentTheme$;
+    this.texts$ = this.languageService.texts$;
     this.initializeMantraAudio();
   }
 

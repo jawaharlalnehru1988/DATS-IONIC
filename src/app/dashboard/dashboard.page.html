@@ -1,26 +1,26 @@
 <app-reusable-header 
-  [title]="'Welcome'" 
+  [titleKey]="'welcome'" 
   [translucent]="true" 
   [showMenuButton]="true">
 </app-reusable-header>
 
 
 <ion-content [fullscreen]="true" class="ion-padding" [ngClass]="currentTheme$ | async">
-    <!-- Chant Section Component -->
-    <app-chant-section title="✨ Welcome! Chant and Be Happy ✨"></app-chant-section>
-    
+  <!-- Chant Section Component -->
+  <app-chant-section [title]="(texts$ | async)?.chantWelcomeTitle || '✨ Welcome! Chant and Be Happy ✨'"></app-chant-section>
+  
   <!-- Hero Welcome Section -->
   <div class="hero-section">
     <div class="hero-content">
       <h1 class="hero-title">
-        <span>Welcome to Transcendental Journey</span>
+        <span>{{ (texts$ | async)?.heroMainTitle || 'Welcome to Transcendental Journey' }}</span>
         <br>
       </h1>
       <p class="hero-subtitle">
-        Discover the timeless wisdom of Lord Krishna and revive your Krishna consciousness
+        {{ (texts$ | async)?.heroSubtitle1 || 'Discover the timeless wisdom of Lord Krishna and revive your Krishna consciousness' }}
       </p>
       <p class="hero-subtitle">
-        Continue your spiritual journey with personalized contents
+        {{ (texts$ | async)?.heroSubtitle2 || 'Continue your spiritual journey with personalized contents' }}
       </p>
     </div>
   </div>
@@ -29,141 +29,33 @@
   <div class="quick-actions">
     <ion-button expand="block" size="large" routerLink="/register" class="cta-button">
       <ion-icon name="person-add-outline" slot="start"></ion-icon>
-      Join Our Spiritual Community
+      {{ (texts$ | async)?.joinCommunityButton || 'Join Our Spiritual Community' }}
     </ion-button>
     <ion-button expand="block" fill="outline" size="large" routerLink="/login" class="login-button">
       <ion-icon name="log-in-outline" slot="start"></ion-icon>
-      Sign In to Your Account
+      {{ (texts$ | async)?.signInButton || 'Sign In to Your Account' }}
     </ion-button>
-  </div>
-
-  <!-- Spiritual Features Grid -->
+  </div>  <!-- Spiritual Features Grid -->
   <div class="features-grid">
-    <h2 class="section-title">Explore Sacred Wisdom</h2>
+    <h2 class="section-title">{{ (texts$ | async)?.exploreWisdom || 'Explore Sacred Wisdom' }}</h2>
     
-    <!-- Lord Krishna Section -->
-    <ion-card class="feature-card krishna-card" button (click)="navigateTo('/lordkrishna')">
+    <!-- Dynamic Feature Cards -->
+    <ion-card 
+      *ngFor="let card of (featureCards$ | async)" 
+      class="feature-card {{card.cardClass}}" 
+      button 
+      (click)="navigateTo(card.route)">
       <div class="card-image">
-        <ion-icon name="person-circle" class="feature-icon krishna-icon"></ion-icon>
+        <ion-icon [name]="card.icon" class="feature-icon {{card.iconClass}}"></ion-icon>
       </div>
       <ion-card-header>
-        <ion-card-title>Lord Sri Krishna</ion-card-title>
-        <ion-card-subtitle>The Supreme Personality of Godhead</ion-card-subtitle>
+        <ion-card-title>{{ card.title }}</ion-card-title>
+        <ion-card-subtitle>{{ card.subtitle }}</ion-card-subtitle>
       </ion-card-header>
       <ion-card-content>
-        <p>Discover the divine pastimes, teachings, and eternal love of Lord Krishna. Experience the ultimate spiritual connection.</p>
+        <p>{{ card.description }}</p>
         <div class="card-features">
-          <span class="feature-tag">Divine Stories</span>
-          <span class="feature-tag">Sacred Teachings</span>
-        </div>
-      </ion-card-content>
-    </ion-card>
-
-    <!-- Srila Prabhupada Section -->
-    <ion-card class="feature-card prabhupada-card" button (click)="navigateTo('/srilaprabhupada')">
-      <div class="card-image">
-        <ion-icon name="person-circle" class="feature-icon prabhupada-icon"></ion-icon>
-      </div>
-      <ion-card-header>
-        <ion-card-title>Srila Prabhupada</ion-card-title>
-        <ion-card-subtitle>Founder-Acharya of ISKCON</ion-card-subtitle>
-      </ion-card-header>
-      <ion-card-content>
-        <p>Learn from the revolutionary spiritual master who brought Krishna consciousness to the Western world.</p>
-        <div class="card-features">
-          <span class="feature-tag">Life Story</span>
-          <span class="feature-tag">Teachings</span>
-        </div>
-      </ion-card-content>
-    </ion-card>
-
-    <!-- Audios Section -->
-    <ion-card class="feature-card audio-card" button (click)="navigateTo('/audios')">
-      <div class="card-image">
-        <ion-icon name="musical-notes" class="feature-icon audio-icon"></ion-icon>
-      </div>
-      <ion-card-header>
-        <ion-card-title>Sacred Audios</ion-card-title>
-        <ion-card-subtitle>Devotional Music & Lectures</ion-card-subtitle>
-      </ion-card-header>
-      <ion-card-content>
-        <p>Immerse yourself in divine kirtans, bhajans, and enlightening spiritual discourses from great saints.</p>
-        <div class="card-features">
-          <span class="feature-tag">Kirtans</span>
-          <span class="feature-tag">Lectures</span>
-          <span class="feature-tag">Bhajans</span>
-        </div>
-      </ion-card-content>
-    </ion-card>
-
-    <!-- Articles Section -->
-    <ion-card class="feature-card articles-card" button (click)="navigateTo('/articles')">
-      <div class="card-image">
-        <ion-icon name="document-text" class="feature-icon articles-icon"></ion-icon>
-      </div>
-      <ion-card-header>
-        <ion-card-title>Spiritual Articles</ion-card-title>
-        <ion-card-subtitle>Ancient Wisdom for Modern Life</ion-card-subtitle>
-      </ion-card-header>
-      <ion-card-content>
-        <p>Read profound articles on philosophy, lifestyle, and practical application of Vedic principles in daily life.</p>
-        <div class="card-features">
-          <span class="feature-tag">Philosophy</span>
-          <span class="feature-tag">Lifestyle</span>
-        </div>
-      </ion-card-content>
-    </ion-card>
-
-    <!-- Calendar Section -->
-    <ion-card class="feature-card calendar-card" button (click)="navigateTo('/calender')">
-      <div class="card-image">
-        <ion-icon name="calendar" class="feature-icon calendar-icon"></ion-icon>
-      </div>
-      <ion-card-header>
-        <ion-card-title>Vaishnava Calendar</ion-card-title>
-        <ion-card-subtitle>Sacred Festivals & Observances</ion-card-subtitle>
-      </ion-card-header>
-      <ion-card-content>
-        <p>Stay connected with important festivals, fasting days, and spiritual observances throughout the year.</p>
-        <div class="card-features">
-          <span class="feature-tag">Festivals</span>
-          <span class="feature-tag">Fasting</span>
-        </div>
-      </ion-card-content>
-    </ion-card>
-
-    <!-- Tutorial Section -->
-    <ion-card class="feature-card tutorial-card" button (click)="navigateTo('/tutorial')">
-      <div class="card-image">
-        <ion-icon name="easel" class="feature-icon tutorial-icon"></ion-icon>
-      </div>
-      <ion-card-header>
-        <ion-card-title>Spiritual Tutorials</ion-card-title>
-        <ion-card-subtitle>Learn Sacred Practices</ion-card-subtitle>
-      </ion-card-header>
-      <ion-card-content>
-        <p>Master the art of meditation, chanting, deity worship, and other essential spiritual practices.</p>
-        <div class="card-features">
-          <span class="feature-tag">Meditation</span>
-          <span class="feature-tag">Worship</span>
-        </div>
-      </ion-card-content>
-    </ion-card>
-
-    <!-- Chanting Section -->
-    <ion-card class="feature-card chant-card" button (click)="navigateTo('/chant')">
-      <div class="card-image">
-        <ion-icon name="heart" class="feature-icon chant-icon"></ion-icon>
-      </div>
-      <ion-card-header>
-        <ion-card-title>Chant Hare Krishna</ion-card-title>
-        <ion-card-subtitle>The Holy Names Meditation</ion-card-subtitle>
-      </ion-card-header>
-      <ion-card-content>
-        <p>Experience the transformative power of chanting the Hare Krishna maha-mantra with guided sessions.</p>
-        <div class="card-features">
-          <span class="feature-tag">Guided Chanting</span>
-          <span class="feature-tag">Meditation</span>
+          <span class="feature-tag" *ngFor="let tag of card.tags">{{ tag }}</span>
         </div>
       </ion-card-content>
     </ion-card>
@@ -171,20 +63,20 @@
 
   <!-- Role-Based Premium Features -->
   <div class="premium-features" *appShowForRoles="['devotee', 'premium', 'admin']">
-    <h2 class="section-title">Your Exclusive Features</h2>
+    <h2 class="section-title">{{ (texts$ | async)?.exclusiveFeatures || 'Your Exclusive Features' }}</h2>
     
     <ion-card class="premium-card" *appShowForRoles="['devotee', 'admin']">
       <ion-card-header>
         <ion-card-title>
           <ion-icon name="heart" color="tertiary"></ion-icon>
-          Devotee Community
+          {{ (texts$ | async)?.devoteeCommunity || 'Devotee Community' }}
         </ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <p>Connect with fellow devotees, share experiences, and grow together in Krishna consciousness.</p>
+        <p>{{ (texts$ | async)?.devoteeCommunityDesc || 'Connect with fellow devotees, share experiences, and grow together in Krishna consciousness.' }}</p>
         <ion-button fill="outline" color="tertiary" (click)="onDevoteeAction()">
           <ion-icon name="people" slot="start"></ion-icon>
-          Join Community
+          {{ (texts$ | async)?.joinCommunityAction || 'Join Community' }}
         </ion-button>
       </ion-card-content>
     </ion-card>
@@ -193,14 +85,14 @@
       <ion-card-header>
         <ion-card-title>
           <ion-icon name="diamond" color="warning"></ion-icon>
-          Premium Content
+          {{ (texts$ | async)?.premiumContent || 'Premium Content' }}
         </ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <p>Access exclusive lectures, rare recordings, and advanced spiritual courses from renowned teachers.</p>
+        <p>{{ (texts$ | async)?.premiumContentDesc || 'Access exclusive lectures, rare recordings, and advanced spiritual courses from renowned teachers.' }}</p>
         <ion-button fill="outline" color="warning" (click)="onPremiumAction()">
           <ion-icon name="star" slot="start"></ion-icon>
-          Explore Premium
+          {{ (texts$ | async)?.explorePremiumAction || 'Explore Premium' }}
         </ion-button>
       </ion-card-content>
     </ion-card>
@@ -209,14 +101,14 @@
       <ion-card-header>
         <ion-card-title>
           <ion-icon name="settings" color="danger"></ion-icon>
-          Admin Dashboard
+          {{ (texts$ | async)?.adminDashboard || 'Admin Dashboard' }}
         </ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <p>Manage users, content, and oversee the spiritual community with powerful admin tools.</p>
+        <p>{{ (texts$ | async)?.adminDashboardDesc || 'Manage users, content, and oversee the spiritual community with powerful admin tools.' }}</p>
         <ion-button fill="outline" color="danger" (click)="onAdminAction()">
           <ion-icon name="construct" slot="start"></ion-icon>
-          Admin Panel
+          {{ (texts$ | async)?.adminPanelAction || 'Admin Panel' }}
         </ion-button>
       </ion-card-content>
     </ion-card>
@@ -224,18 +116,18 @@
 
   <!-- Community & Support Section -->
   <div class="community-section">
-    <h2 class="section-title">Connect & Grow</h2>
+    <h2 class="section-title">{{ (texts$ | async)?.connectAndGrow || 'Connect & Grow' }}</h2>
     
     <div class="community-grid">
       <ion-card class="community-card" button (click)="navigateTo('/contacts')">
         <ion-card-header>
           <ion-card-title>
             <ion-icon name="call" class="community-icon"></ion-icon>
-            Contact Us
+            {{ (texts$ | async)?.contactUs || 'Contact Us' }}
           </ion-card-title>
         </ion-card-header>
         <ion-card-content>
-          <p>Get in touch with our spiritual advisors and community leaders for guidance.</p>
+          <p>{{ (texts$ | async)?.contactUsDesc || 'Get in touch with our spiritual advisors and community leaders for guidance.' }}</p>
         </ion-card-content>
       </ion-card>
 
@@ -243,11 +135,11 @@
         <ion-card-header>
           <ion-card-title>
             <ion-icon name="person-add" class="community-icon"></ion-icon>
-            Free Membership
+            {{ (texts$ | async)?.membershipTitle || 'Free Membership' }}
           </ion-card-title>
         </ion-card-header>
         <ion-card-content>
-          <p>Join our spiritual family and unlock additional features and content.</p>
+          <p>{{ (texts$ | async)?.membershipDesc || 'Join our spiritual family and unlock additional features and content.' }}</p>
         </ion-card-content>
       </ion-card>
 
@@ -255,11 +147,11 @@
         <ion-card-header>
           <ion-card-title>
             <ion-icon name="settings" class="community-icon"></ion-icon>
-            Customize Experience
+            {{ (texts$ | async)?.customizeExperience || 'Customize Experience' }}
           </ion-card-title>
         </ion-card-header>
         <ion-card-content>
-          <p>Personalize your spiritual journey with custom themes and preferences.</p>
+          <p>{{ (texts$ | async)?.customizeExperienceDesc || 'Personalize your spiritual journey with custom themes and preferences.' }}</p>
         </ion-card-content>
       </ion-card>
     </div>
@@ -268,8 +160,8 @@
   <!-- Footer Quote -->
   <div class="footer-quote">
     <blockquote>
-      "The ultimate goal of life is to go back to Godhead, back to Krishna, and live eternally in bliss and knowledge."
-      <cite>- A.C. Bhaktivedanta Swami Prabhupada</cite>
+      {{ (texts$ | async)?.footerQuote || 'The ultimate goal of life is to go back to Godhead, back to Krishna, and live eternally in bliss and knowledge.' }}
+      <cite>- {{ (texts$ | async)?.footerQuoteAuthor || 'A.C. Bhaktivedanta Swami Prabhupada' }}</cite>
     </blockquote>
   </div>
 

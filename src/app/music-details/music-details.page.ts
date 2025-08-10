@@ -56,7 +56,7 @@ import { GlobalStateService } from '../services/global-state.service';
 export class MusicDetailsPage implements OnInit {
   topics:{ title: string; content: string; } = { title: '', content: '' };
   msDatas: DetailModel[] = [];
-  isLoading = true;
+  isLoading = true; // Start with loading true
   language:string | null = '';
   tamilChapters:ISlokaChapters[] = [];
 
@@ -69,6 +69,10 @@ export class MusicDetailsPage implements OnInit {
   selectedAudio: any = null;
   groupedChapters: ISlokaChapters[] = [];
 
+  // Track completion of async operations
+  private slokaDataLoaded = false;
+  private categoryDataLoaded = false;
+
   constructor(
     private mdService: MusicDetailsService, 
     private categoryService: CategoryFormService,
@@ -78,9 +82,14 @@ export class MusicDetailsPage implements OnInit {
     private globalStateService: GlobalStateService
   ) {
     addIcons({musicalNotes,heartOutline,shareOutline,musicalNote,add,arrowBack,star,volumeHigh,play,library,book,globe,construct,chevronDownCircleOutline});
+    console.log('MusicDetailsPage constructor - isLoading:', this.isLoading);
   }
 
   ngOnInit() {
+    console.log('MusicDetailsPage ngOnInit - isLoading:', this.isLoading);
+    // Set loading state to true initially
+    this.isLoading = true;
+    
     this.getRoutingDetails();
     this.getImportantSlokas();
     this.getAllSlokas();
@@ -89,12 +98,15 @@ export class MusicDetailsPage implements OnInit {
   getAllSlokas(){
    this.categoryService.getAllCategories('music-details').subscribe({
       next: (data:InputData[]) => {
-    this.inputDatas = data;
-        this.isLoading = false; // Set loading to false when data is received
+        console.log('Categories data loaded:', data.length);
+        this.inputDatas = data;
+        this.categoryDataLoaded = true;
+        this.checkLoadingComplete(); // Check if all data is loaded
       },
       error: (error) => {
         console.error('Error fetching categories:', error);
-        this.isLoading = false; // Set loading to false even on error
+        this.categoryDataLoaded = true;
+        this.checkLoadingComplete();
       }
     });
   }
@@ -104,14 +116,34 @@ export class MusicDetailsPage implements OnInit {
     map(arr => arr.sort((a, b) => (a.orderNo) - (b.orderNo)))
   ).subscribe({
       next:(res:DetailModel[])=>{
-      this.msDatas = res;
-       this.isLoading = false;
+        console.log('Slokas data loaded:', res.length);
+        this.msDatas = res;
+        this.slokaDataLoaded = true;
+        this.checkLoadingComplete(); // Check if all data is loaded
       },
       error:()=>{
-        this.isLoading = false;
         console.error("there is something wrong with the network");
+        this.slokaDataLoaded = true;
+        this.checkLoadingComplete();
       }
     });
+  }
+
+  private checkLoadingComplete(): void {
+    console.log('Checking loading completion:', {
+      categoryDataLoaded: this.categoryDataLoaded,
+      slokaDataLoaded: this.slokaDataLoaded,
+      isLoading: this.isLoading
+    });
+    
+    // Only set loading to false when both API calls have completed
+    if (this.categoryDataLoaded && this.slokaDataLoaded) {
+      // Add a small delay to ensure skeleton is visible for at least a brief moment
+      setTimeout(() => {
+        console.log('Setting isLoading to false');
+        this.isLoading = false;
+      }, 800); // Increased delay to make skeleton more visible
+    }
   }
 
   getRoutingDetails(){

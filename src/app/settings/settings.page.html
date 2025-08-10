@@ -3,14 +3,14 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>Settings</ion-title>
+    <ion-title>{{ texts.settings }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Settings</ion-title>
+      <ion-title size="large">{{ texts.settings }}</ion-title>
     </ion-toolbar>
   </ion-header>
 
@@ -18,13 +18,13 @@
     <ion-icon name="search-outline"></ion-icon>
   </div>
 
-  <div class="settings-title">SETTINGS</div>
+  <div class="settings-title">{{ texts.settingsTitle }}</div>
 
   <!-- Theme Selection Section -->
   <div class="settings-section">
     <div class="section-label">
       <ion-icon name="color-palette" slot="start"></ion-icon>
-      Theme
+      {{ texts.theme }}
     </div>
     <div class="theme-grid">
       <div 
@@ -45,14 +45,20 @@
       </div>
     </div>
     <div class="section-desc">
-      Choose your preferred theme - Changes will be applied immediately across the app
+      {{ texts.chooseTheme }} - {{ texts.themeDescription }}
     </div>
   </div>
 
   <!-- Language Section -->
   <div class="settings-section">
-    <div class="section-label">Language</div>
-    <ion-select interface="popover" ngDefaultControl [(ngModel)]="language" class="custom-select">
+    <div class="section-label">{{ texts.language }}</div>
+    <ion-select 
+      interface="popover" 
+      ngDefaultControl 
+      [(ngModel)]="language" 
+      class="custom-select"
+      [class]="currentTheme + '-select'"
+      (ionChange)="selectLanguage($event)">
       @for (lang of languages; track $index) {
         <ion-select-option [value]="lang.value">
           {{ lang.label }}
@@ -60,13 +66,13 @@
       }
     </ion-select>
     <div class="section-desc">
-      Choose language - Changes will be applied after restarting the app
+      {{ texts.chooseLanguage }} - {{ texts.languageDescription }}
     </div>
   </div>
 
   <!-- Display Section -->
   <div class="settings-section">
-    <div class="section-label">Display</div>
+    <div class="section-label">{{ texts.display }}</div>
     <ion-toggle [(ngModel)]="displayPanel" ngDefaultControl class="custom-toggle"></ion-toggle>
     <div class="section-desc">
       Show the now-playing panel on click of play

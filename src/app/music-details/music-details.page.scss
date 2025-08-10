@@ -1074,21 +1074,32 @@ ion-content {
 // ===========================
 .skeleton-container {
   padding: 16px;
+  min-height: 50vh;
+  display: block;
+  visibility: visible;
+  opacity: 1;
   
   .skeleton-hero {
     margin-bottom: 32px;
     text-align: center;
+    padding: 20px;
+    background: var(--ion-color-step-50, #f8f9fa);
+    border-radius: 16px;
+    border: 1px solid var(--ion-color-step-100, #e9ecef);
     
     ion-skeleton-text {
       margin: 0 auto;
+      display: block;
     }
   }
   
   .skeleton-category {
     margin-bottom: 16px;
+    padding: 12px;
     
     ion-skeleton-text {
       border-radius: 8px;
+      display: block;
     }
   }
   
@@ -1096,20 +1107,25 @@ ion-content {
     display: grid;
     gap: 16px;
     margin-bottom: 24px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     
     .skeleton-card {
       .skeleton-card-content {
-        background: var(--ion-color-step-50);
+        background: var(--ion-color-step-50, #f8f9fa);
         border-radius: 16px;
         padding: 16px;
         backdrop-filter: blur(10px);
-        border: 1px solid var(--ion-color-step-100);
+        border: 1px solid var(--ion-color-step-100, #e9ecef);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        min-height: 200px;
         
         ion-skeleton-text {
           border-radius: 8px;
+          display: block;
           
           &:first-child {
             border-radius: 12px; // For the main image skeleton
+            min-height: 120px;
           }
         }
         
@@ -1117,7 +1133,8 @@ ion-content {
           margin-top: 12px;
           
           ion-skeleton-text {
-            margin-bottom: 4px;
+            margin-bottom: 8px;
+            display: block;
             
             &:last-child {
               margin-bottom: 0;
@@ -1129,16 +1146,23 @@ ion-content {
   }
   
   .skeleton-add-button {
+    padding: 0 16px;
+    
     ion-skeleton-text {
       border-radius: 22px;
+      height: 44px;
+      display: block;
     }
   }
 }
 
-// Skeleton animation enhancement
+// Enhanced skeleton animation
 ion-skeleton-text {
-  --background: var(--ion-color-step-100);
-  --background-rgb: var(--ion-color-step-100-rgb, 200, 200, 200);
+  --background: var(--ion-color-step-100, #e9ecef);
+  --background-rgb: var(--ion-color-step-100-rgb, 233, 236, 239);
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
   
   &[animated] {
     background: linear-gradient(
@@ -1158,5 +1182,29 @@ ion-skeleton-text {
   }
   100% {
     background-position: -200% 0;
+  }
+}
+
+// Ensure skeleton is visible in dark mode
+@media (prefers-color-scheme: dark) {
+  .skeleton-container {
+    .skeleton-hero,
+    .skeleton-cards .skeleton-card .skeleton-card-content {
+      background: var(--ion-color-step-100, #2d2d2d);
+      border-color: var(--ion-color-step-150, #404040);
+    }
+  }
+  
+  ion-skeleton-text {
+    --background: var(--ion-color-step-150, #404040);
+    
+    &[animated] {
+      background: linear-gradient(
+        90deg,
+        var(--background) 25%,
+        var(--ion-color-step-200, #555555) 50%,
+        var(--background) 75%
+      );
+    }
   }
 }
