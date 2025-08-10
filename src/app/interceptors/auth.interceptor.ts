@@ -33,11 +33,23 @@ export class AuthInterceptor implements HttpInterceptor {
       catchError((error: HttpErrorResponse) => {
         console.error('🚨 AuthInterceptor - HTTP Error:', error.status, error.message);
         
-        // If we get a 401 unauthorized response, logout the user
-        if (error.status === 401) {
+        // Handle different types of errors
+        if (error.status === 0) {
+          console.error('🚨 AuthInterceptor - Network Error: Unable to connect to server');
+          console.error('🚨 This could be due to:');
+          console.error('   - Server is down or unavailable');
+          console.error('   - CORS configuration issues');
+          console.error('   - Network connectivity problems');
+          console.error('   - Wrong API URL');
+        } else if (error.status === 401) {
           console.log('🚨 AuthInterceptor - 401 Unauthorized, logging out user');
           this.authService.logout();
+        } else if (error.status === 404) {
+          console.error('🚨 AuthInterceptor - 404 Not Found: Endpoint does not exist');
+        } else if (error.status >= 500) {
+          console.error('🚨 AuthInterceptor - Server Error:', error.status);
         }
+        
         return throwError(() => error);
       })
     );

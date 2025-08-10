@@ -6,10 +6,7 @@
 </app-reusable-header>
 
 <ion-content>
-  <!-- Temporary Debug Component -->
-  <!-- <app-auth-debug></app-auth-debug> -->
 
-  <!-- Add Blog Button - Only visible for admin users -->
   <div class="add-blog-section" *appShowForRoles="['admin']">
     <ion-button (click)="openAddBlogForm()" fill="solid" expand="block" class="add-blog-btn">
       <ion-icon name="add" slot="start"></ion-icon>

@@ -1,17 +1,38 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { InputData } from '../Utils/models';
+import { Observable, of, catchError, timeout, retry } from 'rxjs';
+import { ToastService } from '../services/toast.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class KrishnaServiceService {
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private toastService: ToastService
+  ) { }
 
-  getKrishnaData() {
-    return this.http.get<InputData[]>(environment.apiNestBaseUrl+'/ram-bhajan'); 
+  getKrishnaData(): Observable<InputData[]> {
+    console.log('🔍 KrishnaService - Attempting to fetch data from:', environment.apiNestBaseUrl + '/ram-bhajan');
+    
+    return this.http.get<InputData[]>(environment.apiNestBaseUrl + '/ram-bhajan')
+      .pipe(
+        timeout(10000), // 10 second timeout
+        retry(2), // Retry up to 2 times
+        catchError((error: HttpErrorResponse) => {
+          console.error('❌ KrishnaService - API Error:', error.status, error.message);
+          console.warn('⚠️ KrishnaService - Backend unavailable, using fallback data');
+          
+          // Show user-friendly error message
+          this.toastService.showBackendError();
+          
+          // Return fallback data when API fails
+          return of(this.defaultInputData);
+        })
+      );
   }
 
   getAllStries(){

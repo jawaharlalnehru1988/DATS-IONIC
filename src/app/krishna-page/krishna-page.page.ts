@@ -140,6 +140,7 @@ getAllStories(){
   });
 }
 
+
 ngOnDestroy() {
   this.stopCarousel();
   
