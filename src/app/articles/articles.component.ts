@@ -108,6 +108,8 @@ export class ArticlesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    console.log('Articles component initialized, isLoading:', this.isLoading);
+    
     // Subscribe to theme changes
     this.themeSubscription = this.themeService.currentTheme$.subscribe(theme => {
       this.currentTheme = theme;
@@ -120,21 +122,28 @@ export class ArticlesComponent implements OnInit, OnDestroy {
 
     // Subscribe to blogs from service
     this.isLoading = true;
-    this.blogService.getBlogs().subscribe({
-      next: (blogs: Blog[]) => {
-        this.blogs = blogs;
-        console.log('this.blogs :', this.blogs);
-        if (blogs.length === 0) {
-          // Use fallback data if no blogs are available
-          this.blogs = this.defaultBlogs;
+    console.log('Setting isLoading to true, about to fetch blogs');
+    
+    // Add a small delay to make the loading visible for testing
+    setTimeout(() => {
+      this.blogService.getBlogs().subscribe({
+        next: (blogs: Blog[]) => {
+          console.log('Blogs received:', blogs.length, 'blogs');
+          this.blogs = blogs;
+          if (blogs.length === 0) {
+            // Use fallback data if no blogs are available
+            this.blogs = this.defaultBlogs;
+          }
+          this.isLoading = false;
+          console.log('Setting isLoading to false');
+        },
+        error: (error) => {
+          console.error('Error loading blogs:', error);
+          this.isLoading = false;
+          console.log('Setting isLoading to false due to error');
         }
-        this.isLoading = false;
-      },
-      error: (error) => {
-        console.error('Error loading blogs:', error);
-        this.isLoading = false;
-      }
-    });
+      });
+    }, 500); // 500ms delay to see the skeleton loader
   }
 
   private updateContentCategories(): void {
@@ -159,7 +168,41 @@ export class ArticlesComponent implements OnInit, OnDestroy {
   }
 
   onLanguageChange(event: any) {
-    this.selectedTopic = event.detail.value;
+    const newTopic = event.detail.value;
+    
+    // Show loading when switching categories
+    if (newTopic !== this.selectedTopic) {
+      this.isLoading = true;
+      this.selectedTopic = newTopic;
+      
+      // Simulate loading delay for better UX
+      setTimeout(() => {
+        this.isLoading = false;
+      }, 800);
+    }
+  }
+
+  onTabChanged(newTab: string) {
+    // Show loading when switching categories
+    if (newTab !== this.selectedTopic) {
+      this.isLoading = true;
+      this.selectedTopic = newTab;
+      
+      // Simulate loading delay for better UX
+      setTimeout(() => {
+        this.isLoading = false;
+      }, 800);
+    }
+  }
+
+  // Debug method to test skeleton loader
+  testSkeleton() {
+    console.log('Testing skeleton loader');
+    this.isLoading = true;
+    setTimeout(() => {
+      this.isLoading = false;
+      console.log('Skeleton test completed');
+    }, 3000);
   }
 
   isHowSelected(): boolean {

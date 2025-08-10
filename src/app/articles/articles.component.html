@@ -17,83 +17,86 @@
     </ion-button>
   </div>
 
+
 <app-segmented-tabs
   [tabs]="contentCategories"
   [selectedTab]="selectedTopic"
   containerClass="krishna-tabs-container"
-  (tabChanged)="selectedTopic = $event">
+  (tabChanged)="onTabChanged($event)">
 </app-segmented-tabs>
 
 <ion-content class="articles-content">
   <div class="articles-container">
-    <!-- English Content - Simple Blog List -->
-    <div *ngIf="isHowSelected()" class="english-content">
-      <!-- Skeleton Loader -->
-      <div *ngIf="isLoading" class="skeleton-container">
-        <!-- Category Title Skeleton -->
-        <div class="skeleton-category">
-          <ion-skeleton-text animated style="width: 60%; height: 24px; margin-bottom: 16px;"></ion-skeleton-text>
-        </div>
-        
-        <!-- Card Skeletons -->
-        <div class="skeleton-cards">
-          <div class="skeleton-card" *ngFor="let item of [1,2,3,4,5,6]">
-            <div class="skeleton-card-content">
-              <ion-skeleton-text animated style="width: 100%; height: 160px; border-radius: 12px;"></ion-skeleton-text>
-              <div class="skeleton-card-info">
-                <ion-skeleton-text animated style="width: 80%; height: 18px; margin-top: 12px;"></ion-skeleton-text>
-                <ion-skeleton-text animated style="width: 60%; height: 14px; margin-top: 8px;"></ion-skeleton-text>
-                <ion-skeleton-text animated style="width: 40%; height: 14px; margin-top: 8px;"></ion-skeleton-text>
-              </div>
-            </div>
-          </div>
-        </div>
+    <!-- Loading State for All Categories -->
+    <div *ngIf="isLoading" class="skeleton-container">
+      <!-- Category Title Skeleton -->
+      <div class="skeleton-category">
+        <ion-skeleton-text animated style="width: 60%; height: 24px; margin-bottom: 16px; display: block !important; visibility: visible !important;"></ion-skeleton-text>
       </div>
       
-      <!-- Actual Content (shown when not loading) -->
-      <div *ngIf="!isLoading" class="blogs-grid">
-        <div class="blog-card" 
-             *ngFor="let blog of blogs" 
-             (click)="onCardClick(blog._id!)">
-          <div class="card-actions" *appShowForRoles="['admin']">
-            <ion-button 
-              fill="clear" 
-              size="small" 
-              (click)="editBlog(blog._id!, $event)"
-              class="edit-btn">
-              <ion-icon name="create-outline"></ion-icon>
-            </ion-button>
-            <ion-button 
-              fill="clear" 
-              size="small" 
-              (click)="confirmDeleteBlog(blog._id!, $event)"
-              class="delete-btn">
-              <ion-icon name="trash-outline"></ion-icon>
-            </ion-button>
-          </div>
-          <img [src]="blog.blogImgUrl" [alt]="blog.blogTitle">
-          <div class="card-content">
-            <h3>{{ blog.blogTitle }}</h3>
-            <p class="author">By {{ blog.author }}</p>
-
-
-            <!-- <p class="content-preview">{{ blog.content | slice:0:100 }}{{ blog.content.length > 100 ? '...' : '' }}</p> -->
-            <div class="comments-count" *ngIf="blog.comments && blog.comments.length > 0">
-              <ion-icon name="chatbubble-outline"></ion-icon>
-              <span>{{ blog.comments.length }} comment{{ blog.comments.length !== 1 ? 's' : '' }}</span>
+      <!-- Card Skeletons -->
+      <div class="skeleton-cards">
+        <div class="skeleton-card" *ngFor="let item of [1,2,3,4,5,6]">
+          <div class="skeleton-card-content">
+            <ion-skeleton-text animated style="width: 100%; height: 160px; border-radius: 12px; display: block !important; visibility: visible !important;"></ion-skeleton-text>
+            <div class="skeleton-card-info">
+              <ion-skeleton-text animated style="width: 80%; height: 18px; margin-top: 12px; display: block !important; visibility: visible !important;"></ion-skeleton-text>
+              <ion-skeleton-text animated style="width: 60%; height: 14px; margin-top: 8px; display: block !important; visibility: visible !important;"></ion-skeleton-text>
+              <ion-skeleton-text animated style="width: 40%; height: 14px; margin-top: 8px; display: block !important; visibility: visible !important;"></ion-skeleton-text>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Other Languages - Coming Soon Message -->
-    <div *ngIf="!isHowSelected()" class="coming-soon-content">
-      <div class="coming-soon-card">
-        <ion-icon name="language-outline" class="coming-soon-icon"></ion-icon>
-        <h2>Articles Yet to be Added</h2>
-        <p>We are working on bringing you amazing content in {{ selectedTopic === 'how' ? 'How to...?' : selectedTopic === 'hindi' ? 'Hindi' : selectedTopic === 'kannada' ? 'Kannada' : 'Telugu' }}.</p>
-        <p class="subtitle">Please check back soon!</p>
+    <!-- Content (shown when not loading) -->
+    <div *ngIf="!isLoading">
+      <!-- English Content - Simple Blog List -->
+      <div *ngIf="isHowSelected()" class="english-content">
+        <div class="blogs-grid">
+          <div class="blog-card" 
+               *ngFor="let blog of blogs" 
+               (click)="onCardClick(blog._id!)">
+            <div class="card-actions" *appShowForRoles="['admin']">
+              <ion-button 
+                fill="clear" 
+                size="small" 
+                (click)="editBlog(blog._id!, $event)"
+                class="edit-btn">
+                <ion-icon name="create-outline"></ion-icon>
+              </ion-button>
+              <ion-button 
+                fill="clear" 
+                size="small" 
+                (click)="confirmDeleteBlog(blog._id!, $event)"
+                class="delete-btn">
+                <ion-icon name="trash-outline"></ion-icon>
+              </ion-button>
+            </div>
+            <img [src]="blog.blogImgUrl" [alt]="blog.blogTitle">
+            <div class="card-content">
+              <h3>{{ blog.blogTitle }}</h3>
+              <p class="author">By {{ blog.author }}</p>
+
+
+              <!-- <p class="content-preview">{{ blog.content | slice:0:100 }}{{ blog.content.length > 100 ? '...' : '' }}</p> -->
+              <div class="comments-count" *ngIf="blog.comments && blog.comments.length > 0">
+                <ion-icon name="chatbubble-outline"></ion-icon>
+                <span>{{ blog.comments.length }} comment{{ blog.comments.length !== 1 ? 's' : '' }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Other Languages - Coming Soon Message -->
+      <div *ngIf="!isHowSelected()" class="coming-soon-content">
+        <div class="coming-soon-card">
+          <ion-icon name="language-outline" class="coming-soon-icon"></ion-icon>
+          <h2>Articles Yet to be Added</h2>
+          <p>We are working on bringing you amazing content in {{ selectedTopic === 'how' ? 'How to...?' : selectedTopic === 'hindi' ? 'Hindi' : selectedTopic === 'kannada' ? 'Kannada' : 'Telugu' }}.</p>
+          <p class="subtitle">Please check back soon!</p>
+        </div>
       </div>
     </div>
   </div>
