@@ -729,3 +729,75 @@
     color: #6b7280 !important;
   }
 }
+
+// Category Badge Styling
+.category-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+  
+  &.how { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+  &.what { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+  &.why { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+  &.when { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+  &.where { background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); }
+  &.who { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); }
+  &.tutorial { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+  &.guide { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+  &.tips { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+  &.news { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+  &.review { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+  &.opinion { background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); }
+  &.story { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); }
+  &.other { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+}
+
+// No Articles Content Styling
+.no-articles-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+  min-height: 40vh;
+  
+  .no-articles-icon {
+    font-size: 3.5rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 20px;
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  h3 {
+    color: #fff;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin: 0 0 12px 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+  
+  p {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1rem;
+    line-height: 1.5;
+    margin: 0;
+    max-width: 300px;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}

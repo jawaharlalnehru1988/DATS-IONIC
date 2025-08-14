@@ -12,6 +12,8 @@ import {
   IonItem,
   IonLabel,
   IonInput,
+  IonSelect,
+  IonSelectOption,
   IonGrid,
   IonRow,
   IonCol,
@@ -46,6 +48,8 @@ import { QuillModule } from 'ngx-quill';
     IonItem,
     IonLabel,
     IonInput,
+    IonSelect,
+    IonSelectOption,
     IonGrid,
     IonRow,
     IonCol,
@@ -69,6 +73,17 @@ export class BlogFormComponent implements OnInit {
   toastMessage = '';
   toastColor = 'success';
 
+  // Category options for the dropdown
+  categoryOptions = [
+    { value: 'how', label: 'How' },
+    { value: 'why', label: 'Why' },
+    { value: 'when', label: 'When' },
+    { value: 'who', label: 'Who' },
+    { value: 'where', label: 'Where' },
+    { value: 'what', label: 'What' },
+   
+  ];
+
   constructor(
     private formBuilder: FormBuilder,
     private blogService: BlogService
@@ -79,7 +94,8 @@ export class BlogFormComponent implements OnInit {
       blogTitle: ['', [Validators.required, Validators.minLength(3)]],
       blogImgUrl: ['', [Validators.required, Validators.pattern(/^https?:\/\/.+\.(jpg|jpeg|png|webp|gif)$/i)]],
       content: ['', [Validators.required, Validators.minLength(10)]],
-      author: ['', [Validators.required, Validators.minLength(2)]]
+      author: ['', [Validators.required, Validators.minLength(2)]],
+      category: ['', [Validators.required]] // Added category field
     });
   }
 
@@ -106,7 +122,8 @@ export class BlogFormComponent implements OnInit {
         blogTitle: this.editingBlog.blogTitle,
         blogImgUrl: this.editingBlog.blogImgUrl,
         content: this.editingBlog.content,
-        author: this.editingBlog.author
+        author: this.editingBlog.author,
+        category: this.editingBlog.category || '' // Added category field
       });
     }
   }
@@ -117,7 +134,8 @@ export class BlogFormComponent implements OnInit {
       blogTitle: '',
       blogImgUrl: '',
       content: '',
-      author: ''
+      author: '',
+      category: '' // Added category field
     });
   }
 
@@ -205,7 +223,8 @@ export class BlogFormComponent implements OnInit {
       'blogTitle': 'Blog Title',
       'blogImgUrl': 'Image URL',
       'content': 'Content',
-      'author': 'Author'
+      'author': 'Author',
+      'category': 'Category' // Added category field
     };
     return labels[fieldName] || fieldName;
   }

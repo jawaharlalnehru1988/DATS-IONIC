@@ -21,6 +21,7 @@ export interface Blogs {
   blogImgUrl: string
   content: string
   author: string
+  category: string
   comments: any[]
   createdAt: string
   updatedAt: string
@@ -108,7 +109,6 @@ export class ArticlesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log('Articles component initialized, isLoading:', this.isLoading);
     
     // Subscribe to theme changes
     this.themeSubscription = this.themeService.currentTheme$.subscribe(theme => {
@@ -144,6 +144,27 @@ export class ArticlesComponent implements OnInit, OnDestroy {
         }
       });
     }, 500); // 500ms delay to see the skeleton loader
+  }
+
+  // Get filtered blogs based on selected category
+  get filteredBlogs(): Blog[] {
+    if (!this.blogs || this.blogs.length === 0) {
+      return [];
+    }
+    
+    // Filter blogs by the selected category
+    const filtered = this.blogs.filter(blog => {
+      // Handle case-insensitive comparison and ensure category exists
+      return blog.category && blog.category.toLowerCase() === this.selectedTopic.toLowerCase();
+    });
+    
+    console.log(`Filtered blogs for category "${this.selectedTopic}":`, filtered.length, 'out of', this.blogs.length);
+    return filtered;
+  }
+
+  // Check if current category has any blogs
+  get hasCurrentCategoryBlogs(): boolean {
+    return this.filteredBlogs.length > 0;
   }
 
   private updateContentCategories(): void {
@@ -203,10 +224,6 @@ export class ArticlesComponent implements OnInit, OnDestroy {
       this.isLoading = false;
       console.log('Skeleton test completed');
     }, 3000);
-  }
-
-  isHowSelected(): boolean {
-    return this.selectedTopic === 'how';
   }
 
   onCardClick(blogId: string) {

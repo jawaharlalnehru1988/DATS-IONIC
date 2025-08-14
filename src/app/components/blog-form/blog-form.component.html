@@ -35,6 +35,24 @@
                     {{ getErrorMessage('blogTitle') }}
                   </div>
 
+                  <!-- Category -->
+                  <ion-item>
+                    <ion-label position="stacked">Category *</ion-label>
+                    <ion-select 
+                      formControlName="category"
+                      placeholder="Select a category"
+                      [class.ion-invalid]="blogForm.get('category')?.invalid && blogForm.get('category')?.touched">
+                      <ion-select-option 
+                        *ngFor="let option of categoryOptions" 
+                        [value]="option.value">
+                        {{ option.label }}
+                      </ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                  <div class="error-message" *ngIf="getErrorMessage('category')">
+                    {{ getErrorMessage('category') }}
+                  </div>
+
                   <!-- Author -->
                   <ion-item>
                     <ion-label position="stacked">Author *</ion-label>

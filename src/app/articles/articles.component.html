@@ -48,11 +48,11 @@
 
     <!-- Content (shown when not loading) -->
     <div *ngIf="!isLoading">
-      <!-- English Content - Simple Blog List -->
-      <div *ngIf="isHowSelected()" class="english-content">
+      <!-- Show blogs for current category -->
+      <div *ngIf="hasCurrentCategoryBlogs" class="category-content">
         <div class="blogs-grid">
           <div class="blog-card" 
-               *ngFor="let blog of blogs" 
+               *ngFor="let blog of filteredBlogs" 
                (click)="onCardClick(blog._id!)">
             <div class="card-actions" *appShowForRoles="['admin']">
               <ion-button 
@@ -74,9 +74,7 @@
             <div class="card-content">
               <h3>{{ blog.blogTitle }}</h3>
               <p class="author">By {{ blog.author }}</p>
-
-
-              <!-- <p class="content-preview">{{ blog.content | slice:0:100 }}{{ blog.content.length > 100 ? '...' : '' }}</p> -->
+              <p class="category-badge">{{ blog.category | titlecase }}</p>
               <div class="comments-count" *ngIf="blog.comments && blog.comments.length > 0">
                 <ion-icon name="chatbubble-outline"></ion-icon>
                 <span>{{ blog.comments.length }} comment{{ blog.comments.length !== 1 ? 's' : '' }}</span>
@@ -86,13 +84,14 @@
         </div>
       </div>
 
-      <!-- Other Languages - Coming Soon Message -->
-      <div *ngIf="!isHowSelected()" class="coming-soon-content">
-        <div class="coming-soon-card">
-          <ion-icon name="language-outline" class="coming-soon-icon"></ion-icon>
-          <h2>Articles Yet to be Added</h2>
-          <p>We are working on bringing you amazing content in {{ selectedTopic === 'how' ? 'How to...?' : selectedTopic === 'hindi' ? 'Hindi' : selectedTopic === 'kannada' ? 'Kannada' : 'Telugu' }}.</p>
-          <p class="subtitle">Please check back soon!</p>
+      <!-- Show "No articles found" message when no blogs in current category -->
+      <div *ngIf="!hasCurrentCategoryBlogs" class="no-articles-content">
+        <div class="no-articles-card">
+          <ion-icon name="language-outline" class="no-articles-icon"></ion-icon>
+          <h2>No Articles Found</h2>
+          <p>There are no articles in the "{{ selectedTopic | titlecase }}" category yet.</p>
+          <p class="subtitle" *appShowForRoles="['admin']">Click "Add New Blog" to create the first article in this category!</p>
+          <p class="subtitle" *ngIf="!(canShowAdminFeatures$ | async)">Please check back soon for new content!</p>
         </div>
       </div>
     </div>

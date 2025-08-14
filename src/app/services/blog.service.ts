@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, catchError, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, throwError, combineLatest } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { LanguageService, SupportedLanguage } from './language.service';
 
 export interface BlogComment {
   userName: string;
@@ -14,6 +16,7 @@ export interface Blog {
   blogImgUrl: string;
   content: string;
   author: string;
+  category: string; // Added category field
   comments: BlogComment[];
   createdAt?: string; // Optional, might be added by backend
   updatedAt?: string; // Optional, might be added by backend
@@ -23,17 +26,53 @@ export interface Blog {
   providedIn: 'root'
 })
 export class BlogService {
-  private readonly API_URL = environment.apiNestBaseUrl + '/blog';
   private blogsSubject = new BehaviorSubject<Blog[]>([]);
   public blogs$ = this.blogsSubject.asObservable();
 
-  constructor(private http: HttpClient) {
+  // Language code to full name mapping for API URLs
+  private languageMapping: Record<SupportedLanguage, string> = {
+    'en': '', // Default/English - no suffix needed
+    'ta': 'tamil',
+    'hi': 'hindi', 
+    'bn': 'bengali',
+    'te': 'telugu',
+    'mr': 'marathi',
+    'gu': 'gujarati',
+    'kn': 'kannada',
+    'ml': 'malayalam'
+  };
+
+  constructor(
+    private http: HttpClient,
+    private languageService: LanguageService
+  ) {
     this.loadBlogs();
+    
+    // Subscribe to language changes and reload blogs
+    this.languageService.currentLanguage$.subscribe(() => {
+      this.loadBlogs();
+    });
+  }
+
+  // Get dynamic API URL based on current language
+  private getApiUrl(): string {
+    const currentLanguage = this.languageService.getCurrentLanguage();
+    const languageSuffix = this.languageMapping[currentLanguage];
+    
+    if (languageSuffix) {
+      return `${environment.apiNestBaseUrl}/blog/${languageSuffix}`;
+    } else {
+      // Default to English (no suffix)
+      return `${environment.apiNestBaseUrl}/blog`;
+    }
   }
 
   // Load all blogs from backend
   loadBlogs(): void {
-    this.http.get<Blog[]>(this.API_URL).pipe(
+    const apiUrl = this.getApiUrl();
+    console.log('📚 BlogService - Loading blogs from:', apiUrl);
+    
+    this.http.get<Blog[]>(apiUrl).pipe(
       catchError(error => {
         console.error('Error loading blogs:', error);
         // Fallback to empty array if backend is not available
@@ -69,8 +108,10 @@ export class BlogService {
 
   // Add new blog
   addBlog(blog: Blog): Observable<Blog> {
-    console.log('📝 BlogService.addBlog() - Attempting to create blog:', blog.blogTitle);
-    return this.http.post<Blog>(this.API_URL, blog).pipe(
+    const apiUrl = this.getApiUrl();
+    console.log('📝 BlogService.addBlog() - Attempting to create blog:', blog.blogTitle, 'at:', apiUrl);
+    
+    return this.http.post<Blog>(apiUrl, blog).pipe(
       catchError(error => {
         console.error('❌ BlogService.addBlog() - Error adding blog:', error);
         console.error('❌ BlogService.addBlog() - Error details:', {
@@ -86,8 +127,10 @@ export class BlogService {
 
   // Update existing blog
   updateBlog(id: string, blog: Blog): Observable<Blog> {
-    console.log('✏️ BlogService.updateBlog() - Attempting to update blog:', id, blog.blogTitle);
-    return this.http.patch<Blog>(`${this.API_URL}/${id}`, blog).pipe(
+    const apiUrl = this.getApiUrl();
+    console.log('✏️ BlogService.updateBlog() - Attempting to update blog:', id, blog.blogTitle, 'at:', apiUrl);
+    
+    return this.http.patch<Blog>(`${apiUrl}/${id}`, blog).pipe(
       catchError(error => {
         console.error('❌ BlogService.updateBlog() - Error updating blog:', error);
         console.error('❌ BlogService.updateBlog() - Error details:', {
@@ -103,7 +146,10 @@ export class BlogService {
 
   // Delete blog
   deleteBlog(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.API_URL}/${id}`).pipe(
+    const apiUrl = this.getApiUrl();
+    console.log('🗑️ BlogService.deleteBlog() - Attempting to delete blog:', id, 'from:', apiUrl);
+    
+    return this.http.delete<void>(`${apiUrl}/${id}`).pipe(
       catchError(error => {
         console.error('Error deleting blog:', error);
         return throwError(() => error);
@@ -113,7 +159,10 @@ export class BlogService {
 
   // Add comment to blog
   addComment(blogId: string, comment: BlogComment): Observable<Blog> {
-    return this.http.post<Blog>(`${this.API_URL}/${blogId}/comments`, comment).pipe(
+    const apiUrl = this.getApiUrl();
+    console.log('💬 BlogService.addComment() - Adding comment to blog:', blogId, 'at:', apiUrl);
+    
+    return this.http.post<Blog>(`${apiUrl}/${blogId}/comments`, comment).pipe(
       catchError(error => {
         console.error('Error adding comment:', error);
         return throwError(() => error);
