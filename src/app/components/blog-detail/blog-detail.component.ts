@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, HostBinding } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Meta, Title } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { 
@@ -97,7 +98,9 @@ export class BlogDetailComponent implements OnInit, OnDestroy {
     private blogService: BlogService,
     private authService: AuthService,
     private themeService: ThemeService,
-    private roleBasedUIService: RoleBasedUIService
+    private roleBasedUIService: RoleBasedUIService,
+    private meta: Meta,
+    private titleService: Title
   ) {
     addIcons({
       personOutline,
@@ -154,6 +157,7 @@ export class BlogDetailComponent implements OnInit, OnDestroy {
           const foundBlog = blogs.find((blog: Blog) => blog._id === this.blogId);
           if (foundBlog) {
             this.blog = foundBlog;
+            this.updateSocialMetaTags(foundBlog); // Add meta tags update
             this.isLoading = false;
           } else {
             // Try hardcoded blogs (fallback for sample data)
@@ -176,6 +180,7 @@ export class BlogDetailComponent implements OnInit, OnDestroy {
     const foundBlog = sampleBlogs.find(blog => blog._id === this.blogId);
     if (foundBlog) {
       this.blog = foundBlog;
+      this.updateSocialMetaTags(foundBlog); // Add meta tags update
     } else {
       this.hasError = true;
     }
@@ -228,5 +233,43 @@ export class BlogDetailComponent implements OnInit, OnDestroy {
     // For demo purposes, return relative dates
     const dates = ['2 hours ago', '1 day ago', '3 days ago', '1 week ago', '2 weeks ago'];
     return dates[index] || 'Recently';
+  }
+
+  private updateSocialMetaTags(blog: Blog) {
+    // Update page title
+    this.titleService.setTitle(`${blog.blogTitle} - DATS`);
+
+    // Clear existing meta tags first
+    this.meta.removeTag('name="description"');
+    this.meta.removeTag('property="og:title"');
+    this.meta.removeTag('property="og:description"');
+    this.meta.removeTag('property="og:image"');
+    this.meta.removeTag('property="og:url"');
+    this.meta.removeTag('property="og:type"');
+    this.meta.removeTag('name="twitter:card"');
+    this.meta.removeTag('name="twitter:title"');
+    this.meta.removeTag('name="twitter:description"');
+    this.meta.removeTag('name="twitter:image"');
+
+    // Set new meta tags
+    const description = blog.content.substring(0, 160) + '...'; // First 160 chars
+    const currentUrl = window.location.href;
+
+    // Basic meta tags
+    this.meta.addTag({ name: 'description', content: description });
+
+    // Open Graph tags
+    this.meta.addTag({ property: 'og:title', content: blog.blogTitle });
+    this.meta.addTag({ property: 'og:description', content: description });
+    this.meta.addTag({ property: 'og:image', content: blog.blogImgUrl });
+    this.meta.addTag({ property: 'og:url', content: currentUrl });
+    this.meta.addTag({ property: 'og:type', content: 'article' });
+    this.meta.addTag({ property: 'og:site_name', content: 'DATS' });
+
+    // Twitter Card tags
+    this.meta.addTag({ name: 'twitter:card', content: 'summary_large_image' });
+    this.meta.addTag({ name: 'twitter:title', content: blog.blogTitle });
+    this.meta.addTag({ name: 'twitter:description', content: description });
+    this.meta.addTag({ name: 'twitter:image', content: blog.blogImgUrl });
   }
 }
