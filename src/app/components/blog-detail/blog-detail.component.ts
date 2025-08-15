@@ -38,6 +38,7 @@ import {
 import { Blog, BlogService } from '../../services/blog.service';
 import { AuthService } from '../../services/auth.service';
 import { ThemeService, ThemeType } from '../../services/theme.service';
+import { NavigationService } from '../../services/navigation.service';
 import { RoleBasedUIService } from '../../services/role-based-ui.service';
 import { IonicMetaService } from '../../services/ionic-meta.service';
 import { SocialShareService } from '../../services/social-share.service';
@@ -101,6 +102,7 @@ export class BlogDetailComponent implements OnInit, OnDestroy {
     private blogService: BlogService,
     private authService: AuthService,
     private themeService: ThemeService,
+    private navigationService: NavigationService,
     private roleBasedUIService: RoleBasedUIService,
     private ionicMetaService: IonicMetaService,
     private socialShareService: SocialShareService
@@ -218,11 +220,11 @@ export class BlogDetailComponent implements OnInit, OnDestroy {
   }
 
   navigateToLogin() {
-    this.router.navigate(['/login']);
+    this.navigationService.navigateToLogin();
   }
 
   goBack() {
-    this.router.navigate(['/articles']);
+    this.navigationService.navigateToArticles();
   }
 
   getCommentDate(index: number): string {

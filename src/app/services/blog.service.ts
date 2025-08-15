@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable, catchError, throwError, combineLatest } fr
 import { map, switchMap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { LanguageService, SupportedLanguage } from './language.service';
+import { getUrlPrefixFromLanguage } from '../models/language-routes.model';
 
 export interface BlogComment {
   userName: string;
@@ -65,6 +66,35 @@ export class BlogService {
       // Default to English (no suffix)
       return `${environment.apiNestBaseUrl}/blog`;
     }
+  }
+
+  // Get API URL for specific language (useful for cross-language operations)
+  private getApiUrlForLanguage(language: SupportedLanguage): string {
+    const languageSuffix = this.languageMapping[language];
+    
+    if (languageSuffix) {
+      return `${environment.apiNestBaseUrl}/blog/${languageSuffix}`;
+    } else {
+      return `${environment.apiNestBaseUrl}/blog`;
+    }
+  }
+
+  // Get language suffix from URL prefix (for URL-based language detection)
+  getLanguageFromUrlPrefix(urlPrefix: string): SupportedLanguage {
+    // Map URL prefixes back to language codes
+    const urlToLangMap: Record<string, SupportedLanguage> = {
+      '': 'en',        // Empty prefix = English
+      'tamil': 'ta',
+      'hindi': 'hi',
+      'bengali': 'bn',
+      'telugu': 'te',
+      'marathi': 'mr',
+      'gujarati': 'gu',
+      'kannada': 'kn',
+      'malayalam': 'ml'
+    };
+    
+    return urlToLangMap[urlPrefix] || 'en';
   }
 
   // Load all blogs from backend
@@ -162,7 +192,7 @@ export class BlogService {
     const apiUrl = this.getApiUrl();
     console.log('💬 BlogService.addComment() - Adding comment to blog:', blogId, 'at:', apiUrl);
     
-    return this.http.post<Blog>(`${apiUrl}/${blogId}/comments`, comment).pipe(
+    return this.http.post<Blog>(`${apiUrl}/post/${blogId}/comments`, comment).pipe(
       catchError(error => {
         console.error('Error adding comment:', error);
         return throwError(() => error);

@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, HostBinding } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { IonContent, IonMenuButton, IonSelectOption, IonHeader, IonTitle, IonToolbar, IonFooter, IonButtons, IonButton, IonIcon, IonSelect, IonToggle, IonGrid, IonRow, IonCol, IonCard, IonCardContent, IonCardTitle } from '@ionic/angular/standalone';
 import { ThemeService, ThemeType, ThemeOption } from '../services/theme.service';
 import { LanguageService, SupportedLanguage, LanguageTexts } from '../services/language.service';
@@ -36,7 +37,8 @@ export class SettingsPage implements OnInit, OnDestroy {
 
   constructor(
     private themeService: ThemeService,
-    private languageService: LanguageService
+    private languageService: LanguageService,
+    private router: Router
   ) { 
     addIcons({ 
       searchOutline, 
@@ -81,10 +83,20 @@ export class SettingsPage implements OnInit, OnDestroy {
     this.themeService.setTheme(theme);
   }
 
+  onLanguageChange(selectedLanguage: SupportedLanguage) {
+    console.log('Language changed to:', selectedLanguage);
+    
+    // Use the new language service method to switch language and navigate
+    this.languageService.switchLanguageAndNavigate(
+      selectedLanguage, 
+      this.router, 
+      this.router.url
+    );
+  }
+
   selectLanguage(event: any) {
     const selectedLanguage = event.detail.value as SupportedLanguage;
-    this.language = selectedLanguage;
-    this.languageService.setLanguage(selectedLanguage);
+    this.onLanguageChange(selectedLanguage);
     
     // Apply theme class to popover for proper styling
     setTimeout(() => {

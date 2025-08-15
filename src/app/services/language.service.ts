@@ -1,5 +1,11 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { Router } from '@angular/router';
+import { 
+  getUrlPrefixFromLanguage, 
+  getLanguageFromUrl, 
+  LANGUAGE_ROUTES 
+} from '../models/language-routes.model';
 
 export type SupportedLanguage = 'en' | 'ta' | 'hi' | 'bn' | 'te' | 'mr' | 'gu' | 'kn' | 'ml';
 
@@ -1272,5 +1278,68 @@ export class LanguageService {
     if (this.getCurrentLanguage() === language) {
       this.textsSubject.next(this.getTextsForLanguage(language));
     }
+  }
+
+  /**
+   * Get the current language URL prefix
+   */
+  getCurrentLanguagePrefix(): string {
+    const currentLang = this.getCurrentLanguage();
+    return getUrlPrefixFromLanguage(currentLang);
+  }
+
+  /**
+   * Generate language-aware URL
+   */
+  generateLanguageUrl(path: string, languageCode?: string): string {
+    const lang = languageCode || this.getCurrentLanguage();
+    const prefix = getUrlPrefixFromLanguage(lang);
+    
+    // Remove leading slash if present
+    const cleanPath = path.startsWith('/') ? path.substring(1) : path;
+    
+    // If prefix is empty (English), return path without language prefix
+    if (!prefix) {
+      return `/${cleanPath}`;
+    }
+    
+    return `/${prefix}/${cleanPath}`;
+  }
+
+  /**
+   * Switch language and navigate to the same page in new language
+   */
+  switchLanguageAndNavigate(newLanguage: SupportedLanguage, router: Router, currentUrl: string): void {
+    // Extract the path without language prefix
+    const pathSegments = currentUrl.split('/').filter(segment => segment);
+    
+    let pathWithoutLang: string;
+    
+    // Check if current URL has a non-English language prefix
+    const currentLangPrefix = pathSegments[0];
+    const hasLangPrefix = LANGUAGE_ROUTES.some(lang => lang.urlPrefix === currentLangPrefix && lang.urlPrefix !== '');
+    
+    if (hasLangPrefix) {
+      // Remove language prefix for non-English languages
+      pathWithoutLang = pathSegments.slice(1).join('/');
+    } else {
+      // For English (no prefix) or when no valid prefix found, use full path
+      pathWithoutLang = pathSegments.join('/');
+    }
+    
+    // Set new language
+    this.setLanguage(newLanguage);
+    
+    // Navigate to new language URL
+    const newUrl = this.generateLanguageUrl(pathWithoutLang, newLanguage);
+    router.navigate([newUrl]);
+  }
+
+  /**
+   * Extract language code from current URL
+   */
+  getLanguageFromCurrentUrl(url: string): SupportedLanguage {
+    const langCode = getLanguageFromUrl(url);
+    return langCode as SupportedLanguage;
   }
 }

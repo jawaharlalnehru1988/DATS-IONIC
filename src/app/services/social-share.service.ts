@@ -1,23 +1,37 @@
 import { Injectable } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { Inject } from '@angular/core';
+import { LanguageService } from './language.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SocialShareService {
 
-  constructor(@Inject(DOCUMENT) private document: Document) {}
+  constructor(
+    @Inject(DOCUMENT) private document: Document,
+    private languageService: LanguageService
+  ) {}
 
   /**
-   * Generate clean shareable URL (no query parameters needed with SSR)
+   * Generate clean shareable URL with language prefix (except for English)
    */
   generateShareableUrl(blog: any): string {
     const baseUrl = typeof window !== 'undefined' 
       ? window.location.origin 
       : 'https://askharekrishna.com';
     
-    return `${baseUrl}/blog-details/${blog._id}`;
+    // Get current language prefix
+    const currentLangPrefix = this.languageService.getCurrentLanguagePrefix();
+    
+    // Generate language-aware URL
+    if (currentLangPrefix) {
+      // Non-English language with prefix
+      return `${baseUrl}/${currentLangPrefix}/blog-details/${blog._id}`;
+    } else {
+      // English (no prefix)
+      return `${baseUrl}/blog-details/${blog._id}`;
+    }
   }
 
   /**

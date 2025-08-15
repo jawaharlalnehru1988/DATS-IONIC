@@ -146,38 +146,27 @@ export class AuthService {
         localStorage.setItem('token', token);
         localStorage.setItem('user', user);
         if (tokenExpiry) localStorage.setItem('tokenExpiry', tokenExpiry);
-        console.log('� AuthService.checkAuthState() - Restored from sessionStorage to localStorage');
       }
     }
     
-    console.log('🔍 AuthService.checkAuthState() - Checking authentication state...');
-    console.log('🔍 AuthService.checkAuthState() - Source:', source);
-    console.log('🔍 AuthService.checkAuthState() - Token exists:', !!token);
-    console.log('🔍 AuthService.checkAuthState() - User exists:', !!user);
-    
+
     if (token && user) {
       try {
         // Use JWT utility to check if token is expired
         const isExpired = JwtUtil.isTokenExpired(token);
-        console.log('🔍 AuthService.checkAuthState() - Token expired:', isExpired);
         
         if (!isExpired) {
           const parsedUser = JSON.parse(user);
-          console.log('🔍 AuthService.checkAuthState() - Parsed user:', parsedUser);
           
           // Restore authentication state
           this.currentUserSubject.next(parsedUser);
           this.isAuthenticatedSubject.next(true);
-          
-          console.log('✅ AuthService.checkAuthState() - User restored from', source);
-          console.log('✅ AuthService.checkAuthState() - Authentication state restored');
           
           // Restore cookies if they don't exist but we have token
           if (!CookieUtil.hasCookie('userRole') && token) {
             const decodedToken = JwtUtil.decodeToken(token);
             if (decodedToken) {
               this.setUserCookies(decodedToken);
-              console.log('🍪 AuthService.checkAuthState() - Cookies restored');
             }
           }
           

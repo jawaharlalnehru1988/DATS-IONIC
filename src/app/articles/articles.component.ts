@@ -9,6 +9,7 @@ import { BlogFormComponent } from '../components/blog-form/blog-form.component';
 import { AuthDebugComponent } from '../components/auth-debug/auth-debug.component';
 import { ThemeService, ThemeType } from '../services/theme.service';
 import { LanguageService } from '../services/language.service';
+import { NavigationService } from '../services/navigation.service';
 import { RoleBasedUIService } from '../services/role-based-ui.service';
 import { ShowForRolesDirective } from '../directives/show-for-roles.directive';
 import { Subscription, Observable } from 'rxjs';
@@ -95,6 +96,7 @@ export class ArticlesComponent implements OnInit, OnDestroy {
     private blogService: BlogService, 
     private themeService: ThemeService,
     private languageService: LanguageService,
+    private navigationService: NavigationService,
     private roleBasedUIService: RoleBasedUIService,
     private alertController: AlertController
   ) {
@@ -158,7 +160,6 @@ export class ArticlesComponent implements OnInit, OnDestroy {
       return blog.category && blog.category.toLowerCase() === this.selectedTopic.toLowerCase();
     });
     
-    console.log(`Filtered blogs for category "${this.selectedTopic}":`, filtered.length, 'out of', this.blogs.length);
     return filtered;
   }
 
@@ -228,8 +229,8 @@ export class ArticlesComponent implements OnInit, OnDestroy {
 
   onCardClick(blogId: string) {
     console.log('Card clicked with blogId:', blogId);
-    // Navigate to blog details page
-    this.router.navigate(['/blog-details', blogId]);
+    // Navigate to blog details page with language awareness
+    this.navigationService.navigateToBlogDetails(blogId);
   }
 
   openAddBlogForm() {

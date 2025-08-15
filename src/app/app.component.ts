@@ -19,6 +19,7 @@ import { addIcons } from 'ionicons';
 import { ThemeService, ThemeType } from './services/theme.service';
 import { AuthService } from './services/auth.service';
 import { LanguageService, LanguageTexts } from './services/language.service';
+import { NavigationService } from './services/navigation.service';
 import { Subscription } from 'rxjs';
 import { 
   mailOutline, 
@@ -115,27 +116,28 @@ export class AppComponent implements OnInit, OnDestroy {
   texts: LanguageTexts = {} as LanguageTexts;
 
   public appPages = [
-    { title: 'Dashboard', url: '/dashboard', icon: 'grid', iconColor: '#4CAF50', textKey: 'dashboard' },
-    { title: 'Lord Sri Krishna', url: '/lordkrishna', icon: 'person-circle', iconColor: '#B34E05', textKey: 'lordKrishna' },
-    { title: 'Srila Prabhupada', url: '/srilaprabhupada', icon: 'person-circle', iconColor: '#B34E05', textKey: 'srilaPrabhupada' },
-    { title: 'Audios', url: '/audios', icon: 'musical-notes', iconColor: 'orange', textKey: 'audios' },
-    { title: 'Articles', url: '/articles', icon: 'document-text', iconColor: '#045B40', textKey: 'articles' },
-    { title: 'Vaishnava Calender', url: '/calender', icon: 'calendar', iconColor: '#230568', textKey: 'vaishnavaCalendar' },
-    { title: 'Books', url: '/tutorial', icon: 'easel', iconColor: '#7D0250', textKey: 'books' },
-    { title: 'Chant Hare Krishna', url: '/chant', icon: 'person-circle', iconColor: '#B34E05', textKey: 'chantHareKrishna' },
+    { title: 'Dashboard', url: 'dashboard', icon: 'grid', iconColor: '#4CAF50', textKey: 'dashboard' },
+    { title: 'Lord Sri Krishna', url: 'krishna-page', icon: 'person-circle', iconColor: '#B34E05', textKey: 'lordKrishna' },
+    { title: 'Srila Prabhupada', url: 'srilaprabhupada', icon: 'person-circle', iconColor: '#B34E05', textKey: 'srilaPrabhupada' },
+    { title: 'Audios', url: 'audios', icon: 'musical-notes', iconColor: 'orange', textKey: 'audios' },
+    { title: 'Articles', url: 'articles', icon: 'document-text', iconColor: '#045B40', textKey: 'articles' },
+    { title: 'Vaishnava Calender', url: 'calender', icon: 'calendar', iconColor: '#230568', textKey: 'vaishnavaCalendar' },
+    { title: 'Books', url: 'tutorial', icon: 'easel', iconColor: '#7D0250', textKey: 'books' },
+    { title: 'Chant Hare Krishna', url: 'chant', icon: 'person-circle', iconColor: '#B34E05', textKey: 'chantHareKrishna' },
   ];
 
   public additionals = [
-    { title: 'Contacts', url: '/contacts', icon: 'call', iconColor: 'orange', textKey: 'contacts' },
-    { title: 'Free Membership', url: '/membership', icon: 'person-add', iconColor: '#0E7B8A', textKey: 'freeMembership' },
-    { title: 'Rich Text Demo', url: '/rich-text-demo', icon: 'document-text', iconColor: '#9C27B0', textKey: 'richTextDemo' },
-    { title: 'Settings', url: '/settings', icon: 'settings', iconColor: '#230568', textKey: 'settings' },
+    { title: 'Contacts', url: 'contacts', icon: 'call', iconColor: 'orange', textKey: 'contacts' },
+    { title: 'Free Membership', url: 'register', icon: 'person-add', iconColor: '#0E7B8A', textKey: 'freeMembership' },
+    { title: 'Rich Text Demo', url: 'rich-text-demo', icon: 'document-text', iconColor: '#9C27B0', textKey: 'richTextDemo' },
+    { title: 'Settings', url: 'settings', icon: 'settings', iconColor: '#230568', textKey: 'settings' },
   ];
 
   constructor(
     private themeService: ThemeService,
     private authService: AuthService,
-    private languageService: LanguageService
+    private languageService: LanguageService,
+    private navigationService: NavigationService
   ) {
     addIcons({ 
       mailOutline, 
@@ -241,5 +243,10 @@ export class AppComponent implements OnInit, OnDestroy {
   // Method to get translated text for menu items
   getMenuText(textKey: string): string {
     return this.languageService.getText(textKey as keyof LanguageTexts);
+  }
+
+  // Method to get language-aware route for menu items
+  getLanguageAwareRoute(route: string): string {
+    return this.navigationService.getLanguageAwareRoute(route);
   }
 }

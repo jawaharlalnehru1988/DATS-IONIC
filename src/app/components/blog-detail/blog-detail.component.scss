@@ -148,10 +148,15 @@
       .comment-textarea {
         --border-radius: 8px;
         margin-bottom: 16px;
+        --background: var(--ion-color-light);
+        --color: var(--ion-color-dark);
+        --placeholder-color: var(--ion-color-medium);
         
         textarea {
           font-size: 1rem;
           line-height: 1.5;
+          background-color: var(--ion-color-light) !important;
+          color: var(--ion-color-dark) !important;
         }
       }
 
@@ -399,11 +404,66 @@
   }
 }
 
+// Dark Mode Support
+@media (prefers-color-scheme: dark) {
+  .comment-textarea {
+    --background: var(--ion-color-dark-shade) !important;
+    --color: var(--ion-color-light) !important;
+    --placeholder-color: var(--ion-color-medium) !important;
+    
+    textarea {
+      background-color: var(--ion-color-dark-shade) !important;
+      color: var(--ion-color-light) !important;
+    }
+  }
+  
+  // Override theme-specific styles in dark mode for better readability
+  :host-context(.theme-ocean) .comment-textarea,
+  :host-context(.theme-sunset) .comment-textarea,
+  :host-context(.theme-forest) .comment-textarea,
+  :host-context(.theme-royal) .comment-textarea,
+  :host-context(.theme-midnight) .comment-textarea,
+  :host-context(.theme-rose) .comment-textarea,
+  :host-context(.theme-golden) .comment-textarea {
+    --background: var(--ion-color-dark-shade) !important;
+    --color: var(--ion-color-light) !important;
+    --placeholder-color: var(--ion-color-medium) !important;
+    
+    textarea {
+      background-color: var(--ion-color-dark-shade) !important;
+      color: var(--ion-color-light) !important;
+    }
+  }
+  
+  // Cyberpunk theme should keep its green text even in dark mode
+  :host-context(.theme-cyberpunk) .comment-textarea {
+    --background: rgba(0, 0, 0, 0.9) !important;
+    --color: #00ff41 !important;
+    --placeholder-color: rgba(0, 255, 65, 0.7) !important;
+    
+    textarea {
+      background-color: rgba(0, 0, 0, 0.9) !important;
+      color: #00ff41 !important;
+    }
+  }
+}
+
 // Theme Integration
 :host-context(.theme-ocean) {
   ion-card {
     --background: rgba(102, 126, 234, 0.05);
     border: 1px solid rgba(102, 126, 234, 0.2);
+  }
+  
+  .comment-textarea {
+    --background: rgba(255, 255, 255, 0.9) !important;
+    --color: #000 !important;
+    --placeholder-color: #666 !important;
+    
+    textarea {
+      background-color: rgba(255, 255, 255, 0.9) !important;
+      color: #000 !important;
+    }
   }
 }
 
@@ -412,12 +472,72 @@
     --background: rgba(255, 107, 107, 0.05);
     border: 1px solid rgba(255, 107, 107, 0.2);
   }
+  
+  .comment-textarea {
+    --background: rgba(255, 255, 255, 0.9) !important;
+    --color: #000 !important;
+    --placeholder-color: #666 !important;
+    
+    textarea {
+      background-color: rgba(255, 255, 255, 0.9) !important;
+      color: #000 !important;
+    }
+  }
 }
 
 :host-context(.theme-forest) {
   ion-card {
     --background: rgba(72, 187, 120, 0.05);
     border: 1px solid rgba(72, 187, 120, 0.2);
+  }
+  
+  .comment-textarea {
+    --background: rgba(255, 255, 255, 0.9) !important;
+    --color: #000 !important;
+    --placeholder-color: #666 !important;
+    
+    textarea {
+      background-color: rgba(255, 255, 255, 0.9) !important;
+      color: #000 !important;
+    }
+  }
+}
+
+:host-context(.theme-cyberpunk) {
+  ion-card {
+    --background: rgba(0, 0, 0, 0.8);
+    border: 1px solid #00ff41;
+  }
+  
+  .comment-textarea {
+    --background: rgba(0, 0, 0, 0.9) !important;
+    --color: #00ff41 !important;
+    --placeholder-color: rgba(0, 255, 65, 0.7) !important;
+    border: 1px solid #00ff41 !important;
+    
+    textarea {
+      background-color: rgba(0, 0, 0, 0.9) !important;
+      color: #00ff41 !important;
+      font-family: 'Courier New', monospace !important;
+    }
+  }
+}
+
+:host-context(.theme-royal) {
+  ion-card {
+    --background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+  }
+  
+  .comment-textarea {
+    --background: rgba(255, 255, 255, 0.9) !important;
+    --color: #000 !important;
+    --placeholder-color: #666 !important;
+    
+    textarea {
+      background-color: rgba(255, 255, 255, 0.9) !important;
+      color: #000 !important;
+    }
   }
 }
 
@@ -426,6 +546,17 @@
     --background: rgba(99, 102, 241, 0.05);
     border: 1px solid rgba(99, 102, 241, 0.2);
   }
+  
+  .comment-textarea {
+    --background: rgba(255, 255, 255, 0.9) !important;
+    --color: #000 !important;
+    --placeholder-color: #666 !important;
+    
+    textarea {
+      background-color: rgba(255, 255, 255, 0.9) !important;
+      color: #000 !important;
+    }
+  }
 }
 
 :host-context(.theme-rose) {
@@ -433,11 +564,33 @@
     --background: rgba(236, 72, 153, 0.05);
     border: 1px solid rgba(236, 72, 153, 0.2);
   }
+  
+  .comment-textarea {
+    --background: rgba(255, 255, 255, 0.9) !important;
+    --color: #000 !important;
+    --placeholder-color: #666 !important;
+    
+    textarea {
+      background-color: rgba(255, 255, 255, 0.9) !important;
+      color: #000 !important;
+    }
+  }
 }
 
 :host-context(.theme-golden) {
   ion-card {
     --background: rgba(245, 158, 11, 0.05);
     border: 1px solid rgba(245, 158, 11, 0.2);
+  }
+  
+  .comment-textarea {
+    --background: rgba(255, 255, 255, 0.9) !important;
+    --color: #000 !important;
+    --placeholder-color: #666 !important;
+    
+    textarea {
+      background-color: rgba(255, 255, 255, 0.9) !important;
+      color: #000 !important;
+    }
   }
 }

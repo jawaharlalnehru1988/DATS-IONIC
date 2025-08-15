@@ -3,6 +3,7 @@ import { IonicModule, PopoverController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { ThemeService, ThemeType } from '../../services/theme.service';
+import { NavigationService } from '../../services/navigation.service';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { DecodedToken } from '../../Utils/jwt.util';
@@ -26,6 +27,7 @@ export class UserMenuPopoverComponent {
     private popoverController: PopoverController,
     private authService: AuthService,
     private themeService: ThemeService,
+    private navigationService: NavigationService,
     private router: Router
   ) {
     this.currentTheme$ = this.themeService.currentTheme$;
@@ -44,8 +46,8 @@ export class UserMenuPopoverComponent {
     // Close the popover first
     await this.popoverController.dismiss();
     
-    // Navigate to login page
-    this.router.navigate(['/login']);
+    // Navigate to login page using NavigationService
+    this.navigationService.navigateToLogin();
   }
 
   async closePopover() {

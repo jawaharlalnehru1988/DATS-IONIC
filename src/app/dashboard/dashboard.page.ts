@@ -6,6 +6,7 @@ import { RoleBasedUIService } from '../services/role-based-ui.service';
 import { AuthService } from '../services/auth.service';
 import { ThemeService, ThemeType } from '../services/theme.service';
 import { LanguageService, LanguageTexts, SupportedLanguage } from '../services/language.service';
+import { NavigationService } from '../services/navigation.service';
 import { ShowForRolesDirective } from '../directives/show-for-roles.directive';
 import { ChantSectionComponent } from '../components/chant-section/chant-section.component';
 import { ReusableHeaderComponent } from '../components/reusable-header/reusable-header.component';
@@ -41,6 +42,7 @@ export class DashboardPage implements OnInit {
     private authService: AuthService,
     private themeService: ThemeService,
     private languageService: LanguageService,
+    private navigationService: NavigationService,
     private router: Router
   ) {
     this.isAuthenticated$ = this.roleBasedUIService.isUserAuthenticated();
@@ -59,7 +61,52 @@ export class DashboardPage implements OnInit {
   ngOnInit() {}
 
   navigateTo(route: string) {
-    this.router.navigate([route]);
+    // Use NavigationService for language-aware navigation
+    switch(route) {
+      case 'settings':
+        this.navigationService.navigateToSettings();
+        break;
+      case 'articles':
+        this.navigationService.navigateToArticles();
+        break;
+      case 'contacts':
+        this.navigationService.navigateToContacts();
+        break;
+      case 'krishna-page':
+        this.navigationService.navigateToKrishnaPage();
+        break;
+      case 'srilaprabhupada':
+        this.navigationService.navigateToSrilaPrabhupada();
+        break;
+      case 'audios':
+        this.navigationService.navigateToAudios();
+        break;
+      case 'calender':
+        this.navigationService.navigateToCalendar();
+        break;
+      case 'login':
+        this.navigationService.navigateToLogin();
+        break;
+      case 'register':
+        this.navigationService.navigateToRegister();
+        break;
+      case 'chant':
+        this.navigationService.navigateToChant();
+        break;
+      case 'tutorial':
+        this.navigationService.navigateToTutorial();
+        break;
+      case 'questionanswered':
+        this.navigationService.navigateToQuestions();
+        break;
+      case 'rich-text-demo':
+        this.navigationService.navigateToRichTextDemo();
+        break;
+      default:
+        // Fallback to generic language-aware navigation
+        this.navigationService.navigateWithLanguage(route);
+        break;
+    }
   }
 
   onLogout() {
@@ -84,5 +131,10 @@ export class DashboardPage implements OnInit {
 
   getTranslatedTitle(titleKey: keyof LanguageTexts): string {
     return this.languageService.getText(titleKey);
+  }
+
+  // Add method to get language-aware routes for templates
+  getLanguageAwareRoute(route: string): string {
+    return this.navigationService.getLanguageAwareRoute(route);
   }
 }

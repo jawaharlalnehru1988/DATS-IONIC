@@ -27,11 +27,11 @@
 
   <!-- Quick Actions for Guests -->
   <div class="quick-actions">
-    <ion-button expand="block" size="large" routerLink="/register" class="cta-button">
+    <ion-button expand="block" size="large" [routerLink]="getLanguageAwareRoute('register')" class="cta-button">
       <ion-icon name="person-add-outline" slot="start"></ion-icon>
       {{ (texts$ | async)?.joinCommunityButton || 'Join Our Spiritual Community' }}
     </ion-button>
-    <ion-button expand="block" fill="outline" size="large" routerLink="/login" class="login-button">
+    <ion-button expand="block" fill="outline" size="large" [routerLink]="getLanguageAwareRoute('login')" class="login-button">
       <ion-icon name="log-in-outline" slot="start"></ion-icon>
       {{ (texts$ | async)?.signInButton || 'Sign In to Your Account' }}
     </ion-button>
@@ -143,7 +143,7 @@
         </ion-card-content>
       </ion-card>
 
-      <ion-card class="community-card" button (click)="navigateTo('/settings')">
+      <ion-card class="community-card" button (click)="navigateTo('settings')">>
         <ion-card-header>
           <ion-card-title>
             <ion-icon name="settings" class="community-icon"></ion-icon>
