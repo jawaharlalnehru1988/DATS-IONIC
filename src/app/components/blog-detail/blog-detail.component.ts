@@ -39,8 +39,9 @@ import { Blog, BlogService } from '../../services/blog.service';
 import { AuthService } from '../../services/auth.service';
 import { ThemeService, ThemeType } from '../../services/theme.service';
 import { RoleBasedUIService } from '../../services/role-based-ui.service';
-import { DynamicMetaService } from '../../services/dynamic-meta.service';
+import { IonicMetaService } from '../../services/ionic-meta.service';
 import { SocialShareService } from '../../services/social-share.service';
+import { ShareButtonComponent } from '../share-button/share-button.component';
 import { Subscription, Observable } from 'rxjs';
 
 
@@ -70,7 +71,8 @@ import { Subscription, Observable } from 'rxjs';
     IonToolbar,
     IonTitle,
     IonButtons,
-    IonBackButton
+    IonBackButton,
+    ShareButtonComponent
   ]
 })
 export class BlogDetailComponent implements OnInit, OnDestroy {
@@ -100,7 +102,7 @@ export class BlogDetailComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private themeService: ThemeService,
     private roleBasedUIService: RoleBasedUIService,
-    private dynamicMetaService: DynamicMetaService,
+    private ionicMetaService: IonicMetaService,
     private socialShareService: SocialShareService
   ) {
     addIcons({personOutline,chatbubbleOutline,shareOutline,chatbubblesOutline,send,lockClosedOutline,logInOutline,person,alertCircleOutline,arrowBack});
@@ -136,7 +138,7 @@ export class BlogDetailComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
     // Reset meta tags to defaults when leaving the component
-    this.dynamicMetaService.resetToDefaults();
+    this.ionicMetaService.resetToDefaults();
   }
 
   private loadBlog() {
@@ -150,7 +152,8 @@ export class BlogDetailComponent implements OnInit, OnDestroy {
           const foundBlog = blogs.find((blog: Blog) => blog._id === this.blogId);
           if (foundBlog) {
             this.blog = foundBlog;
-            this.dynamicMetaService.updateBlogMetaTags(foundBlog); // Use new service
+            // Use Ionic meta service for clean URLs and proper meta tags
+            this.ionicMetaService.updateBlogMetaTags(foundBlog);
             this.isLoading = false;
           } else {
             // Try hardcoded blogs (fallback for sample data)
@@ -173,7 +176,7 @@ export class BlogDetailComponent implements OnInit, OnDestroy {
     const foundBlog = sampleBlogs.find(blog => blog._id === this.blogId);
     if (foundBlog) {
       this.blog = foundBlog;
-      this.dynamicMetaService.updateBlogMetaTags(foundBlog); // Use new service
+      this.ionicMetaService.updateBlogMetaTags(foundBlog);
     } else {
       this.hasError = true;
     }
@@ -226,45 +229,5 @@ export class BlogDetailComponent implements OnInit, OnDestroy {
     // For demo purposes, return relative dates
     const dates = ['2 hours ago', '1 day ago', '3 days ago', '1 week ago', '2 weeks ago'];
     return dates[index] || 'Recently';
-  }
-
-  openShareModal() {
-    if (!this.blog) return;
-
-    // Try native share first (mobile)
-    this.socialShareService.nativeShare(this.blog).then(success => {
-      if (!success) {
-        // Fallback to WhatsApp share
-        this.socialShareService.shareOnWhatsApp(this.blog);
-      }
-    });
-  }
-
-  shareOnWhatsApp() {
-    if (this.blog) {
-      this.socialShareService.shareOnWhatsApp(this.blog);
-    }
-  }
-
-  shareOnFacebook() {
-    if (this.blog) {
-      this.socialShareService.shareOnFacebook(this.blog);
-    }
-  }
-
-  shareOnTwitter() {
-    if (this.blog) {
-      this.socialShareService.shareOnTwitter(this.blog);
-    }
-  }
-
-  async copyShareLink() {
-    if (this.blog) {
-      const success = await this.socialShareService.copyToClipboard(this.blog);
-      if (success) {
-        console.log('✅ Link copied to clipboard!');
-        // You can add a toast notification here
-      }
-    }
   }
 }

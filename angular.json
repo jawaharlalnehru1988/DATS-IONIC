@@ -16,13 +16,11 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": {
-              "base": "www",
-              "browser": ""
-            },
+            "outputPath": "www",
             "index": "src/index.html",
+            "main": "src/main.ts",
             "polyfills": [
               "src/polyfills.ts"
             ],
@@ -35,9 +33,13 @@
                 "output": "assets"
               }
             ],
-            "styles": ["src/global.scss", "src/theme/variables.scss", "node_modules/quill/dist/quill.snow.css", "node_modules/quill/dist/quill.bubble.css"],
-            "scripts": [],
-            "browser": "src/main.ts"
+            "styles": [
+              "src/global.scss",
+              "src/theme/variables.scss",
+              "node_modules/quill/dist/quill.snow.css",
+              "node_modules/quill/dist/quill.bubble.css"
+            ],
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -83,7 +85,7 @@
               "buildTarget": "app:build:development"
             },
             "ci": {
-              "progress": false
+              "watch": false
             }
           },
           "defaultConfiguration": "development"

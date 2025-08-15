@@ -10,24 +10,14 @@ export class SocialShareService {
   constructor(@Inject(DOCUMENT) private document: Document) {}
 
   /**
-   * Generate shareable URL with meta data for social platforms
-   * This creates a temporary URL that social media crawlers can read
+   * Generate clean shareable URL (no query parameters needed with SSR)
    */
   generateShareableUrl(blog: any): string {
-    const baseUrl = window.location.origin;
-    const blogUrl = `${baseUrl}/blog-details/${blog._id}`;
+    const baseUrl = typeof window !== 'undefined' 
+      ? window.location.origin 
+      : 'https://askharekrishna.com';
     
-    // Create URL with meta data as query parameters
-    // Social media platforms will read these and use them for previews
-    const shareParams = new URLSearchParams({
-      title: blog.blogTitle,
-      description: this.extractTextFromHtml(blog.content).substring(0, 160),
-      image: blog.blogImgUrl,
-      author: blog.author,
-      category: blog.category
-    });
-
-    return `${blogUrl}?${shareParams.toString()}`;
+    return `${baseUrl}/blog-details/${blog._id}`;
   }
 
   /**

@@ -1,0 +1,25 @@
+<ion-button 
+  fill="clear" 
+  size="small" 
+  (click)="tryNativeShare()"
+  color="tertiary">
+  <ion-icon name="share-outline" slot="start"></ion-icon>
+  <span *ngIf="showText">Share</span>
+</ion-button>
+
+<!-- Action Sheet for sharing options -->
+<ion-action-sheet
+  [isOpen]="isActionSheetOpen"
+  header="Share this article"
+  [buttons]="shareButtons"
+  (didDismiss)="isActionSheetOpen = false">
+</ion-action-sheet>
+
+<!-- Toast for feedback -->
+<ion-toast
+  [isOpen]="isToastOpen"
+  [message]="toastMessage"
+  duration="2000"
+  position="bottom"
+  (didDismiss)="isToastOpen = false">
+</ion-toast>

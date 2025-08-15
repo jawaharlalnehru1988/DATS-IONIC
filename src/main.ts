@@ -1,42 +1,11 @@
-import { bootstrapApplication } from '@angular/platform-browser';
-import { RouteReuseStrategy, provideRouter, withPreloading, PreloadAllModules } from '@angular/router';
-import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular/standalone';
-import { provideAnimations } from '@angular/platform-browser/animations';
-import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { provideQuillConfig } from 'ngx-quill';
+import { bootstrapApplication, provideClientHydration, withEventReplay } from '@angular/platform-browser';
 
-import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
-import { AuthInterceptor } from './app/interceptors/auth.interceptor';
+import { appConfig } from './app/app.config';
 
 bootstrapApplication(AppComponent, {
   providers: [
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    provideIonicAngular(), 
-    provideHttpClient(withInterceptorsFromDi()),
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-    provideRouter(routes, withPreloading(PreloadAllModules)),
-    provideAnimations(),
-    provideQuillConfig({
-      modules: {
-        syntax: false,
-        toolbar: [
-          ['bold', 'italic', 'underline', 'strike'],
-          ['blockquote', 'code-block'],
-          [{ 'header': 1 }, { 'header': 2 }],
-          [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-          [{ 'script': 'sub'}, { 'script': 'super' }],
-          [{ 'indent': '-1'}, { 'indent': '+1' }],
-          [{ 'direction': 'rtl' }],
-          [{ 'size': ['small', false, 'large', 'huge'] }],
-          [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-          [{ 'color': [] }, { 'background': [] }],
-          [{ 'font': [] }],
-          [{ 'align': [] }],
-          ['clean'],
-          ['link', 'image', 'video']
-        ]
-      }
-    })
+    ...appConfig.providers,
+    provideClientHydration(withEventReplay())
   ],
 });
