@@ -34,12 +34,13 @@ import {
   logInOutline, 
   person, 
   alertCircleOutline, 
-  arrowBack 
-} from 'ionicons/icons';
+  arrowBack, shareOutline } from 'ionicons/icons';
 import { Blog, BlogService } from '../../services/blog.service';
 import { AuthService } from '../../services/auth.service';
 import { ThemeService, ThemeType } from '../../services/theme.service';
 import { RoleBasedUIService } from '../../services/role-based-ui.service';
+import { DynamicMetaService } from '../../services/dynamic-meta.service';
+import { SocialShareService } from '../../services/social-share.service';
 import { Subscription, Observable } from 'rxjs';
 
 
@@ -99,20 +100,10 @@ export class BlogDetailComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private themeService: ThemeService,
     private roleBasedUIService: RoleBasedUIService,
-    private meta: Meta,
-    private titleService: Title
+    private dynamicMetaService: DynamicMetaService,
+    private socialShareService: SocialShareService
   ) {
-    addIcons({
-      personOutline,
-      chatbubbleOutline,
-      chatbubblesOutline,
-      send,
-      lockClosedOutline,
-      logInOutline,
-      person,
-      alertCircleOutline,
-      arrowBack
-    });
+    addIcons({personOutline,chatbubbleOutline,shareOutline,chatbubblesOutline,send,lockClosedOutline,logInOutline,person,alertCircleOutline,arrowBack});
     
     // Initialize authentication observable
     this.isAuthenticated$ = this.roleBasedUIService.isUserAuthenticated();
@@ -144,6 +135,8 @@ export class BlogDetailComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
+    // Reset meta tags to defaults when leaving the component
+    this.dynamicMetaService.resetToDefaults();
   }
 
   private loadBlog() {
@@ -157,7 +150,7 @@ export class BlogDetailComponent implements OnInit, OnDestroy {
           const foundBlog = blogs.find((blog: Blog) => blog._id === this.blogId);
           if (foundBlog) {
             this.blog = foundBlog;
-            this.updateSocialMetaTags(foundBlog); // Add meta tags update
+            this.dynamicMetaService.updateBlogMetaTags(foundBlog); // Use new service
             this.isLoading = false;
           } else {
             // Try hardcoded blogs (fallback for sample data)
@@ -180,7 +173,7 @@ export class BlogDetailComponent implements OnInit, OnDestroy {
     const foundBlog = sampleBlogs.find(blog => blog._id === this.blogId);
     if (foundBlog) {
       this.blog = foundBlog;
-      this.updateSocialMetaTags(foundBlog); // Add meta tags update
+      this.dynamicMetaService.updateBlogMetaTags(foundBlog); // Use new service
     } else {
       this.hasError = true;
     }
@@ -235,59 +228,43 @@ export class BlogDetailComponent implements OnInit, OnDestroy {
     return dates[index] || 'Recently';
   }
 
-  private updateSocialMetaTags(blog: Blog) {
-    // Update page title
-    this.titleService.setTitle(`${blog.blogTitle} - DATS`);
+  openShareModal() {
+    if (!this.blog) return;
 
-    // Clear existing meta tags first
-    this.meta.removeTag('name="description"');
-    this.meta.removeTag('property="og:title"');
-    this.meta.removeTag('property="og:description"');
-    this.meta.removeTag('property="og:image"');
-    this.meta.removeTag('property="og:url"');
-    this.meta.removeTag('property="og:type"');
-    this.meta.removeTag('property="og:image:width"');
-    this.meta.removeTag('property="og:image:height"');
-    this.meta.removeTag('name="twitter:card"');
-    this.meta.removeTag('name="twitter:title"');
-    this.meta.removeTag('name="twitter:description"');
-    this.meta.removeTag('name="twitter:image"');
-
-    // Set new meta tags
-    const description = blog.content.substring(0, 160) + '...'; // First 160 chars
-    const currentUrl = window.location.href;
-    
-    // Ensure absolute URL for image
-    let imageUrl = blog.blogImgUrl;
-    if (imageUrl && !imageUrl.startsWith('http')) {
-      // If relative URL, make it absolute
-      imageUrl = window.location.origin + '/' + imageUrl.replace(/^\//, '');
-    }
-
-    // Basic meta tags
-    this.meta.addTag({ name: 'description', content: description });
-
-    // Open Graph tags
-    this.meta.addTag({ property: 'og:title', content: blog.blogTitle });
-    this.meta.addTag({ property: 'og:description', content: description });
-    this.meta.addTag({ property: 'og:image', content: imageUrl });
-    this.meta.addTag({ property: 'og:image:width', content: '1200' });
-    this.meta.addTag({ property: 'og:image:height', content: '630' });
-    this.meta.addTag({ property: 'og:url', content: currentUrl });
-    this.meta.addTag({ property: 'og:type', content: 'article' });
-    this.meta.addTag({ property: 'og:site_name', content: 'DATS' });
-
-    // Twitter Card tags
-    this.meta.addTag({ name: 'twitter:card', content: 'summary_large_image' });
-    this.meta.addTag({ name: 'twitter:title', content: blog.blogTitle });
-    this.meta.addTag({ name: 'twitter:description', content: description });
-    this.meta.addTag({ name: 'twitter:image', content: imageUrl });
-    
-    console.log('Social media meta tags updated:', {
-      title: blog.blogTitle,
-      description: description.substring(0, 50) + '...',
-      image: imageUrl,
-      url: currentUrl
+    // Try native share first (mobile)
+    this.socialShareService.nativeShare(this.blog).then(success => {
+      if (!success) {
+        // Fallback to WhatsApp share
+        this.socialShareService.shareOnWhatsApp(this.blog);
+      }
     });
+  }
+
+  shareOnWhatsApp() {
+    if (this.blog) {
+      this.socialShareService.shareOnWhatsApp(this.blog);
+    }
+  }
+
+  shareOnFacebook() {
+    if (this.blog) {
+      this.socialShareService.shareOnFacebook(this.blog);
+    }
+  }
+
+  shareOnTwitter() {
+    if (this.blog) {
+      this.socialShareService.shareOnTwitter(this.blog);
+    }
+  }
+
+  async copyShareLink() {
+    if (this.blog) {
+      const success = await this.socialShareService.copyToClipboard(this.blog);
+      if (success) {
+        console.log('✅ Link copied to clipboard!');
+        // You can add a toast notification here
+      }
+    }
   }
 }

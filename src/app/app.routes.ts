@@ -49,7 +49,10 @@ export const routes: Routes = [
   },
   {
     path: 'blog-details/:id',
-    loadComponent: () => import('./components/blog-detail/blog-detail.component').then( m => m.BlogDetailComponent)
+    loadComponent: () => import('./components/blog-detail/blog-detail.component').then( m => m.BlogDetailComponent),
+    resolve: {
+      blog: () => import('./resolvers/blog-meta.resolver').then(m => m.BlogMetaResolver)
+    }
   },
   {
     path: 'questionanswered',
