@@ -246,6 +246,8 @@ export class BlogDetailComponent implements OnInit, OnDestroy {
     this.meta.removeTag('property="og:image"');
     this.meta.removeTag('property="og:url"');
     this.meta.removeTag('property="og:type"');
+    this.meta.removeTag('property="og:image:width"');
+    this.meta.removeTag('property="og:image:height"');
     this.meta.removeTag('name="twitter:card"');
     this.meta.removeTag('name="twitter:title"');
     this.meta.removeTag('name="twitter:description"');
@@ -254,6 +256,13 @@ export class BlogDetailComponent implements OnInit, OnDestroy {
     // Set new meta tags
     const description = blog.content.substring(0, 160) + '...'; // First 160 chars
     const currentUrl = window.location.href;
+    
+    // Ensure absolute URL for image
+    let imageUrl = blog.blogImgUrl;
+    if (imageUrl && !imageUrl.startsWith('http')) {
+      // If relative URL, make it absolute
+      imageUrl = window.location.origin + '/' + imageUrl.replace(/^\//, '');
+    }
 
     // Basic meta tags
     this.meta.addTag({ name: 'description', content: description });
@@ -261,7 +270,9 @@ export class BlogDetailComponent implements OnInit, OnDestroy {
     // Open Graph tags
     this.meta.addTag({ property: 'og:title', content: blog.blogTitle });
     this.meta.addTag({ property: 'og:description', content: description });
-    this.meta.addTag({ property: 'og:image', content: blog.blogImgUrl });
+    this.meta.addTag({ property: 'og:image', content: imageUrl });
+    this.meta.addTag({ property: 'og:image:width', content: '1200' });
+    this.meta.addTag({ property: 'og:image:height', content: '630' });
     this.meta.addTag({ property: 'og:url', content: currentUrl });
     this.meta.addTag({ property: 'og:type', content: 'article' });
     this.meta.addTag({ property: 'og:site_name', content: 'DATS' });
@@ -270,6 +281,13 @@ export class BlogDetailComponent implements OnInit, OnDestroy {
     this.meta.addTag({ name: 'twitter:card', content: 'summary_large_image' });
     this.meta.addTag({ name: 'twitter:title', content: blog.blogTitle });
     this.meta.addTag({ name: 'twitter:description', content: description });
-    this.meta.addTag({ name: 'twitter:image', content: blog.blogImgUrl });
+    this.meta.addTag({ name: 'twitter:image', content: imageUrl });
+    
+    console.log('Social media meta tags updated:', {
+      title: blog.blogTitle,
+      description: description.substring(0, 50) + '...',
+      image: imageUrl,
+      url: currentUrl
+    });
   }
 }
