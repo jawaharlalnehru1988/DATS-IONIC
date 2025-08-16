@@ -66,22 +66,44 @@
           <ion-list-header>🔧 Utilities</ion-list-header>
           @for (p of additionals; track p; let i = $index) {
             <ion-menu-toggle auto-hide="false">
-              <ion-item
-                routerDirection="root"
-                [routerLink]="getLanguageAwareRoute(p.url)"
-                lines="none"
-                detail="false"
-                routerLinkActive="selected"
-                [class]="'menu-item ' + currentTheme">
-                <ion-icon
-                  aria-hidden="true"
-                  slot="start"
-                  [ios]="p.icon + '-outline'"
-                  [md]="p.icon + '-sharp'"
-                  [style.color]="p.iconColor">
-                </ion-icon>
-                <ion-label>{{ getMenuText(p.textKey) }}</ion-label>
-              </ion-item>
+              @if (p.url === 'rich-text-demo') {
+                <!-- Show Rich Text Demo only for admin users -->
+                <ion-item
+                  *appShowForRoles="['admin']"
+                  routerDirection="root"
+                  [routerLink]="getLanguageAwareRoute(p.url)"
+                  lines="none"
+                  detail="false"
+                  routerLinkActive="selected"
+                  [class]="'menu-item ' + currentTheme">
+                  <ion-icon
+                    aria-hidden="true"
+                    slot="start"
+                    [ios]="p.icon + '-outline'"
+                    [md]="p.icon + '-sharp'"
+                    [style.color]="p.iconColor">
+                  </ion-icon>
+                  <ion-label>{{ getMenuText(p.textKey) }}</ion-label>
+                </ion-item>
+              } @else {
+                <!-- Show other utilities for everyone -->
+                <ion-item
+                  routerDirection="root"
+                  [routerLink]="getLanguageAwareRoute(p.url)"
+                  lines="none"
+                  detail="false"
+                  routerLinkActive="selected"
+                  [class]="'menu-item ' + currentTheme">
+                  <ion-icon
+                    aria-hidden="true"
+                    slot="start"
+                    [ios]="p.icon + '-outline'"
+                    [md]="p.icon + '-sharp'"
+                    [style.color]="p.iconColor">
+                  </ion-icon>
+                  <ion-label>{{ getMenuText(p.textKey) }}</ion-label>
+                </ion-item>
+              }
             </ion-menu-toggle>
           }
         </ion-list>

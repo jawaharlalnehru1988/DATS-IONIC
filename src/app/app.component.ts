@@ -80,6 +80,7 @@ import {
 } from 'ionicons/icons';
 import { ResponseUserData } from './Utils/models';
 import { CommonModule } from '@angular/common';
+import { ShowForRolesDirective } from './directives/show-for-roles.directive';
 
 @Component({
   selector: 'app-root',
@@ -101,7 +102,8 @@ import { CommonModule } from '@angular/common';
     IonIcon, 
     IonLabel, 
     IonRouterLink, 
-    IonRouterOutlet
+    IonRouterOutlet,
+    ShowForRolesDirective
   ],
 })
 export class AppComponent implements OnInit, OnDestroy {
