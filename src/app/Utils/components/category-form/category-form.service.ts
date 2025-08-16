@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../../environments/environment';
 import { CategoryCardInput } from '../../models/card.model';
 import { InputData } from '../../models';
 import { Observable, catchError, of, timeout, retry } from 'rxjs';

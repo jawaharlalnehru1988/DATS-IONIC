@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../environments/environment';
 import { InputData } from '../Utils/models';
 import { Observable, of, catchError, timeout, retry } from 'rxjs';
 import { ToastService } from '../services/toast.service';
