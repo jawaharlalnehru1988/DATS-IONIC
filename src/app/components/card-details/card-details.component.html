@@ -5,116 +5,114 @@
     </ion-buttons>
     <ion-title>{{ cardItem()?.title || 'Card Details' }}</ion-title>
     <ion-buttons slot="end">
-      <ion-button 
-        fill="clear" 
-        (click)="openEditModal()" 
-        *ngIf="cardItem() && canEditContent()">
-        <ion-icon name="create-outline"></ion-icon>
-        Edit Content
-      </ion-button>
+      @if (cardItem() && canEditContent()) {
+        <ion-button
+          fill="clear"
+          (click)="openEditModal()"
+          >
+          <ion-icon name="create-outline"></ion-icon>
+          Edit Content
+        </ion-button>
+      }
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" class="card-details-content">
-  <div class="details-container" *ngIf="cardItem() as card">
-
-    <!-- Audio Player Section -->
-    <div class="audio-player-section" *ngIf="audioItem() as audio">
-      <h2 class="section-title">{{card.title}}</h2>
-      
-      <!-- Audio Range Selector -->
-      <div class="audio-range-selector">
-        <ion-item>
-          <ion-select 
-            placeholder="Select Audio Range" 
-            [value]="selectedAudioRange()"
-            (ionChange)="onAudioRangeChange($event)">
-            <ion-select-option value="">Play Full Audio</ion-select-option>
-            <ion-select-option 
-              *ngFor="let range of audioRanges" 
-              [value]="range">
-              {{ range.name }} ({{ range.start }} ~ {{ range.end }})
-            </ion-select-option>
-          </ion-select>
-        </ion-item>
-      </div>
-      
-      <app-ionic-audio-player 
-        [audioData]="audio"
-        [selectedRange]="selectedAudioRange()">
-      </app-ionic-audio-player>
-    </div>
-
-
-    <!-- No Audio Message -->
-    <ion-card *ngIf="!audioItem()" class="no-audio-card">
-      <ion-card-content>
-        <p>No audio data available for this item.</p>
-      </ion-card-content>
-    </ion-card>
-
-      <!-- Card Information Section -->
-    <ion-card class="card-info">
-      <ion-card-header>
-        <ion-card-title>{{ card.title }}</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <div class="card-image-container">
-          <img [src]="card.img" [alt]="card.title" class="card-image" />
+  @if (cardItem(); as card) {
+    <div class="details-container">
+      <!-- Audio Player Section -->
+      @if (audioItem(); as audio) {
+        <div class="audio-player-section">
+          <h2 class="section-title">{{card.title}}</h2>
+          <!-- Audio Range Selector -->
+          <div class="audio-range-selector">
+            <ion-item>
+              <ion-select
+                placeholder="Select Audio Range"
+                [value]="selectedAudioRange()"
+                (ionChange)="onAudioRangeChange($event)">
+                <ion-select-option value="">Play Full Audio</ion-select-option>
+                @for (range of audioRanges; track range) {
+                  <ion-select-option
+                    [value]="range">
+                    {{ range.name }} ({{ range.start }} ~ {{ range.end }})
+                  </ion-select-option>
+                }
+              </ion-select>
+            </ion-item>
+          </div>
+          <app-ionic-audio-player
+            [audioData]="audio"
+            [selectedRange]="selectedAudioRange()">
+          </app-ionic-audio-player>
         </div>
-        
-        <div class="card-details">
-          <ion-item lines="none">
+      }
+      <!-- No Audio Message -->
+      @if (!audioItem()) {
+        <ion-card class="no-audio-card">
+          <ion-card-content>
+            <p>No audio data available for this item.</p>
+          </ion-card-content>
+        </ion-card>
+      }
+      <!-- Card Information Section -->
+      <ion-card class="card-info">
+        <ion-card-header>
+          <ion-card-title>{{ card.title }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <div class="card-image-container">
+            <img [src]="card.img" [alt]="card.title" class="card-image" />
+          </div>
+          <div class="card-details">
+            <ion-item lines="none">
               <ion-label>
                 <h3>Category</h3>
               </ion-label>
-            <ion-badge color="primary" slot="start">{{ card.category }}</ion-badge>
-          </ion-item>
-
-
-          
-          <ion-item lines="none">
-            <ion-label>
-              <h3>Description</h3>
-              <div class="lyrics-container" [innerHTML]="formatLyrics(card.desc)"></div>
-            </ion-label>
-          </ion-item>
-          
-          <ion-item lines="none">
-            <ion-label>
-              <h3>Rating</h3>
-              <div class="rating-section">
-                <div class="average-rating" *ngIf="totalRatings() > 0">
-                  <span class="rating-text">Average: ⭐ {{ averageRating() | number:'1.1-1' }} ({{ totalRatings() }} ratings)</span>
+              <ion-badge color="primary" slot="start">{{ card.category }}</ion-badge>
+            </ion-item>
+            <ion-item lines="none">
+              <ion-label>
+                <h3>Description</h3>
+                <div class="lyrics-container" [innerHTML]="formatLyrics(card.desc)"></div>
+              </ion-label>
+            </ion-item>
+            <ion-item lines="none">
+              <ion-label>
+                <h3>Rating</h3>
+                <div class="rating-section">
+                  @if (totalRatings() > 0) {
+                    <div class="average-rating">
+                      <span class="rating-text">Average: ⭐ {{ averageRating() | number:'1.1-1' }} ({{ totalRatings() }} ratings)</span>
+                    </div>
+                  }
+                  <div class="user-rating">
+                    <span class="rating-label">Your Rating:</span>
+                    <app-star-rating
+                      [rating]="userRating()"
+                      [readonly]="isRatingLoading()"
+                      size="medium"
+                      (ratingChange)="onRatingChange($event)">
+                    </app-star-rating>
+                    @if (userRating() > 0) {
+                      <button
+                        class="clear-rating-btn"
+                        (click)="deleteRating()"
+                        [disabled]="isRatingLoading()">
+                        Clear
+                      </button>
+                    }
+                  </div>
                 </div>
-                <div class="user-rating">
-                  <span class="rating-label">Your Rating:</span>
-                  <app-star-rating 
-                    [rating]="userRating()"
-                    [readonly]="isRatingLoading()"
-                    size="medium"
-                    (ratingChange)="onRatingChange($event)">
-                  </app-star-rating>
-                  <button 
-                    *ngIf="userRating() > 0" 
-                    class="clear-rating-btn"
-                    (click)="deleteRating()"
-                    [disabled]="isRatingLoading()">
-                    Clear
-                  </button>
-                </div>
-              </div>
-            </ion-label>
-          </ion-item>
-          
-          
-        </div>
-      </ion-card-content>
-    </ion-card>
+              </ion-label>
+            </ion-item>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  }
 
-  </div>
-  
   <!-- Toast for rating feedback -->
   <ion-toast
     [isOpen]="showToast()"
@@ -123,15 +121,17 @@
     position="bottom"
     (didDismiss)="onToastDismiss()">
   </ion-toast>
-  
+
   <!-- Loading/Error State -->
-  <div class="empty-state" *ngIf="!cardItem()">
-    <ion-card>
-      <ion-card-content>
-        <p>No card data available. Redirecting back...</p>
-      </ion-card-content>
-    </ion-card>
-  </div>
+  @if (!cardItem()) {
+    <div class="empty-state">
+      <ion-card>
+        <ion-card-content>
+          <p>No card data available. Redirecting back...</p>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  }
 </ion-content>
 
 

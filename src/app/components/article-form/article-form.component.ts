@@ -22,7 +22,7 @@ import {
   IonCardTitle,
   IonToast
 } from '@ionic/angular/standalone';
-import { CommonModule } from '@angular/common';
+
 import { addIcons } from 'ionicons';
 import { close, save, create } from 'ionicons/icons';
 import { ArticleCard, ArticleService } from '../../services/article.service';
@@ -34,7 +34,6 @@ import { QuillModule } from 'ngx-quill';
   styleUrls: ['./article-form.component.scss'],
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     IonModal,
     IonHeader,
@@ -57,7 +56,7 @@ import { QuillModule } from 'ngx-quill';
     IonCardTitle,
     IonToast,
     QuillModule
-  ]
+]
 })
 export class ArticleFormComponent implements OnInit {
   @Input() isOpen: boolean = false;

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, ChangeDetectorRef } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { IonHeader, IonTitle, IonToolbar, IonMenuButton, IonButtons, IonGrid, IonRow, IonCol, IonButton, IonBackButton, IonContent } from '@ionic/angular/standalone';
 import {  IonIcon } from '@ionic/angular/standalone';
@@ -35,7 +35,7 @@ interface Category {
   templateUrl: './srilaprabhupada.page.html',
   styleUrls: ['./srilaprabhupada.page.scss'],
   standalone: true,
-  imports: [ReusableHeaderComponent, IonContent, IonIcon, IonButton, CommonModule, FormsModule],
+  imports: [ReusableHeaderComponent, IonContent, IonIcon, IonButton, FormsModule],
 })
 export class InboxPage implements OnInit, OnDestroy, AfterViewInit {
   // Theme management properties

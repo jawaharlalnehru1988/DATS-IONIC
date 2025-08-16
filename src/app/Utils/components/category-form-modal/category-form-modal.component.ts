@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { 
   IonHeader, 
   IonToolbar, 
@@ -21,7 +21,6 @@ import { close, checkmark } from 'ionicons/icons';
   styleUrls: ['./category-form-modal.component.scss'],
   standalone: true,
   imports: [
-    CommonModule,
     IonHeader,
     IonToolbar,
     IonTitle,
@@ -30,7 +29,7 @@ import { close, checkmark } from 'ionicons/icons';
     IonButtons,
     IonIcon,
     CategoryFormComponent
-  ]
+]
 })
 export class CategoryFormModalComponent implements OnInit {
   pageIdentifier: string = 'music-details'; // Default to music-details

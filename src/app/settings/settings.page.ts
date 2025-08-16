@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, HostBinding } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IonContent, IonMenuButton, IonSelectOption, IonHeader, IonTitle, IonToolbar, IonFooter, IonButtons, IonButton, IonIcon, IonSelect, IonToggle, IonGrid, IonRow, IonCol, IonCard, IonCardContent, IonCardTitle } from '@ionic/angular/standalone';
@@ -14,7 +14,7 @@ import { searchOutline, menuOutline, heartOutline, homeOutline, headsetOutline, 
   templateUrl: './settings.page.html',
   styleUrls: ['./settings.page.scss'],
   standalone: true,
-  imports: [IonToggle, IonSelect, IonIcon, FormsModule, IonMenuButton, ReactiveFormsModule, IonSelectOption, IonButton, IonButtons, IonFooter, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
+  imports: [IonToggle, IonSelect, IonIcon, FormsModule, IonMenuButton, ReactiveFormsModule, IonSelectOption, IonButton, IonButtons, IonFooter, IonContent, IonHeader, IonTitle, IonToolbar, FormsModule]
 })
 export class SettingsPage implements OnInit, OnDestroy {
   language: SupportedLanguage = 'en';

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, HostBinding } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { IonSegment, IonSegmentButton, IonLabel } from '@ionic/angular/standalone';
 import { ThemeService, ThemeType } from '../../services/theme.service';
@@ -15,7 +15,7 @@ export interface TabItem {
   templateUrl: './segmented-tabs.component.html',
   styleUrls: ['./segmented-tabs.component.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, IonSegment, IonSegmentButton, IonLabel]
+  imports: [FormsModule, IonSegment, IonSegmentButton, IonLabel]
 })
 export class SegmentedTabsComponent implements OnInit, OnDestroy {
   @Input() tabs: TabItem[] = [];

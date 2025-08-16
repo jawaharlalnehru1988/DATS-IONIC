@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { TutorialService } from '../tutorial/tutorial.service';
@@ -11,7 +11,7 @@ import { ReusableHeaderComponent } from '../components';
   templateUrl: './tutorial-details.page.html',
   styleUrls: ['./tutorial-details.page.scss'],
   standalone: true,
-  imports: [ ReusableHeaderComponent, CommonModule, FormsModule]
+  imports: [ReusableHeaderComponent, FormsModule]
 })
 export class TutorialDetailsPage implements OnInit {
   isLoading = true;

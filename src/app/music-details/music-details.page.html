@@ -1,6 +1,6 @@
-<app-reusable-header 
-  [title]="topics.title" 
-  [translucent]="true" 
+<app-reusable-header
+  [title]="topics.title"
+  [translucent]="true"
   [showMenuButton]="true">
 </app-reusable-header>
 
@@ -14,67 +14,48 @@
       refreshingText="Refreshing...">
     </ion-refresher-content>
   </ion-refresher>
-  
+
   <!-- Skeleton Loader -->
-  <div *ngIf="isLoading" class="skeleton-container">
-    <!-- Hero Section Skeleton -->
-    <div class="skeleton-hero">
-      <ion-skeleton-text animated style="width: 70%; height: 32px; margin-bottom: 12px; display: block;"></ion-skeleton-text>
-      <ion-skeleton-text animated style="width: 90%; height: 16px; margin-bottom: 8px; display: block;"></ion-skeleton-text>
-      <ion-skeleton-text animated style="width: 60%; height: 16px; margin-bottom: 24px; display: block;"></ion-skeleton-text>
-    </div>
-    
-    <!-- Category Title Skeleton -->
-    <div class="skeleton-category">
-      <ion-skeleton-text animated style="width: 60%; height: 24px; margin-bottom: 16px; display: block;"></ion-skeleton-text>
-    </div>
-    
-    <!-- Card Skeletons -->
-    <div class="skeleton-cards">
-      <div class="skeleton-card" *ngFor="let item of [1,2,3,4]">
-        <div class="skeleton-card-content">
-          <ion-skeleton-text animated style="width: 100%; height: 120px; border-radius: 12px; display: block;"></ion-skeleton-text>
-          <div class="skeleton-card-info">
-            <ion-skeleton-text animated style="width: 80%; height: 18px; margin-top: 12px; display: block;"></ion-skeleton-text>
-            <ion-skeleton-text animated style="width: 60%; height: 14px; margin-top: 8px; display: block;"></ion-skeleton-text>
-            <ion-skeleton-text animated style="width: 40%; height: 14px; margin-top: 8px; display: block;"></ion-skeleton-text>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <!-- Add Button Skeleton -->
-    <div class="skeleton-add-button">
-      <ion-skeleton-text animated style="width: 100%; height: 44px; border-radius: 22px; margin-top: 24px; display: block;"></ion-skeleton-text>
-    </div>
-  </div>
+  @if (isLoading) {
+    <app-skeleton-loader 
+      [config]="{
+        type: 'hero-cards',
+        itemCount: 4,
+        showCategoryTitle: true,
+        showHeroSection: true,
+        showAddButton: true,
+        cardLayout: 'grid'
+      }">
+    </app-skeleton-loader>
+  }
 
   <!-- Content Container -->
-  <div *ngIf="!isLoading" class="content-container">
-    <!-- Hero Section -->
-    <div class="hero-section">
-      <div class="hero-content">
-        <h1 class="hero-title">{{topics.title}}</h1>
-        <p class="hero-subtitle">{{topics.content}}</p>
+  @if (!isLoading) {
+    <div class="content-container">
+      <!-- Hero Section -->
+      <div class="hero-section">
+        <div class="hero-content">
+          <h1 class="hero-title">{{topics.title}}</h1>
+          <p class="hero-subtitle">{{topics.content}}</p>
+        </div>
+        <div class="hero-graphic">
+          <ion-icon name="musical-notes" class="floating-note note-1"></ion-icon>
+          <ion-icon name="musical-note" class="floating-note note-2"></ion-icon>
+          <ion-icon name="musical-notes" class="floating-note note-3"></ion-icon>
+        </div>
       </div>
-      <div class="hero-graphic">
-        <ion-icon name="musical-notes" class="floating-note note-1"></ion-icon>
-        <ion-icon name="musical-note" class="floating-note note-2"></ion-icon>
-        <ion-icon name="musical-notes" class="floating-note note-3"></ion-icon>
+      @for (inputData of inputDatas; track inputData) {
+        <div>
+          <app-display-card-list [inputData]="inputData" (cardSelected)="onCardSelected($event)" (playAllClicked)="onPlayAllClicked($event)"></app-display-card-list>
+        </div>
+      }
+      <!-- Add Category Button -->
+      <div class="add-category-section">
+        <ion-button expand="block" fill="solid" color="primary" (click)="openCategoryModal()">
+          <ion-icon name="add" slot="start"></ion-icon>
+          Add New Category
+        </ion-button>
       </div>
     </div>
-
-    
-    <div *ngFor="let inputData of inputDatas;">
-      <app-display-card-list [inputData]="inputData" (cardSelected)="onCardSelected($event)" (playAllClicked)="onPlayAllClicked($event)"></app-display-card-list>
-    </div>
-    
-    <!-- Add Category Button -->
-    <div class="add-category-section">
-      <ion-button expand="block" fill="solid" color="primary" (click)="openCategoryModal()">
-        <ion-icon name="add" slot="start"></ion-icon>
-        Add New Category
-      </ion-button>
-    </div>
-  </div>
+  }
 </ion-content>

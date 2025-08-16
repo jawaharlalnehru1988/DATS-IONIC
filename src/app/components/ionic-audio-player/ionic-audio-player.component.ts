@@ -1,6 +1,6 @@
 import { IonCardHeader, IonCardTitle, IonCard, IonCardSubtitle, IonCardContent, IonButton, IonIcon, IonRange, IonSpinner } from '@ionic/angular/standalone';
 import { ChangeDetectorRef, Component, ElementRef, Input, ViewChild, AfterViewInit, OnChanges, SimpleChanges, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { addIcons } from 'ionicons';
 import { pause, play, repeat, stop, volumeHigh, volumeLow, playSkipBack, playSkipForward } from 'ionicons/icons';
 import { AudioItem, AudioRange } from 'src/app/Utils/models';
@@ -10,7 +10,7 @@ import { DataSharingService } from 'src/app/services/data-sharing.service';
   selector: 'app-ionic-audio-player',
   templateUrl: './ionic-audio-player.component.html',
   styleUrls: ['./ionic-audio-player.component.scss'],
-  imports: [CommonModule, IonCardHeader, IonCardTitle, IonCard, IonCardSubtitle, IonCardContent, IonButton, IonIcon, IonRange, IonSpinner ]
+  imports: [IonCardHeader, IonCardTitle, IonCard, IonCardSubtitle, IonCardContent, IonButton, IonIcon, IonRange, IonSpinner]
 })
 export class IonicAudioPlayerComponent implements AfterViewInit, OnChanges {
 

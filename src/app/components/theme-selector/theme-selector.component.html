@@ -10,22 +10,23 @@
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
-    
+
     <ion-content class="theme-modal-content">
       <div class="theme-selector">
         <div class="theme-buttons">
-          <button 
-            *ngFor="let theme of themes" 
-            class="theme-btn" 
-            [class]="theme.value"
-            (click)="selectTheme(theme.value)" 
-            [class.active]="currentTheme === theme.value">
-            <span 
-              class="theme-preview" 
-              [style.background]="theme.previewGradient">
-            </span>
-            {{ theme.name }}
-          </button>
+          @for (theme of themes; track theme) {
+            <button
+              class="theme-btn"
+              [class]="theme.value"
+              (click)="selectTheme(theme.value)"
+              [class.active]="currentTheme === theme.value">
+              <span
+                class="theme-preview"
+                [style.background]="theme.previewGradient">
+              </span>
+              {{ theme.name }}
+            </button>
+          }
         </div>
       </div>
     </ion-content>

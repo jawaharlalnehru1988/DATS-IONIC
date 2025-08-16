@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IonContent, IonMenuButton, IonHeader, IonTitle, IonToolbar, IonInput, IonItem, IonTextarea, IonLabel, IonButton, IonText, IonButtons, IonSpinner } from '@ionic/angular/standalone';
 import { AuthService } from '../services/auth.service';
@@ -14,7 +14,7 @@ import { ReusableHeaderComponent } from '../components';
   templateUrl: './register.page.html',
   styleUrls: ['./register.page.scss'],
   standalone: true,
-  imports: [IonSpinner, ReusableHeaderComponent, IonText, IonContent, ReactiveFormsModule, FormsModule,  IonText, CommonModule, FormsModule, IonItem, IonInput, IonTextarea, IonLabel, IonButton]
+  imports: [IonSpinner, ReusableHeaderComponent, IonText, IonContent, ReactiveFormsModule, FormsModule, IonText, FormsModule, IonItem, IonInput, IonTextarea, IonLabel, IonButton]
 })
 export class RegisterPage implements OnInit, OnDestroy {
   registerForm!: FormGroup;

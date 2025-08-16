@@ -8,49 +8,51 @@
             Welcome to Devotee App
           </ion-list-header>
           <ion-note>askharekrishna.com</ion-note>
-          
+
           <!-- User Info Section - Show only if authenticated -->
-          <div class="user-info" *ngIf="isAuthenticated && currentUser" [class]="currentTheme">
-            <div class="user-details">
-              <h4>{{ currentUser.name }}</h4>
-              <p>{{ currentUser.email }}</p>
-              <span class="user-role">{{ currentUser.role | titlecase }}</span>
+          @if (isAuthenticated && currentUser) {
+            <div class="user-info" [class]="currentTheme">
+              <div class="user-details">
+                <h4>{{ currentUser.name }}</h4>
+                <p>{{ currentUser.email }}</p>
+                <span class="user-role">{{ currentUser.role | titlecase }}</span>
+              </div>
+              <ion-menu-toggle auto-hide="false">
+                <ion-item
+                  button
+                  (click)="onLogout()"
+                  lines="none"
+                  detail="false"
+                  [class]="'menu-item logout-item ' + currentTheme">
+                  <ion-icon
+                    aria-hidden="true"
+                    slot="start"
+                    name="log-out-outline"
+                    color="danger">
+                  </ion-icon>
+                  <ion-label color="danger">{{ texts.logout }}</ion-label>
+                </ion-item>
+              </ion-menu-toggle>
             </div>
-            <ion-menu-toggle auto-hide="false">
-              <ion-item 
-                button
-                (click)="onLogout()"
-                lines="none" 
-                detail="false"
-                [class]="'menu-item logout-item ' + currentTheme">
-                <ion-icon 
-                  aria-hidden="true" 
-                  slot="start" 
-                  name="log-out-outline"
-                  color="danger">
-                </ion-icon>
-                <ion-label color="danger">{{ texts.logout }}</ion-label>
-              </ion-item>
-            </ion-menu-toggle>
-          </div>
-          </div>
+          }
+        </div>
 
         <!-- Main Navigation -->
         <ion-list id="inbox-list" [class]="currentTheme">
           @for (p of appPages; track p; let i = $index) {
             <ion-menu-toggle auto-hide="false">
-              <ion-item 
-                routerDirection="root" 
-                [routerLink]="getLanguageAwareRoute(p.url)" 
-                lines="none" 
-                detail="false" 
+              <ion-item
+                routerDirection="root"
+                [routerLink]="getLanguageAwareRoute(p.url)"
+                lines="none"
+                detail="false"
                 routerLinkActive="selected"
                 [class]="'menu-item ' + currentTheme">
-                <ion-icon 
-                  aria-hidden="true" 
-                  slot="start" 
-                  [ios]="p.icon + '-outline'" 
-                  [md]="p.icon + '-sharp'" 
+                <ion-icon
+                  aria-hidden="true"
+                  slot="start"
+                  [ios]="p.icon + '-outline'"
+                  [md]="p.icon + '-sharp'"
                   [style.color]="p.iconColor">
                 </ion-icon>
                 <ion-label>{{ getMenuText(p.textKey) }}</ion-label>
@@ -64,18 +66,18 @@
           <ion-list-header>🔧 Utilities</ion-list-header>
           @for (p of additionals; track p; let i = $index) {
             <ion-menu-toggle auto-hide="false">
-              <ion-item 
-                routerDirection="root" 
-                [routerLink]="getLanguageAwareRoute(p.url)" 
-                lines="none" 
-                detail="false" 
+              <ion-item
+                routerDirection="root"
+                [routerLink]="getLanguageAwareRoute(p.url)"
+                lines="none"
+                detail="false"
                 routerLinkActive="selected"
                 [class]="'menu-item ' + currentTheme">
-                <ion-icon 
-                  aria-hidden="true" 
-                  slot="start" 
-                  [ios]="p.icon + '-outline'" 
-                  [md]="p.icon + '-sharp'" 
+                <ion-icon
+                  aria-hidden="true"
+                  slot="start"
+                  [ios]="p.icon + '-outline'"
+                  [md]="p.icon + '-sharp'"
                   [style.color]="p.iconColor">
                 </ion-icon>
                 <ion-label>{{ getMenuText(p.textKey) }}</ion-label>

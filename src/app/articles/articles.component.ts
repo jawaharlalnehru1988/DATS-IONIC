@@ -15,6 +15,7 @@ import { ShowForRolesDirective } from '../directives/show-for-roles.directive';
 import { Subscription, Observable } from 'rxjs';
 import { ReusableHeaderComponent } from '../components';
 import { SegmentedTabsComponent, TabItem } from "../components/segmented-tabs/segmented-tabs.component";
+import { SkeletonLoaderComponent } from '../components/skeleton-loader/skeleton-loader.component';
 
 export interface Blogs {
   _id: string
@@ -35,7 +36,7 @@ export interface Blogs {
   templateUrl: './articles.component.html',
   styleUrls: ['./articles.component.scss'],
   standalone: true,
-  imports: [ReusableHeaderComponent, IonButton, IonIcon, IonContent, CommonModule, BlogFormComponent, ShowForRolesDirective, IonActionSheet, IonSkeletonText, SegmentedTabsComponent],
+  imports: [ReusableHeaderComponent, IonButton, IonIcon, IonContent, CommonModule, BlogFormComponent, ShowForRolesDirective, IonActionSheet, SegmentedTabsComponent, SkeletonLoaderComponent],
 })
 export class ArticlesComponent implements OnInit, OnDestroy {
   selectedTopic: string = 'how';

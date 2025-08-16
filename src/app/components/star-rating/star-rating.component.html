@@ -1,26 +1,29 @@
 <div class="star-rating-container" [class]="getSizeClass()">
-  <div class="stars-wrapper" 
-       (mouseleave)="onMouseLeave()">
-    <ion-button
-      *ngFor="let star of stars; let i = index"
-      fill="clear"
-      size="small"
-      class="star-button"
-      [class.readonly]="readonly"
-      [class.hovered]="hoveredRating > 0 && i < hoveredRating"
-      [class.filled]="isStarFilled(i)"
-      (click)="onStarClick(i)"
-      (mouseenter)="onStarHover(i)"
-      [disabled]="readonly"
-    >
-      <ion-icon 
-        [name]="isStarFilled(i) ? 'star' : 'star-outline'"
-        slot="icon-only"
-      ></ion-icon>
-    </ion-button>
+  <div class="stars-wrapper"
+    (mouseleave)="onMouseLeave()">
+    @for (star of stars; track star; let i = $index) {
+      <ion-button
+        fill="clear"
+        size="small"
+        class="star-button"
+        [class.readonly]="readonly"
+        [class.hovered]="hoveredRating > 0 && i < hoveredRating"
+        [class.filled]="isStarFilled(i)"
+        (click)="onStarClick(i)"
+        (mouseenter)="onStarHover(i)"
+        [disabled]="readonly"
+        >
+        <ion-icon
+          [name]="isStarFilled(i) ? 'star' : 'star-outline'"
+          slot="icon-only"
+        ></ion-icon>
+      </ion-button>
+    }
   </div>
-  
-  <span class="rating-text" *ngIf="rating > 0">
-    {{ rating }}/{{ maxStars }}
-  </span>
+
+  @if (rating > 0) {
+    <span class="rating-text">
+      {{ rating }}/{{ maxStars }}
+    </span>
+  }
 </div>

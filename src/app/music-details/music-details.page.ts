@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import {  
   IonSpinner, 
@@ -34,6 +34,7 @@ import { CategoryCard } from '../Utils/models/card.model';
 import { DataSharingService } from '../services/data-sharing.service';
 import { CategoryFormService } from '../Utils/components/category-form/category-form.service';
 import { GlobalStateService } from '../services/global-state.service';
+import { SkeletonLoaderComponent } from '../components/skeleton-loader/skeleton-loader.component';
 
 @Component({
   selector: 'app-music-details',
@@ -41,16 +42,15 @@ import { GlobalStateService } from '../services/global-state.service';
   styleUrls: ['./music-details.page.scss'],
   standalone: true,
   imports: [
-    IonSkeletonText,
     IonContent,
     IonButton,
     IonIcon,
     IonRefresher,
     IonRefresherContent,
-    CommonModule,
     FormsModule,
     DisplayCardListComponent,
-    ReusableHeaderComponent
+    ReusableHeaderComponent,
+    SkeletonLoaderComponent
 ]
 })
 export class MusicDetailsPage implements OnInit {

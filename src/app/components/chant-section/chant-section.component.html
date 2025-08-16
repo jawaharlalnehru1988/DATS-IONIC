@@ -1,23 +1,27 @@
 <section class="chant-section" [ngClass]="currentTheme$ | async">
-    <h5>{{ title }}</h5>
-    <h3 (click)="onMantraClick('hare-krishna')" 
-        class="mantra-line" 
-        [class.playing]="isMantraPlaying">
-       {{ (texts$ | async)?.hareKrishnaMantra || 'Hare Krishna Hare Krishna Krishna Krishna Hare Hare' }}
-    </h3>
-    <h3 (click)="onMantraClick('hare-rama')" 
-        class="mantra-line" 
-        [class.playing]="isMantraPlaying">
-       {{ (texts$ | async)?.hareRamaMantra || 'Hare Rama Hare Rama Rama Rama Hare Hare' }}
-    </h3>
-    <p class="chant-instruction" *ngIf="!isMantraPlaying">
+  <h5>{{ title }}</h5>
+  <h3 (click)="onMantraClick('hare-krishna')"
+    class="mantra-line"
+    [class.playing]="isMantraPlaying">
+    {{ (texts$ | async)?.hareKrishnaMantra || 'Hare Krishna Hare Krishna Krishna Krishna Hare Hare' }}
+  </h3>
+  <h3 (click)="onMantraClick('hare-rama')"
+    class="mantra-line"
+    [class.playing]="isMantraPlaying">
+    {{ (texts$ | async)?.hareRamaMantra || 'Hare Rama Hare Rama Rama Rama Hare Hare' }}
+  </h3>
+  @if (!isMantraPlaying) {
+    <p class="chant-instruction">
       <ion-icon name="hand-left" class="tap-icon"></ion-icon>
       {{ (texts$ | async)?.chantInstruction || 'Tap the mantras above to hear Srila Prabhupada chanting' }}
       <ion-icon name="hand-right" class="tap-icon"></ion-icon>
     </p>
-    <p class="playing-message" *ngIf="isMantraPlaying">
+  }
+  @if (isMantraPlaying) {
+    <p class="playing-message">
       <ion-icon name="musical-note" class="playing-icon"></ion-icon>
       {{ (texts$ | async)?.chantPlayingMessage || '🕉️ Sacred mantra is playing... Listen with devotion 🕉️' }}
       <ion-icon name="musical-note" class="playing-icon"></ion-icon>
     </p>
+  }
 </section>

@@ -44,6 +44,7 @@ import { IonicMetaService } from '../../services/ionic-meta.service';
 import { SocialShareService } from '../../services/social-share.service';
 import { ShareButtonComponent } from '../share-button/share-button.component';
 import { Subscription, Observable } from 'rxjs';
+import { SkeletonLoaderComponent } from "../skeleton-loader/skeleton-loader.component";
 
 
 @Component({
@@ -62,7 +63,6 @@ import { Subscription, Observable } from 'rxjs';
     IonCardContent,
     IonIcon,
     IonButton,
-    IonSpinner,
     IonItem,
     IonTextarea,
     IonChip,
@@ -73,8 +73,9 @@ import { Subscription, Observable } from 'rxjs';
     IonTitle,
     IonButtons,
     IonBackButton,
-    ShareButtonComponent
-  ]
+    ShareButtonComponent,
+    SkeletonLoaderComponent
+]
 })
 export class BlogDetailComponent implements OnInit, OnDestroy {
   blog: Blog | null = null;

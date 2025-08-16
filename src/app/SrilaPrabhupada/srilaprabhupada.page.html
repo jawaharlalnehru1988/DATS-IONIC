@@ -1,6 +1,6 @@
-<app-reusable-header 
-  [titleKey]="'srilaPrabhupadaTitle'" 
-  [translucent]="true" 
+<app-reusable-header
+  [titleKey]="'srilaPrabhupadaTitle'"
+  [translucent]="true"
   [showMenuButton]="true">
 </app-reusable-header>
 
@@ -8,7 +8,7 @@
 
   <div class="content-container" [class]="currentTheme">
     <!-- ...existing code... -->
-    
+
     <!-- Featured Tags -->
     <div class="featured-tags">
       <div class="tag-chip">Daily Quotes</div>
@@ -18,63 +18,61 @@
     </div>
 
     <!-- Categories Section -->
-    <div class="categories-container" *ngFor="let category of categories">
-      
-      <!-- Category Header -->
-      <div class="category-header">
-        <h2 class="category-title">{{ category.name }}</h2>
-        <ion-button fill="clear" size="small" (click)="onCategoryAction(category)">
-          <span>View All</span>
-          <ion-icon name="chevron-forward-outline"></ion-icon>
-        </ion-button>
-      </div>
-
-      <!-- Cards Grid -->
-      <div class="cards-grid">
-        <div class="content-card" 
-             *ngFor="let card of category.cards" 
-             (click)="onCardClick(card)"
-             [class]="'card-' + card.type">
-          
-          <!-- Card Image -->
-          <div class="card-image-container">
-            <img [src]="card.imageUrl" [alt]="card.title" class="card-image">
-            <div class="image-overlay"></div>
-            
-            <!-- Duration Badge (for videos/audio) -->
-            <div class="duration-badge" *ngIf="card.duration">
-              {{ card.duration }}
+    @for (category of categories; track category) {
+      <div class="categories-container">
+        <!-- Category Header -->
+        <div class="category-header">
+          <h2 class="category-title">{{ category.name }}</h2>
+          <ion-button fill="clear" size="small" (click)="onCategoryAction(category)">
+            <span>View All</span>
+            <ion-icon name="chevron-forward-outline"></ion-icon>
+          </ion-button>
+        </div>
+        <!-- Cards Grid -->
+        <div class="cards-grid">
+          @for (card of category.cards; track card) {
+            <div class="content-card"
+              (click)="onCardClick(card)"
+              [class]="'card-' + card.type">
+              <!-- Card Image -->
+              <div class="card-image-container">
+                <img [src]="card.imageUrl" [alt]="card.title" class="card-image">
+                <div class="image-overlay"></div>
+                <!-- Duration Badge (for videos/audio) -->
+                @if (card.duration) {
+                  <div class="duration-badge">
+                    {{ card.duration }}
+                  </div>
+                }
+                <!-- Type Icon -->
+                <div class="type-icon">
+                  <ion-icon
+                    [name]="getTypeIcon(card.type)"
+                    class="icon">
+                  </ion-icon>
+                </div>
+              </div>
+              <!-- Card Content -->
+              <div class="card-content">
+                <!-- <div class="card-brand" *ngIf="card.subtitle">{{ card.subtitle }}</div> -->
+                <h3 class="card-title">{{ card.title }}</h3>
+                <!-- Action Button -->
+                <div class="card-action">
+                  <span class="action-text">{{ card.actionText }}</span>
+                </div>
+              </div>
             </div>
-
-            <!-- Type Icon -->
-            <div class="type-icon">
-              <ion-icon 
-                [name]="getTypeIcon(card.type)" 
-                class="icon">
-              </ion-icon>
-            </div>
-          </div>
-
-          <!-- Card Content -->
-          <div class="card-content">
-            <!-- <div class="card-brand" *ngIf="card.subtitle">{{ card.subtitle }}</div> -->
-            <h3 class="card-title">{{ card.title }}</h3>
-            
-            <!-- Action Button -->
-            <div class="card-action">
-              <span class="action-text">{{ card.actionText }}</span>
-            </div>
-          </div>
+          }
         </div>
       </div>
-    </div>
+    }
 
     <!-- Special Promotion Section -->
     <div class="special-section">
       <div class="special-header">
         <h2>Special Collections</h2>
       </div>
-      
+
       <div class="special-card">
         <div class="special-content">
           <h3>Complete Bhagavatam Series</h3>
@@ -84,11 +82,11 @@
           </ion-button>
         </div>
         <div class="special-image">
-          <img src="https://res.cloudinary.com/dbmkctsda/image/upload/v1751699516/sitting_with_books_ova3dl.jpg" 
-               alt="Bhagavatam Collection">
+          <img src="https://res.cloudinary.com/dbmkctsda/image/upload/v1751699516/sitting_with_books_ova3dl.jpg"
+            alt="Bhagavatam Collection">
+          </div>
         </div>
       </div>
-    </div>
 
-  </div>
-</ion-content>
+    </div>
+  </ion-content>

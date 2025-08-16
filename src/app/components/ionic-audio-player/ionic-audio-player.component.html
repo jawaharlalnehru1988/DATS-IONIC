@@ -2,63 +2,67 @@
   <!-- Image with Play/Pause Overlay -->
   <div class="audio-image-container" (click)="togglePlayPause()">
     <img [src]="audioData.imageSrc" alt="Audio Image" class="audio-img"/>
-    
+
     <!-- Loading/Buffering Indicator (only show when loading) -->
-    <div class="loading-overlay" *ngIf="isLoading">
-      <ion-spinner name="crescent"></ion-spinner>
-    </div>
+    @if (isLoading) {
+      <div class="loading-overlay">
+        <ion-spinner name="crescent"></ion-spinner>
+      </div>
+    }
   </div>
-  
+
   <ion-card-header>
     <ion-card-title>{{audioData.title}}</ion-card-title>
     <ion-card-subtitle>{{audioData.auther}}</ion-card-subtitle>
     <!-- Range indicator -->
-    <div class="range-indicator" *ngIf="isRangeMode">
-      <small>🎯 Playing: {{ selectedRange?.name }} ({{ formatTime(rangeStartTime) }} - {{ formatTime(rangeEndTime) }})</small>
-    </div>
+    @if (isRangeMode) {
+      <div class="range-indicator">
+        <small>🎯 Playing: {{ selectedRange?.name }} ({{ formatTime(rangeStartTime) }} - {{ formatTime(rangeEndTime) }})</small>
+      </div>
+    }
   </ion-card-header>
   <audio #audioElement [src]="audioData.audioSrc"
-         (timeupdate)="onTimeUpdate()"
-         (loadedmetadata)="onLoadedMetadata($event)"></audio>
-         <ion-card-content>
-           <!-- Audio Track (Progress Bar) -->
-           <div class="audio-track">
+    (timeupdate)="onTimeUpdate()"
+  (loadedmetadata)="onLoadedMetadata($event)"></audio>
+  <ion-card-content>
+    <!-- Audio Track (Progress Bar) -->
+    <div class="audio-track">
       <span class="audio-time">{{ formatTime(getDisplayCurrentTime()) }}</span>
       <ion-range
-      [class.range-mode]="isRangeMode"
-      [min]="getProgressMin()"
-      [max]="getProgressMax()"
-      step="0.1"
-      [value]="getDisplayCurrentTime()"
-      (ionChange)="seekTo($event)">
-    </ion-range>
-    <span class="audio-time">{{formatTime(getProgressMax())}}</span>
+        [class.range-mode]="isRangeMode"
+        [min]="getProgressMin()"
+        [max]="getProgressMax()"
+        step="0.1"
+        [value]="getDisplayCurrentTime()"
+        (ionChange)="seekTo($event)">
+      </ion-range>
+      <span class="audio-time">{{formatTime(getProgressMax())}}</span>
     </div>
     <div class="audio-controls">
       <!-- Previous button -->
       <ion-button fill="clear" size="small" (click)="playPrevious()" [disabled]="!hasPrevious()">
         <ion-icon slot="icon-only" name="play-skip-back"></ion-icon>
       </ion-button>
-      
+
       <!-- Single Play/Pause toggle button -->
       <ion-button fill="clear" size="small" (click)="togglePlayPause()">
         <ion-icon slot="icon-only" [name]="isPlaying ? 'pause' : 'play'"></ion-icon>
       </ion-button>
-      
+
       <ion-button fill="clear" size="small" (click)="stop()">
         <ion-icon slot="icon-only" name="stop"></ion-icon>
       </ion-button>
-      
+
       <!-- Next button -->
       <ion-button fill="clear" size="small" (click)="playNext()" [disabled]="!hasNext()">
         <ion-icon slot="icon-only" name="play-skip-forward"></ion-icon>
       </ion-button>
-      
+
       <ion-button fill="clear" size="small" [color]="isLoop ? 'primary' : 'medium'" (click)="toggleLoop()">
         <ion-icon slot="icon-only" name="repeat"></ion-icon>
       </ion-button>
     </div>
-    
+
     <!-- Volume Control on separate line -->
     <div class="volume-control">
       <ion-range min="0" max="1" step="0.01" [value]="volume" (ionChange)="onVolumeChange($event)" class="volume-slider">

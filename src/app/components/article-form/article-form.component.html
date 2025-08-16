@@ -21,77 +21,89 @@
                   <ion-card-title>Article Information</ion-card-title>
                 </ion-card-header>
                 <ion-card-content>
-                  
+
                   <!-- Article Title -->
                   <ion-item>
                     <ion-label position="stacked">Article Title *</ion-label>
-                    <ion-input 
+                    <ion-input
                       formControlName="articleTitle"
                       placeholder="Enter article title"
                       [class.ion-invalid]="articleForm.get('articleTitle')?.invalid && articleForm.get('articleTitle')?.touched">
                     </ion-input>
                   </ion-item>
-                  <div class="error-message" *ngIf="getErrorMessage('articleTitle')">
-                    {{ getErrorMessage('articleTitle') }}
-                  </div>
+                  @if (getErrorMessage('articleTitle')) {
+                    <div class="error-message">
+                      {{ getErrorMessage('articleTitle') }}
+                    </div>
+                  }
 
                   <!-- Description -->
                   <ion-item>
                     <ion-label position="stacked">Description *</ion-label>
-                    <ion-textarea 
+                    <ion-textarea
                       formControlName="description"
                       placeholder="Enter article description"
                       rows="3"
                       [class.ion-invalid]="articleForm.get('description')?.invalid && articleForm.get('description')?.touched">
                     </ion-textarea>
                   </ion-item>
-                  <div class="error-message" *ngIf="getErrorMessage('description')">
-                    {{ getErrorMessage('description') }}
-                  </div>
+                  @if (getErrorMessage('description')) {
+                    <div class="error-message">
+                      {{ getErrorMessage('description') }}
+                    </div>
+                  }
 
                   <!-- Category -->
                   <ion-item>
                     <ion-label position="stacked">Category *</ion-label>
-                    <ion-input 
+                    <ion-input
                       formControlName="categoryTitle"
                       placeholder="Enter category name"
                       list="categoryOptions"
                       [class.ion-invalid]="articleForm.get('categoryTitle')?.invalid && articleForm.get('categoryTitle')?.touched">
                     </ion-input>
                     <datalist id="categoryOptions">
-                      <option *ngFor="let category of categoryTitles" [value]="category">
-                      </option>
+                      @for (category of categoryTitles; track category) {
+                        <option [value]="category">
+                        </option>
+                      }
                     </datalist>
                   </ion-item>
-                  <div class="error-message" *ngIf="getErrorMessage('categoryTitle')">
-                    {{ getErrorMessage('categoryTitle') }}
-                  </div>
+                  @if (getErrorMessage('categoryTitle')) {
+                    <div class="error-message">
+                      {{ getErrorMessage('categoryTitle') }}
+                    </div>
+                  }
 
                   <!-- Image URL -->
                   <ion-item>
                     <ion-label position="stacked">Image URL *</ion-label>
-                    <ion-input 
+                    <ion-input
                       formControlName="imageUrl"
                       placeholder="https://example.com/image.jpg"
                       [class.ion-invalid]="articleForm.get('imageUrl')?.invalid && articleForm.get('imageUrl')?.touched">
                     </ion-input>
                   </ion-item>
-                  <div class="error-message" *ngIf="getErrorMessage('imageUrl')">
-                    {{ getErrorMessage('imageUrl') }}
-                  </div>
+                  @if (getErrorMessage('imageUrl')) {
+                    <div class="error-message">
+                      {{ getErrorMessage('imageUrl') }}
+                    </div>
+                  }
 
                   <!-- Image Alt Text -->
                   <ion-item>
                     <ion-label position="stacked">Image Alt Text *</ion-label>
-                    <ion-input 
+                    <ion-input
                       formControlName="imageAlt"
                       placeholder="Describe the image for accessibility"
                       [class.ion-invalid]="articleForm.get('imageAlt')?.invalid && articleForm.get('imageAlt')?.touched">
                     </ion-input>
                   </ion-item>
-                  <div class="error-message" *ngIf="getErrorMessage('imageAlt')">
-                    {{ getErrorMessage('imageAlt') }}
-                  </div>
+                  @if (getErrorMessage('imageAlt')) {
+                    <div class="error-message">
+                      {{ getErrorMessage('imageAlt') }}
+                    </div>
+                  }
 
                 </ion-card-content>
               </ion-card>
@@ -105,7 +117,7 @@
                   <ion-card-title>Article Content</ion-card-title>
                 </ion-card-header>
                 <ion-card-content>
-                  
+
                   <!-- Rich Text Editor for Content -->
                   <div class="content-editor-container">
                     <ion-label>Content</ion-label>
@@ -124,18 +136,18 @@
           <ion-row>
             <ion-col size="12">
               <div class="form-actions">
-                <ion-button 
-                  expand="block" 
+                <ion-button
+                  expand="block"
                   type="submit"
                   [disabled]="articleForm.invalid"
                   color="primary">
                   <ion-icon name="save" slot="start"></ion-icon>
                   {{ isEditing ? 'Update Article' : 'Save Article' }}
                 </ion-button>
-                
-                <ion-button 
-                  expand="block" 
-                  fill="outline" 
+
+                <ion-button
+                  expand="block"
+                  fill="outline"
                   color="medium"
                   (click)="closeModal()">
                   Cancel

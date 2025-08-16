@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { 
   IonModal, 
   IonHeader, 
@@ -20,7 +20,6 @@ import { close } from 'ionicons/icons';
   styleUrls: ['./theme-selector.component.scss'],
   standalone: true,
   imports: [
-    CommonModule,
     IonModal,
     IonHeader,
     IonToolbar,
@@ -29,7 +28,7 @@ import { close } from 'ionicons/icons';
     IonButton,
     IonButtons,
     IonIcon
-  ]
+]
 })
 export class ThemeSelectorComponent {
   @Input() isOpen: boolean = false;

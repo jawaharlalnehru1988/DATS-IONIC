@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, HostBinding } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonMenuButton, IonIcon } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
@@ -24,7 +24,7 @@ export interface CardModel{
   templateUrl: './tutorial.page.html',
   styleUrls: ['./tutorial.page.scss'],
   standalone: true,
-  imports: [IonIcon, ReusableHeaderComponent, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, SegmentedTabsComponent]
+  imports: [IonIcon, ReusableHeaderComponent, IonContent, IonHeader, IonTitle, IonToolbar, FormsModule, SegmentedTabsComponent]
 })
 export class TutorialPage implements OnInit, OnDestroy {
    isLoading = true;

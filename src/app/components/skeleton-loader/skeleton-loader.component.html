@@ -1,0 +1,174 @@
+<div class="skeleton-container">
+  @switch (config.type) {
+    @case ('cards') {
+      <!-- Category Title Skeleton -->
+      @if (config.showCategoryTitle) {
+        <div class="skeleton-category">
+          <ion-skeleton-text animated style="width: 60%; height: 24px; margin-bottom: 16px;"></ion-skeleton-text>
+        </div>
+      }
+      
+      <!-- Card Skeletons -->
+      <div class="skeleton-cards" [ngClass]="{
+        'grid-layout': config.cardLayout === 'grid',
+        'horizontal-layout': config.cardLayout === 'horizontal'
+      }">
+        @for (item of skeletonItems; track item) {
+          <div class="skeleton-card" [ngClass]="{
+            'grid-cards': config.cardLayout === 'grid',
+            'vertical-cards': config.cardLayout === 'vertical'
+          }">
+            @for (cardItem of cardItems; track cardItem) {
+              <div class="skeleton-card-content">
+                <ion-skeleton-text animated style="width: 100%; height: 120px; border-radius: 12px;"></ion-skeleton-text>
+                <div class="skeleton-card-info">
+                  <ion-skeleton-text animated style="width: 80%; height: 18px; margin-top: 12px;"></ion-skeleton-text>
+                  <ion-skeleton-text animated style="width: 60%; height: 14px; margin-top: 8px;"></ion-skeleton-text>
+                  <ion-skeleton-text animated style="width: 40%; height: 14px; margin-top: 8px;"></ion-skeleton-text>
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    }
+
+    @case ('hero-cards') {
+      <!-- Hero Section Skeleton -->
+      @if (config.showHeroSection !== false) {
+        <div class="skeleton-hero">
+          <ion-skeleton-text animated style="width: 70%; height: 32px; margin-bottom: 12px;"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 90%; height: 16px; margin-bottom: 8px;"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 60%; height: 16px; margin-bottom: 24px;"></ion-skeleton-text>
+        </div>
+      }
+
+      <!-- Category Title Skeleton -->
+      @if (config.showCategoryTitle) {
+        <div class="skeleton-category">
+          <ion-skeleton-text animated style="width: 60%; height: 24px; margin-bottom: 16px;"></ion-skeleton-text>
+        </div>
+      }
+      
+      <!-- Card Skeletons -->
+      <div class="skeleton-cards" [ngClass]="{
+        'grid-layout': config.cardLayout === 'grid',
+        'horizontal-layout': config.cardLayout === 'horizontal'
+      }">
+        @for (item of skeletonItems; track item) {
+          <div class="skeleton-card">
+            <div class="skeleton-card-content">
+              <ion-skeleton-text animated style="width: 100%; height: 120px; border-radius: 12px;"></ion-skeleton-text>
+              <div class="skeleton-card-info">
+                <ion-skeleton-text animated style="width: 80%; height: 18px; margin-top: 12px;"></ion-skeleton-text>
+                <ion-skeleton-text animated style="width: 60%; height: 14px; margin-top: 8px;"></ion-skeleton-text>
+                <ion-skeleton-text animated style="width: 40%; height: 14px; margin-top: 8px;"></ion-skeleton-text>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Add Button Skeleton -->
+      @if (config.showAddButton) {
+        <div class="skeleton-add-button">
+          <ion-skeleton-text animated style="width: 100%; height: 44px; border-radius: 22px; margin-top: 24px;"></ion-skeleton-text>
+        </div>
+      }
+    }
+
+    @case ('list') {
+      <!-- Category Title Skeleton -->
+      @if (config.showCategoryTitle) {
+        <div class="skeleton-category">
+          <ion-skeleton-text animated style="width: 50%; height: 24px; margin-bottom: 16px;"></ion-skeleton-text>
+        </div>
+      }
+
+      <!-- List Skeletons -->
+      <div class="skeleton-list">
+        @for (item of skeletonItems; track item) {
+          <div class="skeleton-list-item">
+            <div class="skeleton-avatar">
+              <ion-skeleton-text animated style="width: 40px; height: 40px; border-radius: 50%;"></ion-skeleton-text>
+            </div>
+            <div class="skeleton-content">
+              <ion-skeleton-text animated style="width: 70%; height: 16px; margin-bottom: 8px;"></ion-skeleton-text>
+              <ion-skeleton-text animated style="width: 50%; height: 14px;"></ion-skeleton-text>
+            </div>
+          </div>
+        }
+      </div>
+    }
+
+    @case ('article') {
+      <!-- Article Skeleton -->
+      <div class="skeleton-article">
+        <!-- Header -->
+        <div class="skeleton-header">
+          <div class="skeleton-image">
+            <ion-skeleton-text animated style="width: 100%; height: 200px; border-radius: 12px;"></ion-skeleton-text>
+          </div>
+          <div class="skeleton-title">
+            <ion-skeleton-text animated style="width: 80%; height: 28px;"></ion-skeleton-text>
+          </div>
+          <div class="skeleton-meta">
+            <ion-skeleton-text animated style="width: 30%; height: 16px;"></ion-skeleton-text>
+            <ion-skeleton-text animated style="width: 20%; height: 16px;"></ion-skeleton-text>
+          </div>
+        </div>
+
+        <!-- Content -->
+        <div class="skeleton-content">
+          @for (item of [1,2,3,4,5]; track item) {
+            <div class="skeleton-paragraph">
+              <ion-skeleton-text animated style="width: 100%; height: 16px; margin-bottom: 8px;"></ion-skeleton-text>
+              <ion-skeleton-text animated style="width: 90%; height: 16px; margin-bottom: 8px;"></ion-skeleton-text>
+              <ion-skeleton-text animated style="width: 85%; height: 16px;"></ion-skeleton-text>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    @case ('custom') {
+      <!-- Custom Skeleton Items -->
+      @if (config.showCategoryTitle) {
+        <div class="skeleton-category">
+          <ion-skeleton-text animated style="width: 60%; height: 24px; margin-bottom: 16px;"></ion-skeleton-text>
+        </div>
+      }
+
+      <div class="skeleton-custom">
+        @if (config.customItems) {
+          @for (item of config.customItems; track item) {
+            <div class="skeleton-custom-item">
+              <ion-skeleton-text 
+                animated 
+                [style.width]="item.width"
+                [style.height]="item.height"
+                [style.border-radius]="item.borderRadius || '8px'"
+                [style.margin-top]="item.marginTop || '0'"
+                [style.margin-bottom]="item.marginBottom || '0'">
+              </ion-skeleton-text>
+            </div>
+          }
+        }
+      </div>
+    }
+
+    @default {
+      <!-- Default: Simple loading skeleton -->
+      <div class="skeleton-category">
+        <ion-skeleton-text animated style="width: 60%; height: 24px; margin-bottom: 16px;"></ion-skeleton-text>
+      </div>
+      @for (item of [1,2,3]; track item) {
+        <div style="margin-bottom: 16px;">
+          <ion-skeleton-text animated style="width: 100%; height: 120px; border-radius: 12px; margin-bottom: 12px;"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 80%; height: 18px; margin-bottom: 8px;"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 60%; height: 14px;"></ion-skeleton-text>
+        </div>
+      }
+    }
+  }
+</div>

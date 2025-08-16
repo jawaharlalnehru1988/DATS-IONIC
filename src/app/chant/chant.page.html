@@ -1,6 +1,6 @@
-<app-reusable-header 
+<app-reusable-header
   [title]="content.pageTitle"
-  [translucent]="true" 
+  [translucent]="true"
   [showMenuButton]="true">
 </app-reusable-header>
 
@@ -20,40 +20,40 @@
           <h3>{{content.currentRound}}</h3>
         </div>
         <div class="stat-number">{{currentRound}}/108</div>
-        <ion-button 
-          fill="clear" 
-          size="small" 
-          color="danger" 
+        <ion-button
+          fill="clear"
+          size="small"
+          color="danger"
           (click)="resetCurrentRound()"
           class="reset-btn">
           <ion-icon name="refresh-outline" slot="icon-only"></ion-icon>
         </ion-button>
       </div>
-      
+
       <div class="stat-card">
         <div class="stat-header">
           <h3>{{content.roundsCompleted}}</h3>
         </div>
         <div class="stat-number">{{roundsCompleted}}</div>
-        <ion-button 
-          fill="clear" 
-          size="small" 
-          color="danger" 
+        <ion-button
+          fill="clear"
+          size="small"
+          color="danger"
           (click)="resetRoundsCompleted()"
           class="reset-btn">
           <ion-icon name="refresh-outline" slot="icon-only"></ion-icon>
         </ion-button>
       </div>
-      
+
       <div class="stat-card">
         <div class="stat-header">
           <h3>{{content.mahaRounds}}</h3>
         </div>
         <div class="stat-number">{{mahaRounds}}</div>
-        <ion-button 
-          fill="clear" 
-          size="small" 
-          color="danger" 
+        <ion-button
+          fill="clear"
+          size="small"
+          color="danger"
           (click)="resetMahaRounds()"
           class="reset-btn">
           <ion-icon name="refresh-outline" slot="icon-only"></ion-icon>
@@ -64,8 +64,8 @@
     <!-- Progress info text only -->
     <div class="progress-container">
       <p class="progress-text">{{currentRound}} / 108 {{content.progressText}}</p>
-      <ion-progress-bar 
-        [value]="currentRound / 108" 
+      <ion-progress-bar
+        [value]="currentRound / 108"
         color="primary"
         class="chant-progress">
       </ion-progress-bar>
@@ -74,8 +74,8 @@
     <!-- Daily Goal Progress -->
     <div class="daily-goal">
       <h4>{{content.dailyGoal}}</h4>
-      <ion-progress-bar 
-        [value]="roundsCompleted / 16" 
+      <ion-progress-bar
+        [value]="roundsCompleted / 16"
         color="success"
         class="daily-progress">
       </ion-progress-bar>
@@ -96,149 +96,163 @@
         r="100"
         cx="110"
         cy="110"/>
-      <!-- Progress circle -->
-      <circle
-        class="progress-ring-circle"
-        stroke="rgba(255, 255, 255, 0.9)"
-        stroke-width="8"
-        fill="transparent"
-        r="100"
-        cx="110"
-        cy="110"
-        [style.stroke-dasharray]="circumference + ' ' + circumference"
-        [style.stroke-dashoffset]="strokeDashoffset"/>
-    </svg>
-    
-    <!-- Chant Button -->
-    <div class="chant-button" 
-         (click)="chant()" 
-         [class.disabled]="isAudioPlaying && currentSoundMode === 'prabhupada'">
-      <!-- Button Content -->
-      <div class="button-content">
-        <div class="chant-counter">{{currentRound}}</div>
-        <div class="chant-text">{{content.chantText}}</div>
-        <div class="chant-subtext">{{content.chantSubtext}}</div>
-        <!-- Audio playing indicators -->
-        <div class="audio-indicator" *ngIf="isAudioPlaying && currentSoundMode === 'prabhupada'">
-          🎵 Playing...
-        </div>
-        <div class="audio-indicator" *ngIf="currentSoundMode === 'continuous'">
-          <span *ngIf="isContinuousPlaying && !isContinuousPaused">🔄 Continuous...</span>
-          <span *ngIf="isContinuousPlaying && isContinuousPaused">⏸️ Paused...</span>
-          <span *ngIf="!isContinuousPlaying">🔄 Ready...</span>
+        <!-- Progress circle -->
+        <circle
+          class="progress-ring-circle"
+          stroke="rgba(255, 255, 255, 0.9)"
+          stroke-width="8"
+          fill="transparent"
+          r="100"
+          cx="110"
+          cy="110"
+          [style.stroke-dasharray]="circumference + ' ' + circumference"
+          [style.stroke-dashoffset]="strokeDashoffset"/>
+        </svg>
+
+        <!-- Chant Button -->
+        <div class="chant-button"
+          (click)="chant()"
+          [class.disabled]="isAudioPlaying && currentSoundMode === 'prabhupada'">
+          <!-- Button Content -->
+          <div class="button-content">
+            <div class="chant-counter">{{currentRound}}</div>
+            <div class="chant-text">{{content.chantText}}</div>
+            <div class="chant-subtext">{{content.chantSubtext}}</div>
+            <!-- Audio playing indicators -->
+            @if (isAudioPlaying && currentSoundMode === 'prabhupada') {
+              <div class="audio-indicator">
+                🎵 Playing...
+              </div>
+            }
+            @if (currentSoundMode === 'continuous') {
+              <div class="audio-indicator">
+                @if (isContinuousPlaying && !isContinuousPaused) {
+                  <span>🔄 Continuous...</span>
+                }
+                @if (isContinuousPlaying && isContinuousPaused) {
+                  <span>⏸️ Paused...</span>
+                }
+                @if (!isContinuousPlaying) {
+                  <span>🔄 Ready...</span>
+                }
+              </div>
+            }
+          </div>
+
+          <div class="ripple-effect"></div>
         </div>
       </div>
-      
-      <div class="ripple-effect"></div>
-    </div>
-  </div>
 
-  <!-- FAB Controls Section -->
-  <section class="fab-controls">
-    <!-- Bonfire (Sri Krishna Caitanya) Button -->
-    <ion-fab style="position: static; pointer-events: auto;">
-      <ion-fab-button 
-        color="tertiary" 
-        (click)="playSriKrishnaCaitanyaAudio()">
-        <img src="https://res.cloudinary.com/dbmkctsda/image/upload/v1751945325/8761009fc82487aec3b4145403b99b79_eeppak.jpg" alt="Krishna" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
-      </ion-fab-button>
-    </ion-fab>
+      <!-- FAB Controls Section -->
+      <section class="fab-controls">
+        <!-- Bonfire (Sri Krishna Caitanya) Button -->
+        <ion-fab style="position: static; pointer-events: auto;">
+          <ion-fab-button
+            color="tertiary"
+            (click)="playSriKrishnaCaitanyaAudio()">
+            <img src="https://res.cloudinary.com/dbmkctsda/image/upload/v1751945325/8761009fc82487aec3b4145403b99b79_eeppak.jpg" alt="Krishna" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
+          </ion-fab-button>
+        </ion-fab>
 
-    <!-- Sound Selector Button -->
-    <ion-fab style="position: static; pointer-events: auto;">
-      <ion-fab-button 
-        color="secondary" 
-        (click)="showSoundSelector()"
-        id="sound-trigger">
-        <ion-icon name="musical-notes-outline"></ion-icon>
-      </ion-fab-button>
-    </ion-fab>
+        <!-- Sound Selector Button -->
+        <ion-fab style="position: static; pointer-events: auto;">
+          <ion-fab-button
+            color="secondary"
+            (click)="showSoundSelector()"
+            id="sound-trigger">
+            <ion-icon name="musical-notes-outline"></ion-icon>
+          </ion-fab-button>
+        </ion-fab>
 
-    <!-- Language Selector Button -->
-    <ion-fab style="position: static; pointer-events: auto;">
-      <ion-fab-button 
-        color="primary" 
-        (click)="showLanguageSelector()"
-        id="language-trigger">
-        <ion-icon name="language-outline"></ion-icon>
-      </ion-fab-button>
-    </ion-fab>
-  </section>
+        <!-- Language Selector Button -->
+        <ion-fab style="position: static; pointer-events: auto;">
+          <ion-fab-button
+            color="primary"
+            (click)="showLanguageSelector()"
+            id="language-trigger">
+            <ion-icon name="language-outline"></ion-icon>
+          </ion-fab-button>
+        </ion-fab>
+      </section>
 
-  <!-- Language Selector Popover -->
-  <ion-popover 
-    [isOpen]="isLanguageSelectorOpen" 
-    (didDismiss)="isLanguageSelectorOpen = false"
-    trigger="language-trigger"
-    placement="bottom-end"
-    [showBackdrop]="true">
-    <ng-template>
-      <ion-content class="language-popover-content">
-        <div class="language-options">
-          <div class="language-item" 
-               *ngFor="let language of languageOptions"
-               (click)="setLanguage(language.key)" 
-               [class.selected]="currentLanguage === language.key">
-            <h3>{{language.flag}} {{language.name}}</h3>
-            <p>{{language.description}}</p>
-          </div>
-        </div>
-      </ion-content>
-    </ng-template>
-  </ion-popover>
-
-  <!-- Sound Selector Popover -->
-  <ion-popover 
-    [isOpen]="isSoundSelectorOpen" 
-    (didDismiss)="isSoundSelectorOpen = false"
-    trigger="sound-trigger"
-    placement="bottom-end"
-    [showBackdrop]="true">
-    <ng-template>
-      <ion-content class="sound-popover-content">
-        <div class="sound-options">
-          <div class="sound-item" 
-               *ngFor="let sound of soundOptions"
-               (click)="setSoundMode(sound.key)" 
-               [class.selected]="currentSoundMode === sound.key">
-            <h3>{{sound.icon}} {{sound.name}}</h3>
-            <p>{{sound.description}}</p>
-            <!-- Play/Pause controls for continuous chanting -->
-            <div class="continuous-controls" *ngIf="sound.key === 'continuous' && currentSoundMode === 'continuous'">
-              <ion-button 
-                fill="clear" 
-                size="small" 
-                (click)="toggleContinuousAudio(); $event.stopPropagation()">
-                <ion-icon 
-                  [name]="(isContinuousPlaying && !isContinuousPaused) ? 'pause-outline' : 'play-outline'"
-                  slot="icon-only">
-                </ion-icon>
-                {{ (isContinuousPlaying && !isContinuousPaused) ? 'Pause' : 'Play' }}
-              </ion-button>
+      <!-- Language Selector Popover -->
+      <ion-popover
+        [isOpen]="isLanguageSelectorOpen"
+        (didDismiss)="isLanguageSelectorOpen = false"
+        trigger="language-trigger"
+        placement="bottom-end"
+        [showBackdrop]="true">
+        <ng-template>
+          <ion-content class="language-popover-content">
+            <div class="language-options">
+              @for (language of languageOptions; track language) {
+                <div class="language-item"
+                  (click)="setLanguage(language.key)"
+                  [class.selected]="currentLanguage === language.key">
+                  <h3>{{language.flag}} {{language.name}}</h3>
+                  <p>{{language.description}}</p>
+                </div>
+              }
             </div>
-          </div>
-        </div>
-      </ion-content>
-    </ng-template>
-  </ion-popover>
+          </ion-content>
+        </ng-template>
+      </ion-popover>
 
-  <!-- Reset Confirmation Alert -->
-  <ion-alert
-    [isOpen]="showResetAlert"
-    [header]="content.resetAllConfirmTitle"
-    [message]="content.resetAllConfirmMessage"
-    [buttons]="alertButtons"
-    (didDismiss)="showResetAlert = false">
-  </ion-alert>
+      <!-- Sound Selector Popover -->
+      <ion-popover
+        [isOpen]="isSoundSelectorOpen"
+        (didDismiss)="isSoundSelectorOpen = false"
+        trigger="sound-trigger"
+        placement="bottom-end"
+        [showBackdrop]="true">
+        <ng-template>
+          <ion-content class="sound-popover-content">
+            <div class="sound-options">
+              @for (sound of soundOptions; track sound) {
+                <div class="sound-item"
+                  (click)="setSoundMode(sound.key)"
+                  [class.selected]="currentSoundMode === sound.key">
+                  <h3>{{sound.icon}} {{sound.name}}</h3>
+                  <p>{{sound.description}}</p>
+                  <!-- Play/Pause controls for continuous chanting -->
+                  @if (sound.key === 'continuous' && currentSoundMode === 'continuous') {
+                    <div class="continuous-controls">
+                      <ion-button
+                        fill="clear"
+                        size="small"
+                        (click)="toggleContinuousAudio(); $event.stopPropagation()">
+                        <ion-icon
+                          [name]="(isContinuousPlaying && !isContinuousPaused) ? 'pause-outline' : 'play-outline'"
+                          slot="icon-only">
+                        </ion-icon>
+                        {{ (isContinuousPlaying && !isContinuousPaused) ? 'Pause' : 'Play' }}
+                      </ion-button>
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          </ion-content>
+        </ng-template>
+      </ion-popover>
 
-  <!-- Congratulations Toast -->
-  <ion-toast
-    [isOpen]="showToast"
-    [message]="toastMessage"
-    duration="3000"
-    position="top"
-    color="success"
-    [buttons]="toastButtons"
-    (didDismiss)="showToast = false">
-  </ion-toast>
-</ion-content>
+      <!-- Reset Confirmation Alert -->
+      <ion-alert
+        [isOpen]="showResetAlert"
+        [header]="content.resetAllConfirmTitle"
+        [message]="content.resetAllConfirmMessage"
+        [buttons]="alertButtons"
+        (didDismiss)="showResetAlert = false">
+      </ion-alert>
+
+      <!-- Congratulations Toast -->
+      <ion-toast
+        [isOpen]="showToast"
+        [message]="toastMessage"
+        duration="3000"
+        position="top"
+        color="success"
+        [buttons]="toastButtons"
+        (didDismiss)="showToast = false">
+      </ion-toast>
+    </ion-content>

@@ -7,35 +7,47 @@
         <ion-icon name="play"></ion-icon>
         <span>Play All</span>
       </div>
-      <div class="see-all-btn" *ngIf="sortedCardItems.length > 3" (click)="onSeeAllClick()">
-        <span>See All</span>
-        <ion-icon name="chevron-forward"></ion-icon>
-      </div>
+      @if (sortedCardItems.length > 3) {
+        <div class="see-all-btn" (click)="onSeeAllClick()">
+          <span>See All</span>
+          <ion-icon name="chevron-forward"></ion-icon>
+        </div>
+      }
     </div>
   </div>
-  
+
   <!-- Horizontal scrollable cards -->
   <div class="cards-container">
-    <div class="card-wrapper" *ngFor="let item of sortedCardItems" (click)="onCardClick(item)">
-      <div class="display-card">
-        <img [src]="item.img" [alt]="item.title" />
-        <div class="display-card-title">{{ item.title }}</div>
-        <div class="display-card-desc">
-          <ng-container [ngSwitch]="inputData.categoryName">
-            <span *ngSwitchCase="'Bhagavad Gita Tamil'">அத்தியாயம் {{ item.category }}</span>
-            <span *ngSwitchCase="'Bhagavad Gita Kannada'">ಅಧ್ಯಾಯ {{ item.category }}</span>
-            <span *ngSwitchCase="'Bhagavad Gita Sanskrit'">अध्याय {{ item.category }}</span>
-            <span *ngSwitchDefault>{{ item.desc.length > 20 ? (item.desc | slice:0:20) + '...' : item.desc }}</span>
-          </ng-container>
-        </div>
-        <div class="display-card-footer">
-          <div class="display-card-rating">
-            <ion-icon name="star"></ion-icon>
-            <span>{{ item.rating }}</span>
+    @for (item of sortedCardItems; track item) {
+      <div class="card-wrapper" (click)="onCardClick(item)">
+        <div class="display-card">
+          <img [src]="item.img" [alt]="item.title" />
+          <div class="display-card-title">{{ item.title }}</div>
+          <div class="display-card-desc">
+            @switch (inputData.categoryName) {
+              @case ('Bhagavad Gita Tamil') {
+                <span>அத்தியாயம் {{ item.category }}</span>
+              }
+              @case ('Bhagavad Gita Kannada') {
+                <span>ಅಧ್ಯಾಯ {{ item.category }}</span>
+              }
+              @case ('Bhagavad Gita Sanskrit') {
+                <span>अध्याय {{ item.category }}</span>
+              }
+              @default {
+                <span>{{ item.desc.length > 20 ? (item.desc | slice:0:20) + '...' : item.desc }}</span>
+              }
+            }
           </div>
-          <div class="display-action">{{ item.action }}</div>
+          <div class="display-card-footer">
+            <div class="display-card-rating">
+              <ion-icon name="star"></ion-icon>
+              <span>{{ item.rating }}</span>
+            </div>
+            <div class="display-action">{{ item.action }}</div>
+          </div>
         </div>
       </div>
-    </div>
+    }
   </div>
 </div>

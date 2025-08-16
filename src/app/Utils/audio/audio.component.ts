@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonGrid, IonRow, IonCol, IonHeader, IonToolbar, IonTitle, IonButtons, IonMenuButton, IonIcon, IonButton } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
@@ -20,7 +20,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './audio.component.html',
   styleUrls: ['./audio.component.scss'],
   standalone: true,
-  imports: [IonButton, IonIcon, CommonModule, IonButtons, IonMenuButton, FormsModule, IonContent, IonGrid, IonRow, IonCol, IonHeader, IonToolbar, IonTitle],
+  imports: [IonButton, IonIcon, IonButtons, IonMenuButton, FormsModule, IonContent, IonGrid, IonRow, IonCol, IonHeader, IonToolbar, IonTitle],
 })
 export class AudioComponent implements OnInit, OnDestroy {
   @Input() topics: { topic: string; title: string }[] = []; // Input for dynamic data

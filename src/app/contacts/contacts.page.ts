@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, HostBinding } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonMenuButton, IonList, IonItem, IonIcon, IonLabel, IonButton, IonButtons, IonTextarea } from '@ionic/angular/standalone';
 import { call, globe, logoAndroid, logoApple, logoWhatsapp, mail, map, musicalNotes, send } from 'ionicons/icons';
@@ -13,7 +13,7 @@ import { ReusableHeaderComponent } from '../components';
   templateUrl: './contacts.page.html',
   styleUrls: ['./contacts.page.scss'],
   standalone: true,
-  imports: [IonTextarea, ReusableHeaderComponent, IonLabel, IonButton, IonIcon, IonItem, IonList, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
+  imports: [IonTextarea, ReusableHeaderComponent, IonLabel, IonButton, IonIcon, IonItem, IonList, IonContent, IonHeader, IonTitle, IonToolbar, FormsModule]
 })
 export class ContactsPage implements OnInit, OnDestroy {
   @HostBinding('class') get themeClass() {

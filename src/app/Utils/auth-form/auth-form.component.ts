@@ -1,4 +1,4 @@
-import { NgFor, NgIf } from '@angular/common';
+
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
@@ -8,8 +8,9 @@ import { IonicModule } from '@ionic/angular';
   templateUrl: './auth-form.component.html',
   styleUrls: ['./auth-form.component.scss'],
   imports: [
-    ReactiveFormsModule, IonicModule, NgFor, NgIf
-  ]
+    ReactiveFormsModule,
+    IonicModule
+]
 })
 export class AuthFormComponent implements OnInit {
   @Input() fields: { name: string, type: string, label: string }[] = [];

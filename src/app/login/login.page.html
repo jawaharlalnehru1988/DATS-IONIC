@@ -1,6 +1,6 @@
-<app-reusable-header 
-  [titleKey]="'loginPageTitle'" 
-  [translucent]="true" 
+<app-reusable-header
+  [titleKey]="'loginPageTitle'"
+  [translucent]="true"
   [showMenuButton]="true">
 </app-reusable-header>
 
@@ -12,33 +12,47 @@
         <ion-label position="floating">Email</ion-label>
         <ion-input type="email" formControlName="email"></ion-input>
       </ion-item>
-      <ion-text color="danger" *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.hasError('required')">
-        Email is required.
-      </ion-text>
-      <ion-text color="danger" *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.hasError('email')">
-        Enter a valid email.
-      </ion-text>
+      @if (loginForm.get('email')?.touched && loginForm.get('email')?.hasError('required')) {
+        <ion-text color="danger">
+          Email is required.
+        </ion-text>
+      }
+      @if (loginForm.get('email')?.touched && loginForm.get('email')?.hasError('email')) {
+        <ion-text color="danger">
+          Enter a valid email.
+        </ion-text>
+      }
 
       <ion-item>
         <ion-label position="floating">Password</ion-label>
         <ion-input type="password" formControlName="password"></ion-input>
       </ion-item>
-      <ion-text color="danger" *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.hasError('required')">
-        Password is required.
-      </ion-text>
+      @if (loginForm.get('password')?.touched && loginForm.get('password')?.hasError('required')) {
+        <ion-text color="danger">
+          Password is required.
+        </ion-text>
+      }
 
       <!-- Display login error -->
-      <ion-text color="danger" *ngIf="loginError">
-        {{ loginError }}
-      </ion-text>
+      @if (loginError) {
+        <ion-text color="danger">
+          {{ loginError }}
+        </ion-text>
+      }
 
-      <ion-button 
-        expand="full" 
-        type="submit" 
+      <ion-button
+        expand="full"
+        type="submit"
         [disabled]="!loginForm.valid || isLoading">
-        <ion-spinner name="crescent" *ngIf="isLoading"></ion-spinner>
-        <span *ngIf="!isLoading">Login</span>
-        <span *ngIf="isLoading">Logging in...</span>
+        @if (isLoading) {
+          <ion-spinner name="crescent"></ion-spinner>
+        }
+        @if (!isLoading) {
+          <span>Login</span>
+        }
+        @if (isLoading) {
+          <span>Logging in...</span>
+        }
       </ion-button>
 
       <div class="signup-link">

@@ -1,7 +1,9 @@
 <div class="{{containerClass}}">
   <ion-segment [(ngModel)]="selectedTab" (ionChange)="onTabChange($event)">
-    <ion-segment-button *ngFor="let tab of tabs" [value]="tab.value">
-      <ion-label>{{ tab.label }}</ion-label>
-    </ion-segment-button>
+    @for (tab of tabs; track tab) {
+      <ion-segment-button [value]="tab.value">
+        <ion-label>{{ tab.label }}</ion-label>
+      </ion-segment-button>
+    }
   </ion-segment>
 </div>

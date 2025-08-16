@@ -11,9 +11,11 @@
           <ion-label position="stacked">Category Name *</ion-label>
           <ion-input formControlName="categoryName" type="text" placeholder="Enter category name"></ion-input>
         </ion-item>
-        <ion-text color="danger" *ngIf="isFieldInvalid('categoryName')">
-          Category name is required
-        </ion-text>
+        @if (isFieldInvalid('categoryName')) {
+          <ion-text color="danger">
+            Category name is required
+          </ion-text>
+        }
       </ion-card-content>
     </ion-card>
 
@@ -28,25 +30,31 @@
           <ion-label position="stacked">Image URL *</ion-label>
           <ion-input formControlName="img" type="text" placeholder="Enter image URL"></ion-input>
         </ion-item>
-        <ion-text color="danger" *ngIf="isFieldInvalid('img')">
-          Image URL is required
-        </ion-text>
+        @if (isFieldInvalid('img')) {
+          <ion-text color="danger">
+            Image URL is required
+          </ion-text>
+        }
 
         <ion-item>
           <ion-label position="stacked">Title *</ion-label>
           <ion-input formControlName="title" type="text" placeholder="Enter title"></ion-input>
         </ion-item>
-        <ion-text color="danger" *ngIf="isFieldInvalid('title')">
-          Title is required
-        </ion-text>
+        @if (isFieldInvalid('title')) {
+          <ion-text color="danger">
+            Title is required
+          </ion-text>
+        }
 
         <ion-item>
           <ion-label position="stacked">Category *</ion-label>
           <ion-input formControlName="category" type="text" placeholder="Enter category"></ion-input>
         </ion-item>
-        <ion-text color="danger" *ngIf="isFieldInvalid('category')">
-          Category is required
-        </ion-text>
+        @if (isFieldInvalid('category')) {
+          <ion-text color="danger">
+            Category is required
+          </ion-text>
+        }
 
         <ion-item>
           <ion-label position="stacked">Description</ion-label>
@@ -77,33 +85,41 @@
             <ion-label position="stacked">Audio Source *</ion-label>
             <ion-input formControlName="audioSrc" type="text" placeholder="Enter audio source URL"></ion-input>
           </ion-item>
-          <ion-text color="danger" *ngIf="isNestedFieldInvalid('audioData', 'audioSrc')">
-            Audio source is required
-          </ion-text>
+          @if (isNestedFieldInvalid('audioData', 'audioSrc')) {
+            <ion-text color="danger">
+              Audio source is required
+            </ion-text>
+          }
 
           <ion-item>
             <ion-label position="stacked">Image Source *</ion-label>
             <ion-input formControlName="imageSrc" type="text" placeholder="Enter image source URL"></ion-input>
           </ion-item>
-          <ion-text color="danger" *ngIf="isNestedFieldInvalid('audioData', 'imageSrc')">
-            Image source is required
-          </ion-text>
+          @if (isNestedFieldInvalid('audioData', 'imageSrc')) {
+            <ion-text color="danger">
+              Image source is required
+            </ion-text>
+          }
 
           <ion-item>
             <ion-label position="stacked">Author *</ion-label>
             <ion-input formControlName="auther" type="text" placeholder="Enter author name"></ion-input>
           </ion-item>
-          <ion-text color="danger" *ngIf="isNestedFieldInvalid('audioData', 'auther')">
-            Author is required
-          </ion-text>
+          @if (isNestedFieldInvalid('audioData', 'auther')) {
+            <ion-text color="danger">
+              Author is required
+            </ion-text>
+          }
 
           <ion-item>
             <ion-label position="stacked">Audio Title *</ion-label>
             <ion-input formControlName="title" type="text" placeholder="Enter audio title"></ion-input>
           </ion-item>
-          <ion-text color="danger" *ngIf="isNestedFieldInvalid('audioData', 'title')">
-            Audio title is required
-          </ion-text>
+          @if (isNestedFieldInvalid('audioData', 'title')) {
+            <ion-text color="danger">
+              Audio title is required
+            </ion-text>
+          }
         </div>
       </ion-card-content>
     </ion-card>

@@ -1,10 +1,12 @@
-<ion-button 
-  fill="clear" 
-  size="small" 
+<ion-button
+  fill="clear"
+  size="small"
   (click)="tryNativeShare()"
   color="tertiary">
   <ion-icon name="share-outline" slot="start"></ion-icon>
-  <span *ngIf="showText">Share</span>
+  @if (showText) {
+    <span>Share</span>
+  }
 </ion-button>
 
 <!-- Action Sheet for sharing options -->

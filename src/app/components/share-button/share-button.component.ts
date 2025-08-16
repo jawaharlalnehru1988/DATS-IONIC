@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { 
   IonButton, 
   IonIcon, 
@@ -24,12 +24,11 @@ import { Blog } from '../../services/blog.service';
   styleUrls: ['./share-button.component.scss'],
   standalone: true,
   imports: [
-    CommonModule,
     IonButton,
     IonIcon,
     IonActionSheet,
     IonToast
-  ]
+]
 })
 export class ShareButtonComponent {
   @Input() blog!: Blog;

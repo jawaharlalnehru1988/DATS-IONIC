@@ -1,6 +1,6 @@
-<app-reusable-header 
-  [titleKey]="'krishnaPageTitle'" 
-  [translucent]="true" 
+<app-reusable-header
+  [titleKey]="'krishnaPageTitle'"
+  [translucent]="true"
   [showMenuButton]="true">
 </app-reusable-header>
 
@@ -17,19 +17,20 @@
   </ion-refresher>
 
   <div class="promo-card">
-    <div class="image-carousel" 
-         (mouseenter)="pauseCarousel()" 
-         (mouseleave)="resumeCarousel()">
+    <div class="image-carousel"
+      (mouseenter)="pauseCarousel()"
+      (mouseleave)="resumeCarousel()">
       <div class="carousel-container">
-        <img 
-          *ngFor="let image of carouselImages; let i = index"
-          [src]="image.src" 
-          [alt]="image.alt" 
-          class="carousel-image"
-          [class.active]="i === currentImageIndex"
-        />
+        @for (image of carouselImages; track image; let i = $index) {
+          <img
+            [src]="image.src"
+            [alt]="image.alt"
+            class="carousel-image"
+            [class.active]="i === currentImageIndex"
+            />
+        }
       </div>
-      
+
       <!-- Navigation arrows -->
       <button class="carousel-nav prev" (click)="previousImage()" aria-label="Previous image">
         <ion-icon name="chevron-back"></ion-icon>
@@ -37,98 +38,103 @@
       <button class="carousel-nav next" (click)="nextImage()" aria-label="Next image">
         <ion-icon name="chevron-forward"></ion-icon>
       </button>
-      
+
       <div class="carousel-indicators">
-        <span 
-          class="indicator" 
-          [class.active]="i === currentImageIndex"
-          *ngFor="let image of carouselImages; let i = index"
-          [attr.data-index]="i"
-          (click)="goToImage(i)">
-        </span>
+        @for (image of carouselImages; track image; let i = $index) {
+          <span
+            class="indicator"
+            [class.active]="i === currentImageIndex"
+            [attr.data-index]="i"
+            (click)="goToImage(i)">
+          </span>
+        }
       </div>
     </div>
   </div>
 
-<app-segmented-tabs
-  [tabs]="contentCategories"
-  [selectedTab]="selectedTopic"
-  containerClass="krishna-tabs-container"
-  (tabChanged)="selectedTopic = $event">
-</app-segmented-tabs>
+  <app-segmented-tabs
+    [tabs]="contentCategories"
+    [selectedTab]="selectedTopic"
+    containerClass="krishna-tabs-container"
+    (tabChanged)="selectedTopic = $event">
+  </app-segmented-tabs>
 
-<div [ngSwitch]="selectedTopic">
-  <ng-container *ngSwitchCase="'Arati'">
-    <!-- Skeleton Loader -->
-    <div *ngIf="isLoading" class="skeleton-container">
-      <!-- Category Title Skeleton -->
-      <div class="skeleton-category">
-        <ion-skeleton-text animated style="width: 60%; height: 24px; margin-bottom: 16px;"></ion-skeleton-text>
-      </div>
-      
-      <!-- Card Skeletons -->
-      <div class="skeleton-cards">
-        <div class="skeleton-card" *ngFor="let item of [1,2,3,4,5]">
-          @for(item of [1,2,3]; track item; let i = $index) {
-            <div class="skeleton-card-content">
-              <ion-skeleton-text animated style="width: 100%; height: 120px; border-radius: 12px;"></ion-skeleton-text>
-              <div class="skeleton-card-info">
-                <ion-skeleton-text animated style="width: 80%; height: 18px; margin-top: 12px;"></ion-skeleton-text>
-                <ion-skeleton-text animated style="width: 60%; height: 14px; margin-top: 8px;"></ion-skeleton-text>
-                <ion-skeleton-text animated style="width: 40%; height: 14px; margin-top: 8px;"></ion-skeleton-text>
+  <div>
+    @switch (selectedTopic) {
+      @case ('Arati') {
+        <!-- Skeleton Loader -->
+        @if (isLoading) {
+          <app-skeleton-loader 
+            [config]="{
+              type: 'cards',
+              itemCount: 5,
+              showCategoryTitle: true,
+              cardLayout: 'grid'
+            }">
+          </app-skeleton-loader>
+        }
+        <!-- Content (shown when not loading) -->
+        @if (!isLoading) {
+          <div>
+            @for (inputData of inputDatas; track inputData) {
+              <div>
+                <app-display-card-list [inputData]="inputData" (cardSelected)="onCardSelected($event)" (playAllClicked)="onPlayAllClicked($event)"></app-display-card-list>
               </div>
-            </div>
-          }
-          <div class="skeleton-card-content">
-            <ion-skeleton-text animated style="width: 100%; height: 120px; border-radius: 12px;"></ion-skeleton-text>
-            <div class="skeleton-card-info">
-              <ion-skeleton-text animated style="width: 80%; height: 18px; margin-top: 12px;"></ion-skeleton-text>
-              <ion-skeleton-text animated style="width: 60%; height: 14px; margin-top: 8px;"></ion-skeleton-text>
-              <ion-skeleton-text animated style="width: 40%; height: 14px; margin-top: 8px;"></ion-skeleton-text>
+            }
+            <!-- Add Category Button -->
+            <div class="add-category-section">
+              <ion-button expand="block" fill="solid" color="primary" (click)="openCategoryModal()">
+                <ion-icon name="add" slot="start"></ion-icon>
+                Add New Category
+              </ion-button>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-    
-    <!-- Content (shown when not loading) -->
-    <div *ngIf="!isLoading">
-      <div *ngFor="let inputData of inputDatas;">
-        <app-display-card-list [inputData]="inputData" (cardSelected)="onCardSelected($event)" (playAllClicked)="onPlayAllClicked($event)"></app-display-card-list>
-      </div>
-      
-      <!-- Add Category Button -->
-      <div class="add-category-section">
-        <ion-button expand="block" fill="solid" color="primary" (click)="openCategoryModal()">
-          <ion-icon name="add" slot="start"></ion-icon>
-          Add New Category
-        </ion-button>
-      </div>
-    </div>
-  </ng-container>
-  <ng-container *ngSwitchCase="'Hare Krishna Kirtan'">
-    <section class="coming-soon-section">Content yet to be added</section>
-  </ng-container>
-  <ng-container *ngSwitchCase="'Stories'">
-    <section class="coming-soon-section">Content yet to be added</section>
-  </ng-container>
-  <ng-container *ngSwitchCase="'philosophy'">
-    <section class="coming-soon-section">Content yet to be added</section>
-  </ng-container>
-  <ng-container *ngSwitchCase="'discussion'">
-    <section class="coming-soon-section">Content yet to be added</section>
-  </ng-container>
-  <ng-container *ngSwitchCase="'images'">
-    <section class="coming-soon-section">Content yet to be added</section>
-  </ng-container>
-  <ng-container *ngSwitchCase="'videos'">
-    <section class="coming-soon-section">Content yet to be added</section>
-  </ng-container>
-
-  <ng-container *ngSwitchDefault>
-    <p>Select a category to view content.</p>
-  </ng-container>
-</div>
+        }
+      }
+      @case ('Hare Krishna Kirtan') {
+        <!-- Example: List-style skeleton loader -->
+        @if (isLoading) {
+          <app-skeleton-loader 
+            [config]="{
+              type: 'list',
+              itemCount: 8,
+              showCategoryTitle: true
+            }">
+          </app-skeleton-loader>
+        } @else {
+          <section class="coming-soon-section">Content yet to be added</section>
+        }
+      }
+      @case ('Stories') {
+        <!-- Example: Article-style skeleton loader -->
+        @if (isLoading) {
+          <app-skeleton-loader 
+            [config]="{
+              type: 'article',
+              showCategoryTitle: false
+            }">
+          </app-skeleton-loader>
+        } @else {
+          <section class="coming-soon-section">Content yet to be added</section>
+        }
+      }
+      @case ('philosophy') {
+        <section class="coming-soon-section">Content yet to be added</section>
+      }
+      @case ('discussion') {
+        <section class="coming-soon-section">Content yet to be added</section>
+      }
+      @case ('images') {
+        <section class="coming-soon-section">Content yet to be added</section>
+      }
+      @case ('videos') {
+        <section class="coming-soon-section">Content yet to be added</section>
+      }
+      @default {
+        <p>Select a category to view content.</p>
+      }
+    }
+  </div>
 </ion-content>
 
 

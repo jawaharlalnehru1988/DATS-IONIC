@@ -23,7 +23,7 @@ import {
   IonCardTitle,
   IonToast
 } from '@ionic/angular/standalone';
-import { CommonModule } from '@angular/common';
+
 import { addIcons } from 'ionicons';
 import { close, save } from 'ionicons/icons';
 import { Blog, BlogService } from '../../services/blog.service';
@@ -35,7 +35,6 @@ import { QuillModule } from 'ngx-quill';
   styleUrls: ['./blog-form.component.scss'],
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     IonModal,
     IonHeader,
@@ -59,7 +58,7 @@ import { QuillModule } from 'ngx-quill';
     IonCardTitle,
     IonToast,
     QuillModule
-  ]
+]
 })
 export class BlogFormComponent implements OnInit {
   @Input() isOpen = false;

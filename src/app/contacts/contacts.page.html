@@ -1,6 +1,6 @@
-<app-reusable-header 
-  [titleKey]="'contactsTitle'" 
-  [translucent]="true" 
+<app-reusable-header
+  [titleKey]="'contactsTitle'"
+  [translucent]="true"
   [showMenuButton]="true">
 </app-reusable-header>
 
@@ -14,18 +14,20 @@
   <!-- Contact Information Section -->
   <div class="contact-info">
     <ion-list>
-      <ion-item button *ngFor="let method of contactMethods" [href]="method.href">
-        <ion-icon [name]="method.icon" slot="start"></ion-icon>
-        <ion-label>{{ method.label }}</ion-label>
+      @for (method of contactMethods; track method) {
+        <ion-item button [href]="method.href">
+          <ion-icon [name]="method.icon" slot="start"></ion-icon>
+          <ion-label>{{ method.label }}</ion-label>
+        </ion-item>
+      }
+      <ion-item button href="https://maps.google.com/?q=123+Main+St,+City,+Country">
+        <ion-icon name="map" slot="start"></ion-icon>
+        <ion-label>Bangalore, India</ion-label>
       </ion-item>
-       <ion-item button href="https://maps.google.com/?q=123+Main+St,+City,+Country">
-      <ion-icon name="map" slot="start"></ion-icon>
-      <ion-label>Bangalore, India</ion-label>
-    </ion-item>
 
     </ion-list>
 
-     <!-- User Connection Request Section -->
+    <!-- User Connection Request Section -->
     <div class="connection-request">
       <h3>Send Us a Message</h3>
       <ion-textarea ngDefaultControl
@@ -41,21 +43,23 @@
       </ion-button>
     </div>
 
-   
+
     <div class="apps-section">
       <h3>Mobile Apps</h3>
       <div class="apps-grid">
-        <div class="app-card" *ngFor="let app of mobileApps">
-          <ion-icon [name]="app.icon" class="app-icon"></ion-icon>
-          <div class="app-details">
-            <div class="app-title">{{ app.name }}</div>
-            <a [href]="app.link" target="_blank" class="app-link">Download</a>
+        @for (app of mobileApps; track app) {
+          <div class="app-card">
+            <ion-icon [name]="app.icon" class="app-icon"></ion-icon>
+            <div class="app-details">
+              <div class="app-title">{{ app.name }}</div>
+              <a [href]="app.link" target="_blank" class="app-link">Download</a>
+            </div>
           </div>
-        </div>
+        }
       </div>
     </div>
 
-   
+
   </div>
 </ion-content>
 

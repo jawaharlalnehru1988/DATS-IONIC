@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, HostBinding } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import {  IonHeader, IonTitle, IonToolbar, IonMenuButton, IonButtons, IonButton, IonIcon, IonContent, IonAlert } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
@@ -70,7 +70,7 @@ interface FestivalInfo {
   templateUrl: './calendar.page.html',
   styleUrls: ['./calendar.page.scss'],
   standalone: true,
-  imports: [IonContent, IonIcon, IonButton, CommonModule, FormsModule, ReusableHeaderComponent]
+  imports: [IonContent, IonIcon, IonButton, FormsModule, ReusableHeaderComponent]
 })
 export class CalendarPage implements OnInit, OnDestroy {
   currentDate = new Date();

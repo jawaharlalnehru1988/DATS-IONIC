@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit, OnDestroy, HostBinding } from '@angular/core';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonProgressBar, IonToast, IonAlert, IonPopover, IonIcon, IonButtons, IonMenuButton, IonFab, IonFabButton } from '@ionic/angular/standalone';
-import { CommonModule } from '@angular/common';
+
 import { Subscription } from 'rxjs';
 import { addIcons } from 'ionicons';
 import { flowerOutline, refreshOutline, languageOutline, closeOutline, musicalNotesOutline, playOutline, pauseOutline, bonfireOutline } from 'ionicons/icons';
@@ -70,9 +70,8 @@ export interface SoundOption {
     IonIcon,
     IonFab,
     IonFabButton,
-    CommonModule,
     ReusableHeaderComponent
-  ]
+]
 })
 export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
 

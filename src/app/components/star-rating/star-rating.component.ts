@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { IonIcon, IonButton } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { star, starOutline } from 'ionicons/icons';
@@ -9,7 +9,7 @@ import { star, starOutline } from 'ionicons/icons';
   templateUrl: './star-rating.component.html',
   styleUrls: ['./star-rating.component.scss'],
   standalone: true,
-  imports: [CommonModule, IonIcon, IonButton]
+  imports: [IonIcon, IonButton]
 })
 export class StarRatingComponent implements OnInit {
   @Input() rating: number = 0;

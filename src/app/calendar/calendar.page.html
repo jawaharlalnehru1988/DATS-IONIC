@@ -1,12 +1,12 @@
-<app-reusable-header 
-  [title]="'Vaishnava Calendar'" 
-  [translucent]="true" 
+<app-reusable-header
+  [title]="'Vaishnava Calendar'"
+  [translucent]="true"
   [showMenuButton]="true">
 </app-reusable-header>
 
 
 <!-- <div class="calendar-section">
-  <ion-datetime minuteValues="0,15,30,45" dayValues="5,10,15,20,25,30"></ion-datetime>
+<ion-datetime minuteValues="0,15,30,45" dayValues="5,10,15,20,25,30"></ion-datetime>
 </div> -->
 
 <ion-content [fullscreen]="true">
@@ -26,70 +26,83 @@
 
     <!-- Calendar Header -->
     <div class="calendar-header">
-      <div class="day-name" *ngFor="let day of dayNames">{{ day }}</div>
+      @for (day of dayNames; track day) {
+        <div class="day-name">{{ day }}</div>
+      }
     </div>
 
     <!-- Calendar Grid -->
     <div class="calendar-grid">
-      <div 
-        class="calendar-day" 
-        *ngFor="let day of calendarDays"
-        [class.other-month]="!day.isCurrentMonth"
-        [class.today]="day.isToday"
-        [class.selected]="isDateSelected(day)"
-        [class.ekadasi]="day.hasEkadasi"
-        [class.major-festival]="hasMajorFestival(day)"
-        [class.festival]="hasOtherFestival(day)"
-        (click)="onDateClick(day)">
-        <span class="date-number">{{ day.date }}</span>
-      </div>
+      @for (day of calendarDays; track day) {
+        <div
+          class="calendar-day"
+          [class.other-month]="!day.isCurrentMonth"
+          [class.today]="day.isToday"
+          [class.selected]="isDateSelected(day)"
+          [class.ekadasi]="day.hasEkadasi"
+          [class.major-festival]="hasMajorFestival(day)"
+          [class.festival]="hasOtherFestival(day)"
+          (click)="onDateClick(day)">
+          <span class="date-number">{{ day.date }}</span>
+        </div>
+      }
     </div>
 
     <!-- Festival/Special Day Details Section -->
-    <div class="festival-details" *ngIf="selectedFestivalInfo">
-      <div class="festival-header">
-        <h3>{{ selectedFestivalInfo.title }}</h3>
-        <ion-button fill="clear" size="small" (click)="closeFestivalDetails()">
-          <ion-icon name="close-outline"></ion-icon>
-        </ion-button>
-      </div>
-      
-      <div class="festival-content">
-        <div class="festival-info-item" *ngIf="selectedFestivalInfo.date">
-          <span class="info-label">Date:</span>
-          <span class="info-value">{{ selectedFestivalInfo.date }}</span>
+    @if (selectedFestivalInfo) {
+      <div class="festival-details">
+        <div class="festival-header">
+          <h3>{{ selectedFestivalInfo.title }}</h3>
+          <ion-button fill="clear" size="small" (click)="closeFestivalDetails()">
+            <ion-icon name="close-outline"></ion-icon>
+          </ion-button>
         </div>
-        
-        <div class="festival-info-item" *ngIf="selectedFestivalInfo.type">
-          <span class="info-label">Type:</span>
-          <span class="info-value festival-type" [class]="selectedFestivalInfo.typeClass">{{ selectedFestivalInfo.type }}</span>
-        </div>
-        
-        <div class="festival-info-item" *ngIf="selectedFestivalInfo.significance">
-          <span class="info-label">Significance:</span>
-          <span class="info-value">{{ selectedFestivalInfo.significance }}</span>
-        </div>
-        
-        <div class="festival-info-item" *ngIf="selectedFestivalInfo.description">
-          <span class="info-label">Description:</span>
-          <span class="info-value festival-description">{{ selectedFestivalInfo.description }}</span>
-        </div>
-        
-        <div class="festival-info-item" *ngIf="selectedFestivalInfo.observances && selectedFestivalInfo.observances.length > 0">
-          <span class="info-label">Observances:</span>
-          <div class="observances-list">
-            <div class="observance-item" *ngFor="let observance of selectedFestivalInfo.observances">
-              • {{ observance }}
+        <div class="festival-content">
+          @if (selectedFestivalInfo.date) {
+            <div class="festival-info-item">
+              <span class="info-label">Date:</span>
+              <span class="info-value">{{ selectedFestivalInfo.date }}</span>
             </div>
-          </div>
-        </div>
-        
-        <div class="festival-info-item" *ngIf="selectedFestivalInfo.additionalInfo">
-          <span class="info-label">Additional Info:</span>
-          <span class="info-value">{{ selectedFestivalInfo.additionalInfo }}</span>
+          }
+          @if (selectedFestivalInfo.type) {
+            <div class="festival-info-item">
+              <span class="info-label">Type:</span>
+              <span class="info-value festival-type" [class]="selectedFestivalInfo.typeClass">{{ selectedFestivalInfo.type }}</span>
+            </div>
+          }
+          @if (selectedFestivalInfo.significance) {
+            <div class="festival-info-item">
+              <span class="info-label">Significance:</span>
+              <span class="info-value">{{ selectedFestivalInfo.significance }}</span>
+            </div>
+          }
+          @if (selectedFestivalInfo.description) {
+            <div class="festival-info-item">
+              <span class="info-label">Description:</span>
+              <span class="info-value festival-description">{{ selectedFestivalInfo.description }}</span>
+            </div>
+          }
+          @if (selectedFestivalInfo.observances && selectedFestivalInfo.observances.length > 0) {
+            <div class="festival-info-item">
+              <span class="info-label">Observances:</span>
+              <div class="observances-list">
+                @for (observance of selectedFestivalInfo.observances; track observance) {
+                  <div class="observance-item">
+                    • {{ observance }}
+                  </div>
+                }
+              </div>
+            </div>
+          }
+          @if (selectedFestivalInfo.additionalInfo) {
+            <div class="festival-info-item">
+              <span class="info-label">Additional Info:</span>
+              <span class="info-value">{{ selectedFestivalInfo.additionalInfo }}</span>
+            </div>
+          }
         </div>
       </div>
-    </div>
+    }
 
     <!-- Vaishnava Information -->
     <div class="vaishnava-info">
@@ -99,7 +112,7 @@
           <ion-icon name="ellipsis-horizontal"></ion-icon>
         </ion-button>
       </div>
-      
+
       <div class="vaishnava-grid">
         <div class="vaishnava-item">
           <span class="vaishnava-label">Year:</span>
@@ -164,7 +177,7 @@
             </div>
           </div>
         </div>
-        
+
         <!-- Moon Section -->
         <div class="moon-section">
           <div class="section-header">
@@ -193,36 +206,36 @@
   <!-- Footer Navigation Bar -->
   <div class="footer-nav">
     <div class="footer-nav-container">
-      <ion-button 
-        fill="clear" 
+      <ion-button
+        fill="clear"
         class="footer-nav-btn back-btn"
         (click)="goBack()">
         <ion-icon name="arrow-back-outline" slot="icon-only"></ion-icon>
         <span class="btn-label">Back</span>
       </ion-button>
-      
-      <ion-button 
-        fill="clear" 
+
+      <ion-button
+        fill="clear"
         class="footer-nav-btn favorite-btn"
         [class.favorited]="isCurrentDateFavorited()"
         (click)="toggleFavorite()">
-        <ion-icon 
-          [name]="isCurrentDateFavorited() ? 'heart' : 'heart-outline'" 
+        <ion-icon
+          [name]="isCurrentDateFavorited() ? 'heart' : 'heart-outline'"
           slot="icon-only">
         </ion-icon>
         <span class="btn-label">{{ isCurrentDateFavorited() ? 'Favorited' : 'Favorite' }}</span>
       </ion-button>
-      
-      <ion-button 
-        fill="clear" 
+
+      <ion-button
+        fill="clear"
         class="footer-nav-btn share-btn"
         (click)="shareEvent()">
         <ion-icon name="share-outline" slot="icon-only"></ion-icon>
         <span class="btn-label">Share</span>
       </ion-button>
-      
-      <ion-button 
-        fill="clear" 
+
+      <ion-button
+        fill="clear"
         class="footer-nav-btn today-btn"
         (click)="goToToday()">
         <ion-icon name="today-outline" slot="icon-only"></ion-icon>

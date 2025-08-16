@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { 
   IonContent, 
@@ -33,12 +33,11 @@ import { ReusableHeaderComponent } from '../components';
     IonContent,
     ReactiveFormsModule,
     FormsModule,
-    CommonModule,
     IonItem,
     IonInput,
     IonLabel,
     IonButton
-  ]
+]
 })
 export class LoginPage implements OnInit, OnDestroy {
   loginForm!: FormGroup;

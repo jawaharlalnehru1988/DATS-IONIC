@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonIcon, IonInput, IonItem, IonLabel, IonList, IonText, IonTextarea, ToastController } from '@ionic/angular/standalone';
 import { CategoryCard } from '../../models/card.model';
@@ -13,7 +13,6 @@ import { CategoryFormService } from './category-form.service';
   styleUrls: ['./category-form.component.scss'],
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     IonCard,
     IonCardHeader,
@@ -25,7 +24,7 @@ import { CategoryFormService } from './category-form.service';
     IonTextarea,
     IonButton,
     IonText
-  ]
+]
 })
 export class CategoryFormComponent implements OnInit {
   @Input() initialData?: CategoryCard;

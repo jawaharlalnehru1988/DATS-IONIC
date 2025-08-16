@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, HostBinding } from '@angular/core';
-import { CommonModule, NgFor } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonIcon, IonButtons, IonButton, IonMenuButton, IonLabel, IonFooter, IonSkeletonText, IonRefresher, IonRefresherContent, ModalController, IonSegmentButton } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonIcon, IonButtons, IonButton, IonMenuButton, IonLabel, IonFooter, IonRefresher, IonRefresherContent, ModalController, IonSegmentButton } from '@ionic/angular/standalone';
 import { SegmentedTabsComponent, TabItem } from '../components/segmented-tabs/segmented-tabs.component';
 import { addIcons } from 'ionicons';
 import { chevronDownOutline, notificationsOutline, optionsOutline, home, heartOutline, cafeOutline, personOutline, chevronBack, chevronForward, add, chevronDownCircleOutline } from 'ionicons/icons';
@@ -16,13 +16,14 @@ import { GlobalStateService } from '../services/global-state.service';
 import { LanguageService } from '../services/language.service';
 import { Subscription } from 'rxjs';
 import { ReusableHeaderComponent } from '../components/reusable-header/reusable-header.component';
+import { SkeletonLoaderComponent } from '../components/skeleton-loader/skeleton-loader.component';
 
 @Component({
   selector: 'app-krishna-page',
   templateUrl: './krishna-page.page.html',
   styleUrls: ['./krishna-page.page.scss'],
   standalone: true,
-  imports: [IonFooter, IonButton, IonButtons, IonIcon, IonContent, IonToolbar, IonRefresher, IonRefresherContent, CommonModule, FormsModule, DisplayCardListComponent, IonSkeletonText, ReusableHeaderComponent, SegmentedTabsComponent]
+  imports: [IonFooter, IonButton, IonButtons, IonIcon, IonContent, IonToolbar, IonRefresher, IonRefresherContent, FormsModule, DisplayCardListComponent, ReusableHeaderComponent, SegmentedTabsComponent, SkeletonLoaderComponent]
 })
 export class KrishnaPagePage implements OnInit, OnDestroy {
   contentCategories: TabItem[] = [];

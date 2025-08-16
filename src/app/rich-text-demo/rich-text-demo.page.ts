@@ -1,5 +1,5 @@
 import { Component, OnInit, HostBinding, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { 
   IonHeader, 
@@ -33,12 +33,11 @@ import { SimpleRichTextComponent } from '../components/simple-rich-text/simple-r
   styleUrls: ['./rich-text-demo.page.scss'],
   standalone: true,
   imports: [
-    CommonModule, 
     FormsModule,
     SimpleRichTextComponent,
-    IonHeader, 
-    IonToolbar, 
-    IonTitle, 
+    IonHeader,
+    IonToolbar,
+    IonTitle,
     IonContent,
     IonButton,
     IonIcon,
@@ -52,7 +51,7 @@ import { SimpleRichTextComponent } from '../components/simple-rich-text/simple-r
     IonCardSubtitle,
     IonButtons,
     IonMenuButton
-  ]
+]
 })
 export class RichTextDemoPage implements OnInit {
   // Theme management

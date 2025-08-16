@@ -27,22 +27,24 @@
       {{ texts.theme }}
     </div>
     <div class="theme-grid">
-      <div 
-        *ngFor="let theme of themes" 
-        class="theme-card"
-        [class.active]="currentTheme === theme.value"
-        (click)="selectTheme(theme.value)">
-        <div 
-          class="theme-preview" 
-          [style.background]="theme.previewGradient">
+      @for (theme of themes; track theme) {
+        <div
+          class="theme-card"
+          [class.active]="currentTheme === theme.value"
+          (click)="selectTheme(theme.value)">
+          <div
+            class="theme-preview"
+            [style.background]="theme.previewGradient">
+          </div>
+          <div class="theme-name">{{ theme.name }}</div>
+          @if (currentTheme === theme.value) {
+            <ion-icon
+              name="checkmark-circle"
+              class="theme-check">
+            </ion-icon>
+          }
         </div>
-        <div class="theme-name">{{ theme.name }}</div>
-        <ion-icon 
-          *ngIf="currentTheme === theme.value" 
-          name="checkmark-circle" 
-          class="theme-check">
-        </ion-icon>
-      </div>
+      }
     </div>
     <div class="section-desc">
       {{ texts.chooseTheme }} - {{ texts.themeDescription }}
@@ -52,10 +54,10 @@
   <!-- Language Section -->
   <div class="settings-section">
     <div class="section-label">{{ texts.language }}</div>
-    <ion-select 
-      interface="popover" 
-      ngDefaultControl 
-      [(ngModel)]="language" 
+    <ion-select
+      interface="popover"
+      ngDefaultControl
+      [(ngModel)]="language"
       class="custom-select"
       [class]="currentTheme + '-select'"
       (ionChange)="selectLanguage($event)">

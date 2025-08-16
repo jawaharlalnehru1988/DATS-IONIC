@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule, NgFor } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { star, add, chevronForward, play } from 'ionicons/icons';
@@ -12,7 +12,7 @@ import { CardItem, InputData } from 'src/app/Utils/models';
   templateUrl: './display-card-list.component.html',
   styleUrls: ['./display-card-list.component.scss'],
   standalone: true,
-  imports: [CommonModule, NgFor, IonIcon]
+  imports: [CommonModule, IonIcon]
 })
 export class DisplayCardListComponent {
   @Input() inputData!: InputData;

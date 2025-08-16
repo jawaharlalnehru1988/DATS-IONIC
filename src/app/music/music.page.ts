@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { AudioComponent } from '../Utils/audio/audio.component';
 import { Language } from '../Utils/models';
@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
   templateUrl: './music.page.html',
   styleUrls: ['./music.page.scss'],
   standalone: true,
-  imports: [AudioComponent, CommonModule, FormsModule],
+  imports: [AudioComponent, FormsModule],
 })
 export class MusicPage implements OnInit {
   languages = [

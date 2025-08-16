@@ -21,63 +21,72 @@
                   <ion-card-title>Blog Information</ion-card-title>
                 </ion-card-header>
                 <ion-card-content>
-                  
+
                   <!-- Blog Title -->
                   <ion-item>
                     <ion-label position="stacked">Blog Title *</ion-label>
-                    <ion-input 
+                    <ion-input
                       formControlName="blogTitle"
                       placeholder="Enter blog title"
                       [class.ion-invalid]="blogForm.get('blogTitle')?.invalid && blogForm.get('blogTitle')?.touched">
                     </ion-input>
                   </ion-item>
-                  <div class="error-message" *ngIf="getErrorMessage('blogTitle')">
-                    {{ getErrorMessage('blogTitle') }}
-                  </div>
+                  @if (getErrorMessage('blogTitle')) {
+                    <div class="error-message">
+                      {{ getErrorMessage('blogTitle') }}
+                    </div>
+                  }
 
                   <!-- Category -->
                   <ion-item>
                     <ion-label position="stacked">Category *</ion-label>
-                    <ion-select 
+                    <ion-select
                       formControlName="category"
                       placeholder="Select a category"
                       [class.ion-invalid]="blogForm.get('category')?.invalid && blogForm.get('category')?.touched">
-                      <ion-select-option 
-                        *ngFor="let option of categoryOptions" 
-                        [value]="option.value">
-                        {{ option.label }}
-                      </ion-select-option>
+                      @for (option of categoryOptions; track option) {
+                        <ion-select-option
+                          [value]="option.value">
+                          {{ option.label }}
+                        </ion-select-option>
+                      }
                     </ion-select>
                   </ion-item>
-                  <div class="error-message" *ngIf="getErrorMessage('category')">
-                    {{ getErrorMessage('category') }}
-                  </div>
+                  @if (getErrorMessage('category')) {
+                    <div class="error-message">
+                      {{ getErrorMessage('category') }}
+                    </div>
+                  }
 
                   <!-- Author -->
                   <ion-item>
                     <ion-label position="stacked">Author *</ion-label>
-                    <ion-input 
+                    <ion-input
                       formControlName="author"
                       placeholder="Enter author name"
                       [class.ion-invalid]="blogForm.get('author')?.invalid && blogForm.get('author')?.touched">
                     </ion-input>
                   </ion-item>
-                  <div class="error-message" *ngIf="getErrorMessage('author')">
-                    {{ getErrorMessage('author') }}
-                  </div>
+                  @if (getErrorMessage('author')) {
+                    <div class="error-message">
+                      {{ getErrorMessage('author') }}
+                    </div>
+                  }
 
                   <!-- Image URL -->
                   <ion-item>
                     <ion-label position="stacked">Image URL *</ion-label>
-                    <ion-input 
+                    <ion-input
                       formControlName="blogImgUrl"
                       placeholder="https://example.com/image.jpg"
                       [class.ion-invalid]="blogForm.get('blogImgUrl')?.invalid && blogForm.get('blogImgUrl')?.touched">
                     </ion-input>
                   </ion-item>
-                  <div class="error-message" *ngIf="getErrorMessage('blogImgUrl')">
-                    {{ getErrorMessage('blogImgUrl') }}
-                  </div>
+                  @if (getErrorMessage('blogImgUrl')) {
+                    <div class="error-message">
+                      {{ getErrorMessage('blogImgUrl') }}
+                    </div>
+                  }
 
                 </ion-card-content>
               </ion-card>
@@ -91,7 +100,7 @@
                   <ion-card-title>Blog Content</ion-card-title>
                 </ion-card-header>
                 <ion-card-content>
-                  
+
                   <!-- Rich Text Editor for Content -->
                   <div class="content-editor-container">
                     <ion-label>Content *</ion-label>
@@ -100,9 +109,11 @@
                       placeholder="Write your blog content here..."
                       [style.height]="'300px'">
                     </quill-editor>
-                    <div class="error-message" *ngIf="getErrorMessage('content')">
-                      {{ getErrorMessage('content') }}
-                    </div>
+                    @if (getErrorMessage('content')) {
+                      <div class="error-message">
+                        {{ getErrorMessage('content') }}
+                      </div>
+                    }
                   </div>
 
                 </ion-card-content>
@@ -113,18 +124,18 @@
           <ion-row>
             <ion-col size="12">
               <div class="form-actions">
-                <ion-button 
-                  expand="block" 
+                <ion-button
+                  expand="block"
                   type="submit"
                   [disabled]="blogForm.invalid"
                   color="primary">
                   <ion-icon name="save" slot="start"></ion-icon>
                   {{ isEditing ? 'Update Blog' : 'Save Blog' }}
                 </ion-button>
-                
-                <ion-button 
-                  expand="block" 
-                  fill="outline" 
+
+                <ion-button
+                  expand="block"
+                  fill="outline"
                   color="medium"
                   (click)="closeModal()">
                   Cancel

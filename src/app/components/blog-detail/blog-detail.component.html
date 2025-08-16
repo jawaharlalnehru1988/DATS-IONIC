@@ -8,149 +8,141 @@
 </ion-header>
 
 <ion-content class="blog-detail-content">
-  <div class="blog-container" *ngIf="blog">
-    <!-- Blog Header -->
-    <div class="blog-header">
-      <img [src]="blog.blogImgUrl" [alt]="blog.blogTitle" class="blog-image">
-      <div class="blog-meta">
-        <h1 class="blog-title">{{ blog.blogTitle }}</h1>
-        <div class="blog-info">
-          <ion-chip color="primary" class="author-chip">
-            <ion-icon name="person-outline"></ion-icon>
-            <ion-label>{{ blog.author }}</ion-label>
-          </ion-chip>
-          <ion-chip color="secondary" class="comments-chip" *ngIf="blog.comments && blog.comments.length > 0">
-            <ion-icon name="chatbubble-outline"></ion-icon>
-            <ion-label>{{ blog.comments.length }} comment{{ blog.comments.length !== 1 ? 's' : '' }}</ion-label>
-          </ion-chip>
-          <!-- Use the new share button component -->
-          <app-share-button [blog]="blog" [showText]="true"></app-share-button>
+  @if (blog) {
+    <div class="blog-container">
+      <!-- Blog Header -->
+      <div class="blog-header">
+        <img [src]="blog.blogImgUrl" [alt]="blog.blogTitle" class="blog-image">
+        <div class="blog-meta">
+          <h1 class="blog-title">{{ blog.blogTitle }}</h1>
+          <div class="blog-info">
+            <ion-chip color="primary" class="author-chip">
+              <ion-icon name="person-outline"></ion-icon>
+              <ion-label>{{ blog.author }}</ion-label>
+            </ion-chip>
+            @if (blog.comments && blog.comments.length > 0) {
+              <ion-chip color="secondary" class="comments-chip">
+                <ion-icon name="chatbubble-outline"></ion-icon>
+                <ion-label>{{ blog.comments.length }} comment{{ blog.comments.length !== 1 ? 's' : '' }}</ion-label>
+              </ion-chip>
+            }
+            <!-- Use the new share button component -->
+            <app-share-button [blog]="blog" [showText]="true"></app-share-button>
+          </div>
         </div>
       </div>
-    </div>
-
-    <!-- Blog Content -->
-    <div class="blog-content">
-      <div class="content-text" [innerHTML]="blog.content"></div>
-    </div>
-
-    <!-- Comments Section -->
-    <div class="comments-section">
-      <div class="comments-header">
-        <h2>
-          <ion-icon name="chatbubbles-outline"></ion-icon>
-          Comments & Questions
-        </h2>
-        <p class="comments-subtitle">Share your thoughts or ask questions about this article</p>
+      <!-- Blog Content -->
+      <div class="blog-content">
+        <div class="content-text" [innerHTML]="blog.content"></div>
       </div>
-
-      <!-- Add Comment Form -->
-      <div class="add-comment-form" *ngIf="isAuthenticated$ | async">
-        <ion-card class="comment-form-card">
-          <ion-card-header>
-            <ion-card-title>Add Your Comment</ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
-            <ion-item>
-              <ion-textarea
-                [value]="newComment"
-                (ionChange)="newComment = $event.detail.value || ''"
-                placeholder="Share your thoughts, ask questions, or provide insights about this article..."
-                rows="3"
-                fill="outline"
-                class="comment-textarea">
-              </ion-textarea>
-            </ion-item>
-            <div class="comment-actions">
-              <ion-button 
-                (click)="addComment()" 
-                [disabled]="!newComment || !newComment.trim()"
-                expand="block"
-                color="primary">
-                <ion-icon name="send" slot="start"></ion-icon>
-                Post Comment
-              </ion-button>
-            </div>
-          </ion-card-content>
-        </ion-card>
-      </div>
-
-      <!-- Login Prompt for Non-authenticated Users -->
-      <div class="login-prompt" *ngIf="!(isAuthenticated$ | async)">
-        <ion-card class="login-card">
-          <ion-card-content>
-            <div class="login-content">
-              <ion-icon name="lock-closed-outline" class="login-icon"></ion-icon>
-              <h3>Join the Discussion</h3>
-              <p>Please log in to share your thoughts and ask questions about this article.</p>
-              <ion-button (click)="navigateToLogin()" expand="block" color="primary">
-                <ion-icon name="log-in-outline" slot="start"></ion-icon>
-                Log In to Comment
-              </ion-button>
-            </div>
-          </ion-card-content>
-        </ion-card>
-      </div>
-
-      <!-- Existing Comments -->
-      <div class="comments-list" *ngIf="blog.comments && blog.comments.length > 0">
-        <div class="comment-item" *ngFor="let comment of blog.comments; let i = index">
-          <ion-card class="comment-card">
-            <ion-card-header>
-              <div class="comment-header">
-                <div class="user-info">
-                  <ion-avatar class="user-avatar">
-                    <ion-icon name="person"></ion-icon>
-                  </ion-avatar>
-                  <div class="user-details">
-                    <ion-card-title class="username">{{ comment.userName }}</ion-card-title>
-                    <ion-card-subtitle class="comment-date">{{ getCommentDate(i) }}</ion-card-subtitle>
-                  </div>
+      <!-- Comments Section -->
+      <div class="comments-section">
+        <div class="comments-header">
+          <h2>
+            <ion-icon name="chatbubbles-outline"></ion-icon>
+            Comments & Questions
+          </h2>
+          <p class="comments-subtitle">Share your thoughts or ask questions about this article</p>
+        </div>
+        <!-- Add Comment Form -->
+        @if (isAuthenticated$ | async) {
+          <div class="add-comment-form">
+            <ion-card class="comment-form-card">
+              <ion-card-header>
+                <ion-card-title>Add Your Comment</ion-card-title>
+              </ion-card-header>
+              <ion-card-content>
+                <ion-item>
+                  <ion-textarea
+                    [value]="newComment"
+                    (ionChange)="newComment = $event.detail.value || ''"
+                    placeholder="Share your thoughts, ask questions, or provide insights about this article..."
+                    rows="3"
+                    fill="outline"
+                    class="comment-textarea">
+                  </ion-textarea>
+                </ion-item>
+                <div class="comment-actions">
+                  <ion-button
+                    (click)="addComment()"
+                    [disabled]="!newComment || !newComment.trim()"
+                    expand="block"
+                    color="primary">
+                    <ion-icon name="send" slot="start"></ion-icon>
+                    Post Comment
+                  </ion-button>
                 </div>
+              </ion-card-content>
+            </ion-card>
+          </div>
+        }
+        <!-- Login Prompt for Non-authenticated Users -->
+        @if (!(isAuthenticated$ | async)) {
+          <div class="login-prompt">
+            <ion-card class="login-card">
+              <ion-card-content>
+                <div class="login-content">
+                  <ion-icon name="lock-closed-outline" class="login-icon"></ion-icon>
+                  <h3>Join the Discussion</h3>
+                  <p>Please log in to share your thoughts and ask questions about this article.</p>
+                  <ion-button (click)="navigateToLogin()" expand="block" color="primary">
+                    <ion-icon name="log-in-outline" slot="start"></ion-icon>
+                    Log In to Comment
+                  </ion-button>
+                </div>
+              </ion-card-content>
+            </ion-card>
+          </div>
+        }
+        <!-- Existing Comments -->
+        @if (blog.comments && blog.comments.length > 0) {
+          <div class="comments-list">
+            @for (comment of blog.comments; track comment; let i = $index) {
+              <div class="comment-item">
+                <ion-card class="comment-card">
+                  <ion-card-header>
+                    <div class="comment-header">
+                      <div class="user-info">
+                        <ion-avatar class="user-avatar">
+                          <ion-icon name="person"></ion-icon>
+                        </ion-avatar>
+                        <div class="user-details">
+                          <ion-card-title class="username">{{ comment.userName }}</ion-card-title>
+                          <ion-card-subtitle class="comment-date">{{ getCommentDate(i) }}</ion-card-subtitle>
+                        </div>
+                      </div>
+                    </div>
+                  </ion-card-header>
+                  <ion-card-content>
+                    <p class="comment-text">{{ comment.comment }}</p>
+                  </ion-card-content>
+                </ion-card>
               </div>
-            </ion-card-header>
-            <ion-card-content>
-              <p class="comment-text">{{ comment.comment }}</p>
-            </ion-card-content>
-          </ion-card>
-        </div>
-      </div>
-
-      <!-- No Comments Message -->
-      <div class="no-comments" *ngIf="!blog.comments || blog.comments.length === 0">
-        <ion-card class="no-comments-card">
-          <ion-card-content>
-            <div class="no-comments-content">
-              <ion-icon name="chatbubble-outline" class="no-comments-icon"></ion-icon>
-              <h3>Be the First to Comment</h3>
-              <p>Start the conversation! Share your thoughts, insights, or questions about this article.</p>
-            </div>
-          </ion-card-content>
-        </ion-card>
+            }
+          </div>
+        }
+        <!-- No Comments Message -->
+        @if (!blog.comments || blog.comments.length === 0) {
+          <div class="no-comments">
+            <ion-card class="no-comments-card">
+              <ion-card-content>
+                <div class="no-comments-content">
+                  <ion-icon name="chatbubble-outline" class="no-comments-icon"></ion-icon>
+                  <h3>Be the First to Comment</h3>
+                  <p>Start the conversation! Share your thoughts, insights, or questions about this article.</p>
+                </div>
+              </ion-card-content>
+            </ion-card>
+          </div>
+        }
       </div>
     </div>
-  </div>
+  } @else {
+    <app-skeleton-loader [config]="{
+      type: 'article',
+      showCategoryTitle: false
+    }"></app-skeleton-loader>
+  }
 
-  <!-- Loading State -->
-  <div class="loading-container" *ngIf="!blog && isLoading">
-    <ion-spinner name="crescent"></ion-spinner>
-    <p>Loading article...</p>
-  </div>
 
-  <!-- Error State -->
-  <div class="error-container" *ngIf="!blog && !isLoading && hasError">
-    <ion-card class="error-card">
-      <ion-card-content>
-        <div class="error-content">
-          <ion-icon name="alert-circle-outline" class="error-icon"></ion-icon>
-          <h3>Article Not Found</h3>
-          <p>The article you're looking for doesn't exist or may have been removed.</p>
-          <ion-button (click)="goBack()" expand="block" color="primary">
-            <ion-icon name="arrow-back" slot="start"></ion-icon>
-            Go Back to Articles
-          </ion-button>
-        </div>
-      </ion-card-content>
-    </ion-card>
-  </div>
 </ion-content>

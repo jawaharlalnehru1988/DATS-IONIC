@@ -35,47 +35,44 @@
       <ion-icon name="library-outline" class="section-icon"></ion-icon>
       {{ audioCategoriesText }}
     </h2>
-    
+
     <ion-grid class="categories-grid">
       <ion-row>
-        <ion-col size="6" size-md="4" size-lg="3" *ngFor="let topic of topics; let i = index">
-          <div class="category-card" (click)="onCardClick(topic)" 
-               [style.animation-delay]="(i * 0.1) + 's'">
-            
-            <!-- Card Background Gradient -->
-            <div class="card-background"></div>
-            
-            <!-- Music Icon Container -->
-            <div class="icon-container">
-              <div class="icon-wrapper">
-                <ion-icon name="musical-notes" class="category-icon"></ion-icon>
+        @for (topic of topics; track topic; let i = $index) {
+          <ion-col size="6" size-md="4" size-lg="3">
+            <div class="category-card" (click)="onCardClick(topic)"
+              [style.animation-delay]="(i * 0.1) + 's'">
+              <!-- Card Background Gradient -->
+              <div class="card-background"></div>
+              <!-- Music Icon Container -->
+              <div class="icon-container">
+                <div class="icon-wrapper">
+                  <ion-icon name="musical-notes" class="category-icon"></ion-icon>
+                </div>
+                <div class="sound-waves">
+                  <div class="wave wave-1"></div>
+                  <div class="wave wave-2"></div>
+                  <div class="wave wave-3"></div>
+                </div>
               </div>
-              <div class="sound-waves">
-                <div class="wave wave-1"></div>
-                <div class="wave wave-2"></div>
-                <div class="wave wave-3"></div>
+              <!-- Content -->
+              <div class="card-content">
+                <div class="category-title">
+                  <h3 class="native-text">{{ topic.topic }}</h3>
+                  <p class="english-text">{{ topic.title }}</p>
+                </div>
+                <!-- Play Button -->
+                <div class="play-button">
+                  <ion-icon name="play" class="play-icon"></ion-icon>
+                </div>
+              </div>
+              <!-- Hover Effects -->
+              <div class="hover-overlay">
+                <div class="ripple-effect"></div>
               </div>
             </div>
-            
-            <!-- Content -->
-            <div class="card-content">
-              <div class="category-title">
-                <h3 class="native-text">{{ topic.topic }}</h3>
-                <p class="english-text">{{ topic.title }}</p>
-              </div>
-              
-              <!-- Play Button -->
-              <div class="play-button">
-                <ion-icon name="play" class="play-icon"></ion-icon>
-              </div>
-            </div>
-            
-            <!-- Hover Effects -->
-            <div class="hover-overlay">
-              <div class="ripple-effect"></div>
-            </div>
-          </div>
-        </ion-col>
+          </ion-col>
+        }
       </ion-row>
     </ion-grid>
   </div>
