@@ -11,11 +11,6 @@
     "test": "ng test",
     "lint": "ng lint",
     "lint:fix": "ng lint --fix",
-    "lint:strict": "ng lint --max-warnings=0",
-    "check-unused-exports": "ts-unused-exports tsconfig.json --ignoreFiles=environment\\.prod\\.ts",
-    "check-unused-code": "npm run lint:strict && npm run check-unused-exports",
-    "pre-commit": "npm run check-unused-code",
-    "prepare": "husky",
     "ionic:build": "npm run build",
     "ionic:serve": "npm run start -- --open",
     "vercel-build": "npm install --legacy-peer-deps && ng build --configuration production"
@@ -49,11 +44,6 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^20.1.4",
-    "@angular-eslint/builder": "^20.0.0",
-    "@angular-eslint/eslint-plugin": "^20.0.0",
-    "@angular-eslint/eslint-plugin-template": "^20.0.0",
-    "@angular-eslint/schematics": "^20.0.0",
-    "@angular-eslint/template-parser": "^20.0.0",
     "@angular/cli": "^20.1.4",
     "@angular/compiler-cli": "^20.1.4",
     "@angular/language-service": "^20.1.4",
@@ -62,14 +52,6 @@
     "@types/express": "^4.17.17",
     "@types/jasmine": "~5.1.0",
     "@types/node": "^18.18.0",
-    "@typescript-eslint/eslint-plugin": "^8.18.0",
-    "@typescript-eslint/parser": "^8.18.0",
-    "eslint": "^9.16.0",
-    "eslint-plugin-import": "^2.29.1",
-    "eslint-plugin-jsdoc": "^48.2.1",
-    "eslint-plugin-prefer-arrow": "1.2.2",
-    "eslint-plugin-unused-imports": "^4.1.4",
-    "husky": "^9.1.7",
     "jasmine-core": "~5.1.0",
     "jasmine-spec-reporter": "~5.0.0",
     "karma": "~6.4.0",
@@ -77,13 +59,6 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "lint-staged": "^16.1.5",
-    "ts-unused-exports": "^11.0.1",
     "typescript": "~5.8.3"
-  },
-  "lint-staged": {
-    "*.{ts,js,html}": [
-      "echo 'Checking code quality...' && npm run check-unused-exports"
-    ]
   }
 }

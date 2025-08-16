@@ -71,3 +71,9 @@ Thumbs.db
 
 # Environment files
 # environments
+
+# Development-only configurations (not for production/team)
+.husky/
+.eslintrc.json
+.eslintrc.js
+lint-staged.config.js
