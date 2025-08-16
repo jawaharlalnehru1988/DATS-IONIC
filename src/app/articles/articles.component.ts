@@ -31,6 +31,7 @@ export class ArticlesComponent implements OnInit, OnDestroy {
   currentTheme: ThemeType = 'theme-royal';
   private themeSubscription: Subscription = new Subscription();
   private languageSubscription: Subscription = new Subscription();
+  private dataLoaded: boolean = false; // Track if data has been loaded at least once
   
   contentCategories: TabItem[] = [];
 
@@ -110,29 +111,29 @@ export class ArticlesComponent implements OnInit, OnDestroy {
     });
 
     // Subscribe to blogs from service
-    this.isLoading = true;
     console.log('Setting isLoading to true, about to fetch blogs');
-    
-    // Add a small delay to make the loading visible for testing
-    setTimeout(() => {
-      this.blogService.getBlogs().subscribe({
-        next: (blogs: Blog[]) => {
-          console.log('Blogs received:', blogs.length, 'blogs');
-          this.blogs = blogs;
-          if (blogs.length === 0) {
-            // Use fallback data if no blogs are available
-            this.blogs = this.defaultBlogs;
-          }
-          this.isLoading = false;
-          console.log('Setting isLoading to false');
-        },
-        error: (error) => {
-          console.error('Error loading blogs:', error);
-          this.isLoading = false;
-          console.log('Setting isLoading to false due to error');
+    this.isLoading = true;
+
+    this.blogService.getBlogs().subscribe({
+      next: (blogs: Blog[]) => {
+        console.log('Blogs received:', blogs.length, 'blogs');
+        this.blogs = blogs;
+        if (blogs.length === 0) {
+          // Use fallback data if no blogs are available
+          this.blogs = this.defaultBlogs;
+          this.isLoading = true;
         }
-      });
-    }, 500); // 500ms delay to see the skeleton loader
+        this.dataLoaded = true;
+        this.isLoading = false;
+        console.log('Setting isLoading to false, dataLoaded to true');
+      },
+      error: (error) => {
+        console.error('Error loading blogs:', error);
+        this.dataLoaded = true;
+        this.isLoading = false;
+        console.log('Setting isLoading to false due to error, dataLoaded to true');
+      }
+    });
   }
 
   // Get filtered blogs based on selected category
@@ -152,7 +153,7 @@ export class ArticlesComponent implements OnInit, OnDestroy {
 
   // Check if current category has any blogs
   get hasCurrentCategoryBlogs(): boolean {
-    return this.filteredBlogs.length > 0;
+    return this.dataLoaded && this.filteredBlogs.length > 0;
   }
 
   private updateContentCategories(): void {
@@ -179,39 +180,17 @@ export class ArticlesComponent implements OnInit, OnDestroy {
   onLanguageChange(event: any) {
     const newTopic = event.detail.value;
     
-    // Show loading when switching categories
+    // Simply update the selected topic - no artificial loading
     if (newTopic !== this.selectedTopic) {
-      this.isLoading = true;
       this.selectedTopic = newTopic;
-      
-      // Simulate loading delay for better UX
-      setTimeout(() => {
-        this.isLoading = false;
-      }, 800);
     }
   }
 
   onTabChanged(newTab: string) {
-    // Show loading when switching categories
+    // Simply update the selected topic - no artificial loading
     if (newTab !== this.selectedTopic) {
-      this.isLoading = true;
       this.selectedTopic = newTab;
-      
-      // Simulate loading delay for better UX
-      setTimeout(() => {
-        this.isLoading = false;
-      }, 800);
     }
-  }
-
-  // Debug method to test skeleton loader
-  testSkeleton() {
-    console.log('Testing skeleton loader');
-    this.isLoading = true;
-    setTimeout(() => {
-      this.isLoading = false;
-      console.log('Skeleton test completed');
-    }, 3000);
   }
 
   onCardClick(blogId: string) {
