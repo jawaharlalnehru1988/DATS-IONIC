@@ -12,7 +12,7 @@
     "lint": "ng lint",
     "lint:fix": "ng lint --fix",
     "lint:strict": "ng lint --max-warnings=0",
-    "check-unused-exports": "ts-unused-exports tsconfig.json",
+    "check-unused-exports": "ts-unused-exports tsconfig.json --ignoreFiles=environment\\.prod\\.ts",
     "check-unused-code": "npm run lint:strict && npm run check-unused-exports",
     "pre-commit": "npm run check-unused-code",
     "prepare": "husky",

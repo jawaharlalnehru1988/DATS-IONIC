@@ -1,4 +1,4 @@
- const environment = {
+export const environment = {
   production: true,
     apiNestBaseUrl: 'https://dats-backend.vercel.app',
     // apiNestBaseUrl: 'http://localhost:3000',
