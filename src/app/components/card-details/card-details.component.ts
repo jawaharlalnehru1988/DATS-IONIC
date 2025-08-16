@@ -103,7 +103,7 @@ export class CardDetailsComponent implements OnInit {
     });
     
     // Subscribe to user role and update signal using cookie for better performance
-    this.authService.currentUser$.subscribe(user => {
+    this.authService.currentUser$.subscribe(_user => {
       // Use cookie-based service for faster access
       const role = this.userRoleService.getCurrentUserRole();
       this.currentUserRole.set(role);
@@ -214,7 +214,7 @@ export class CardDetailsComponent implements OnInit {
     this.isRatingLoading.set(true);
     
     this.ratingService.deleteRating(cardId).subscribe({
-      next: (response) => {
+      next: (_response) => {
         this.userRating.set(0);
         this.ratingMessage.set('Rating removed successfully');
         this.showToast.set(true);
@@ -270,30 +270,6 @@ export class CardDetailsComponent implements OnInit {
         action: card.action
       }]
     };
-
-    const { CategoryFormModalComponent } = await import('../../Utils/components/category-form-modal/category-form-modal.component');
-    
-    const modal = await this.modalController.create({
-      component: CategoryFormModalComponent,
-      componentProps: {
-        pageIdentifier: pageIdentifier,
-        initialData: editData,
-        isEditMode: true
-      },
-      cssClass: 'category-form-modal',
-      backdropDismiss: false,
-      showBackdrop: true
-    });
-
-    modal.onDidDismiss().then((result) => {
-      if (result.data && result.data.updated) {
-        // Refresh the current card data or navigate back
-        console.log('Card updated successfully');
-        // You might want to refresh the data here
-      }
-    });
-
-    await modal.present();
 
     // Apply modal styles
     setTimeout(() => {

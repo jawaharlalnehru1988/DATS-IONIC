@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { TutorialService } from '../tutorial/tutorial.service';
 import { PoojaRulesModel } from '../tutorial/tutorial.model';
-import { ReusableHeaderComponent } from '../components';
+import { ReusableHeaderComponent } from '../components/reusable-header/reusable-header.component';
 
 @Component({
   selector: 'app-tutorial-details',

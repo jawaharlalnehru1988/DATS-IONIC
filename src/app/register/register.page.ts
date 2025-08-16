@@ -1,13 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { IonContent, IonMenuButton, IonHeader, IonTitle, IonToolbar, IonInput, IonItem, IonTextarea, IonLabel, IonButton, IonText, IonButtons, IonSpinner } from '@ionic/angular/standalone';
+import { IonContent, IonInput, IonItem, IonTextarea, IonLabel, IonButton, IonText, IonSpinner } from '@ionic/angular/standalone';
 import { AuthService } from '../services/auth.service';
 import { ResponseUserData } from '../Utils/models';
 import { Router } from '@angular/router';
 import { ThemeService, ThemeType } from '../services/theme.service';
 import { Subscription } from 'rxjs';
-import { ReusableHeaderComponent } from '../components';
+import { ReusableHeaderComponent } from '../components/reusable-header/reusable-header.component';
 
 @Component({
   selector: 'app-register',

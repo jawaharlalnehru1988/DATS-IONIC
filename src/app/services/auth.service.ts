@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal, WritableSignal } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { Language, ResponseUserData, UserData, UserWithRole } from '../Utils/models';
+import { Language, ResponseUserData, UserData } from '../Utils/models';
 import { Observable, BehaviorSubject, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { JwtUtil, DecodedToken } from '../Utils/jwt.util';
@@ -133,12 +133,12 @@ export class AuthService {
     // Check localStorage first, then sessionStorage as fallback
     let token = localStorage.getItem('token');
     let user = localStorage.getItem('user');
-    let source = 'localStorage';
+    const _source = 'localStorage';
     
     if (!token || !user) {
       token = sessionStorage.getItem('token');
       user = sessionStorage.getItem('user');
-      source = 'sessionStorage';
+      const _source = 'sessionStorage';
       
       // If found in sessionStorage, restore to localStorage
       if (token && user) {

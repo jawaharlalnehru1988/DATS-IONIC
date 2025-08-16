@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { 
   IonModal, 
@@ -58,7 +58,7 @@ import { QuillModule } from 'ngx-quill';
     QuillModule
 ]
 })
-export class ArticleFormComponent implements OnInit {
+class ArticleFormComponent implements OnInit, OnChanges {
   @Input() isOpen: boolean = false;
   @Input() editingArticle: ArticleCard | null = null;
   @Output() modalClosed = new EventEmitter<void>();

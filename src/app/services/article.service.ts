@@ -11,7 +11,7 @@ export interface ArticleCard {
   categoryTitle?: string;
 }
 
-export interface ArticleCategory {
+interface ArticleCategory {
   id: string;
   categoryTitle: string;
   cards: ArticleCard[];
@@ -62,7 +62,7 @@ export class ArticleService {
     const currentArticles = this.articlesSubject.value;
     
     // Find and remove the old article
-    for (let category of currentArticles) {
+    for (const category of currentArticles) {
       const articleIndex = category.cards.findIndex(card => card.id === articleId);
       if (articleIndex !== -1) {
         category.cards.splice(articleIndex, 1);
@@ -113,7 +113,7 @@ export class ArticleService {
   getArticleById(articleId: string): ArticleCard | null {
     const currentArticles = this.articlesSubject.value;
     
-    for (let category of currentArticles) {
+    for (const category of currentArticles) {
       const article = category.cards.find(card => card.id === articleId);
       if (article) {
         return article;

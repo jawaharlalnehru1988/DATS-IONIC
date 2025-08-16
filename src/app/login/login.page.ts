@@ -3,23 +3,18 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { 
   IonContent, 
-  IonHeader, 
-  IonTitle, 
-  IonToolbar, 
   IonInput, 
   IonItem, 
   IonLabel, 
   IonButton, 
-  IonText, 
-  IonButtons, 
-  IonBackButton,
+  IonText,
   IonSpinner 
 } from '@ionic/angular/standalone';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { ThemeService, ThemeType } from '../services/theme.service';
 import { Subscription } from 'rxjs';
-import { ReusableHeaderComponent } from '../components';
+import { ReusableHeaderComponent } from '../components/reusable-header/reusable-header.component';
 
 @Component({
   selector: 'app-login',
@@ -84,7 +79,7 @@ export class LoginPage implements OnInit, OnDestroy {
       const { email, password } = this.loginForm.value;
       
       this.authService.login(email, password).subscribe({
-        next: (response) => {
+        next: (_response) => {
           this.isLoading = false;
           // Redirect to main page or dashboard
           this.router.navigate(['/lordkrishna']);

@@ -19,7 +19,7 @@ export interface ISlokaChapters {
   __v: number
 }
 
-export interface QaSection {
+ interface QaSection {
   question: string
   answer: string
   _id: string

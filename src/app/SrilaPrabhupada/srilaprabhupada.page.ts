@@ -1,14 +1,14 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
-import { IonHeader, IonTitle, IonToolbar, IonMenuButton, IonButtons, IonGrid, IonRow, IonCol, IonButton, IonBackButton, IonContent } from '@ionic/angular/standalone';
+import { IonButton, IonContent } from '@ionic/angular/standalone';
 import {  IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { star, add, home, heartOutline, cafeOutline, personOutline, chevronDownOutline, notificationsOutline, optionsOutline, play, playOutline, pause, stop, searchOutline, chevronForwardOutline, colorPaletteOutline, chatbubbleOutline, imageOutline, micOutline, videocamOutline, musicalNotesOutline, schoolOutline, documentOutline } from 'ionicons/icons';
 import { ToastController } from '@ionic/angular';
 import { ThemeService, ThemeType } from '../services/theme.service';
 import { Subscription } from 'rxjs';
-import { ReusableHeaderComponent } from '../components';
+import { ReusableHeaderComponent } from '../components/reusable-header/reusable-header.component';
 
 
 interface ContentCard {

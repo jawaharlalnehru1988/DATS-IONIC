@@ -1,0 +1,4 @@
+# Check for unused exports in the entire codebase
+npm run check-unused-exports
+
+echo "✅ Pre-commit checks passed! No unused code detected."

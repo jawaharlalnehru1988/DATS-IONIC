@@ -1,11 +1,9 @@
-import { Injectable, signal, computed, effect } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Injectable, signal, computed } from '@angular/core';
 import { InputData } from '../Utils/models';
 import { CategoryFormService } from '../Utils/components/category-form/category-form.service';
 import { KrishnaServiceService } from '../krishna-page/krishna-service.service';
 
-export interface CacheState {
+interface CacheState {
   data: InputData[];
   lastFetched: number;
   isLoading: boolean;

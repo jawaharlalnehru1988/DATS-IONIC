@@ -1,9 +1,9 @@
-import { Injectable, Inject, Optional } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { DOCUMENT } from '@angular/common';
 import { Blog } from './blog.service';
 
-export interface BlogMetaData {
+ interface BlogMetaData {
   title: string;
   description: string;
   image: string;
@@ -15,7 +15,7 @@ export interface BlogMetaData {
 @Injectable({
   providedIn: 'root'
 })
-export class SSRMetaService {
+ class SSRMetaService {
 
   constructor(
     private meta: Meta,

@@ -10,6 +10,12 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint",
+    "lint:fix": "ng lint --fix",
+    "lint:strict": "ng lint --max-warnings=0",
+    "check-unused-exports": "ts-unused-exports tsconfig.json",
+    "check-unused-code": "npm run lint:strict && npm run check-unused-exports",
+    "pre-commit": "npm run check-unused-code",
+    "prepare": "husky",
     "ionic:build": "npm run build",
     "ionic:serve": "npm run start -- --open",
     "vercel-build": "npm install --legacy-peer-deps && ng build --configuration production"
@@ -62,6 +68,8 @@
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-jsdoc": "^48.2.1",
     "eslint-plugin-prefer-arrow": "1.2.2",
+    "eslint-plugin-unused-imports": "^4.1.4",
+    "husky": "^9.1.7",
     "jasmine-core": "~5.1.0",
     "jasmine-spec-reporter": "~5.0.0",
     "karma": "~6.4.0",
@@ -69,6 +77,13 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "lint-staged": "^16.1.5",
+    "ts-unused-exports": "^11.0.1",
     "typescript": "~5.8.3"
+  },
+  "lint-staged": {
+    "*.{ts,js,html}": [
+      "echo 'Checking code quality...' && npm run check-unused-exports"
+    ]
   }
 }

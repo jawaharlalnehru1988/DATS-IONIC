@@ -1,4 +1,4 @@
-import { Component, OnInit, HostBinding, ViewChild } from '@angular/core';
+import { Component, OnInit, HostBinding, ViewChild, OnDestroy } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
 import { 
@@ -53,7 +53,7 @@ import { SimpleRichTextComponent } from '../components/simple-rich-text/simple-r
     IonMenuButton
 ]
 })
-export class RichTextDemoPage implements OnInit {
+export class RichTextDemoPage implements OnInit, OnDestroy {
   // Theme management
   currentTheme: ThemeType = 'theme-royal';
   private themeSubscription: Subscription = new Subscription();
@@ -120,7 +120,7 @@ export class RichTextDemoPage implements OnInit {
     }
   }
 
-  onContentChanged(html: string) {
+  onContentChanged(_html: string) {
     // You can perform actions when content changes
     console.log('Content changed');
   }

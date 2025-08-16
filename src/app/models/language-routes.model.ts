@@ -1,4 +1,4 @@
-export interface LanguageRoute {
+ interface LanguageRoute {
   code: string;
   name: string;
   urlPrefix: string;
@@ -44,7 +44,7 @@ export function getUrlPrefixFromLanguage(languageCode: string): string {
  * @param prefix - The URL prefix to validate
  * @returns True if valid, false otherwise
  */
-export function isValidLanguagePrefix(prefix: string): boolean {
+ function isValidLanguagePrefix(prefix: string): boolean {
   return LANGUAGE_ROUTES.some(lang => lang.urlPrefix === prefix);
 }
 
@@ -62,6 +62,6 @@ export function getLanguageRouteByPrefix(prefix: string): LanguageRoute | null {
  * @param code - The language code
  * @returns LanguageRoute object or null if not found
  */
-export function getLanguageRouteByCode(code: string): LanguageRoute | null {
+ function getLanguageRouteByCode(code: string): LanguageRoute | null {
   return LANGUAGE_ROUTES.find(lang => lang.code === code) || null;
 }

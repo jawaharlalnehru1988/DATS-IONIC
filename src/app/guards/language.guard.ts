@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { LanguageService } from '../services/language.service';
-import { LANGUAGE_ROUTES, getLanguageRouteByPrefix } from '../models/language-routes.model';
+import { getLanguageRouteByPrefix } from '../models/language-routes.model';
 
 @Injectable({
   providedIn: 'root'

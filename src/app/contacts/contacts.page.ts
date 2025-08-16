@@ -1,12 +1,12 @@
 import { Component, OnInit, OnDestroy, HostBinding } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonMenuButton, IonList, IonItem, IonIcon, IonLabel, IonButton, IonButtons, IonTextarea } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonList, IonItem, IonIcon, IonLabel, IonButton, IonTextarea } from '@ionic/angular/standalone';
 import { call, globe, logoAndroid, logoApple, logoWhatsapp, mail, map, musicalNotes, send } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
 import { ThemeService, ThemeType } from '../services/theme.service';
 import { Subscription } from 'rxjs';
-import { ReusableHeaderComponent } from '../components';
+import { ReusableHeaderComponent } from '../components/reusable-header/reusable-header.component';
 
 @Component({
   selector: 'app-contacts',

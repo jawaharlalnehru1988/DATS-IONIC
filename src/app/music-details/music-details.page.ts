@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
-import {  
-  IonSpinner, 
+import { 
   IonContent,
   IonButton,
   IonIcon,
-  IonSkeletonText,
   IonRefresher,
   IonRefresherContent,
   ModalController
@@ -28,7 +26,8 @@ import {
   globe, 
   construct, 
   play, arrowBack, add, chevronDownCircleOutline } from 'ionicons/icons';
-import { DisplayCardListComponent, ReusableHeaderComponent } from "../components";
+import { DisplayCardListComponent } from "../components/display-card-list/display-card-list.component";
+import { ReusableHeaderComponent } from '../components/reusable-header/reusable-header.component';
 import { CardItem, InputData } from '../Utils/models';
 import { CategoryCard } from '../Utils/models/card.model';
 import { DataSharingService } from '../services/data-sharing.service';
@@ -43,7 +42,6 @@ import { SkeletonLoaderComponent } from '../components/skeleton-loader/skeleton-
   standalone: true,
   imports: [
     IonContent,
-    IonButton,
     IonIcon,
     IonRefresher,
     IonRefresherContent,
@@ -78,7 +76,6 @@ export class MusicDetailsPage implements OnInit {
     private categoryService: CategoryFormService,
     private dataSharingService: DataSharingService, 
     private router: Router,
-    private modalController: ModalController,
     private globalStateService: GlobalStateService
   ) {
     addIcons({musicalNotes,heartOutline,shareOutline,musicalNote,add,arrowBack,star,volumeHigh,play,library,book,globe,construct,chevronDownCircleOutline});
@@ -194,57 +191,6 @@ export class MusicDetailsPage implements OnInit {
     }
   }
 
-  // Open category form in modal
-  async openCategoryModal() {
-    const { CategoryFormModalComponent } = await import('../Utils/components/category-form-modal/category-form-modal.component');
-    
-    const modal = await this.modalController.create({
-      component: CategoryFormModalComponent,
-      componentProps: {
-        pageIdentifier: 'music-details'
-      },
-      cssClass: 'category-form-modal',
-      backdropDismiss: false,
-      showBackdrop: true
-    });
-
-    modal.onDidDismiss().then((result) => {
-      if (result.data && result.data.submitted) {
-       
-      }
-    });
-
-    const presentResult = await modal.present();
-    
-    // Apply styles after modal is presented with a small delay
-    setTimeout(() => {
-      const modalElement = document.querySelector('ion-modal.category-form-modal') as HTMLElement;
-      if (modalElement) {
-        modalElement.style.setProperty('--width', '95%');
-        modalElement.style.setProperty('--max-width', '95vw');
-        modalElement.style.setProperty('--height', '95%');
-        modalElement.style.setProperty('--max-height', '95vh');
-        modalElement.style.setProperty('--border-radius', '12px');
-        
-        // Position the modal to the right
-        const wrapper = modalElement.querySelector('.modal-wrapper') as HTMLElement;
-        if (wrapper) {
-          wrapper.style.position = 'fixed';
-          wrapper.style.right = '2.5%';
-          wrapper.style.left = 'auto';
-          wrapper.style.top = '50%';
-          wrapper.style.transform = 'translateY(-50%)';
-          wrapper.style.width = '95%';
-          wrapper.style.height = '95%';
-          wrapper.style.maxWidth = '95vw';
-          wrapper.style.maxHeight = '95vh';
-          wrapper.style.borderRadius = '12px';
-        }
-      }
-    }, 100);
-
-    return presentResult;
-  }
 
   // Pull to refresh handler
   async handleRefresh(event: any) {

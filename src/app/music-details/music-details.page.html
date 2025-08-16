@@ -49,13 +49,6 @@
           <app-display-card-list [inputData]="inputData" (cardSelected)="onCardSelected($event)" (playAllClicked)="onPlayAllClicked($event)"></app-display-card-list>
         </div>
       }
-      <!-- Add Category Button -->
-      <div class="add-category-section">
-        <ion-button expand="block" fill="solid" color="primary" (click)="openCategoryModal()">
-          <ion-icon name="add" slot="start"></ion-icon>
-          Add New Category
-        </ion-button>
-      </div>
     </div>
   }
 </ion-content>

@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy, HostBinding } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Meta, Title } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { 
@@ -12,7 +11,6 @@ import {
   IonCardContent,
   IonIcon, 
   IonButton, 
-  IonSpinner, 
   IonItem, 
   IonTextarea, 
   IonChip, 

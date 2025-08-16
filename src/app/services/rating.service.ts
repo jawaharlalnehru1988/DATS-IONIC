@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
-export interface RatingData {
+interface RatingData {
   cardId: string;
   userId?: string;
   rating: number;
@@ -11,7 +11,7 @@ export interface RatingData {
   updatedAt?: Date;
 }
 
-export interface RatingResponse {
+interface RatingResponse {
   success: boolean;
   message: string;
   data?: RatingData;

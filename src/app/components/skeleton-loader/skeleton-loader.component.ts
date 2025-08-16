@@ -33,7 +33,7 @@ import { CommonModule } from '@angular/common';
  * }"></app-skeleton-loader>
  */
 
-export interface SkeletonConfig {
+interface SkeletonConfig {
   type: 'cards' | 'list' | 'article' | 'hero-cards' | 'custom';
   itemCount?: number;
   showCategoryTitle?: boolean;
@@ -43,7 +43,7 @@ export interface SkeletonConfig {
   showAddButton?: boolean;
 }
 
-export interface SkeletonItem {
+interface SkeletonItem {
   width: string;
   height: string;
   borderRadius?: string;

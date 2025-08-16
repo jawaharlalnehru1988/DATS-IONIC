@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, HostBinding } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonIcon, IonButtons, IonButton, IonMenuButton, IonLabel, IonFooter, IonRefresher, IonRefresherContent, ModalController, IonSegmentButton } from '@ionic/angular/standalone';
+import { IonContent, IonToolbar, IonIcon, IonButtons, IonButton, IonFooter, IonRefresher, IonRefresherContent, ModalController } from '@ionic/angular/standalone';
 import { SegmentedTabsComponent, TabItem } from '../components/segmented-tabs/segmented-tabs.component';
 import { addIcons } from 'ionicons';
 import { chevronDownOutline, notificationsOutline, optionsOutline, home, heartOutline, cafeOutline, personOutline, chevronBack, chevronForward, add, chevronDownCircleOutline } from 'ionicons/icons';
@@ -253,42 +253,6 @@ onPlayAllClicked(cardItems: CardItem[]) {
     this.dataSharingService.setSelectedCardItem(cardItems[0]);
     this.router.navigate(['/card-details']);
   }
-}
-
-// Open category form in modal
-async openCategoryModal() {
-  const { CategoryFormModalComponent } = await import('../Utils/components/category-form-modal/category-form-modal.component');
-  
-  const modal = await this.modalController.create({
-    component: CategoryFormModalComponent,
-    componentProps: {
-      pageIdentifier: 'krishna-page'
-    },
-    cssClass: 'category-form-modal',
-    backdropDismiss: false,
-    showBackdrop: true
-  });
-
-  modal.onDidDismiss().then((result) => {
-    if (result.data && result.data.submitted) {
-      // Handle submission result if needed
-    }
-  });
-
-  const presentResult = await modal.present();
-  
-  // Apply styles after modal is presented with a small delay
-  setTimeout(() => {
-    const modalElement = document.querySelector('ion-modal.category-form-modal');
-    if (modalElement) {
-      (modalElement as HTMLElement).style.setProperty('--width', '90%');
-      (modalElement as HTMLElement).style.setProperty('--max-width', '500px');
-      (modalElement as HTMLElement).style.setProperty('--height', 'auto');
-      (modalElement as HTMLElement).style.setProperty('--max-height', '90vh');
-    }
-  }, 100);
-
-  return presentResult;
 }
 
 

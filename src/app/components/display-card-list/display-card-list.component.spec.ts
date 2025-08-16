@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
 import { DisplayCardListComponent } from './display-card-list.component';
 import { AudioItem, CardItem, InputData } from 'src/app/Utils/models';
 

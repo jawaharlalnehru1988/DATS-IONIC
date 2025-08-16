@@ -36,7 +36,6 @@ import {
   warningSharp, 
   bookmarkOutline, 
   bookmarkSharp, 
-  easel, 
   easelOutline, 
   easelSharp, 
   musicalNotesOutline,

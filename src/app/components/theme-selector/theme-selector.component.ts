@@ -30,7 +30,7 @@ import { close } from 'ionicons/icons';
     IonIcon
 ]
 })
-export class ThemeSelectorComponent {
+class ThemeSelectorComponent {
   @Input() isOpen: boolean = false;
   @Output() modalClosed = new EventEmitter<void>();
 

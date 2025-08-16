@@ -1317,7 +1317,7 @@ export class LanguageService {
     
     // Check if current URL has a non-English language prefix
     const currentLangPrefix = pathSegments[0];
-    const hasLangPrefix = LANGUAGE_ROUTES.some(lang => lang.urlPrefix === currentLangPrefix && lang.urlPrefix !== '');
+    const hasLangPrefix = LANGUAGE_ROUTES.some((lang: { urlPrefix: string; }) => lang.urlPrefix === currentLangPrefix && lang.urlPrefix !== '');
     
     if (hasLangPrefix) {
       // Remove language prefix for non-English languages

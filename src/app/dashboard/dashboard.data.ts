@@ -14,7 +14,7 @@ export interface FeatureCard {
 }
 
 // English Feature Cards
-export const FEATURE_CARDS_EN: FeatureCard[] = [
+ const FEATURE_CARDS_EN: FeatureCard[] = [
   {
     id: 'lordkrishna',
     titleKey: 'lordKrishna',
@@ -102,7 +102,7 @@ export const FEATURE_CARDS_EN: FeatureCard[] = [
 ];
 
 // Tamil Feature Cards
-export const FEATURE_CARDS_TA: FeatureCard[] = [
+ const FEATURE_CARDS_TA: FeatureCard[] = [
   {
     id: 'lordkrishna',
     titleKey: 'lordKrishna',
@@ -190,7 +190,7 @@ export const FEATURE_CARDS_TA: FeatureCard[] = [
 ];
 
 // Hindi Feature Cards
-export const FEATURE_CARDS_HI: FeatureCard[] = [
+const FEATURE_CARDS_HI: FeatureCard[] = [
   {
     id: 'lordkrishna',
     titleKey: 'lordKrishna',
@@ -278,7 +278,7 @@ export const FEATURE_CARDS_HI: FeatureCard[] = [
 ];
 
 // Bengali Feature Cards
-export const FEATURE_CARDS_BN: FeatureCard[] = [
+ const FEATURE_CARDS_BN: FeatureCard[] = [
   {
     id: 'lordkrishna',
     titleKey: 'lordKrishna',
@@ -366,7 +366,7 @@ export const FEATURE_CARDS_BN: FeatureCard[] = [
 ];
 
 // Telugu Feature Cards
-export const FEATURE_CARDS_TE: FeatureCard[] = [
+ const FEATURE_CARDS_TE: FeatureCard[] = [
   {
     id: 'lordkrishna',
     titleKey: 'lordKrishna',
@@ -454,7 +454,7 @@ export const FEATURE_CARDS_TE: FeatureCard[] = [
 ];
 
 // Marathi Feature Cards
-export const FEATURE_CARDS_MR: FeatureCard[] = [
+ const FEATURE_CARDS_MR: FeatureCard[] = [
   {
     id: 'lordkrishna',
     titleKey: 'lordKrishna',
@@ -542,7 +542,7 @@ export const FEATURE_CARDS_MR: FeatureCard[] = [
 ];
 
 // Gujarati Feature Cards
-export const FEATURE_CARDS_GU: FeatureCard[] = [
+ const FEATURE_CARDS_GU: FeatureCard[] = [
   {
     id: 'lordkrishna',
     titleKey: 'lordKrishna',
@@ -630,7 +630,7 @@ export const FEATURE_CARDS_GU: FeatureCard[] = [
 ];
 
 // Kannada Feature Cards
-export const FEATURE_CARDS_KN: FeatureCard[] = [
+ const FEATURE_CARDS_KN: FeatureCard[] = [
   {
     id: 'lordkrishna',
     titleKey: 'lordKrishna',
@@ -718,7 +718,7 @@ export const FEATURE_CARDS_KN: FeatureCard[] = [
 ];
 
 // Malayalam Feature Cards
-export const FEATURE_CARDS_ML: FeatureCard[] = [
+ const FEATURE_CARDS_ML: FeatureCard[] = [
   {
     id: 'lordkrishna',
     titleKey: 'lordKrishna',
@@ -831,4 +831,3 @@ export function getFeatureCardsByLanguage(language: SupportedLanguage): FeatureC
 }
 
 // Backward compatibility
-export const FEATURE_CARDS = FEATURE_CARDS_EN;

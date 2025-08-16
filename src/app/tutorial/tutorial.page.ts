@@ -1,17 +1,17 @@
 import { Component, OnInit, OnDestroy, HostBinding } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonMenuButton, IonIcon } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonIcon } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
 import { TutorialService } from './tutorial.service';
 import { addIcons } from 'ionicons';
 import { playCircle, arrowForward } from 'ionicons/icons';
 import { ThemeService, ThemeType } from '../services/theme.service';
 import { Subscription } from 'rxjs';
-import { ReusableHeaderComponent } from '../components';
+import { ReusableHeaderComponent } from '../components/reusable-header/reusable-header.component';
 import { SegmentedTabsComponent } from "../components/segmented-tabs/segmented-tabs.component";
  
-export interface CardModel{
+interface CardModel{
   blogId: number;
   image: string;
   title: string;

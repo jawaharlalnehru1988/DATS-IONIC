@@ -1,11 +1,11 @@
-export interface AudioData {
+ interface AudioData {
   audioSrc: string;
   imageSrc: string;
   auther: string;
   title: string;
 }
 
-export interface CardItem {
+ interface CardItem {
   _id?: string; // Optional ID for database records
   img: string;
   title: string;
@@ -23,14 +23,14 @@ export interface CategoryCard {
 }
 
 
-export interface AudioDataInput {
+ interface AudioDataInput {
     audioSrc: string;
     imageSrc: string;
     auther: string;
     title: string;
 }
 
-export interface CardItemInput {
+ interface CardItemInput {
     img: string;
     title: string;
     category: string;

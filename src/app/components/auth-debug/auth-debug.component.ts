@@ -28,7 +28,7 @@ import { JwtUtil } from '../../Utils/jwt.util';
     IonLabel
   ]
 })
-export class AuthDebugComponent implements OnInit {
+class AuthDebugComponent implements OnInit {
   authInfo: any = {};
 
   constructor(private authService: AuthService) {}

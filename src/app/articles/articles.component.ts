@@ -1,34 +1,20 @@
 import { Component, OnInit, OnDestroy, HostBinding } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonMenuButton, IonButtons, IonSegment, IonSegmentButton, IonLabel, IonIcon, IonButton, IonActionSheet, IonSkeletonText, AlertController } from '@ionic/angular/standalone';
+import { IonContent, IonIcon, IonButton, IonActionSheet, AlertController } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { addIcons } from 'ionicons';
 import { languageOutline, add, ellipsisVertical, create, trash, eye, chatbubbleOutline, createOutline, trashOutline } from 'ionicons/icons';
 import { Blog, BlogService } from '../services/blog.service';
 import { BlogFormComponent } from '../components/blog-form/blog-form.component';
-import { AuthDebugComponent } from '../components/auth-debug/auth-debug.component';
 import { ThemeService, ThemeType } from '../services/theme.service';
 import { LanguageService } from '../services/language.service';
 import { NavigationService } from '../services/navigation.service';
 import { RoleBasedUIService } from '../services/role-based-ui.service';
 import { ShowForRolesDirective } from '../directives/show-for-roles.directive';
 import { Subscription, Observable } from 'rxjs';
-import { ReusableHeaderComponent } from '../components';
+import { ReusableHeaderComponent } from '../components/reusable-header/reusable-header.component';
 import { SegmentedTabsComponent, TabItem } from "../components/segmented-tabs/segmented-tabs.component";
 import { SkeletonLoaderComponent } from '../components/skeleton-loader/skeleton-loader.component';
-
-export interface Blogs {
-  _id: string
-  blogTitle: string
-  blogImgUrl: string
-  content: string
-  author: string
-  category: string
-  comments: any[]
-  createdAt: string
-  updatedAt: string
-  __v: number
-}
 
 
 @Component({
@@ -249,7 +235,7 @@ export class ArticlesComponent implements OnInit, OnDestroy {
     this.isFormOpen = true;
   }
 
-  onBlogSaved(blog: Blog) {
+  onBlogSaved(_blog: Blog) {
     // The service will handle the backend call and refresh the list
     this.closeBlogForm();
   }

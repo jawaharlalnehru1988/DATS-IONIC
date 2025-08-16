@@ -7,7 +7,7 @@ import { map, take } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
-export class RoleGuard implements CanActivate {
+class RoleGuard implements CanActivate {
 
   constructor(
     private authService: AuthService,

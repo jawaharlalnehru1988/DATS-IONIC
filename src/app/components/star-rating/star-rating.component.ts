@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnChanges } from '@angular/core';
 
 import { IonIcon, IonButton } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
@@ -11,7 +11,7 @@ import { star, starOutline } from 'ionicons/icons';
   standalone: true,
   imports: [IonIcon, IonButton]
 })
-export class StarRatingComponent implements OnInit {
+export class StarRatingComponent implements OnInit, OnChanges {
   @Input() rating: number = 0;
   @Input() maxStars: number = 5;
   @Input() readonly: boolean = false;

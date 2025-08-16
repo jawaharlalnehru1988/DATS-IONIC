@@ -10,8 +10,10 @@
       },
       "extends": [
         "plugin:@angular-eslint/recommended",
-        "plugin:@angular-eslint/template/process-inline-templates"
+        "plugin:@angular-eslint/template/process-inline-templates",
+        "plugin:@typescript-eslint/recommended"
       ],
+      "plugins": ["unused-imports"],
       "rules": {
         "@angular-eslint/component-class-suffix": [
           "error",
@@ -34,7 +36,34 @@
             "prefix": "app",
             "style": "camelCase"
           }
-        ]
+        ],
+        // Strict rules for unused code
+        "@typescript-eslint/no-unused-vars": [
+          "error",
+          {
+            "argsIgnorePattern": "^_",
+            "varsIgnorePattern": "^_",
+            "caughtErrorsIgnorePattern": "^_"
+          }
+        ],
+        "unused-imports/no-unused-imports": "error",
+        "unused-imports/no-unused-vars": [
+          "error",
+          {
+            "vars": "all",
+            "varsIgnorePattern": "^_",
+            "args": "after-used",
+            "argsIgnorePattern": "^_"
+          }
+        ],
+        "no-unused-vars": "off", // Turn off base rule to avoid conflicts
+        // Additional strict rules
+        "@typescript-eslint/no-explicit-any": "warn",
+        "@typescript-eslint/no-empty-function": "error",
+        "@typescript-eslint/no-empty-interface": "error",
+        "prefer-const": "error",
+        "no-var": "error",
+        "no-console": "warn"
       }
     },
     {

@@ -8,7 +8,7 @@ import { DynamicMetaService } from '../services/dynamic-meta.service';
 @Injectable({
   providedIn: 'root'
 })
-export class BlogMetaResolver implements Resolve<Blog | null> {
+class BlogMetaResolver implements Resolve<Blog | null> {
 
   constructor(
     private blogService: BlogService,

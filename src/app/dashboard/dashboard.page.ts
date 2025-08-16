@@ -10,7 +10,7 @@ import { NavigationService } from '../services/navigation.service';
 import { ShowForRolesDirective } from '../directives/show-for-roles.directive';
 import { ChantSectionComponent } from '../components/chant-section/chant-section.component';
 import { ReusableHeaderComponent } from '../components/reusable-header/reusable-header.component';
-import { Observable, combineLatest, map } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { FeatureCard, getFeatureCardsByLanguage } from './dashboard.data';
 
 @Component({

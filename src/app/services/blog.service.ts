@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, catchError, throwError, combineLatest } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, catchError, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { LanguageService, SupportedLanguage } from './language.service';
-import { getUrlPrefixFromLanguage } from '../models/language-routes.model';
 
-export interface BlogComment {
+ interface BlogComment {
   userName: string;
   comment: string;
 }

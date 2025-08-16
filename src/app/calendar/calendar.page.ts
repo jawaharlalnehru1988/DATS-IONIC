@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, HostBinding } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
-import {  IonHeader, IonTitle, IonToolbar, IonMenuButton, IonButtons, IonButton, IonIcon, IonContent, IonAlert } from '@ionic/angular/standalone';
+import { IonButton, IonIcon, IonContent } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { chevronBack, chevronForward, calendarOutline, searchOutline, settingsOutline, sunnyOutline, moonOutline, ellipsisHorizontal, closeOutline, arrowBackOutline, shareOutline, todayOutline, heart, heartOutline } from 'ionicons/icons';
 import { AlertController, ToastController } from '@ionic/angular';
@@ -318,7 +318,7 @@ export class CalendarPage implements OnInit, OnDestroy {
     this.calculateSunMoonTimes(displayDate, location);
   }
 
-  calculateLunarData(date: Date, location: LocationData) {
+  calculateLunarData(date: Date, _location: LocationData) {
     // Get Julian day number
     const jd = this.getJulianDay(date);
     
@@ -386,11 +386,11 @@ export class CalendarPage implements OnInit, OnDestroy {
     const n = jd - 2451545.0;
     const L = (218.316 + 13.176396 * n) % 360;
     const M = ((134.963 + 13.064993 * n) % 360) * Math.PI / 180;
-    const F = ((93.272 + 13.229350 * n) % 360) * Math.PI / 180;
+    const _F = ((93.272 + 13.229350 * n) % 360) * Math.PI / 180;
     const D = ((297.850 + 12.190749 * n) % 360) * Math.PI / 180;
     
     // Main lunar longitude with perturbations
-    let lambda = L + 6.289 * Math.sin(M) 
+    const lambda = L + 6.289 * Math.sin(M) 
                    + 1.274 * Math.sin(2 * D - M)
                    + 0.658 * Math.sin(2 * D)
                    + 0.214 * Math.sin(2 * M)
@@ -518,7 +518,7 @@ export class CalendarPage implements OnInit, OnDestroy {
       const nextStartDate = monthStartDates[nextIndex];
       
       // Create actual date objects for comparison
-      let currentStart = new Date(year, startDate.month, startDate.day);
+      const currentStart = new Date(year, startDate.month, startDate.day);
       let nextStart = new Date(year, nextStartDate.month, nextStartDate.day);
       
       // Handle year wrap-around
@@ -714,7 +714,7 @@ export class CalendarPage implements OnInit, OnDestroy {
 
   generateCalendar() {
     const firstDay = new Date(this.currentYear, this.currentMonth, 1);
-    const lastDay = new Date(this.currentYear, this.currentMonth + 1, 0);
+    const _lastDay = new Date(this.currentYear, this.currentMonth + 1, 0);
     const startDate = new Date(firstDay);
     startDate.setDate(startDate.getDate() - firstDay.getDay());
 
@@ -1058,7 +1058,7 @@ export class CalendarPage implements OnInit, OnDestroy {
           title: 'Vaishnava Calendar',
           text: shareText
         });
-      } catch (error) {
+      } catch {
         // Fall back to clipboard
         this.copyToClipboard(shareText);
       }
@@ -1097,7 +1097,7 @@ export class CalendarPage implements OnInit, OnDestroy {
     try {
       await navigator.clipboard.writeText(text);
       this.showToast('Event details copied to clipboard');
-    } catch (error) {
+    } catch {
       // Fallback for older browsers
       const textArea = document.createElement('textarea');
       textArea.value = text;

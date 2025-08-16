@@ -6,7 +6,7 @@ export interface UserData {
   password: string;
 }
 
-export interface UserWithRole extends UserData{
+ interface UserWithRole extends UserData{
   role: string;
   isActive: string;
 }

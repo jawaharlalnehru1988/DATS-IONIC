@@ -4,7 +4,7 @@ import { Observable, of, BehaviorSubject, interval } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
-export interface BackendStatus {
+interface BackendStatus {
   isAvailable: boolean;
   url: string;
   lastChecked: Date;
@@ -14,7 +14,7 @@ export interface BackendStatus {
 @Injectable({
   providedIn: 'root'
 })
-export class BackendHealthService {
+class BackendHealthService {
   private statusSubject = new BehaviorSubject<BackendStatus>({
     isAvailable: false,
     url: environment.apiNestBaseUrl,

@@ -1,15 +1,15 @@
 import { Component, OnInit, AfterViewInit, OnDestroy, HostBinding } from '@angular/core';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonProgressBar, IonToast, IonAlert, IonPopover, IonIcon, IonButtons, IonMenuButton, IonFab, IonFabButton } from '@ionic/angular/standalone';
+import { IonContent, IonButton, IonProgressBar, IonToast, IonAlert, IonPopover, IonIcon, IonFab, IonFabButton } from '@ionic/angular/standalone';
 
 import { Subscription } from 'rxjs';
 import { addIcons } from 'ionicons';
 import { flowerOutline, refreshOutline, languageOutline, closeOutline, musicalNotesOutline, playOutline, pauseOutline, bonfireOutline } from 'ionicons/icons';
 import { ThemeService} from '../services/theme.service';
-import { ReusableHeaderComponent } from '../components';
+import { ReusableHeaderComponent } from '../components/reusable-header/reusable-header.component';
 
-export type LanguageType = 'english' | 'tamil' | 'hindi' | 'telugu' | 'kannada' | 'malayalam' | 'marathi' | 'gujarati' | 'bengali' | 'punjabi' | 'urdu';
+type LanguageType = 'english' | 'tamil' | 'hindi' | 'telugu' | 'kannada' | 'malayalam' | 'marathi' | 'gujarati' | 'bengali' | 'punjabi' | 'urdu';
 
-export interface LanguageContent {
+interface LanguageContent {
   pageTitle: string;
   currentRound: string;
   roundsCompleted: string;
@@ -31,14 +31,14 @@ export interface LanguageContent {
   resetAllConfirmMessage: string;
 }
 
-export interface LanguageOption {
+interface LanguageOption {
   key: LanguageType;
   flag: string;
   name: string;
   description: string;
 }
 
-export interface LanguageData {
+interface LanguageData {
   key: LanguageType;
   flag: string;
   name: string;
@@ -46,9 +46,9 @@ export interface LanguageData {
   content: LanguageContent;
 }
 
-export type ChantSoundType = 'none' | 'tick' | 'prabhupada' | 'continuous';
+type ChantSoundType = 'none' | 'tick' | 'prabhupada' | 'continuous';
 
-export interface SoundOption {
+interface SoundOption {
   key: ChantSoundType;
   icon: string;
   name: string;

@@ -31,7 +31,7 @@ import { close, checkmark } from 'ionicons/icons';
     CategoryFormComponent
 ]
 })
-export class CategoryFormModalComponent implements OnInit {
+class CategoryFormModalComponent implements OnInit {
   pageIdentifier: string = 'music-details'; // Default to music-details
   initialData: any = null; // Data for editing
   isEditMode: boolean = false; // Flag to determine if in edit mode
@@ -50,7 +50,7 @@ export class CategoryFormModalComponent implements OnInit {
   }
 
   // Handle form submission - don't close modal, just notify parent
-  onFormSubmit(categoryData: CategoryCard) {
+  onFormSubmit(_categoryData: CategoryCard) {
     // Don't close the modal, just log success or show a toast
     console.log('Form submitted successfully, modal staying open for next submission');
     
