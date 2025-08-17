@@ -49,55 +49,49 @@
     </div>
 
     <!-- Festival/Special Day Details Section -->
-    @if (selectedFestivalInfo) {
+    @if (selectedFestival) {
       <div class="festival-details">
         <div class="festival-header">
-          <h3>{{ selectedFestivalInfo.title }}</h3>
+          <h3>{{ selectedFestival.festivalName }} ({{ selectedFestival.otherName }})</h3>
           <ion-button fill="clear" size="small" (click)="closeFestivalDetails()">
             <ion-icon name="close-outline"></ion-icon>
           </ion-button>
         </div>
         <div class="festival-content">
-          @if (selectedFestivalInfo.date) {
+          @if (selectedFestival.startDate) {
             <div class="festival-info-item">
               <span class="info-label">Date:</span>
-              <span class="info-value">{{ selectedFestivalInfo.date }}</span>
+              <span class="info-value">{{ selectedFestival.startDate }}</span>
             </div>
           }
-          @if (selectedFestivalInfo.type) {
+          @if (selectedFestival.importance) {
             <div class="festival-info-item">
-              <span class="info-label">Type:</span>
-              <span class="info-value festival-type" [class]="selectedFestivalInfo.typeClass">{{ selectedFestivalInfo.type }}</span>
+              <span class="info-label">Festival-type:</span>
+              <span class="info-value festival-type" [class]="selectedFestival.importance">{{ selectedFestival.importance }}</span>
             </div>
           }
-          @if (selectedFestivalInfo.significance) {
-            <div class="festival-info-item">
-              <span class="info-label">Significance:</span>
-              <span class="info-value">{{ selectedFestivalInfo.significance }}</span>
-            </div>
-          }
-          @if (selectedFestivalInfo.description) {
+          @if (selectedFestival.description) {
             <div class="festival-info-item">
               <span class="info-label">Description:</span>
-              <span class="info-value festival-description">{{ selectedFestivalInfo.description }}</span>
+              <span class="info-value festival-description">{{ selectedFestival.description }}</span>
             </div>
           }
-          @if (selectedFestivalInfo.observances && selectedFestivalInfo.observances.length > 0) {
+          @if (selectedFestival.startTime && selectedFestival.endTime) {
             <div class="festival-info-item">
-              <span class="info-label">Observances:</span>
-              <div class="observances-list">
-                @for (observance of selectedFestivalInfo.observances; track observance) {
-                  <div class="observance-item">
-                    • {{ observance }}
-                  </div>
-                }
-              </div>
+              <span class="info-label">Time:</span>
+              <span class="info-value">{{ selectedFestival.startTime }} - {{ selectedFestival.endTime }}</span>
             </div>
           }
-          @if (selectedFestivalInfo.additionalInfo) {
+          @if (selectedFestival.breakfastDate) {
             <div class="festival-info-item">
-              <span class="info-label">Additional Info:</span>
-              <span class="info-value">{{ selectedFestivalInfo.additionalInfo }}</span>
+              <span class="info-label">Breakfast Date:</span>
+              <span class="info-value">{{ selectedFestival.breakfastDate }}</span>
+            </div>
+          }
+          @if (selectedFestival.breakfastTime) {
+            <div class="festival-info-item">
+              <span class="info-label">Breakfast Time:</span>
+              <span class="info-value">{{ selectedFestival.breakfastTime }}</span>
             </div>
           }
         </div>
@@ -236,12 +230,154 @@
 
       <ion-button
         fill="clear"
-        class="footer-nav-btn today-btn"
-        (click)="goToToday()">
-        <ion-icon name="today-outline" slot="icon-only"></ion-icon>
-        <span class="btn-label">Today</span>
+        class="footer-nav-btn add-festival-btn"
+        (click)="openAddFestivalModal()">
+        <ion-icon name="add-outline" slot="icon-only"></ion-icon>
+        <span class="btn-label">Add Festival</span>
       </ion-button>
     </div>
   </div>
+
+  <!-- Add Festival Modal -->
+  <ion-modal [isOpen]="isAddFestivalModalOpen" (ionModalDidDismiss)="closeAddFestivalModal()">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Add Festival</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeAddFestivalModal()">
+              <ion-icon name="close"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      
+      <ion-content class="ion-padding">
+        <form [formGroup]="addFestivalForm" (ngSubmit)="onSubmitFestival()">
+          
+          <!-- Festival Name -->
+          <ion-item>
+            <ion-label position="stacked">Festival Name *</ion-label>
+            <ion-input 
+              formControlName="festivalName" 
+              placeholder="Enter festival name"
+              type="text">
+            </ion-input>
+          </ion-item>
+          
+          <!-- Other Name -->
+          <ion-item>
+            <ion-label position="stacked">Other Name</ion-label>
+            <ion-input 
+              formControlName="otherName" 
+              placeholder="Enter alternative name"
+              type="text">
+            </ion-input>
+          </ion-item>
+          
+          <!-- Start Date -->
+          <ion-item>
+            <ion-label position="stacked">Start Date *</ion-label>
+            <ion-datetime
+              formControlName="startDate"
+              presentation="date"
+              [showDefaultButtons]="true">
+            </ion-datetime>
+          </ion-item>
+          
+          <!-- End Date -->
+          <ion-item>
+            <ion-label position="stacked">End Date *</ion-label>
+            <ion-datetime
+              formControlName="endDate"
+              presentation="date"
+              [showDefaultButtons]="true">
+            </ion-datetime>
+          </ion-item>
+          
+          <!-- Start Time -->
+          <ion-item>
+            <ion-label position="stacked">Start Time *</ion-label>
+            <ion-datetime
+              formControlName="startTime"
+              presentation="time"
+              [showDefaultButtons]="true">
+            </ion-datetime>
+          </ion-item>
+          
+          <!-- End Time -->
+          <ion-item>
+            <ion-label position="stacked">End Time *</ion-label>
+            <ion-datetime
+              formControlName="endTime"
+              presentation="time"
+              [showDefaultButtons]="true">
+            </ion-datetime>
+          </ion-item>
+          
+          <!-- Importance -->
+          <ion-item>
+            <ion-label position="stacked">Importance *</ion-label>
+            <ion-select formControlName="importance" placeholder="Select importance">
+              <ion-select-option value="ekadashi">Ekadashi</ion-select-option>
+              <ion-select-option value="major-festival">Major Festival</ion-select-option>
+              <ion-select-option value="festival">Festival</ion-select-option>
+            </ion-select>
+          </ion-item>
+          
+          <!-- Breakfast Date -->
+          <ion-item>
+            <ion-label position="stacked">Breakfast Date</ion-label>
+            <ion-datetime
+              formControlName="breakfastDate"
+              presentation="date"
+              [showDefaultButtons]="true">
+            </ion-datetime>
+          </ion-item>
+          
+          <!-- Breakfast Time -->
+          <ion-item>
+            <ion-label position="stacked">Breakfast Time</ion-label>
+            <ion-datetime
+              formControlName="breakfastTime"
+              presentation="time"
+              [showDefaultButtons]="true">
+            </ion-datetime>
+          </ion-item>
+          
+          <!-- Description using Rich Text Editor -->
+          <ion-item lines="none">
+            <ion-label position="stacked">Description</ion-label>
+          </ion-item>
+          <div class="rich-text-container">
+            <!-- TODO: Add your reusable rich text editor component here -->
+            <ion-textarea
+              formControlName="description"
+              placeholder="Enter festival description"
+              rows="4"
+              auto-grow="true">
+            </ion-textarea>
+          </div>
+          
+          <!-- Form Actions -->
+          <div class="form-actions">
+            <ion-button 
+              type="button" 
+              fill="outline" 
+              color="medium"
+              (click)="closeAddFestivalModal()">
+              Cancel
+            </ion-button>
+            <ion-button 
+              type="submit" 
+              [disabled]="!addFestivalForm.valid">
+              Add Festival
+            </ion-button>
+          </div>
+          
+        </form>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 </ion-content>
 

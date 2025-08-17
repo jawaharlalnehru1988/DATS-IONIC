@@ -37,6 +37,7 @@
     "astronomy-engine": "^2.1.19",
     "express": "^4.18.2",
     "ionicons": "^7.0.0",
+    "mhah-panchang": "^1.2.0",
     "ngx-quill": "^28.0.1",
     "quill": "^2.0.3",
     "rxjs": "~7.8.0",

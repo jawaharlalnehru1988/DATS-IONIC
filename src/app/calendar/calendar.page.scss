@@ -5,7 +5,7 @@
 
 .calendar-container {
   padding: 16px;
-  background-color: #f5f5f5;
+  background-color: var(--ion-background-color, #ffffff);
   min-height: 100vh;
 }
 
@@ -19,24 +19,24 @@
         margin: 0;
         font-size: 1.2rem;
         font-weight: 600;
-        color: #333;
+        color: var(--ion-text-color, #000000);
     }
     
     ion-button {
-        --color: #333 !important;
-        --background: rgba(0, 0, 0, 0.05);
+        --color: var(--ion-text-color, #000000) !important;
+        --background: var(--ion-color-light, rgba(0, 0, 0, 0.05));
         --border-radius: 50%;
         width: 60px;
         height: 60px;
         margin: 0;
         
         &:hover {
-            --background: rgba(0, 0, 0, 0.1);
+            --background: var(--ion-color-medium, rgba(0, 0, 0, 0.1));
             transform: scale(1.1);
         }
         
         ion-icon {
-            color: #333 !important;
+            color: var(--ion-text-color, #000000) !important;
             font-size: 1.6rem; // doubled from 0.8rem
             font-weight: bold;
         }
@@ -53,8 +53,10 @@
     text-align: center;
     font-weight: 600;
     font-size: 0.9rem;
-    color: #666;
+    color: var(--ion-color-medium, #666666);
     padding: 8px;
+    background: var(--ion-color-light, #f8f9fa);
+    border-radius: 8px;
   }
 }
 
@@ -79,26 +81,33 @@
     font-size: 1rem;
     font-weight: 500;
     z-index: 1;
+    color: var(--ion-text-color, #ffffff);
   }
   
   &.other-month {
     opacity: 0.3;
+    
+    .date-number {
+      color: var(--ion-color-medium, #999999);
+    }
   }
   
   &.today {
-    border: 2px solid #000;
+    border: 3px solid var(--ion-color-primary, #3880ff);
     font-weight: 700;
+    background-color: var(--ion-color-primary-tint, rgba(56, 128, 255, 0.1));
     
     .date-number {
-      color: #000;
+      color: var(--ion-color-primary, #3880ff);
+      font-weight: 700;
     }
   }
   
   &.selected {
-    background-color: var(--ion-color-primary);
+    background-color: var(--ion-color-primary, #3880ff);
     color: white;
     transform: scale(1.05);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     
     .date-number {
       color: white;
@@ -107,30 +116,68 @@
   }
   
   &.ekadasi {
-    background-color: #ff5722;
+    background: linear-gradient(135deg, #ff5722, #d84315);
     color: white;
-    
-    .date-number {
-      color: white;
-    }
-  }
-  
-  &.major-festival {
-    background-color: #2e7d32;
-    color: white;
+    border: 2px solid #bf360c;
+    box-shadow: 0 2px 8px rgba(255, 87, 34, 0.4);
     
     .date-number {
       color: white;
       font-weight: 700;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    }
+    
+    &::after {
+      content: "🙏";
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      font-size: 0.7rem;
+      opacity: 0.8;
+    }
+  }
+  
+  &.major-festival {
+    background: linear-gradient(135deg, #2e7d32, #1b5e20);
+    color: white;
+    border: 2px solid #1b5e20;
+    box-shadow: 0 2px 8px rgba(46, 125, 50, 0.4);
+    
+    .date-number {
+      color: white;
+      font-weight: 700;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    }
+    
+    &::after {
+      content: "🎉";
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      font-size: 0.7rem;
+      opacity: 0.8;
     }
   }
   
   &.festival {
-    background-color: #ffb74d;
+    background: linear-gradient(135deg, #ff9800, #f57c00);
     color: white;
+    border: 2px solid #ef6c00;
+    box-shadow: 0 2px 8px rgba(255, 152, 0, 0.4);
     
     .date-number {
       color: white;
+      font-weight: 600;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    }
+    
+    &::after {
+      content: "✨";
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      font-size: 0.7rem;
+      opacity: 0.8;
     }
   }
   
@@ -139,13 +186,134 @@
   }
 }
 
+// Dark theme adjustments for better contrast
+@media (prefers-color-scheme: dark) {
+  .calendar-container {
+    background-color: var(--ion-background-color, #1a1a1a);
+  }
+
+  .calendar-day {
+    background-color: var(--ion-color-dark-tint, #383a3e);
+    border: 1px solid var(--ion-color-medium, #92949c);
+
+    .date-number {
+      color: var(--ion-text-color, #ffffff);
+    }
+
+    &.other-month {
+      background-color: var(--ion-color-dark-shade, #1e2023);
+      
+      .date-number {
+        color: var(--ion-color-medium, #92949c);
+      }
+    }
+
+    &.today {
+      background-color: var(--ion-color-primary-shade, #2d5aa0);
+      border-color: var(--ion-color-primary, #3880ff);
+      
+      .date-number {
+        color: white;
+      }
+    }
+
+    &.selected {
+      background-color: var(--ion-color-primary, #3880ff);
+      box-shadow: 0 4px 8px rgba(56, 128, 255, 0.4);
+    }
+
+    // Enhanced contrast for special days in dark mode
+    &.ekadasi {
+      background: linear-gradient(135deg, #ff7043, #ff5722);
+      border-color: #ff3d00;
+      box-shadow: 0 2px 8px rgba(255, 87, 34, 0.6);
+    }
+
+    &.major-festival {
+      background: linear-gradient(135deg, #4caf50, #2e7d32);
+      border-color: #1b5e20;
+      box-shadow: 0 2px 8px rgba(76, 175, 80, 0.6);
+    }
+
+    &.festival {
+      background: linear-gradient(135deg, #ffb74d, #ff9800);
+      border-color: #f57c00;
+      box-shadow: 0 2px 8px rgba(255, 183, 77, 0.6);
+    }
+  }
+
+  .vaishnava-info {
+    background-color: var(--ion-color-dark, #222428);
+    border-color: var(--ion-color-warning-shade, #e6ac08);
+
+    .vaishnava-item {
+      background: var(--ion-color-dark-tint, #383a3e);
+      border-color: var(--ion-color-medium-tint, rgba(146, 148, 151, 0.5));
+
+      .vaishnava-value {
+        background: var(--ion-color-dark-shade, #1e2023);
+        color: var(--ion-text-color, #ffffff);
+      }
+    }
+  }
+
+  .festival-details {
+    background: var(--ion-color-dark, #222428);
+    border-color: var(--ion-color-primary-shade, #2d5aa0);
+
+    .festival-content .festival-info-item {
+      .info-value.festival-description {
+        background: var(--ion-color-dark-tint, #383a3e);
+        color: var(--ion-text-color, #ffffff);
+      }
+    }
+  }
+}
+
+// High contrast mode for accessibility
+@media (prefers-contrast: high) {
+  .calendar-day {
+    border-width: 2px;
+    
+    &.ekadasi {
+      background: #ff5722 !important;
+      border: 3px solid #ffffff !important;
+      
+      .date-number {
+        font-weight: 900 !important;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8) !important;
+      }
+    }
+
+    &.major-festival {
+      background: #2e7d32 !important;
+      border: 3px solid #ffffff !important;
+      
+      .date-number {
+        font-weight: 900 !important;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8) !important;
+      }
+    }
+
+    &.festival {
+      background: #ff9800 !important;
+      border: 3px solid #ffffff !important;
+      
+      .date-number {
+        font-weight: 900 !important;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8) !important;
+      }
+    }
+  }
+}
+
 .vaishnava-info {
-  background-color: rgba(255, 255, 255, 0.95);
+  background-color: var(--ion-color-light, #ffffff);
   border-radius: 12px;
   padding: 16px;
   margin-bottom: 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  border-top: 4px solid #FF6F00;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  border: 2px solid var(--ion-color-warning, #ffc409);
   
   .vaishnava-header {
     display: flex;
@@ -153,13 +321,13 @@
     align-items: center;
     margin-bottom: 16px;
     padding-bottom: 12px;
-    border-bottom: 2px solid #FFE0B2;
+    border-bottom: 2px solid var(--ion-color-warning-tint, rgba(255, 196, 9, 0.3));
     
     h3 {
       margin: 0;
       font-size: 1.1rem;
       font-weight: 600;
-      color: #FF6F00;
+      color: var(--ion-color-warning-shade, #e6ac08);
       display: flex;
       align-items: center;
       
@@ -171,14 +339,14 @@
     }
     
     ion-button {
-      --color: #FF6F00;
-      --background: rgba(255, 111, 0, 0.1);
+      --color: var(--ion-color-warning, #ffc409);
+      --background: var(--ion-color-warning-tint, rgba(255, 196, 9, 0.1));
       --border-radius: 50%;
       width: 32px;
       height: 32px;
       
       &:hover {
-        --background: rgba(255, 111, 0, 0.2);
+        --background: var(--ion-color-warning-tint, rgba(255, 196, 9, 0.2));
       }
     }
   }
@@ -220,7 +388,7 @@
         color: #FF6F00;
         text-align: right;
         flex-shrink: 0;
-        background: rgba(255, 255, 255, 0.7);
+        background: rgba(88, 4, 4, 0.7);
         padding: 4px 8px;
         border-radius: 6px;
         border: 1px solid rgba(255, 183, 77, 0.3);
@@ -230,7 +398,7 @@
           font-size: 0.8rem;
           color: #E65100;
           font-style: italic;
-          background: rgba(230, 81, 0, 0.1);
+          background: rgba(36, 16, 5, 0.1);
           border-color: rgba(230, 81, 0, 0.3);
         }
       }
@@ -318,7 +486,7 @@
         justify-content: space-between;
         align-items: center;
         padding: 8px 12px;
-        background-color: rgba(255, 255, 255, 0.6);
+        background-color: rgb(3 3 27 / 60%);
         border-radius: 8px;
         transition: all 0.2s ease;
         
@@ -367,12 +535,12 @@
 
 // Festival Details Section
 .festival-details {
-  background: linear-gradient(135deg, rgba(255, 183, 77, 0.1), rgba(255, 111, 0, 0.05));
+  background: var(--ion-color-light, #ffffff);
   border-radius: 12px;
   padding: 16px;
   margin-bottom: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border-left: 4px solid #FF6F00;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border: 2px solid var(--ion-color-primary, #3880ff);
   animation: slideDown 0.3s ease-out;
   
   .festival-header {
@@ -381,13 +549,13 @@
     align-items: center;
     margin-bottom: 16px;
     padding-bottom: 12px;
-    border-bottom: 2px solid rgba(255, 183, 77, 0.3);
+    border-bottom: 2px solid var(--ion-color-primary-tint, rgba(56, 128, 255, 0.3));
     
     h3 {
       margin: 0;
       font-size: 1.2rem;
       font-weight: 700;
-      color: #E65100;
+      color: var(--ion-color-primary, #3880ff);
       display: flex;
       align-items: center;
       
@@ -399,14 +567,14 @@
     }
     
     ion-button {
-      --color: #FF6F00;
-      --background: rgba(255, 111, 0, 0.1);
+      --color: var(--ion-color-primary, #3880ff);
+      --background: var(--ion-color-primary-tint, rgba(56, 128, 255, 0.1));
       --border-radius: 50%;
       width: 32px;
       height: 32px;
       
       &:hover {
-        --background: rgba(255, 111, 0, 0.2);
+        --background: var(--ion-color-primary-tint, rgba(56, 128, 255, 0.2));
       }
     }
   }
@@ -420,7 +588,7 @@
       .info-label {
         font-size: 0.9rem;
         font-weight: 600;
-        color: #BF360C;
+        color: var(--ion-color-primary-shade, #2d5aa0);
         min-width: 120px;
         margin-right: 12px;
         text-transform: uppercase;
@@ -429,7 +597,7 @@
       
       .info-value {
         font-size: 0.95rem;
-        color: #333;
+        color: var(--ion-text-color, #000000);
         flex: 1;
         line-height: 1.4;
         
@@ -440,27 +608,34 @@
           display: inline-block;
           
           &.ekadasi-type {
-            background: #ff5722;
+            background: linear-gradient(135deg, #ff5722, #d84315);
             color: white;
+            border: 1px solid #bf360c;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
           }
           
           &.major-festival-type {
-            background: #2e7d32;
+            background: linear-gradient(135deg, #2e7d32, #1b5e20);
             color: white;
+            border: 1px solid #1b5e20;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
           }
           
           &.festival-type {
-            background: #ffb74d;
+            background: linear-gradient(135deg, #ff9800, #f57c00);
             color: white;
+            border: 1px solid #ef6c00;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
           }
         }
         
         &.festival-description {
           font-style: italic;
-          background: rgba(255, 255, 255, 0.7);
+          background: var(--ion-color-light-tint, rgba(248, 249, 250, 0.8));
           padding: 8px 12px;
           border-radius: 8px;
-          border-left: 3px solid #FFB74D;
+          border-left: 3px solid var(--ion-color-primary, #3880ff);
+          color: var(--ion-color-dark, #222428);
         }
       }
       
@@ -1402,6 +1577,59 @@
       .btn-label {
         color: #ecf0f1 !important;
       }
+    }
+  }
+}
+
+// Add Festival Modal Styles
+ion-modal {
+  --height: 90%;
+  --border-radius: 16px 16px 0 0;
+  
+  ion-content {
+    --padding-start: 16px;
+    --padding-end: 16px;
+    --padding-top: 16px;
+    --padding-bottom: 16px;
+  }
+  
+  .form-actions {
+    display: flex;
+    gap: 12px;
+    padding: 20px 0;
+    justify-content: flex-end;
+    
+    ion-button {
+      min-width: 100px;
+    }
+  }
+  
+  .rich-text-container {
+    margin: 8px 0 16px 0;
+    
+    ion-textarea {
+      --background: var(--ion-color-light, #f4f5f8);
+      --padding: 12px;
+      border-radius: 8px;
+      margin-top: 8px;
+    }
+  }
+  
+  ion-item {
+    --padding-start: 0;
+    --inner-padding-end: 0;
+    margin-bottom: 8px;
+    
+    ion-label {
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: var(--ion-color-dark, #222428);
+    }
+    
+    ion-input, ion-select, ion-datetime {
+      --background: var(--ion-color-light, #f4f5f8);
+      --padding: 12px;
+      border-radius: 8px;
     }
   }
 }

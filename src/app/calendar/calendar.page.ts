@@ -1,25 +1,31 @@
 import { Component, OnInit, OnDestroy, HostBinding } from '@angular/core';
 
-import { FormsModule } from '@angular/forms';
-import { IonButton, IonIcon, IonContent } from '@ionic/angular/standalone';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { 
+  IonButton, 
+  IonIcon, 
+  IonContent, 
+  IonModal, 
+  IonHeader, 
+  IonToolbar, 
+  IonTitle, 
+  IonButtons, 
+  IonItem, 
+  IonLabel, 
+  IonInput, 
+  IonDatetime, 
+  IonSelect, 
+  IonSelectOption, 
+  IonTextarea 
+} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { chevronBack, chevronForward, calendarOutline, searchOutline, settingsOutline, sunnyOutline, moonOutline, ellipsisHorizontal, closeOutline, arrowBackOutline, shareOutline, todayOutline, heart, heartOutline } from 'ionicons/icons';
+import { chevronBack, chevronForward, calendarOutline, searchOutline, settingsOutline, sunnyOutline, moonOutline, ellipsisHorizontal, closeOutline, arrowBackOutline, shareOutline, todayOutline, heart, heartOutline, addOutline, close } from 'ionicons/icons';
 import { AlertController, ToastController } from '@ionic/angular';
 import { ThemeService, ThemeType } from '../services/theme.service';
-import { TithiService, TithiInfo } from '../services/tithi.service';
+import { TithiService, TithiInfo, FestivalEvent } from '../services/tithi.service';
 import { Subscription } from 'rxjs';
 import { ReusableHeaderComponent } from '../components/reusable-header/reusable-header.component';
 import * as SunCalc from 'suncalc';
-
-interface FestivalEvent {
-  id: string;
-  startDate: string;
-  endDate: string;
-  startTime: string;
-  endTime: string;
-  festivalName: string;
-  importance: string;
-}
 
 interface CalendarDay {
   date: number;
@@ -56,30 +62,38 @@ interface LocationData {
   longitude: number;
   timezone: string;
 }
-
-interface FestivalInfo {
-  title: string;
-  date: string;
-  type: string;
-  typeClass: string;
-  significance?: string;
-  description?: string;
-  observances?: string[];
-  additionalInfo?: string;
-}
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.page.html',
   styleUrls: ['./calendar.page.scss'],
   standalone: true,
-  imports: [IonContent, IonIcon, IonButton, FormsModule, ReusableHeaderComponent]
+  imports: [
+    IonContent, 
+    IonIcon, 
+    IonButton, 
+    IonModal, 
+    IonHeader, 
+    IonToolbar, 
+    IonTitle, 
+    IonButtons, 
+    IonItem, 
+    IonLabel, 
+    IonInput, 
+    IonDatetime, 
+    IonSelect, 
+    IonSelectOption, 
+    IonTextarea, 
+    FormsModule, 
+    ReactiveFormsModule, 
+    ReusableHeaderComponent
+  ]
 })
 export class CalendarPage implements OnInit, OnDestroy {
   currentDate = new Date();
   currentMonth = this.currentDate.getMonth();
   currentYear = this.currentDate.getFullYear();
   selectedDate: Date | null = null; // Track selected date
-  selectedFestivalInfo: FestivalInfo | null = null; // Track selected festival info
+  selectedFestival: FestivalEvent | null = null; // Track selected festival object
   favoriteDates: string[] = []; // Track favorite dates
   calendarDays: CalendarDay[] = [];
   
@@ -89,6 +103,10 @@ export class CalendarPage implements OnInit, OnDestroy {
   // Theme management
   currentTheme: ThemeType = 'theme-royal';
   private themeSubscription: Subscription = new Subscription();
+  
+  // Add Festival Modal
+  isAddFestivalModalOpen = false;
+  addFestivalForm: FormGroup;
   
   // HostBinding to apply theme class to the component's host element
   @HostBinding('class')
@@ -145,20 +163,37 @@ export class CalendarPage implements OnInit, OnDestroy {
     pada: 0
   };
 
-  // Important Vaishnava festival data (excluding Ekadasi which is calculated dynamically)
-  festivals: FestivalEvent[] = [
-  ];
+  // Important Vaishnava festival data including Ekadasi and other festivals - now managed by TithiService
+  festivals: FestivalEvent[] = [];
 
   constructor(
     private alertController: AlertController, 
     private toastController: ToastController,
     private themeService: ThemeService,
-    private tithiService: TithiService
+    private tithiService: TithiService,
+    private formBuilder: FormBuilder
   ) { 
-    addIcons({calendarOutline,searchOutline,settingsOutline,chevronBack,chevronForward,closeOutline,ellipsisHorizontal,sunnyOutline,moonOutline,arrowBackOutline,shareOutline,todayOutline,heart,heartOutline});
+    addIcons({chevronBack,chevronForward,closeOutline,ellipsisHorizontal,sunnyOutline,moonOutline,arrowBackOutline,shareOutline,addOutline,close,calendarOutline,searchOutline,settingsOutline,todayOutline,heart,heartOutline});
+    
+    // Initialize Add Festival Form
+    this.addFestivalForm = this.formBuilder.group({
+      festivalName: ['', [Validators.required]],
+      otherName: [''],
+      startDate: ['', [Validators.required]],
+      endDate: ['', [Validators.required]],
+      startTime: ['', [Validators.required]],
+      endTime: ['', [Validators.required]],
+      importance: ['', [Validators.required]],
+      breakfastDate: [''],
+      breakfastTime: [''],
+      description: ['']
+    });
   }
   ngOnInit() {
     this.loadFavorites();
+    
+    // Initialize festivals from service
+    this.festivals = this.tithiService.getFestivals();
     
     // Subscribe to theme changes
     this.themeSubscription = this.themeService.currentTheme$.subscribe(
@@ -525,7 +560,8 @@ export class CalendarPage implements OnInit, OnDestroy {
       date.setDate(startDate.getDate() + i);
       
       const dayFestivals = this.getFestivalsForDate(date);
-      const isEkadasi = this.isEkadasiDate(date);
+      // Use festivals array to determine Ekadashi instead of tithi calculation
+      const isEkadasi = dayFestivals.some(f => f.importance === 'ekadashi');
       const hasMajorFestival = dayFestivals.some(f => f.importance === 'major-festival');
       const hasOtherFestival = dayFestivals.some(f => f.importance === 'festival');
 
@@ -543,8 +579,7 @@ export class CalendarPage implements OnInit, OnDestroy {
   }
 
   getFestivalsForDate(date: Date): FestivalEvent[] {
-    const dateStr = date.toISOString().split('T')[0];
-    return this.festivals.filter(festival => festival.startDate === dateStr);
+    return this.tithiService.getFestivalsForDate(date);
   }
 
   isToday(date: Date): boolean {
@@ -623,13 +658,18 @@ export class CalendarPage implements OnInit, OnDestroy {
     return `${day} ${month} ${year}`;
   }
 
-  // Method to dynamically check if a date is Ekadasi
+  // Method to check if a date is Ekadasi based on festivals array
   isEkadasiDate(date: Date): boolean {
-    // Use the new accurate tithi service
-    const tithiInfo = this.tithiService.getTithiForDate(date);
+    // Format the date to match the festival array format (YYYY-MM-DD)
+    // Use local date to avoid timezone issues
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    const dateStr = `${year}-${month}-${day}`;
     
-    // Check if it's Ekadasi using the service helper method
-    return this.tithiService.isEkadashi(tithiInfo.tithiNumber);
+    return this.festivals.some(festival => 
+      festival.startDate === dateStr && festival.importance === 'ekadashi'
+    );
   }
 
   // Helper methods for festival detection
@@ -643,17 +683,20 @@ export class CalendarPage implements OnInit, OnDestroy {
 
   // Method to check and show festival details for special days
   checkAndShowFestivalDetails(day: CalendarDay, date: Date) {
-    // Check if it's Ekadasi
+    // Check if it's Ekadasi from festivals array
     if (day.hasEkadasi) {
-      this.selectedFestivalInfo = this.getEkadasiDetails(date);
-      return;
+      const ekadasiFestival = day.festivals.find(f => f.importance === 'ekadashi');
+      if (ekadasiFestival) {
+        this.selectedFestival = ekadasiFestival;
+        return;
+      }
     }
     
     // Check if it has major festival
     if (this.hasMajorFestival(day)) {
       const majorFestival = day.festivals.find(f => f.importance === 'major-festival');
       if (majorFestival) {
-        this.selectedFestivalInfo = this.getMajorFestivalDetails(majorFestival, date);
+        this.selectedFestival = majorFestival;
         return;
       }
     }
@@ -662,122 +705,18 @@ export class CalendarPage implements OnInit, OnDestroy {
     if (this.hasOtherFestival(day)) {
       const festival = day.festivals.find(f => f.importance === 'festival');
       if (festival) {
-        this.selectedFestivalInfo = this.getOtherFestivalDetails(festival, date);
+        this.selectedFestival = festival;
         return;
       }
     }
     
     // Clear festival info if no special day
-    this.selectedFestivalInfo = null;
-  }
-
-  // Get Ekadasi details
-  getEkadasiDetails(date: Date): FestivalInfo {
-    const tithiInfo = this.tithiService.getTithiForDate(date);
-    const ekadasiName = tithiInfo.paksha === 'Shukla' ? 'Shukla Ekadasi' : 'Krishna Ekadasi';
-    
-    return {
-      title: `${ekadasiName} (Ekadasi)`,
-      date: this.formatDateString(date),
-      type: 'Ekadasi',
-      typeClass: 'ekadasi-type',
-      significance: 'Sacred fasting day for devotees of Lord Vishnu',
-      description: 'Ekadasi is the 11th lunar day of each fortnight in the Hindu calendar. It is considered highly auspicious for spiritual practices and devotion to Lord Vishnu.',
-      observances: [
-        'Complete fasting or eating only fruits/milk',
-        'Increased chanting and meditation',
-        'Reading spiritual texts',
-        'Staying awake through the night (for some Ekadasis)',
-        'Breaking fast on Dwadashi (next day) after sunrise'
-      ],
-      additionalInfo: `This is ${tithiInfo.paksha} Paksa Ekadasi occurring during ${this.vaishnavData.masa} month.`
-    };
-  }
-
-  // Get major festival details
-  getMajorFestivalDetails(festival: FestivalEvent, date: Date): FestivalInfo {
-    const festivalDetails: {[key: string]: any} = {
-      'Krishna Janmashtami': {
-        significance: 'Birth anniversary of Lord Krishna, the eighth avatar of Vishnu',
-        description: 'Krishna Janmashtami celebrates the birth of Lord Krishna, who appeared on earth to establish dharma and guide humanity towards spiritual enlightenment.',
-        observances: [
-          'Fasting until midnight',
-          'Devotional singing and dancing',
-          'Reading Bhagavad Gita and Srimad Bhagavatam',
-          'Decorating Krishna temples',
-          'Midnight celebration marking Krishna\'s birth time'
-        ]
-      },
-      'Gaura Purnima': {
-        significance: 'Appearance day of Sri Chaitanya Mahaprabhu',
-        description: 'Gaura Purnima celebrates the appearance of Sri Chaitanya Mahaprabhu, who spread the chanting of the Holy Names and pure devotional service.',
-        observances: [
-          'Fasting until moonrise',
-          'Congregational chanting (Sankirtan)',
-          'Reading about Sri Chaitanya\'s pastimes',
-          'Offering prayers and flowers',
-          'Community feasting and celebration'
-        ]
-      },
-      'Rama Navami': {
-        significance: 'Birth anniversary of Lord Rama, the seventh avatar of Vishnu',
-        description: 'Rama Navami celebrates the birth of Lord Rama, the ideal king and perfect devotee, whose life exemplifies dharma and righteousness.',
-        observances: [
-          'Fasting and prayers',
-          'Reading Ramayana',
-          'Visiting Rama temples',
-          'Chanting Rama\'s holy names',
-          'Community celebrations and processions'
-        ]
-      }
-    };
-
-    const details = festivalDetails[festival.festivalName] || {};
-    
-    return {
-      title: festival.festivalName,
-      date: this.formatDateString(date),
-      type: 'Major Festival',
-      typeClass: 'major-festival-type',
-      significance: details.significance || 'Important Vaishnava festival',
-      description: details.description || 'A sacred day of celebration and spiritual observance.',
-      observances: details.observances || ['Fasting and prayers', 'Temple worship', 'Spiritual study'],
-      additionalInfo: `Time: ${festival.startTime} - ${festival.endTime}`
-    };
-  }
-
-  // Get other festival details
-  getOtherFestivalDetails(festival: FestivalEvent, date: Date): FestivalInfo {
-    const festivalDetails: {[key: string]: any} = {
-      'Ratha Yatra': {
-        significance: 'Festival of Chariots celebrating Lord Jagannatha',
-        description: 'Ratha Yatra commemorates Krishna\'s journey from Gokul to Mathura, symbolizing the soul\'s journey back to the spiritual world.',
-        observances: ['Pulling the chariot', 'Kirtan and devotional songs', 'Prasadam distribution']
-      },
-      'Radhashtami': {
-        significance: 'Appearance day of Srimati Radharani',
-        description: 'Radhashtami celebrates the appearance of Srimati Radharani, the eternal consort of Lord Krishna and embodiment of pure devotional love.',
-        observances: ['Fasting until noon', 'Offering prayers to Radharani', 'Decorating altars with flowers']
-      }
-    };
-
-    const details = festivalDetails[festival.festivalName] || {};
-    
-    return {
-      title: festival.festivalName,
-      date: this.formatDateString(date),
-      type: 'Festival',
-      typeClass: 'festival-type',
-      significance: details.significance || 'Auspicious Vaishnava celebration',
-      description: details.description || 'A day of spiritual celebration and devotion.',
-      observances: details.observances || ['Prayers and worship', 'Community gathering', 'Spiritual practices'],
-      additionalInfo: `Time: ${festival.startTime} - ${festival.endTime}`
-    };
+    this.selectedFestival = null;
   }
 
   // Close festival details
   closeFestivalDetails() {
-    this.selectedFestivalInfo = null;
+    this.selectedFestival = null;
   }
 
   // Format date for display
@@ -834,10 +773,10 @@ export class CalendarPage implements OnInit, OnDestroy {
     shareText += `🌇 Sunset: ${this.vaishnavData.sunset}\n`;
     
     // Add festival info if available
-    if (this.selectedFestivalInfo) {
-      shareText += `\n🎉 Festival: ${this.selectedFestivalInfo.title}\n`;
-      if (this.selectedFestivalInfo.significance) {
-        shareText += `✨ ${this.selectedFestivalInfo.significance}\n`;
+    if (this.selectedFestival) {
+      shareText += `\n🎉 Festival: ${this.selectedFestival.festivalName}\n`;
+      if (this.selectedFestival.description) {
+        shareText += `✨ ${this.selectedFestival.description}\n`;
       }
     }
 
@@ -875,11 +814,12 @@ export class CalendarPage implements OnInit, OnDestroy {
     return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
   }
 
-  private async showToast(message: string) {
+  private async showToast(message: string, color: string = 'primary') {
     const toast = await this.toastController.create({
       message: message,
       duration: 2000,
       position: 'bottom',
+      color: color,
       cssClass: 'toast-alert'
     });
     await toast.present();
@@ -898,6 +838,71 @@ export class CalendarPage implements OnInit, OnDestroy {
       document.execCommand('copy');
       document.body.removeChild(textArea);
       this.showToast('Event details copied to clipboard');
+    }
+  }
+
+  // Add Festival Modal Methods
+  openAddFestivalModal() {
+    this.isAddFestivalModalOpen = true;
+  }
+
+  closeAddFestivalModal() {
+    this.isAddFestivalModalOpen = false;
+    this.addFestivalForm.reset();
+  }
+
+  onSubmitFestival() {
+    if (this.addFestivalForm.valid) {
+      const formValue = this.addFestivalForm.value;
+      
+      // Format dates and times properly
+      const startDate = new Date(formValue.startDate).toISOString().split('T')[0];
+      const endDate = new Date(formValue.endDate).toISOString().split('T')[0];
+      const startTime = formValue.startTime ? new Date(formValue.startTime).toTimeString().slice(0, 5) : '04:00';
+      const endTime = formValue.endTime ? new Date(formValue.endTime).toTimeString().slice(0, 5) : '23:59';
+      const breakfastDate = formValue.breakfastDate ? new Date(formValue.breakfastDate).toISOString().split('T')[0] : '';
+      const breakfastTime = formValue.breakfastTime ? new Date(formValue.breakfastTime).toTimeString().slice(0, 5) : '';
+      
+      // Generate unique ID
+      const id = 'custom_' + Date.now();
+      
+      // Create festival object
+      const newFestival: FestivalEvent = {
+        id: id,
+        startDate: startDate,
+        endDate: endDate,
+        startTime: startTime,
+        endTime: endTime,
+        festivalName: formValue.festivalName,
+        importance: formValue.importance,
+        breakfastDate: breakfastDate,
+        breakfastTime: breakfastTime,
+        description: formValue.description || ''
+      };
+      
+      // Print the festival object as requested
+      console.log('New Festival Object:', {
+        startDate: startDate,
+        endDate: endDate,
+        startTime: startTime,
+        endTime: endTime,
+        festivalName: formValue.festivalName,
+        otherName: formValue.otherName || '',
+        importance: formValue.importance,
+        breakfastDate: breakfastDate,
+        breakfastTime: breakfastTime,
+        description: formValue.description || ''
+      });
+      
+      // Add to festivals array (for now, you can later add to service/database)
+      this.festivals.push(newFestival);
+      
+      // Regenerate calendar to show new festival
+      this.generateCalendar();
+      
+      // Close modal and show success message
+      this.closeAddFestivalModal();
+      this.showToast('Festival added successfully!', 'success');
     }
   }
 
