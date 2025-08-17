@@ -6,8 +6,10 @@ import { addIcons } from 'ionicons';
 import { chevronBack, chevronForward, calendarOutline, searchOutline, settingsOutline, sunnyOutline, moonOutline, ellipsisHorizontal, closeOutline, arrowBackOutline, shareOutline, todayOutline, heart, heartOutline } from 'ionicons/icons';
 import { AlertController, ToastController } from '@ionic/angular';
 import { ThemeService, ThemeType } from '../services/theme.service';
+import { TithiService, TithiInfo } from '../services/tithi.service';
 import { Subscription } from 'rxjs';
 import { ReusableHeaderComponent } from '../components/reusable-header/reusable-header.component';
+import * as SunCalc from 'suncalc';
 
 interface FestivalEvent {
   id: string;
@@ -145,75 +147,13 @@ export class CalendarPage implements OnInit, OnDestroy {
 
   // Important Vaishnava festival data (excluding Ekadasi which is calculated dynamically)
   festivals: FestivalEvent[] = [
-    {
-      id: '1',
-      startDate: '2025-08-16',
-      endDate: '2025-08-16',
-      startTime: '06:00',
-      endTime: '23:59',
-      festivalName: 'Krishna Janmashtami',
-      importance: 'major-festival'
-    },
-    {
-      id: '2',
-      startDate: '2025-03-13',
-      endDate: '2025-03-13',
-      startTime: '06:00',
-      endTime: '23:59',
-      festivalName: 'Gaura Purnima',
-      importance: 'major-festival'
-    },
-    {
-      id: '3',
-      startDate: '2025-04-13',
-      endDate: '2025-04-13',
-      startTime: '06:00',
-      endTime: '23:59',
-      festivalName: 'Rama Navami',
-      importance: 'major-festival'
-    },
-    {
-      id: '4',
-      startDate: '2025-07-01',
-      endDate: '2025-07-01',
-      startTime: '06:00',
-      endTime: '18:00',
-      festivalName: 'Ratha Yatra',
-      importance: 'festival'
-    },
-    {
-      id: '5',
-      startDate: '2025-09-01',
-      endDate: '2025-09-01',
-      startTime: '06:00',
-      endTime: '18:00',
-      festivalName: 'Radhashtami',
-      importance: 'festival'
-    },
-    {
-      id: '6',
-      startDate: '2025-11-02',
-      endDate: '2025-11-02',
-      startTime: '06:00',
-      endTime: '18:00',
-      festivalName: 'Govardhana Puja',
-      importance: 'festival'
-    },
-    {
-      id: '7',
-      startDate: '2025-11-15',
-      endDate: '2025-11-15',
-      startTime: '06:00',
-      endTime: '18:00',
-      festivalName: 'Tulsi Vivaha',
-      importance: 'festival'
-    }
   ];
 
   constructor(
     private alertController: AlertController, 
     private toastController: ToastController,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private tithiService: TithiService
   ) { 
     addIcons({calendarOutline,searchOutline,settingsOutline,chevronBack,chevronForward,closeOutline,ellipsisHorizontal,sunnyOutline,moonOutline,arrowBackOutline,shareOutline,todayOutline,heart,heartOutline});
   }
@@ -324,36 +264,21 @@ export class CalendarPage implements OnInit, OnDestroy {
     
     console.log('Calculating lunar data for:', date, 'Julian Day:', jd);
     
-    // Calculate Sun and Moon positions (simplified calculation)
-    const sunLongitude = this.getSunLongitude(jd);
-    const moonLongitude = this.getMoonLongitude(jd);
+    // Use the new accurate Tithi calculation with Astronomy Engine
+    const tithiInfo = this.tithiService.getTithiForDate(date);
     
-    console.log('Sun longitude:', sunLongitude, 'Moon longitude:', moonLongitude);
+    console.log('Accurate Tithi calculation:', tithiInfo);
     
-    // Calculate Tithi
-    const tithiData = this.calculateTithi(moonLongitude, sunLongitude);
-    this.vaishnavData.tithiNumber = tithiData.number;
-    this.vaishnavData.tithiPercentageLeft = tithiData.percentageLeft;
+    // Update vaishnav data with accurate tithi information
+    this.vaishnavData.tithiNumber = tithiInfo.tithiNumber;
+    this.vaishnavData.paksa = tithiInfo.paksha;
+    this.vaishnavData.tithi = tithiInfo.tithiName;
+    this.vaishnavData.tithiPercentageLeft = Math.round((tithiInfo.remainingDegrees / 12) * 100);
     
-    // Determine Paksa and Tithi name
-    if (tithiData.number <= 15) {
-      this.vaishnavData.paksa = 'Shukla'; // Bright half
-      this.vaishnavData.tithi = this.tithiNames[tithiData.number - 1];
-    } else {
-      this.vaishnavData.paksa = 'Krishna'; // Dark half
-      const darkTithi = tithiData.number - 15;
-      this.vaishnavData.tithi = this.tithiNames[darkTithi - 1];
-    }
-    
-    console.log('Final tithi calculation:', {
-      tithiNumber: tithiData.number,
-      paksa: this.vaishnavData.paksa,
-      tithiName: this.vaishnavData.tithi,
-      percentageLeft: tithiData.percentageLeft
-    });
-    
-    // Calculate Nakshatra
-    const nakshatraData = this.calculateNakshatra(moonLongitude);
+    // Calculate Nakshatra using moon longitude from tithi calculation
+    // For now, use a simplified approach - we can enhance this later with Astronomy Engine
+    const moonLong = (tithiInfo.elapsedDegrees + (tithiInfo.tithiNumber - 1) * 12) % 360;
+    const nakshatraData = this.calculateNakshatra(moonLong);
     this.vaishnavData.nakshatra = this.nakshatraNames[nakshatraData.number - 1];
     this.vaishnavData.pada = nakshatraData.pada;
     
@@ -370,77 +295,6 @@ export class CalendarPage implements OnInit, OnDestroy {
     
     return date.getDate() + Math.floor((153 * m + 2) / 5) + 365 * y + 
            Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) - 32045;
-  }
-
-  getSunLongitude(jd: number): number {
-    // Simplified sun longitude calculation
-    const n = jd - 2451545.0;
-    const L = (280.460 + 0.9856474 * n) % 360;
-    const g = ((357.528 + 0.9856003 * n) % 360) * Math.PI / 180;
-    const lambda = (L + 1.915 * Math.sin(g) + 0.020 * Math.sin(2 * g)) % 360;
-    return lambda;
-  }
-
-  getMoonLongitude(jd: number): number {
-    // More accurate moon longitude calculation
-    const n = jd - 2451545.0;
-    const L = (218.316 + 13.176396 * n) % 360;
-    const M = ((134.963 + 13.064993 * n) % 360) * Math.PI / 180;
-    const _F = ((93.272 + 13.229350 * n) % 360) * Math.PI / 180;
-    const D = ((297.850 + 12.190749 * n) % 360) * Math.PI / 180;
-    
-    // Main lunar longitude with perturbations
-    const lambda = L + 6.289 * Math.sin(M) 
-                   + 1.274 * Math.sin(2 * D - M)
-                   + 0.658 * Math.sin(2 * D)
-                   + 0.214 * Math.sin(2 * M)
-                   - 0.186 * Math.sin(((357.53 + 0.98560 * n) % 360) * Math.PI / 180)
-                   - 0.059 * Math.sin((2 * D - 2 * M))
-                   - 0.057 * Math.sin((2 * D - M - ((357.53 + 0.98560 * n) % 360) * Math.PI / 180))
-                   + 0.053 * Math.sin((2 * D + M))
-                   + 0.046 * Math.sin((2 * D - ((357.53 + 0.98560 * n) % 360) * Math.PI / 180))
-                   + 0.041 * Math.sin((M - ((357.53 + 0.98560 * n) % 360) * Math.PI / 180));
-    
-    return lambda % 360;
-  }
-
-  calculateTithi(moonLongitude: number, sunLongitude: number): {number: number, percentageLeft: number} {
-    // Calculate the moon-sun longitude difference
-    let diff = moonLongitude - sunLongitude;
-    
-    // Normalize to 0-360 range
-    if (diff < 0) {
-      diff += 360;
-    }
-    
-    // Each tithi spans 12 degrees
-    const tithiValue = diff / 12;
-    
-    // Tithi number (1-30, where 30 is actually the next month's Pratipada)
-    let tithiNumber = Math.floor(tithiValue) + 1;
-    
-    // Handle the case where we get tithi 31 (should be 1 of next cycle)
-    if (tithiNumber > 30) {
-      tithiNumber = 1;
-    }
-    
-    // Calculate percentage left in current tithi
-    const decimalPart = tithiValue - Math.floor(tithiValue);
-    const percentageLeft = (1 - decimalPart) * 100;
-    
-    console.log('Tithi calculation debug:', {
-      moonLongitude,
-      sunLongitude,
-      diff,
-      tithiValue,
-      tithiNumber,
-      percentageLeft
-    });
-    
-    return {
-      number: tithiNumber,
-      percentageLeft: Math.round(percentageLeft * 100) / 100
-    };
   }
 
   calculateNakshatra(moonLongitude: number): {number: number, pada: number} {
@@ -556,14 +410,19 @@ export class CalendarPage implements OnInit, OnDestroy {
   }
 
   calculateSunMoonTimes(date: Date, location: LocationData) {
-    console.log('Calculating sun/moon times for:', date, 'at location:', location);
+    console.log('Calculating sun/moon times using SunCalc for:', date, 'at location:', location);
     
-    // Calculate sunrise and sunset with proper timezone handling
-    const sunrise = this.calculateSunrise(date, location.latitude, location.longitude);
-    const sunset = this.calculateSunset(date, location.latitude, location.longitude);
+    // Use SunCalc library for accurate astronomical calculations
+    const sunTimes = SunCalc.getTimes(date, location.latitude, location.longitude);
+    const moonTimes = SunCalc.getMoonTimes(date, location.latitude, location.longitude);
     
-    console.log('Calculated sunrise:', sunrise);
-    console.log('Calculated sunset:', sunset);
+    // Extract sunrise and sunset
+    const sunrise = sunTimes.sunrise;
+    const sunset = sunTimes.sunset;
+    
+    console.log('SunCalc sunrise:', sunrise);
+    console.log('SunCalc sunset:', sunset);
+    console.log('SunCalc moon times:', moonTimes);
     
     // Calculate noon as midpoint
     const noon = new Date((sunrise.getTime() + sunset.getTime()) / 2);
@@ -584,131 +443,72 @@ export class CalendarPage implements OnInit, OnDestroy {
     const minutes = Math.floor((daylightMs % (1000 * 60 * 60)) / (1000 * 60));
     this.vaishnavData.daylight = `${hours}h ${minutes}m`;
     
-    // Calculate more accurate moon rise/set times
-    const moonTimes = this.calculateMoonTimes(date, location.latitude, location.longitude);
-    this.vaishnavData.moonrise = this.formatTime(moonTimes.rise);
-    this.vaishnavData.moonset = this.formatTime(moonTimes.set);
+    // Use SunCalc for moon rise/set times
+    if (moonTimes.rise && moonTimes.set) {
+      this.vaishnavData.moonrise = this.formatTime(moonTimes.rise);
+      this.vaishnavData.moonset = this.formatTime(moonTimes.set);
+      
+      console.log('SunCalc Moon times:', {
+        rise: moonTimes.rise.toLocaleString(),
+        set: moonTimes.set.toLocaleString(),
+        riseFormatted: this.vaishnavData.moonrise,
+        setFormatted: this.vaishnavData.moonset
+      });
+    } else {
+      // Handle cases where moon doesn't rise or set on this day
+      if (moonTimes.rise) {
+        this.vaishnavData.moonrise = this.formatTime(moonTimes.rise);
+      } else {
+        // Check previous day for moonrise
+        const prevDay = new Date(date);
+        prevDay.setDate(date.getDate() - 1);
+        const prevMoonTimes = SunCalc.getMoonTimes(prevDay, location.latitude, location.longitude);
+        if (prevMoonTimes.rise) {
+          this.vaishnavData.moonrise = this.formatTime(prevMoonTimes.rise);
+        } else {
+          this.vaishnavData.moonrise = 'No rise';
+        }
+      }
+      
+      if (moonTimes.set) {
+        this.vaishnavData.moonset = this.formatTime(moonTimes.set);
+      } else {
+        // Check next day for moonset
+        const nextDay = new Date(date);
+        nextDay.setDate(date.getDate() + 1);
+        const nextMoonTimes = SunCalc.getMoonTimes(nextDay, location.latitude, location.longitude);
+        if (nextMoonTimes.set) {
+          this.vaishnavData.moonset = this.formatTime(nextMoonTimes.set);
+        } else {
+          this.vaishnavData.moonset = 'No set';
+        }
+      }
+    }
   }
 
-  calculateMoonTimes(date: Date, latitude: number, longitude: number): {rise: Date, set: Date} {
-    const jd = this.getJulianDay(date);
-    
-    // Get moon's position
-    const moonLongitude = this.getMoonLongitude(jd);
-    const moonRA = moonLongitude; // Simplified: using longitude as right ascension
-    
-    // Calculate moon's declination (simplified)
-    const moonDeclination = 23.45 * Math.sin((moonLongitude + 90) * Math.PI / 180);
-    
-    // Calculate hour angle for moonrise/set
-    const latRad = latitude * Math.PI / 180;
-    const decRad = moonDeclination * Math.PI / 180;
-    
-    const argument = -Math.tan(latRad) * Math.tan(decRad);
-    
-    if (argument < -1 || argument > 1) {
-      // Moon never rises or sets
-      const fallbackRise = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 19, 25);
-      const fallbackSet = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 6, 14);
-      return { rise: fallbackRise, set: fallbackSet };
-    }
-    
-    const hourAngle = Math.acos(argument) * 180 / Math.PI;
-    
-    // Calculate moon rise and set times
-    const moonRiseTime = 12 - hourAngle / 15 + (moonRA - longitude) / 15;
-    const moonSetTime = 12 + hourAngle / 15 + (moonRA - longitude) / 15;
-    
-    // Apply timezone correction
-    const timezoneOffset = -date.getTimezoneOffset() / 60;
-    
-    const riseHour = Math.floor((moonRiseTime + timezoneOffset) % 24);
-    const riseMinute = Math.floor(((moonRiseTime + timezoneOffset) % 1) * 60);
-    
-    const setHour = Math.floor((moonSetTime + timezoneOffset) % 24);
-    const setMinute = Math.floor(((moonSetTime + timezoneOffset) % 1) * 60);
-    
-    const moonrise = new Date(date.getFullYear(), date.getMonth(), date.getDate(), riseHour, riseMinute);
-    const moonset = new Date(date.getFullYear(), date.getMonth(), date.getDate(), setHour, setMinute);
-    
-    // If moonset is before moonrise, it's the next day
-    if (moonset.getTime() < moonrise.getTime()) {
-      moonset.setDate(moonset.getDate() + 1);
-    }
-    
-    return { rise: moonrise, set: moonset };
-  }
 
-  calculateSunrise(date: Date, latitude: number, longitude: number): Date {
-    // Simplified but more accurate sunrise calculation
-    const jd = this.getJulianDay(date);
-    
-    // Calculate solar declination
-    const P = Math.asin(0.39795 * Math.cos(0.98563 * (jd - 173) * Math.PI / 180));
-    const argument = -Math.tan(latitude * Math.PI / 180) * Math.tan(P);
-    
-    if (argument < -1 || argument > 1) {
-      // Polar day or night
-      return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 6, 0);
-    }
-    
-    const HA = Math.acos(argument) * 180 / Math.PI;
-    
-    // Calculate sunrise time in hours (local solar time)
-    const sunriseTime = 12 - HA / 15;
-    
-    // Apply longitude correction (4 minutes per degree)
-    const timeCorrection = longitude / 15; // longitude correction in hours
-    const correctedTime = sunriseTime - timeCorrection;
-    
-    // Get device timezone offset in hours
-    const deviceTimezoneOffset = -date.getTimezoneOffset() / 60; // Convert minutes to hours and flip sign
-    const localTime = correctedTime + deviceTimezoneOffset;
-    
-    const hours = Math.floor(localTime) % 24;
-    const minutes = Math.floor((localTime - Math.floor(localTime)) * 60);
-    
-    return new Date(date.getFullYear(), date.getMonth(), date.getDate(), hours, minutes);
-  }
 
-  calculateSunset(date: Date, latitude: number, longitude: number): Date {
-    // Simplified but more accurate sunset calculation
-    const jd = this.getJulianDay(date);
-    
-    // Calculate solar declination
-    const P = Math.asin(0.39795 * Math.cos(0.98563 * (jd - 173) * Math.PI / 180));
-    const argument = -Math.tan(latitude * Math.PI / 180) * Math.tan(P);
-    
-    if (argument < -1 || argument > 1) {
-      // Polar day or night
-      return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 18, 0);
-    }
-    
-    const HA = Math.acos(argument) * 180 / Math.PI;
-    
-    // Calculate sunset time in hours (local solar time)
-    const sunsetTime = 12 + HA / 15;
-    
-    // Apply longitude correction (4 minutes per degree)
-    const timeCorrection = longitude / 15; // longitude correction in hours
-    const correctedTime = sunsetTime - timeCorrection;
-    
-    // Get device timezone offset in hours
-    const deviceTimezoneOffset = -date.getTimezoneOffset() / 60; // Convert minutes to hours and flip sign
-    const localTime = correctedTime + deviceTimezoneOffset;
-    
-    const hours = Math.floor(localTime) % 24;
-    const minutes = Math.floor((localTime - Math.floor(localTime)) * 60);
-    
-    return new Date(date.getFullYear(), date.getMonth(), date.getDate(), hours, minutes);
-  }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   formatTime(date: Date): string {
-    // Use local timezone formatting
-    return date.toLocaleTimeString('en-US', {
+    // Use Asia/Kolkata timezone formatting for consistent display
+    return date.toLocaleTimeString('en-IN', {
       hour: 'numeric',
       minute: '2-digit',
-      hour12: true
+      hour12: true,
+      timeZone: 'Asia/Kolkata'
     });
   }
 
@@ -825,19 +625,11 @@ export class CalendarPage implements OnInit, OnDestroy {
 
   // Method to dynamically check if a date is Ekadasi
   isEkadasiDate(date: Date): boolean {
-    // Get Julian day number for the date
-    const jd = this.getJulianDay(date);
+    // Use the new accurate tithi service
+    const tithiInfo = this.tithiService.getTithiForDate(date);
     
-    // Calculate Sun and Moon positions
-    const sunLongitude = this.getSunLongitude(jd);
-    const moonLongitude = this.getMoonLongitude(jd);
-    
-    // Calculate Tithi
-    const tithiData = this.calculateTithi(moonLongitude, sunLongitude);
-    
-    // Ekadasi is the 11th tithi in both Shukla (bright) and Krishna (dark) paksha
-    // This means tithi numbers 11 and 26 (11 + 15)
-    return tithiData.number === 11 || tithiData.number === 26;
+    // Check if it's Ekadasi using the service helper method
+    return this.tithiService.isEkadashi(tithiInfo.tithiNumber);
   }
 
   // Helper methods for festival detection
@@ -881,8 +673,8 @@ export class CalendarPage implements OnInit, OnDestroy {
 
   // Get Ekadasi details
   getEkadasiDetails(date: Date): FestivalInfo {
-    const paksa = this.vaishnavData.paksa;
-    const ekadasiName = paksa === 'Shukla' ? 'Shukla Ekadasi' : 'Krishna Ekadasi';
+    const tithiInfo = this.tithiService.getTithiForDate(date);
+    const ekadasiName = tithiInfo.paksha === 'Shukla' ? 'Shukla Ekadasi' : 'Krishna Ekadasi';
     
     return {
       title: `${ekadasiName} (Ekadasi)`,
@@ -898,7 +690,7 @@ export class CalendarPage implements OnInit, OnDestroy {
         'Staying awake through the night (for some Ekadasis)',
         'Breaking fast on Dwadashi (next day) after sunrise'
       ],
-      additionalInfo: `This is ${paksa} Paksa Ekadasi occurring during ${this.vaishnavData.masa} month.`
+      additionalInfo: `This is ${tithiInfo.paksha} Paksa Ekadasi occurring during ${this.vaishnavData.masa} month.`
     };
   }
 
