@@ -1585,22 +1585,81 @@
 ion-modal {
   --height: 90%;
   --border-radius: 16px 16px 0 0;
+  --background: var(--ion-background-color);
+  
+  ion-header {
+    ion-toolbar {
+      --background: var(--ion-color-primary);
+      --color: white;
+      
+      ion-title {
+        font-weight: 600;
+        font-size: 1.1rem;
+      }
+      
+      ion-button {
+        --color: white;
+        --color-hover: rgba(255, 255, 255, 0.8);
+      }
+    }
+  }
   
   ion-content {
-    --padding-start: 16px;
-    --padding-end: 16px;
-    --padding-top: 16px;
-    --padding-bottom: 16px;
+    --padding-start: 20px;
+    --padding-end: 20px;
+    --padding-top: 20px;
+    --padding-bottom: 20px;
+    --background: var(--ion-background-color) !important;
+    background: var(--ion-background-color) !important;
+    
+    // Ensure solid background
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--ion-background-color);
+      z-index: -1;
+    }
   }
   
   .form-actions {
     display: flex;
     gap: 12px;
-    padding: 20px 0;
+    padding: 24px 0 16px 0;
     justify-content: flex-end;
+    border-top: 1px solid var(--ion-color-light-shade);
+    margin-top: 20px;
     
     ion-button {
       min-width: 100px;
+      font-weight: 500;
+      
+      &[fill="outline"] {
+        --border-color: var(--ion-color-medium);
+        --color: var(--ion-color-medium-shade);
+        
+        &:hover {
+          --background: var(--ion-color-light);
+        }
+      }
+      
+      &[type="submit"] {
+        --background: var(--ion-color-primary);
+        --color: white;
+        
+        &:hover:not([disabled]) {
+          --background: var(--ion-color-primary-shade);
+        }
+        
+        &[disabled] {
+          --background: var(--ion-color-light);
+          --color: var(--ion-color-medium);
+          opacity: 0.6;
+        }
+      }
     }
   }
   
@@ -1608,28 +1667,739 @@ ion-modal {
     margin: 8px 0 16px 0;
     
     ion-textarea {
-      --background: var(--ion-color-light, #f4f5f8);
-      --padding: 12px;
-      border-radius: 8px;
+      --background: var(--ion-item-background, var(--ion-background-color));
+      --color: var(--ion-text-color);
+      --placeholder-color: var(--ion-color-medium);
+      --placeholder-opacity: 0.8;
+      --padding: 16px;
+      border: 2px solid var(--ion-color-light);
+      border-radius: 12px;
       margin-top: 8px;
+      transition: border-color 0.3s ease;
+      
+      &:focus-within {
+        border-color: var(--ion-color-primary);
+        box-shadow: 0 0 0 3px rgba(var(--ion-color-primary-rgb), 0.1);
+      }
     }
   }
   
   ion-item {
+    --background: transparent;
     --padding-start: 0;
     --inner-padding-end: 0;
-    margin-bottom: 8px;
+    --border-color: transparent;
+    margin-bottom: 16px;
     
     ion-label {
-      margin-bottom: 8px;
-      font-weight: 500;
-      color: var(--ion-color-dark, #222428);
+      margin-bottom: 12px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--ion-color-dark);
+      
+      &::after {
+        content: '';
+        display: block;
+        width: 30px;
+        height: 2px;
+        background: var(--ion-color-primary);
+        margin-top: 4px;
+      }
     }
     
-    ion-input, ion-select, ion-datetime {
-      --background: var(--ion-color-light, #f4f5f8);
-      --padding: 12px;
-      border-radius: 8px;
+    ion-input {
+      --background: var(--ion-item-background, var(--ion-background-color));
+      --color: var(--ion-text-color);
+      --placeholder-color: var(--ion-color-medium-shade);
+      --placeholder-opacity: 0.9;
+      --padding: 16px;
+      border: 2px solid var(--ion-color-light);
+      border-radius: 12px;
+      margin-top: 8px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      
+      &:focus-within {
+        border-color: var(--ion-color-primary);
+        box-shadow: 0 0 0 3px rgba(var(--ion-color-primary-rgb), 0.1);
+        transform: translateY(-1px);
+      }
     }
+    
+    ion-select {
+      --background: var(--ion-item-background, var(--ion-background-color));
+      --color: var(--ion-text-color);
+      --placeholder-color: var(--ion-color-medium-shade);
+      --placeholder-opacity: 0.9;
+      --padding: 16px;
+      border: 2px solid var(--ion-color-light);
+      border-radius: 12px;
+      margin-top: 8px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      
+      &:focus-within {
+        border-color: var(--ion-color-primary);
+        box-shadow: 0 0 0 3px rgba(var(--ion-color-primary-rgb), 0.1);
+        transform: translateY(-1px);
+      }
+    }
+    
+    ion-datetime {
+      --background: var(--ion-item-background, var(--ion-background-color));
+      --color: var(--ion-text-color);
+      --padding: 16px;
+      border: 2px solid var(--ion-color-light);
+      border-radius: 12px;
+      margin-top: 8px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      
+      &:focus-within {
+        border-color: var(--ion-color-primary);
+        box-shadow: 0 0 0 3px rgba(var(--ion-color-primary-rgb), 0.1);
+        transform: translateY(-1px);
+      }
+      
+      // Improve datetime placeholder visibility
+      .datetime-placeholder {
+        color: var(--ion-color-medium-shade) !important;
+        opacity: 0.9 !important;
+      }
+    }
+  }
+  
+  // Form validation styling
+  .has-error {
+    ion-input, ion-select, ion-datetime {
+      border-color: var(--ion-color-danger) !important;
+      
+      &:focus-within {
+        box-shadow: 0 0 0 3px rgba(var(--ion-color-danger-rgb), 0.1) !important;
+      }
+    }
+  }
+  
+  // Required field indicator
+  ion-label:has-text("*") {
+    position: relative;
+    
+    &::before {
+      content: "*";
+      color: var(--ion-color-danger);
+      font-weight: bold;
+      margin-right: 4px;
+    }
+  }
+}
+
+// Theme-specific modal styles
+:host.theme-ocean {
+  ion-modal {
+    --background: #001f3f;
+    
+    ion-header ion-toolbar {
+      --background: linear-gradient(135deg, #0074D9, #001f3f);
+    }
+    
+    ion-content {
+      --background: #001f3f;
+    }
+    
+    ion-item {
+      ion-label::after {
+        background: #0074D9;
+      }
+      
+      ion-input, ion-select, ion-datetime {
+        --background: rgba(0, 116, 217, 0.1);
+        border-color: rgba(0, 116, 217, 0.3);
+        --color: #7FDBFF;
+        --placeholder-color: rgba(127, 219, 255, 0.7);
+        
+        &:focus-within {
+          border-color: #0074D9;
+          box-shadow: 0 0 0 3px rgba(0, 116, 217, 0.2);
+        }
+      }
+    }
+    
+    .rich-text-container ion-textarea {
+      --background: rgba(0, 116, 217, 0.1);
+      border-color: rgba(0, 116, 217, 0.3);
+      --color: #7FDBFF;
+      --placeholder-color: rgba(127, 219, 255, 0.7);
+    }
+  }
+}
+
+:host.theme-sunset {
+  ion-modal {
+    --background: #2a1810;
+    
+    ion-header ion-toolbar {
+      --background: linear-gradient(135deg, #FF6B35, #F7931E);
+    }
+    
+    ion-content {
+      --background: #2a1810;
+    }
+    
+    ion-item {
+      ion-label::after {
+        background: #FF6B35;
+      }
+      
+      ion-input, ion-select, ion-datetime {
+        --background: rgba(255, 107, 53, 0.1);
+        border-color: rgba(255, 107, 53, 0.3);
+        --color: #FFB347;
+        --placeholder-color: rgba(255, 179, 71, 0.7);
+        
+        &:focus-within {
+          border-color: #FF6B35;
+          box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.2);
+        }
+      }
+    }
+    
+    .rich-text-container ion-textarea {
+      --background: rgba(255, 107, 53, 0.1);
+      border-color: rgba(255, 107, 53, 0.3);
+      --color: #FFB347;
+      --placeholder-color: rgba(255, 179, 71, 0.7);
+    }
+  }
+}
+
+:host.theme-forest {
+  ion-modal {
+    --background: #1a2f1a;
+    
+    ion-header ion-toolbar {
+      --background: linear-gradient(135deg, #2ECC40, #01FF70);
+    }
+    
+    ion-content {
+      --background: #1a2f1a;
+    }
+    
+    ion-item {
+      ion-label::after {
+        background: #2ECC40;
+      }
+      
+      ion-input, ion-select, ion-datetime {
+        --background: rgba(46, 204, 64, 0.1);
+        border-color: rgba(46, 204, 64, 0.3);
+        --color: #01FF70;
+        --placeholder-color: rgba(1, 255, 112, 0.7);
+        
+        &:focus-within {
+          border-color: #2ECC40;
+          box-shadow: 0 0 0 3px rgba(46, 204, 64, 0.2);
+        }
+      }
+    }
+    
+    .rich-text-container ion-textarea {
+      --background: rgba(46, 204, 64, 0.1);
+      border-color: rgba(46, 204, 64, 0.3);
+      --color: #01FF70;
+      --placeholder-color: rgba(1, 255, 112, 0.7);
+    }
+  }
+}
+
+:host.theme-cyberpunk {
+  ion-modal {
+    --background: #0d001a;
+    
+    ion-header ion-toolbar {
+      --background: linear-gradient(135deg, #B10DC9, #F012BE);
+    }
+    
+    ion-content {
+      --background: #0d001a;
+    }
+    
+    ion-item {
+      ion-label::after {
+        background: #B10DC9;
+      }
+      
+      ion-input, ion-select, ion-datetime {
+        --background: rgba(177, 13, 201, 0.1);
+        border-color: rgba(177, 13, 201, 0.3);
+        --color: #F012BE;
+        --placeholder-color: rgba(240, 18, 190, 0.7);
+        
+        &:focus-within {
+          border-color: #B10DC9;
+          box-shadow: 0 0 0 3px rgba(177, 13, 201, 0.2);
+        }
+      }
+    }
+    
+    .rich-text-container ion-textarea {
+      --background: rgba(177, 13, 201, 0.1);
+      border-color: rgba(177, 13, 201, 0.3);
+      --color: #F012BE;
+      --placeholder-color: rgba(240, 18, 190, 0.7);
+    }
+  }
+}
+
+:host.theme-royal {
+  ion-modal {
+    --background: #1a0d33;
+    
+    ion-header ion-toolbar {
+      --background: linear-gradient(135deg, #6f42c1, #e83e8c);
+    }
+    
+    ion-content {
+      --background: #1a0d33;
+    }
+    
+    ion-item {
+      ion-label::after {
+        background: #6f42c1;
+      }
+      
+      ion-input, ion-select, ion-datetime {
+        --background: rgba(111, 66, 193, 0.1);
+        border-color: rgba(111, 66, 193, 0.3);
+        --color: #e83e8c;
+        --placeholder-color: rgba(232, 62, 140, 0.7);
+        
+        &:focus-within {
+          border-color: #6f42c1;
+          box-shadow: 0 0 0 3px rgba(111, 66, 193, 0.2);
+        }
+      }
+    }
+    
+    .rich-text-container ion-textarea {
+      --background: rgba(111, 66, 193, 0.1);
+      border-color: rgba(111, 66, 193, 0.3);
+      --color: #e83e8c;
+      --placeholder-color: rgba(232, 62, 140, 0.7);
+    }
+  }
+}
+
+:host.theme-midnight {
+  ion-modal {
+    --background: #0a0a0a;
+    
+    ion-header ion-toolbar {
+      --background: linear-gradient(135deg, #333333, #666666);
+    }
+    
+    ion-content {
+      --background: #0a0a0a;
+    }
+    
+    ion-item {
+      ion-label {
+        color: #ecf0f1;
+        
+        &::after {
+          background: #666666;
+        }
+      }
+      
+      ion-input, ion-select, ion-datetime {
+        --background: rgba(102, 102, 102, 0.1);
+        border-color: rgba(102, 102, 102, 0.3);
+        --color: #ecf0f1;
+        --placeholder-color: rgba(236, 240, 241, 0.7);
+        
+        &:focus-within {
+          border-color: #666666;
+          box-shadow: 0 0 0 3px rgba(102, 102, 102, 0.2);
+        }
+      }
+    }
+    
+    .rich-text-container ion-textarea {
+      --background: rgba(102, 102, 102, 0.1);
+      border-color: rgba(102, 102, 102, 0.3);
+      --color: #ecf0f1;
+      --placeholder-color: rgba(236, 240, 241, 0.7);
+    }
+    
+    .form-actions {
+      border-top-color: rgba(102, 102, 102, 0.3);
+    }
+  }
+}
+
+// Global form field improvements for better placeholder visibility
+ion-input, ion-select, ion-datetime, ion-textarea {
+  &::part(native) {
+    &::placeholder {
+      color: var(--placeholder-color) !important;
+      opacity: var(--placeholder-opacity, 0.8) !important;
+    }
+  }
+}
+
+// Additional accessibility improvements
+.form-field-required {
+  position: relative;
+  
+  &::before {
+    content: "*";
+    color: var(--ion-color-danger, #eb445a);
+    position: absolute;
+    left: -8px;
+    top: 0;
+    font-weight: bold;
+  }
+}
+
+// Better focus states for form fields
+ion-item.item-has-focus {
+  ion-input, ion-select, ion-datetime {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(var(--ion-color-primary-rgb), 0.15) !important;
+  }
+}
+
+// Animation for modal appearance
+ion-modal {
+  &.modal-entering {
+    ion-content {
+      animation: slideUpFadeIn 0.4s ease-out;
+    }
+  }
+  
+  &.modal-leaving {
+    ion-content {
+      animation: slideDownFadeOut 0.3s ease-in;
+    }
+  }
+}
+
+@keyframes slideUpFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDownFadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+
+// Improved field validation states
+.form-field-error {
+  ion-input, ion-select, ion-datetime, ion-textarea {
+    border-color: var(--ion-color-danger) !important;
+    animation: shake 0.5s ease-in-out;
+    
+    &:focus-within {
+      box-shadow: 0 0 0 3px rgba(var(--ion-color-danger-rgb), 0.2) !important;
+    }
+  }
+}
+
+.form-field-success {
+  ion-input, ion-select, ion-datetime, ion-textarea {
+    border-color: var(--ion-color-success) !important;
+    
+    &:focus-within {
+      box-shadow: 0 0 0 3px rgba(var(--ion-color-success-rgb), 0.2) !important;
+    }
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+// Fix modal background transparency issues
+:host ion-modal {
+  &.festival-modal {
+    --background: #ffffff !important;
+    
+    .modal-wrapper {
+      background: #ffffff !important;
+    }
+    
+    ion-header {
+      background: #ffffff !important;
+      
+      ion-toolbar {
+        --background: #ffffff !important;
+        --color: #000000 !important;
+      }
+    }
+    
+    ion-content {
+      --background: #ffffff !important;
+      background: #ffffff !important;
+      
+      .modal-content {
+        background: #ffffff !important;
+        padding: 16px;
+        min-height: 100%;
+        
+        ion-item {
+          --background: #ffffff !important;
+          background: #ffffff !important;
+          margin-bottom: 12px;
+          border-radius: 8px;
+          border: 1px solid var(--ion-color-medium-tint);
+          
+          ion-label {
+            font-weight: 500;
+            margin-bottom: 4px;
+            color: #000000 !important;
+          }
+          
+          ion-input, ion-select {
+            --background: #ffffff !important;
+            background: #ffffff !important;
+            border: none;
+            --color: #000000 !important;
+            --placeholder-color: #000000 !important;
+            --placeholder-opacity: 0.7 !important;
+            
+            // Ensure placeholder text is black
+            input {
+              color: #000000 !important;
+              
+              &::placeholder {
+                color: #000000 !important;
+                opacity: 0.7 !important;
+              }
+            }
+          }
+          
+          &.item-has-focus {
+            border-color: var(--ion-color-primary);
+            box-shadow: 0 0 0 2px rgba(var(--ion-color-primary-rgb), 0.2);
+          }
+          
+          // Validation styling
+          &.ion-invalid.ion-touched {
+            border-color: var(--ion-color-danger) !important;
+            
+            ion-label {
+              color: var(--ion-color-danger);
+            }
+          }
+          
+          &.ion-valid.ion-touched {
+            border-color: var(--ion-color-success) !important;
+          }
+        }
+        
+        .description-editor {
+          margin-top: 16px;
+          background: #ffffff !important;
+          border-radius: 8px;
+          border: 1px solid var(--ion-color-medium-tint);
+          padding: 8px;
+          
+          ion-label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #000000 !important;
+          }
+          
+          quill-editor {
+            min-height: 150px;
+            background: #ffffff !important;
+            
+            // Deep styling for Quill components
+            ::ng-deep {
+              .ql-container {
+                background: #ffffff !important;
+                border: none !important;
+                border-radius: 4px;
+                
+                .ql-editor {
+                  background: #ffffff !important;
+                  color: #000000 !important;
+                  min-height: 120px;
+                  padding: 12px;
+                  font-family: var(--ion-font-family);
+                  
+                  &.ql-blank::before {
+                    color: #666666 !important;
+                    font-style: italic;
+                  }
+                }
+              }
+              
+              .ql-toolbar {
+                background: #f5f5f5 !important;
+                border: none !important;
+                border-bottom: 1px solid var(--ion-color-medium-tint) !important;
+                border-radius: 4px 4px 0 0;
+                padding: 8px 12px;
+                
+                .ql-formats {
+                  margin-right: 15px;
+                }
+                
+                .ql-stroke {
+                  stroke: #000000 !important;
+                }
+                
+                .ql-fill {
+                  fill: #000000 !important;
+                }
+                
+                .ql-picker-label {
+                  color: #000000 !important;
+                }
+                
+                button:hover,
+                button.ql-active {
+                  background-color: var(--ion-color-primary-tint) !important;
+                  color: var(--ion-color-primary-contrast) !important;
+                  border-radius: 4px;
+                  
+                  .ql-stroke {
+                    stroke: var(--ion-color-primary-contrast) !important;
+                  }
+                  
+                  .ql-fill {
+                    fill: var(--ion-color-primary-contrast) !important;
+                  }
+                }
+              }
+            }
+          }
+        }
+        
+        // Form actions styling
+        .form-actions {
+          margin-top: 24px;
+          display: flex;
+          gap: 12px;
+          justify-content: flex-end;
+          
+          ion-button {
+            --color: #000000 !important;
+            
+            &[color="primary"] {
+              --color: #ffffff !important;
+            }
+          }
+        }
+      }
+    }
+    
+    // Ensure solid white background with pseudo-element
+    &::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #ffffff;
+      z-index: -1;
+      opacity: 1;
+    }
+  }
+}
+
+// Additional styling for date and time inputs within the festival modal
+.festival-modal ion-input[type="date"], 
+.festival-modal ion-input[type="time"],
+.festival-modal ion-input[type="text"] {
+  --background: #ffffff !important;
+  background: #ffffff !important;
+  border: 1px solid #cccccc !important;
+  border-radius: 8px !important;
+  padding: 8px !important;
+  --color: #000000 !important;
+  --placeholder-color: #000000 !important;
+  --placeholder-opacity: 0.7 !important;
+  
+  &:not(.input-disabled) {
+    cursor: pointer;
+    
+    &:hover {
+      border-color: var(--ion-color-primary) !important;
+      box-shadow: 0 0 0 2px rgba(var(--ion-color-primary-rgb), 0.1) !important;
+    }
+    
+    &:focus-within {
+      border-color: var(--ion-color-primary) !important;
+      box-shadow: 0 0 0 3px rgba(var(--ion-color-primary-rgb), 0.2) !important;
+    }
+  }
+  
+  // Improve text and placeholder visibility
+  input {
+    color: #000000 !important;
+    font-weight: 500;
+    background: #ffffff !important;
+    
+    &::placeholder {
+      color: #000000 !important;
+      opacity: 0.7 !important;
+    }
+  }
+}
+
+// Specific styling for select inputs in the festival modal
+.festival-modal ion-select {
+  --background: #ffffff !important;
+  background: #ffffff !important;
+  --color: #000000 !important;
+  --placeholder-color: #000000 !important;
+  --placeholder-opacity: 0.7 !important;
+  border: 1px solid #cccccc !important;
+  border-radius: 8px !important;
+  padding: 8px !important;
+  
+  &:hover {
+    border-color: var(--ion-color-primary) !important;
+    box-shadow: 0 0 0 2px rgba(var(--ion-color-primary-rgb), 0.1) !important;
+  }
+  
+  &:focus-within {
+    border-color: var(--ion-color-primary) !important;
+    box-shadow: 0 0 0 3px rgba(var(--ion-color-primary-rgb), 0.2) !important;
+  }
+}
+
+// Global styling to ensure black placeholders across all inputs in modal
+.festival-modal {
+  input::placeholder {
+    color: #000000 !important;
+    opacity: 0.7 !important;
+  }
+  
+  ion-input::part(native) {
+    color: #000000 !important;
+  }
+  
+  ion-input::part(native)::placeholder {
+    color: #000000 !important;
+    opacity: 0.7 !important;
   }
 }

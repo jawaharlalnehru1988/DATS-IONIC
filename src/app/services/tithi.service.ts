@@ -2,11 +2,14 @@
 // Accurate Panchang-style Tithi using apparent ecliptic longitudes.
 // Library: Astronomy Engine (MIT). No location needed for tithi.
 
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
   Body,
   PairLongitude,             // difference in longitudes between 2 bodies as seen from Earth
 } from 'astronomy-engine';
+import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 // --- Types ---
 export interface TithiInfo {
@@ -24,16 +27,14 @@ export interface TithiInfo {
 }
 
 export interface FestivalEvent {
-  id: string;
-  startDate: string;
-  endDate: string;
-  startTime: string;
-  endTime: string;
   festivalName: string;
   otherName?: string;
+  startDate: string;
   importance: string;
   breakfastDate?: string;
-  breakfastTime?: string; 
+  breakfastUntil?: string;  
+  breakfastStartTime?: string;
+  breakfastEndTime?: string;
   description?: string;
 }
 
@@ -127,46 +128,10 @@ const LUNAR_MONTHS = [
 })
 export class TithiService {
 
+  constructor(private http: HttpClient) { }
+
   // Important Vaishnava festival data including Ekadasi and other festivals
-  festivals: FestivalEvent[] = [
-    // Ekadashi dates for 2025 (auto-filled from EKADASHI_NAMES)
-    { id: 'ek1', startDate: '2025-01-15', endDate: '2025-01-15', startTime: '04:00', endTime: '23:59', festivalName: 'Pausha Krishna Ekadashi', otherName: EKADASHI_NAMES['Pausha']['Krishna'], importance: 'ekadashi', breakfastDate: '2025-01-16', breakfastTime: '04:00', description:"" },
-    { id: 'ek2', startDate: '2025-01-29', endDate: '2025-01-29', startTime: '04:00', endTime: '23:59', festivalName: 'Pausha Shukla Ekadashi', otherName: EKADASHI_NAMES['Pausha']['Shukla'], importance: 'ekadashi', breakfastDate: '2025-01-30', breakfastTime: '04:00', description:"" },
-    { id: 'ek3', startDate: '2025-02-13', endDate: '2025-02-13', startTime: '04:00', endTime: '23:59', festivalName: 'Magha Krishna Ekadashi', otherName: EKADASHI_NAMES['Magha']['Krishna'], importance: 'ekadashi', breakfastDate: '2025-02-14', breakfastTime: '04:00', description:"" },
-    { id: 'ek4', startDate: '2025-02-28', endDate: '2025-02-28', startTime: '04:00', endTime: '23:59', festivalName: 'Magha Shukla Ekadashi', otherName: EKADASHI_NAMES['Magha']['Shukla'], importance: 'ekadashi', breakfastDate: '2025-03-01', breakfastTime: '04:00', description:"" },
-    { id: 'ek5', startDate: '2025-03-15', endDate: '2025-03-15', startTime: '04:00', endTime: '23:59', festivalName: 'Phalguna Krishna Ekadashi', otherName: EKADASHI_NAMES['Phalguna']['Krishna'], importance: 'ekadashi', breakfastDate: '2025-03-16', breakfastTime: '04:00', description:"" },
-    { id: 'ek6', startDate: '2025-03-29', endDate: '2025-03-29', startTime: '04:00', endTime: '23:59', festivalName: 'Phalguna Shukla Ekadashi', otherName: EKADASHI_NAMES['Phalguna']['Shukla'], importance: 'ekadashi', breakfastDate: '2025-03-30', breakfastTime: '04:00', description:"" },
-    { id: 'ek7', startDate: '2025-04-13', endDate: '2025-04-13', startTime: '04:00', endTime: '23:59', festivalName: 'Chaitra Krishna Ekadashi', otherName: EKADASHI_NAMES['Chaitra']['Krishna'], importance: 'ekadashi', breakfastDate: '2025-04-14', breakfastTime: '04:00', description:"" },
-    { id: 'ek8', startDate: '2025-04-28', endDate: '2025-04-28', startTime: '04:00', endTime: '23:59', festivalName: 'Chaitra Shukla Ekadashi', otherName: EKADASHI_NAMES['Chaitra']['Shukla'], importance: 'ekadashi', breakfastDate: '2025-04-29', breakfastTime: '04:00', description:"" },
-    { id: 'ek9', startDate: '2025-05-13', endDate: '2025-05-13', startTime: '04:00', endTime: '23:59', festivalName: 'Vaisakha Krishna Ekadashi', otherName: EKADASHI_NAMES['Vaisakha']['Krishna'], importance: 'ekadashi', breakfastDate: '2025-05-14', breakfastTime: '04:00', description:"" },
-    { id: 'ek10', startDate: '2025-05-27', endDate: '2025-05-27', startTime: '04:00', endTime: '23:59', festivalName: 'Vaisakha Shukla Ekadashi', otherName: EKADASHI_NAMES['Vaisakha']['Shukla'], importance: 'ekadashi', breakfastDate: '2025-05-28', breakfastTime: '04:00', description:"" },
-    { id: 'ek11', startDate: '2025-06-11', endDate: '2025-06-11', startTime: '04:00', endTime: '23:59', festivalName: 'Jyeshtha Krishna Ekadashi', otherName: EKADASHI_NAMES['Jyeshtha']['Krishna'], importance: 'ekadashi', breakfastDate: '2025-06-12', breakfastTime: '04:00', description:"" },
-    { id: 'ek12', startDate: '2025-06-26', endDate: '2025-06-26', startTime: '04:00', endTime: '23:59', festivalName: 'Jyeshtha Shukla Ekadashi', otherName: EKADASHI_NAMES['Jyeshtha']['Shukla'], importance: 'ekadashi', breakfastDate: '2025-06-27', breakfastTime: '04:00', description:"" },
-    { id: 'ek13', startDate: '2025-07-10', endDate: '2025-07-10', startTime: '04:00', endTime: '23:59', festivalName: 'Ashadha Krishna Ekadashi', otherName: EKADASHI_NAMES['Ashadha']['Krishna'], importance: 'ekadashi', breakfastDate: '2025-07-11', breakfastTime: '04:00', description:"" },
-    { id: 'ek14', startDate: '2025-07-25', endDate: '2025-07-25', startTime: '04:00', endTime: '23:59', festivalName: 'Ashadha Shukla Ekadashi', otherName: EKADASHI_NAMES['Ashadha']['Shukla'], importance: 'ekadashi', breakfastDate: '2025-07-26', breakfastTime: '04:00', description:"" },
-    { id: 'ek15', startDate: '2025-08-09', endDate: '2025-08-09', startTime: '04:00', endTime: '23:59', festivalName: 'Shravana Krishna Ekadashi', otherName: EKADASHI_NAMES['Shravana']['Krishna'], importance: 'ekadashi', breakfastDate: '2025-08-10', breakfastTime: '04:00', description:"" },
-    { id: 'ek16', startDate: '2025-08-23', endDate: '2025-08-23', startTime: '04:00', endTime: '23:59', festivalName: 'Shravana Shukla Ekadashi', otherName: EKADASHI_NAMES['Shravana']['Shukla'], importance: 'ekadashi', breakfastDate: '2025-08-24', breakfastTime: '04:00', description:"" },
-    { id: 'ek17', startDate: '2025-09-08', endDate: '2025-09-08', startTime: '04:00', endTime: '23:59', festivalName: 'Bhadrapada Krishna Ekadashi', otherName: EKADASHI_NAMES['Bhadrapada']['Krishna'], importance: 'ekadashi', breakfastDate: '2025-09-09', breakfastTime: '04:00', description:"" },
-    { id: 'ek18', startDate: '2025-09-22', endDate: '2025-09-22', startTime: '04:00', endTime: '23:59', festivalName: 'Bhadrapada Shukla Ekadashi', otherName: EKADASHI_NAMES['Bhadrapada']['Shukla'], importance: 'ekadashi', breakfastDate: '2025-09-23', breakfastTime: '04:00', description:"" },
-    { id: 'ek19', startDate: '2025-10-07', endDate: '2025-10-07', startTime: '04:00', endTime: '23:59', festivalName: 'Ashvina Krishna Ekadashi', otherName: EKADASHI_NAMES['Ashvina']['Krishna'], importance: 'ekadashi', breakfastDate: '2025-10-08', breakfastTime: '04:00', description:"" },
-    { id: 'ek20', startDate: '2025-10-22', endDate: '2025-10-22', startTime: '04:00', endTime: '23:59', festivalName: 'Ashvina Shukla Ekadashi', otherName: EKADASHI_NAMES['Ashvina']['Shukla'], importance: 'ekadashi', breakfastDate: '2025-10-23', breakfastTime: '04:00', description:"" },
-    { id: 'ek21', startDate: '2025-11-05', endDate: '2025-11-05', startTime: '04:00', endTime: '23:59', festivalName: 'Kartika Krishna Ekadashi', otherName: EKADASHI_NAMES['Kartika']['Krishna'], importance: 'ekadashi', breakfastDate: '2025-11-06', breakfastTime: '04:00', description:"" },
-    { id: 'ek22', startDate: '2025-11-21', endDate: '2025-11-21', startTime: '04:00', endTime: '23:59', festivalName: 'Kartika Shukla Ekadashi', otherName: EKADASHI_NAMES['Kartika']['Shukla'], importance: 'ekadashi', breakfastDate: '2025-11-22', breakfastTime: '04:00', description:"" },
-    { id: 'ek23', startDate: '2025-12-05', endDate: '2025-12-05', startTime: '04:00', endTime: '23:59', festivalName: 'Margashirsha Krishna Ekadashi', otherName: EKADASHI_NAMES['Margashirsha']['Krishna'], importance: 'ekadashi', breakfastDate: '2025-12-06', breakfastTime: '04:00', description:"" },
-    { id: 'ek24', startDate: '2025-12-20', endDate: '2025-12-20', startTime: '04:00', endTime: '23:59', festivalName: 'Margashirsha Shukla Ekadashi', otherName: EKADASHI_NAMES['Margashirsha']['Shukla'], importance: 'ekadashi', breakfastDate: '2025-12-21', breakfastTime: '04:00', description:"" },
-
-    // Major Festivals
-    { id: 'mf1', startDate: '2025-03-14', endDate: '2025-03-14', startTime: '18:00', endTime: '23:59', festivalName: 'Gaura Purnima', otherName:"", importance: 'major-festival', breakfastDate: '2025-03-15', breakfastTime: '04:00', description:"" },
-    { id: 'mf2', startDate: '2025-04-13', endDate: '2025-04-13', startTime: '12:00', endTime: '23:59', festivalName: 'Rama Navami', otherName:"", importance: 'major-festival', breakfastDate: '2025-04-14', breakfastTime: '04:00', description:"" },
-    { id: 'mf3', startDate: '2025-08-15', endDate: '2025-08-16', startTime: '23:30', endTime: '00:30', festivalName: 'Krishna Janmashtami', otherName:"", importance: 'major-festival', breakfastDate: '2025-08-17', breakfastTime: '04:00', description:"" },
-    { id: 'mf4', startDate: '2025-09-07', endDate: '2025-09-07', startTime: '12:00', endTime: '23:59', festivalName: 'Radhashtami', otherName:"", importance: 'major-festival', breakfastDate: '2025-09-08', breakfastTime: '04:00', description:"" },
-
-    // Other Festivals
-    { id: 'f1', startDate: '2025-07-01', endDate: '2025-07-01', startTime: '06:00', endTime: '18:00', festivalName: 'Ratha Yatra', otherName:"", importance: 'festival', breakfastDate: '2025-07-02', breakfastTime: '04:00', description:"" },
-    { id: 'f2', startDate: '2025-05-03', endDate: '2025-05-03', startTime: '09:00', endTime: '21:00', festivalName: 'Akshaya Tritiya', otherName:"", importance: 'festival', breakfastDate: '2025-05-04', breakfastTime: '04:00', description:"" },
-    { id: 'f3', startDate: '2025-10-31', endDate: '2025-10-31', startTime: '18:00', endTime: '23:59', festivalName: 'Govardhan Puja', otherName:"", importance: 'festival', breakfastDate: '2025-11-01', breakfastTime: '04:00', description:"" },
-    { id: 'f4', startDate: '2025-11-01', endDate: '2025-11-01', startTime: '06:00', endTime: '18:00', festivalName: 'Bhai Dooj', otherName:"", importance: 'festival', breakfastDate: '2025-11-02', breakfastTime: '04:00', description:"" }
-  ];
+  festivals: FestivalEvent[] = [ ];
 
   // --- Helpers ---
   private norm360(x: number): number {
@@ -240,6 +205,11 @@ export class TithiService {
       }
     }
     return new Date((a + b) / 2);
+  }
+
+  public getFestivalsForDate(date: Date): FestivalEvent[] {
+    const dateString = date.toISOString().split('T')[0]; // YYYY-MM-DD format
+    return this.festivals.filter(festival => festival.startDate === dateString);
   }
 
   /**
@@ -401,13 +371,10 @@ export class TithiService {
   }
 
   /**
-   * Get festivals for a specific date
+   * Add a new festival to the festivals array
    */
-  public getFestivalsForDate(date: Date): FestivalEvent[] {
-    const dateString = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
-    
-    return this.festivals.filter(festival => {
-      return dateString >= festival.startDate && dateString <= festival.endDate;
-    });
+  public addFestival(festival: FestivalEvent): Observable<FestivalEvent> {
+     return this.http.post<FestivalEvent>(`${environment.apiNestBaseUrl}/festivals`, festival);
   }
-}
+
+  }

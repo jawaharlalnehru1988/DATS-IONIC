@@ -52,7 +52,7 @@
     @if (selectedFestival) {
       <div class="festival-details">
         <div class="festival-header">
-          <h3>{{ selectedFestival.festivalName }} ({{ selectedFestival.otherName }})</h3>
+          <h3>{{ selectedFestival.festivalName }}</h3>
           <ion-button fill="clear" size="small" (click)="closeFestivalDetails()">
             <ion-icon name="close-outline"></ion-icon>
           </ion-button>
@@ -76,22 +76,17 @@
               <span class="info-value festival-description">{{ selectedFestival.description }}</span>
             </div>
           }
-          @if (selectedFestival.startTime && selectedFestival.endTime) {
-            <div class="festival-info-item">
-              <span class="info-label">Time:</span>
-              <span class="info-value">{{ selectedFestival.startTime }} - {{ selectedFestival.endTime }}</span>
-            </div>
-          }
+      
           @if (selectedFestival.breakfastDate) {
             <div class="festival-info-item">
               <span class="info-label">Breakfast Date:</span>
               <span class="info-value">{{ selectedFestival.breakfastDate }}</span>
             </div>
           }
-          @if (selectedFestival.breakfastTime) {
+          @if (selectedFestival.breakfastStartTime && selectedFestival.breakfastEndTime) {
             <div class="festival-info-item">
               <span class="info-label">Breakfast Time:</span>
-              <span class="info-value">{{ selectedFestival.breakfastTime }}</span>
+              <span class="info-value">{{ selectedFestival.breakfastStartTime }} - {{ selectedFestival.breakfastEndTime }}</span>
             </div>
           }
         </div>
@@ -239,7 +234,13 @@
   </div>
 
   <!-- Add Festival Modal -->
-  <ion-modal [isOpen]="isAddFestivalModalOpen" (ionModalDidDismiss)="closeAddFestivalModal()">
+  <ion-modal 
+    [isOpen]="isAddFestivalModalOpen" 
+    (ionModalDidDismiss)="closeAddFestivalModal()"
+    [canDismiss]="false"
+    [backdropDismiss]="false"
+    [keyboardClose]="false"
+    class="festival-modal">
     <ng-template>
       <ion-header>
         <ion-toolbar>
@@ -253,10 +254,12 @@
       </ion-header>
       
       <ion-content class="ion-padding">
-        <form [formGroup]="addFestivalForm" (ngSubmit)="onSubmitFestival()">
+        <form [formGroup]="addFestivalForm" (ngSubmit)="onSubmitFestival($event)">
           
           <!-- Festival Name -->
-          <ion-item>
+          <ion-item [class.ion-invalid]="addFestivalForm.get('festivalName')?.invalid && addFestivalForm.get('festivalName')?.touched"
+                    [class.ion-valid]="addFestivalForm.get('festivalName')?.valid && addFestivalForm.get('festivalName')?.touched"
+                    [class.ion-touched]="addFestivalForm.get('festivalName')?.touched">
             <ion-label position="stacked">Festival Name *</ion-label>
             <ion-input 
               formControlName="festivalName" 
@@ -276,47 +279,21 @@
           </ion-item>
           
           <!-- Start Date -->
-          <ion-item>
+          <ion-item [class.ion-invalid]="addFestivalForm.get('startDate')?.invalid && addFestivalForm.get('startDate')?.touched"
+                    [class.ion-valid]="addFestivalForm.get('startDate')?.valid && addFestivalForm.get('startDate')?.touched"
+                    [class.ion-touched]="addFestivalForm.get('startDate')?.touched">
             <ion-label position="stacked">Start Date *</ion-label>
-            <ion-datetime
+            <ion-input
               formControlName="startDate"
-              presentation="date"
-              [showDefaultButtons]="true">
-            </ion-datetime>
-          </ion-item>
-          
-          <!-- End Date -->
-          <ion-item>
-            <ion-label position="stacked">End Date *</ion-label>
-            <ion-datetime
-              formControlName="endDate"
-              presentation="date"
-              [showDefaultButtons]="true">
-            </ion-datetime>
-          </ion-item>
-          
-          <!-- Start Time -->
-          <ion-item>
-            <ion-label position="stacked">Start Time *</ion-label>
-            <ion-datetime
-              formControlName="startTime"
-              presentation="time"
-              [showDefaultButtons]="true">
-            </ion-datetime>
-          </ion-item>
-          
-          <!-- End Time -->
-          <ion-item>
-            <ion-label position="stacked">End Time *</ion-label>
-            <ion-datetime
-              formControlName="endTime"
-              presentation="time"
-              [showDefaultButtons]="true">
-            </ion-datetime>
+              type="date"
+              placeholder="Select start date">
+            </ion-input>
           </ion-item>
           
           <!-- Importance -->
-          <ion-item>
+          <ion-item [class.ion-invalid]="addFestivalForm.get('importance')?.invalid && addFestivalForm.get('importance')?.touched"
+                    [class.ion-valid]="addFestivalForm.get('importance')?.valid && addFestivalForm.get('importance')?.touched"
+                    [class.ion-touched]="addFestivalForm.get('importance')?.touched">
             <ion-label position="stacked">Importance *</ion-label>
             <ion-select formControlName="importance" placeholder="Select importance">
               <ion-select-option value="ekadashi">Ekadashi</ion-select-option>
@@ -328,35 +305,58 @@
           <!-- Breakfast Date -->
           <ion-item>
             <ion-label position="stacked">Breakfast Date</ion-label>
-            <ion-datetime
+            <ion-input
               formControlName="breakfastDate"
-              presentation="date"
-              [showDefaultButtons]="true">
-            </ion-datetime>
+              type="date"
+              placeholder="Select breakfast date">
+            </ion-input>
           </ion-item>
-          
+
+          <!-- Breakfast Until -->
+          <ion-item>
+            <ion-label position="stacked">Breakfast Until</ion-label>
+            <ion-input
+              formControlName="breakfastUntil"
+              type="text"
+              placeholder="Enter breakfast until">
+            </ion-input>
+          </ion-item>
+
           <!-- Breakfast Time -->
           <ion-item>
-            <ion-label position="stacked">Breakfast Time</ion-label>
-            <ion-datetime
-              formControlName="breakfastTime"
-              presentation="time"
-              [showDefaultButtons]="true">
-            </ion-datetime>
+            <ion-label position="stacked">Breakfast Start Time</ion-label>
+            <ion-input
+              formControlName="breakfastStartTime"
+              type="time"
+              placeholder="Select breakfast start time">
+            </ion-input>
           </ion-item>
-          
-          <!-- Description using Rich Text Editor -->
-          <ion-item lines="none">
+
+          <!-- Breakfast End Time -->
+          <ion-item>
+            <ion-label position="stacked">Breakfast End Time</ion-label>
+            <ion-input
+              formControlName="breakfastEndTime"
+              type="time"
+              placeholder="Select breakfast end time">
+            </ion-input>
+          </ion-item>
+
+          <!-- Description -->
+          <div class="description-editor">
             <ion-label position="stacked">Description</ion-label>
-          </ion-item>
-          <div class="rich-text-container">
-            <!-- TODO: Add your reusable rich text editor component here -->
-            <ion-textarea
+            <quill-editor 
               formControlName="description"
-              placeholder="Enter festival description"
-              rows="4"
-              auto-grow="true">
-            </ion-textarea>
+              [modules]="{
+                toolbar: [
+                  ['bold', 'italic', 'underline'],
+                  ['blockquote', 'code-block'],
+                  [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                  ['link']
+                ]
+              }"
+              placeholder="Enter festival description...">
+            </quill-editor>
           </div>
           
           <!-- Form Actions -->
@@ -370,7 +370,8 @@
             </ion-button>
             <ion-button 
               type="submit" 
-              [disabled]="!addFestivalForm.valid">
+              [disabled]="!addFestivalForm.valid"
+              color="primary">
               Add Festival
             </ion-button>
           </div>

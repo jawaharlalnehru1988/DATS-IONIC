@@ -13,10 +13,8 @@ import {
   IonItem, 
   IonLabel, 
   IonInput, 
-  IonDatetime, 
   IonSelect, 
   IonSelectOption, 
-  IonTextarea 
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { chevronBack, chevronForward, calendarOutline, searchOutline, settingsOutline, sunnyOutline, moonOutline, ellipsisHorizontal, closeOutline, arrowBackOutline, shareOutline, todayOutline, heart, heartOutline, addOutline, close } from 'ionicons/icons';
@@ -25,7 +23,9 @@ import { ThemeService, ThemeType } from '../services/theme.service';
 import { TithiService, TithiInfo, FestivalEvent } from '../services/tithi.service';
 import { Subscription } from 'rxjs';
 import { ReusableHeaderComponent } from '../components/reusable-header/reusable-header.component';
+import { QuillModule } from 'ngx-quill';
 import * as SunCalc from 'suncalc';
+
 
 interface CalendarDay {
   date: number;
@@ -79,13 +79,12 @@ interface LocationData {
     IonItem, 
     IonLabel, 
     IonInput, 
-    IonDatetime, 
     IonSelect, 
     IonSelectOption, 
-    IonTextarea, 
     FormsModule, 
     ReactiveFormsModule, 
-    ReusableHeaderComponent
+    ReusableHeaderComponent,
+    QuillModule,
   ]
 })
 export class CalendarPage implements OnInit, OnDestroy {
@@ -180,12 +179,11 @@ export class CalendarPage implements OnInit, OnDestroy {
       festivalName: ['', [Validators.required]],
       otherName: [''],
       startDate: ['', [Validators.required]],
-      endDate: ['', [Validators.required]],
-      startTime: ['', [Validators.required]],
-      endTime: ['', [Validators.required]],
       importance: ['', [Validators.required]],
       breakfastDate: [''],
-      breakfastTime: [''],
+      breakfastUntil: [''],
+      breakfastStartTime: [''],
+      breakfastEndTime: [''],
       description: ['']
     });
   }
@@ -851,58 +849,48 @@ export class CalendarPage implements OnInit, OnDestroy {
     this.addFestivalForm.reset();
   }
 
-  onSubmitFestival() {
+  onSubmitFestival(event?: Event) {
+    // Prevent default form submission
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  
+    
+    // Mark all fields as touched to show validation errors
+    this.addFestivalForm.markAllAsTouched();
+    
     if (this.addFestivalForm.valid) {
       const formValue = this.addFestivalForm.value;
-      
-      // Format dates and times properly
-      const startDate = new Date(formValue.startDate).toISOString().split('T')[0];
-      const endDate = new Date(formValue.endDate).toISOString().split('T')[0];
-      const startTime = formValue.startTime ? new Date(formValue.startTime).toTimeString().slice(0, 5) : '04:00';
-      const endTime = formValue.endTime ? new Date(formValue.endTime).toTimeString().slice(0, 5) : '23:59';
-      const breakfastDate = formValue.breakfastDate ? new Date(formValue.breakfastDate).toISOString().split('T')[0] : '';
-      const breakfastTime = formValue.breakfastTime ? new Date(formValue.breakfastTime).toTimeString().slice(0, 5) : '';
-      
-      // Generate unique ID
-      const id = 'custom_' + Date.now();
-      
-      // Create festival object
-      const newFestival: FestivalEvent = {
-        id: id,
-        startDate: startDate,
-        endDate: endDate,
-        startTime: startTime,
-        endTime: endTime,
-        festivalName: formValue.festivalName,
-        importance: formValue.importance,
-        breakfastDate: breakfastDate,
-        breakfastTime: breakfastTime,
-        description: formValue.description || ''
-      };
-      
-      // Print the festival object as requested
-      console.log('New Festival Object:', {
-        startDate: startDate,
-        endDate: endDate,
-        startTime: startTime,
-        endTime: endTime,
-        festivalName: formValue.festivalName,
-        otherName: formValue.otherName || '',
-        importance: formValue.importance,
-        breakfastDate: breakfastDate,
-        breakfastTime: breakfastTime,
-        description: formValue.description || ''
+    
+      this.tithiService.addFestival(formValue).subscribe({
+        next: (response) => {
+          console.log('Festival added successfully:', response);
+          // Update local festivals array from service
+          this.festivals = this.tithiService.getFestivals();
+          this.showToast('Festival added successfully!', 'success');
+        },
+        error: (error) => {
+          console.error('Error adding festival:', error);
+        }
       });
-      
-      // Add to festivals array (for now, you can later add to service/database)
-      this.festivals.push(newFestival);
-      
+
       // Regenerate calendar to show new festival
       this.generateCalendar();
       
       // Close modal and show success message
       this.closeAddFestivalModal();
-      this.showToast('Festival added successfully!', 'success');
+    } else {
+      // Show validation errors
+      this.showToast('Please fill all required fields correctly', 'danger');
+      
+      // Log specific field errors for debugging
+      Object.keys(this.addFestivalForm.controls).forEach(key => {
+        const control = this.addFestivalForm.get(key);
+        if (control && control.errors) {
+          console.log(`${key} errors:`, control.errors);
+        }
+      });
     }
   }
 
