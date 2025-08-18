@@ -25,6 +25,7 @@ import { Subscription } from 'rxjs';
 import { ReusableHeaderComponent } from '../components/reusable-header/reusable-header.component';
 import { QuillModule } from 'ngx-quill';
 import * as SunCalc from 'suncalc';
+import { ShowForRolesDirective } from "../directives/show-for-roles.directive";
 
 
 interface CalendarDay {
@@ -68,24 +69,25 @@ interface LocationData {
   styleUrls: ['./calendar.page.scss'],
   standalone: true,
   imports: [
-    IonContent, 
-    IonIcon, 
-    IonButton, 
-    IonModal, 
-    IonHeader, 
-    IonToolbar, 
-    IonTitle, 
-    IonButtons, 
-    IonItem, 
-    IonLabel, 
-    IonInput, 
-    IonSelect, 
-    IonSelectOption, 
-    FormsModule, 
-    ReactiveFormsModule, 
+    IonContent,
+    IonIcon,
+    IonButton,
+    IonModal,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonButtons,
+    IonItem,
+    IonLabel,
+    IonInput,
+    IonSelect,
+    IonSelectOption,
+    FormsModule,
+    ReactiveFormsModule,
     ReusableHeaderComponent,
     QuillModule,
-  ]
+    ShowForRolesDirective
+]
 })
 export class CalendarPage implements OnInit, OnDestroy {
   currentDate = new Date();

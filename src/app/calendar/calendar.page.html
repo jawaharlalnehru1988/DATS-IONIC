@@ -224,6 +224,7 @@
       </ion-button>
 
       <ion-button
+      *appShowForRoles="['admin', 'editor']"
         fill="clear"
         class="footer-nav-btn add-festival-btn"
         (click)="openAddFestivalModal()">
