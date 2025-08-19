@@ -3,7 +3,7 @@ import { Meta, Title } from '@angular/platform-browser';
 import { DOCUMENT } from '@angular/common';
 import { Blog } from './blog.service';
 
- interface BlogMetaData {
+export interface BlogMetaData {
   title: string;
   description: string;
   image: string;
@@ -15,7 +15,7 @@ import { Blog } from './blog.service';
 @Injectable({
   providedIn: 'root'
 })
- class SSRMetaService {
+export class SSRMetaService {
 
   constructor(
     private meta: Meta,
@@ -49,6 +49,23 @@ import { Blog } from './blog.service';
     };
 
     this.setMetaTags(metaData);
+  }
+
+  /**
+   * Pre-render meta tags for SSR (called early in the component lifecycle)
+   */
+  preRenderBlogMeta(blogId: string, title?: string): void {
+    // Set basic meta tags early for faster SSR
+    if (title) {
+      this.titleService.setTitle(`${title} - Ask Hare Krishna`);
+    }
+    
+    // Set basic Open Graph URL early
+    const currentUrl = this.getCurrentUrl(blogId);
+    this.meta.updateTag({ property: 'og:url', content: currentUrl });
+    this.meta.updateTag({ property: 'og:type', content: 'article' });
+    
+    console.log('🚀 Pre-rendered basic meta tags for blog:', blogId);
   }
 
   private setMetaTags(data: BlogMetaData): void {
@@ -91,6 +108,9 @@ import { Blog } from './blog.service';
 
     // Add structured data for SEO
     this.addStructuredData(data);
+
+    // Force refresh meta tags for better social media compatibility
+    this.forceMetaRefresh();
 
     console.log('✅ SSR Meta tags updated for:', data.title);
   }
@@ -196,10 +216,10 @@ import { Blog } from './blog.service';
 
   private getCurrentUrl(blogId: string): string {
     if (typeof window !== 'undefined') {
-      // Client-side
+      // Client-side - use current URL
       return window.location.href;
     } else {
-      // Server-side fallback - use your production domain
+      // Server-side fallback - construct the proper URL
       return `https://askharekrishna.com/blog-details/${blogId}`;
     }
   }
@@ -215,6 +235,30 @@ import { Blog } from './blog.service';
     } else {
       // Server-side fallback
       return `https://askharekrishna.com/${imageUrl.replace(/^\//, '')}`;
+    }
+  }
+
+  /**
+   * Force refresh of meta tags in the DOM
+   * This helps with social media crawlers that might cache meta tags
+   */
+  private forceMetaRefresh(): void {
+    if (typeof window !== 'undefined') {
+      // Remove any existing meta tags that might conflict
+      const existingMetas = this.document.querySelectorAll('meta[property^="og:"], meta[name^="twitter:"], meta[name="description"]');
+      existingMetas.forEach(meta => {
+        if (meta.parentNode) {
+          meta.parentNode.removeChild(meta);
+        }
+      });
+      
+      // Small delay to ensure DOM is ready
+      setTimeout(() => {
+        // Re-add the meta tags by calling the Angular Meta service
+        this.meta.addTags([
+          { property: 'og:updated_time', content: new Date().toISOString() }
+        ]);
+      }, 100);
     }
   }
 

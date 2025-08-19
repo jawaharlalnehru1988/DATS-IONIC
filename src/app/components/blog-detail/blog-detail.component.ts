@@ -38,7 +38,7 @@ import { AuthService } from '../../services/auth.service';
 import { ThemeService, ThemeType } from '../../services/theme.service';
 import { NavigationService } from '../../services/navigation.service';
 import { RoleBasedUIService } from '../../services/role-based-ui.service';
-import { IonicMetaService } from '../../services/ionic-meta.service';
+import { SSRMetaService } from '../../services/ssr-meta.service';
 import { SocialShareService } from '../../services/social-share.service';
 import { ShareButtonComponent } from '../share-button/share-button.component';
 import { Subscription, Observable } from 'rxjs';
@@ -103,7 +103,7 @@ export class BlogDetailComponent implements OnInit, OnDestroy {
     private themeService: ThemeService,
     private navigationService: NavigationService,
     private roleBasedUIService: RoleBasedUIService,
-    private ionicMetaService: IonicMetaService,
+    private ssrMetaService: SSRMetaService,
     private socialShareService: SocialShareService
   ) {
     addIcons({personOutline,chatbubbleOutline,shareOutline,chatbubblesOutline,send,lockClosedOutline,logInOutline,person,alertCircleOutline,arrowBack});
@@ -127,6 +127,8 @@ export class BlogDetailComponent implements OnInit, OnDestroy {
         this.blogId = params['id'];
         console.log('Extracted blogId:', this.blogId);
         if (this.blogId) {
+          // Pre-render basic meta tags for faster SSR
+          this.ssrMetaService.preRenderBlogMeta(this.blogId);
           this.loadBlog();
         } else {
           this.hasError = true;
@@ -139,7 +141,7 @@ export class BlogDetailComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
     // Reset meta tags to defaults when leaving the component
-    this.ionicMetaService.resetToDefaults();
+    this.ssrMetaService.resetToDefaults();
   }
 
   private loadBlog() {
@@ -153,8 +155,8 @@ export class BlogDetailComponent implements OnInit, OnDestroy {
           const foundBlog = blogs.find((blog: Blog) => blog._id === this.blogId);
           if (foundBlog) {
             this.blog = foundBlog;
-            // Use Ionic meta service for clean URLs and proper meta tags
-            this.ionicMetaService.updateBlogMetaTags(foundBlog);
+            // Use SSR meta service for clean URLs and proper meta tags
+            this.ssrMetaService.updateBlogMetaTags(foundBlog);
             this.isLoading = false;
           } else {
             // Try hardcoded blogs (fallback for sample data)
@@ -177,7 +179,7 @@ export class BlogDetailComponent implements OnInit, OnDestroy {
     const foundBlog = sampleBlogs.find(blog => blog._id === this.blogId);
     if (foundBlog) {
       this.blog = foundBlog;
-      this.ionicMetaService.updateBlogMetaTags(foundBlog);
+      this.ssrMetaService.updateBlogMetaTags(foundBlog);
     } else {
       this.hasError = true;
     }
