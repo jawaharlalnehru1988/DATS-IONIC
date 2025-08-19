@@ -128,7 +128,13 @@ export class BlogDetailComponent implements OnInit, OnDestroy {
         console.log('Extracted blogId:', this.blogId);
         if (this.blogId) {
           // Pre-render basic meta tags for faster SSR
-          this.ssrMetaService.preRenderBlogMeta(this.blogId);
+                // Get the blog ID from route params for pre-rendering
+      const blogId = this.route.snapshot.paramMap.get('id');
+      if (blogId) {
+        this.ssrMetaService.preRenderBlogMeta(blogId);
+        // Debug initial meta tags
+        setTimeout(() => this.ssrMetaService.debugCurrentMetaTags(), 500);
+      }
           this.loadBlog();
         } else {
           this.hasError = true;
@@ -157,6 +163,8 @@ export class BlogDetailComponent implements OnInit, OnDestroy {
             this.blog = foundBlog;
             // Use SSR meta service for clean URLs and proper meta tags
             this.ssrMetaService.updateBlogMetaTags(foundBlog);
+            // Debug: Check what meta tags are actually set
+            setTimeout(() => this.ssrMetaService.debugCurrentMetaTags(), 1000);
             this.isLoading = false;
           } else {
             // Try hardcoded blogs (fallback for sample data)

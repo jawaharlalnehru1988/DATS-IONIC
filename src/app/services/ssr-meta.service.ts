@@ -72,39 +72,39 @@ export class SSRMetaService {
     // Update page title
     this.titleService.setTitle(`${data.title} - Ask Hare Krishna`);
 
-    // Clear existing meta tags
+    // Clear existing meta tags first
     this.clearPreviousMetaTags();
 
     // Basic meta tags
-    this.meta.updateTag({ name: 'description', content: data.description });
-    this.meta.updateTag({ name: 'author', content: data.author || 'Ask Hare Krishna' });
-    this.meta.updateTag({ name: 'keywords', content: `${data.category}, spiritual wisdom, Hare Krishna, ISKCON, Bhagavad Gita` });
+    this.meta.addTag({ name: 'description', content: data.description });
+    this.meta.addTag({ name: 'author', content: data.author || 'Ask Hare Krishna' });
+    this.meta.addTag({ name: 'keywords', content: `${data.category}, spiritual wisdom, Hare Krishna, ISKCON, Bhagavad Gita` });
 
     // Open Graph meta tags
-    this.meta.updateTag({ property: 'og:title', content: `${data.title} - Ask Hare Krishna` });
-    this.meta.updateTag({ property: 'og:description', content: data.description });
-    this.meta.updateTag({ property: 'og:image', content: data.image });
-    this.meta.updateTag({ property: 'og:image:width', content: '1200' });
-    this.meta.updateTag({ property: 'og:image:height', content: '630' });
-    this.meta.updateTag({ property: 'og:image:alt', content: data.title });
-    this.meta.updateTag({ property: 'og:url', content: data.url });
-    this.meta.updateTag({ property: 'og:type', content: 'article' });
-    this.meta.updateTag({ property: 'og:site_name', content: 'Ask Hare Krishna' });
-    this.meta.updateTag({ property: 'og:locale', content: 'en_US' });
+    this.meta.addTag({ property: 'og:title', content: `${data.title} - Ask Hare Krishna` });
+    this.meta.addTag({ property: 'og:description', content: data.description });
+    this.meta.addTag({ property: 'og:image', content: data.image });
+    this.meta.addTag({ property: 'og:image:width', content: '1200' });
+    this.meta.addTag({ property: 'og:image:height', content: '630' });
+    this.meta.addTag({ property: 'og:image:alt', content: data.title });
+    this.meta.addTag({ property: 'og:url', content: data.url });
+    this.meta.addTag({ property: 'og:type', content: 'article' });
+    this.meta.addTag({ property: 'og:site_name', content: 'Ask Hare Krishna' });
+    this.meta.addTag({ property: 'og:locale', content: 'en_US' });
 
     // Twitter Card meta tags
-    this.meta.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
-    this.meta.updateTag({ name: 'twitter:title', content: `${data.title} - Ask Hare Krishna` });
-    this.meta.updateTag({ name: 'twitter:description', content: data.description });
-    this.meta.updateTag({ name: 'twitter:image', content: data.image });
-    this.meta.updateTag({ name: 'twitter:image:alt', content: data.title });
-    this.meta.updateTag({ name: 'twitter:creator', content: '@AskHareKrishna' });
+    this.meta.addTag({ name: 'twitter:card', content: 'summary_large_image' });
+    this.meta.addTag({ name: 'twitter:title', content: `${data.title} - Ask Hare Krishna` });
+    this.meta.addTag({ name: 'twitter:description', content: data.description });
+    this.meta.addTag({ name: 'twitter:image', content: data.image });
+    this.meta.addTag({ name: 'twitter:image:alt', content: data.title });
+    this.meta.addTag({ name: 'twitter:creator', content: '@AskHareKrishna' });
 
     // Article-specific meta tags
-    this.meta.updateTag({ property: 'article:author', content: data.author || 'Ask Hare Krishna Team' });
-    this.meta.updateTag({ property: 'article:section', content: data.category || 'Spiritual Wisdom' });
-    this.meta.updateTag({ property: 'article:published_time', content: new Date().toISOString() });
-    this.meta.updateTag({ property: 'article:tag', content: data.category || 'spiritual' });
+    this.meta.addTag({ property: 'article:author', content: data.author || 'Ask Hare Krishna Team' });
+    this.meta.addTag({ property: 'article:section', content: data.category || 'Spiritual Wisdom' });
+    this.meta.addTag({ property: 'article:published_time', content: new Date().toISOString() });
+    this.meta.addTag({ property: 'article:tag', content: data.category || 'spiritual' });
 
     // Add structured data for SEO
     this.addStructuredData(data);
@@ -113,39 +113,48 @@ export class SSRMetaService {
     this.forceMetaRefresh();
 
     console.log('✅ SSR Meta tags updated for:', data.title);
+    console.log('📄 Page title set to:', `${data.title} - Ask Hare Krishna`);
+    console.log('🔗 URL set to:', data.url);
+    console.log('🖼️ Image set to:', data.image);
   }
 
   private clearPreviousMetaTags(): void {
-    // Remove existing meta tags to avoid duplicates
+    // Remove existing meta tags to avoid duplicates using proper Angular Meta service methods
     const metaTagsToRemove = [
-      'name="description"',
-      'name="author"',
-      'name="keywords"',
-      'property="og:title"',
-      'property="og:description"',
-      'property="og:image"',
-      'property="og:image:width"',
-      'property="og:image:height"',
-      'property="og:image:alt"',
-      'property="og:url"',
-      'property="og:type"',
-      'property="og:site_name"',
-      'property="og:locale"',
-      'name="twitter:card"',
-      'name="twitter:title"',
-      'name="twitter:description"',
-      'name="twitter:image"',
-      'name="twitter:image:alt"',
-      'name="twitter:creator"',
-      'property="article:author"',
-      'property="article:section"',
-      'property="article:published_time"',
-      'property="article:tag"'
+      { name: 'description' },
+      { name: 'author' },
+      { name: 'keywords' },
+      { property: 'og:title' },
+      { property: 'og:description' },
+      { property: 'og:image' },
+      { property: 'og:image:width' },
+      { property: 'og:image:height' },
+      { property: 'og:image:alt' },
+      { property: 'og:url' },
+      { property: 'og:type' },
+      { name: 'twitter:title' },
+      { name: 'twitter:description' },
+      { name: 'twitter:image' },
+      { name: 'twitter:image:alt' },
+      { property: 'article:author' },
+      { property: 'article:section' },
+      { property: 'article:published_time' },
+      { property: 'article:tag' }
     ];
 
-    metaTagsToRemove.forEach(selector => {
-      this.meta.removeTag(selector);
+    metaTagsToRemove.forEach(tag => {
+      this.meta.removeTag(tag.name ? `name="${tag.name}"` : `property="${tag.property}"`);
     });
+
+    // Also manually remove from DOM to be extra sure
+    if (typeof window !== 'undefined') {
+      const existingMetas = this.document.querySelectorAll('meta[property^="og:"], meta[name^="twitter:"], meta[name="description"], meta[name="author"], meta[name="keywords"]');
+      existingMetas.forEach(meta => {
+        if (meta.parentNode) {
+          meta.parentNode.removeChild(meta);
+        }
+      });
+    }
 
     // Remove existing structured data
     const existingScript = this.document.querySelector('script[type="application/ld+json"][data-blog-meta]');
@@ -244,21 +253,21 @@ export class SSRMetaService {
    */
   private forceMetaRefresh(): void {
     if (typeof window !== 'undefined') {
-      // Remove any existing meta tags that might conflict
-      const existingMetas = this.document.querySelectorAll('meta[property^="og:"], meta[name^="twitter:"], meta[name="description"]');
-      existingMetas.forEach(meta => {
-        if (meta.parentNode) {
-          meta.parentNode.removeChild(meta);
-        }
-      });
+      // Add a timestamp to force refresh
+      const timestamp = new Date().getTime();
+      this.meta.addTag({ property: 'og:updated_time', content: new Date().toISOString() });
       
-      // Small delay to ensure DOM is ready
+      // Force browser to re-evaluate meta tags
       setTimeout(() => {
-        // Re-add the meta tags by calling the Angular Meta service
-        this.meta.addTags([
-          { property: 'og:updated_time', content: new Date().toISOString() }
-        ]);
-      }, 100);
+        // Trigger a DOM refresh by briefly modifying the document title
+        const currentTitle = this.document.title;
+        this.document.title = currentTitle + ' ';
+        setTimeout(() => {
+          this.document.title = currentTitle;
+        }, 10);
+      }, 50);
+      
+      console.log('🔄 Meta tags force refreshed at:', timestamp);
     }
   }
 
@@ -270,11 +279,30 @@ export class SSRMetaService {
     
     this.clearPreviousMetaTags();
     
-    this.meta.updateTag({ name: 'description', content: 'Explore spiritual wisdom through our comprehensive collection of articles, insights, and guidance on Hare Krishna philosophy, Bhagavad Gita teachings, and ISKCON principles.' });
-    this.meta.updateTag({ property: 'og:title', content: 'Ask Hare Krishna - Spiritual Wisdom & Guidance' });
-    this.meta.updateTag({ property: 'og:description', content: 'Explore spiritual wisdom through our comprehensive collection of articles, insights, and guidance on Hare Krishna philosophy.' });
-    this.meta.updateTag({ property: 'og:image', content: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1751699516/sitting_and_smiling_tcfzdw.jpg' });
-    this.meta.updateTag({ property: 'og:type', content: 'website' });
-    this.meta.updateTag({ property: 'og:site_name', content: 'Ask Hare Krishna' });
+    this.meta.addTag({ name: 'description', content: 'Explore spiritual wisdom through our comprehensive collection of articles, insights, and guidance on Hare Krishna philosophy, Bhagavad Gita teachings, and ISKCON principles.' });
+    this.meta.addTag({ property: 'og:title', content: 'Ask Hare Krishna - Spiritual Wisdom & Guidance' });
+    this.meta.addTag({ property: 'og:description', content: 'Explore spiritual wisdom through our comprehensive collection of articles, insights, and guidance on Hare Krishna philosophy.' });
+    this.meta.addTag({ property: 'og:image', content: 'https://res.cloudinary.com/dbmkctsda/image/upload/v1751699516/sitting_and_smiling_tcfzdw.jpg' });
+    this.meta.addTag({ property: 'og:type', content: 'website' });
+    this.meta.addTag({ property: 'og:site_name', content: 'Ask Hare Krishna' });
+    
+    console.log('🔄 Reset to default meta tags');
+  }
+
+  /**
+   * Debug method to check current meta tags in DOM
+   */
+  debugCurrentMetaTags(): void {
+    if (typeof window !== 'undefined') {
+      console.log('🔍 Current meta tags in DOM:');
+      console.log('Title:', this.document.title);
+      
+      const metas = this.document.querySelectorAll('meta[property^="og:"], meta[name^="twitter:"], meta[name="description"]');
+      metas.forEach(meta => {
+        const property = meta.getAttribute('property') || meta.getAttribute('name');
+        const content = meta.getAttribute('content');
+        console.log(`  ${property}: ${content}`);
+      });
+    }
   }
 }
