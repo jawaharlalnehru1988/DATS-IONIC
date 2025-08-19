@@ -80,6 +80,7 @@ export class BlogFormComponent implements OnInit, OnChanges {
     { value: 'who', label: 'Who' },
     { value: 'where', label: 'Where' },
     { value: 'what', label: 'What' },
+    { value: 'ekadashi', label: 'Ekadashi' } // Added Ekadashi category
    
   ];
 

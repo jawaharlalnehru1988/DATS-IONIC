@@ -144,6 +144,7 @@ export interface LanguageTexts {
   articlesCategoryWho: string;
   articlesCategoryWhere: string;
   articlesCategoryWhat: string;
+  articlesCategoryArticle:string;
 }
 
 @Injectable({
@@ -321,7 +322,9 @@ export class LanguageService {
       articlesCategoryWhen: 'When...?',
       articlesCategoryWho: 'Who...?',
       articlesCategoryWhere: 'Where...?',
-      articlesCategoryWhat: 'What...?'
+      articlesCategoryWhat: 'What...?',
+      articlesCategoryArticle: 'Ekadasi'
+      
     };
   }
 
@@ -460,7 +463,8 @@ export class LanguageService {
       articlesCategoryWhen: 'எப்போது...?',
       articlesCategoryWho: 'யார்...?',
       articlesCategoryWhere: 'எங்கே...?',
-      articlesCategoryWhat: 'என்ன...?'
+      articlesCategoryWhat: 'என்ன...?',
+      articlesCategoryArticle: 'ஏகாதசி'
     };
   }
 
@@ -599,7 +603,8 @@ export class LanguageService {
       articlesCategoryWhen: 'कब...?',
       articlesCategoryWho: 'कौन...?',
       articlesCategoryWhere: 'कहाँ...?',
-      articlesCategoryWhat: 'क्या...?'
+      articlesCategoryWhat: 'क्या...?',
+      articlesCategoryArticle: 'एकादशी'
     };
   }
 
@@ -738,7 +743,8 @@ export class LanguageService {
       articlesCategoryWhen: 'কখন...?',
       articlesCategoryWho: 'কে...?',
       articlesCategoryWhere: 'কোথায়...?',
-      articlesCategoryWhat: 'কী...?'
+      articlesCategoryWhat: 'কী...?',
+      articlesCategoryArticle: 'একাদশী'
     };
   }
 
@@ -878,7 +884,8 @@ export class LanguageService {
       articlesCategoryWhen: 'ఎప్పుడు...?',
       articlesCategoryWho: 'ఎవరు...?',
       articlesCategoryWhere: 'ఎక్కడ...?',
-      articlesCategoryWhat: 'ఏమిటి...?'
+      articlesCategoryWhat: 'ఏమిటి...?',
+      articlesCategoryArticle: 'ఏకాదశి'
     };
   }
 
@@ -962,7 +969,8 @@ export class LanguageService {
       articlesCategoryWhen: 'केव्हा...?',
       articlesCategoryWho: 'कोण...?',
       articlesCategoryWhere: 'कुठे...?',
-      articlesCategoryWhat: 'काय...?'
+      articlesCategoryWhat: 'काय...?',
+      articlesCategoryArticle: 'एकादशी'
     };
   }
 
@@ -1046,7 +1054,8 @@ export class LanguageService {
       articlesCategoryWhen: 'ક્યારે...?',
       articlesCategoryWho: 'કોણ...?',
       articlesCategoryWhere: 'ક્યાં...?',
-      articlesCategoryWhat: 'શું...?'
+      articlesCategoryWhat: 'શું...?',
+      articlesCategoryArticle: 'એકાદશી'
     };
   }
 
@@ -1130,7 +1139,8 @@ export class LanguageService {
       articlesCategoryWhen: 'ಯಾವಾಗ...?',
       articlesCategoryWho: 'ಯಾರು...?',
       articlesCategoryWhere: 'ಎಲ್ಲಿ...?',
-      articlesCategoryWhat: 'ಏನು...?'
+      articlesCategoryWhat: 'ಏನು...?',
+      articlesCategoryArticle: 'ಏಕಾದಶಿ'
     };
   }
 
@@ -1214,7 +1224,8 @@ export class LanguageService {
       articlesCategoryWhen: 'എപ്പോൾ...?',
       articlesCategoryWho: 'ആര്...?',
       articlesCategoryWhere: 'എവിടെ...?',
-      articlesCategoryWhat: 'എന്ത്...?'
+      articlesCategoryWhat: 'എന്ത്...?',
+      articlesCategoryArticle: 'ഏകാദശി'
     };
   }
 

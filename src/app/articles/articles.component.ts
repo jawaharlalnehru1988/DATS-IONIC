@@ -165,6 +165,7 @@ export class ArticlesComponent implements OnInit, OnDestroy {
       { value: 'who', label: texts.articlesCategoryWho },
       { value: 'where', label: texts.articlesCategoryWhere },
       { value: 'what', label: texts.articlesCategoryWhat },
+      { value: 'ekadashi', label: texts.articlesCategoryArticle }
     ];
   }
 
