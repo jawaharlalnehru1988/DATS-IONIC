@@ -6,9 +6,14 @@
 
 <ion-content [fullscreen]="true" [class]="'chant-page ' + themeClass">
   <div class="chant-container">
+
+    
     <!-- Krishna Image/Symbol -->
     <div class="krishna-symbol">
       <ion-icon name="flower-outline" size="large"></ion-icon>
+      @if (isSriKrishnaCaitanyaPlaying) {
+        <section style="color: rgb(250, 216, 122);">{{content.sriKrishnaCaitanyaMantra}}</section>
+      }
       <h2>{{content.mahamantra1}}</h2>
       <h2>{{content.mahamantra2}}</h2>
     </div>
@@ -255,4 +260,5 @@
         [buttons]="toastButtons"
         (didDismiss)="showToast = false">
       </ion-toast>
+
     </ion-content>

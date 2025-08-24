@@ -1,9 +1,9 @@
 import { Component, OnInit, AfterViewInit, OnDestroy, HostBinding } from '@angular/core';
-import { IonContent, IonButton, IonProgressBar, IonToast, IonAlert, IonPopover, IonIcon, IonFab, IonFabButton } from '@ionic/angular/standalone';
+import { IonContent, IonButton, IonProgressBar, IonToast, IonAlert, IonPopover, IonIcon, IonFab, IonFabButton, IonModal, IonHeader, IonToolbar, IonTitle, IonButtons } from '@ionic/angular/standalone';
 
 import { Subscription } from 'rxjs';
 import { addIcons } from 'ionicons';
-import { flowerOutline, refreshOutline, languageOutline, closeOutline, musicalNotesOutline, playOutline, pauseOutline, bonfireOutline } from 'ionicons/icons';
+import { flowerOutline, refreshOutline, languageOutline, closeOutline, musicalNotesOutline, musicalNotes, playOutline, pauseOutline, bonfireOutline } from 'ionicons/icons';
 import { ThemeService} from '../services/theme.service';
 import { ReusableHeaderComponent } from '../components/reusable-header/reusable-header.component';
 
@@ -21,6 +21,7 @@ interface LanguageContent {
   chantSubtext: string;
   mahamantra1: string;
   mahamantra2: string;
+  sriKrishnaCaitanyaMantra: string;
   resetCurrentRoundToast: string;
   resetRoundsCompletedToast: string;
   resetMahaRoundsToast: string;
@@ -70,6 +71,11 @@ interface SoundOption {
     IonIcon,
     IonFab,
     IonFabButton,
+    IonModal,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonButtons,
     ReusableHeaderComponent
 ]
 })
@@ -101,6 +107,7 @@ export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
         chantSubtext: 'Hare Krishna',
         mahamantra1: 'Hare Krishna Hare Krishna Krishna Krishna Hare Hare',
         mahamantra2: 'Hare Rama Hare Rama Rama Rama Hare Hare',
+        sriKrishnaCaitanyaMantra: 'Jai Sri Krishna Chaitanya prabhu Nithyananda Sri Advaita Gadhadara Sri Vasadi Goura Bhaktha Vrinda',
         resetCurrentRoundToast: '🔄 Current round reset! 🙏',
         resetRoundsCompletedToast: '🔄 Rounds completed reset! 🙏',
         resetMahaRoundsToast: '🔄 Maha rounds reset! 🙏',
@@ -128,6 +135,7 @@ export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
         chantSubtext: 'ஹரே கிருஷ்ணா',
         mahamantra1: 'ஹரே கிருஷ்ணா ஹரே கிருஷ்ணா கிருஷ்ணா கிருஷ்ணா ஹரே ஹரே',
         mahamantra2: 'ஹரே ராமா ஹரே ராமா ராமா ராமா ஹரே ஹரே',
+        sriKrishnaCaitanyaMantra: 'ஜெய் ஸ்ரீ கிருஷ்ண சைதன்ய பிரபு நித்யானந்த ஸ்ரீ அத்வைத கதாதர ஸ்ரீவாசாதி கௌர பக்த வ்ருந்த',
         resetCurrentRoundToast: '🔄 தற்போதைய சுற்று மீட்டமைக்கப்பட்டது! 🙏',
         resetRoundsCompletedToast: '🔄 முடிந்த சுற்றுகள் மீட்டமைக்கப்பட்டது! 🙏',
         resetMahaRoundsToast: '🔄 மகா சுற்றுகள் மீட்டமைக்கப்பட்டது! 🙏',
@@ -155,6 +163,7 @@ export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
         chantSubtext: 'हरे कृष्ण',
         mahamantra1: 'हरे कृष्ण हरे कृष्ण कृष्ण कृष्ण हरे हरे',
         mahamantra2: 'हरे राम हरे राम राम राम हरे हरे',
+        sriKrishnaCaitanyaMantra: 'जय श्री कृष्ण चैतन्य प्रभु नित्यानंद श्री अद्वैत गदाधर श्रीवासादि गौर भक्त वृंदा',
         resetCurrentRoundToast: '🔄 वर्तमान चक्र रीसेट हो गया! 🙏',
         resetRoundsCompletedToast: '🔄 पूर्ण चक्र रीसेट हो गए! 🙏',
         resetMahaRoundsToast: '🔄 महा चक्र रीसेट हो गए! 🙏',
@@ -182,6 +191,7 @@ export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
         chantSubtext: 'హరే కృష్ణ',
         mahamantra1: 'హరే కృష్ణ హరే కృష్ణ కృష్ణ కృష్ణ హరే హరే',
         mahamantra2: 'హరే రామ హరే రామ రామ రామ హరే హరే',
+        sriKrishnaCaitanyaMantra: 'జై శ్రీ కృష్ణ చైతన్య ప్రభు నిత్యానంద శ్రీ అద్వైత గదాధర శ్రీవాసాది గౌర భక్త వృందా',
         resetCurrentRoundToast: '🔄 ప్రస్తుత చక్రం రీసెట్ అయింది! 🙏',
         resetRoundsCompletedToast: '🔄 పూర్తయిన చక్రాలు రీసెట్ అయ్యాయి! 🙏',
         resetMahaRoundsToast: '🔄 మహా చక్రాలు రీసెట్ అయ్యాయి! 🙏',
@@ -209,6 +219,7 @@ export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
         chantSubtext: 'ಹರೇ ಕೃಷ್ಣ',
         mahamantra1: 'ಹರೇ ಕೃಷ್ಣ ಹರೇ ಕೃಷ್ಣ ಕೃಷ್ಣ ಕೃಷ್ಣ ಹರೇ ಹರೇ',
         mahamantra2: 'ಹರೇ ರಾಮ ಹರೇ ರಾಮ ರಾಮ ರಾಮ ಹರೇ ಹರೇ',
+        sriKrishnaCaitanyaMantra: 'ಜೈ ಶ್ರೀ ಕೃಷ್ಣ ಚೈತನ್ಯ ಪ್ರಭು ನಿತ್ಯಾನಂದ ಶ್ರೀ ಅದ್ವೈತ ಗದಾಧರ ಶ್ರೀವಾಸಾದಿ ಗೌರ ಭಕ್ತ ವೃಂದ',
         resetCurrentRoundToast: '🔄 ಪ್ರಸ್ತುತ ಚಕ್ರವನ್ನು ಮರುಸೆಟ್ ಮಾಡಲಾಗಿದೆ! 🙏',
         resetRoundsCompletedToast: '🔄 ಪೂರ್ಣಗೊಂಡ ಚಕ್ರಗಳನ್ನು ಮರುಸೆಟ್ ಮಾಡಲಾಗಿದೆ! 🙏',
         resetMahaRoundsToast: '🔄 ಮಹಾ ಚಕ್ರಗಳನ್ನು ಮರುಸೆಟ್ ಮಾಡಲಾಗಿದೆ! 🙏',
@@ -236,6 +247,7 @@ export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
         chantSubtext: 'ഹരേ കൃഷ്ണ',
         mahamantra1: 'ഹരേ കൃഷ്ണ ഹരേ കൃഷ്ണ കൃഷ്ണ കൃഷ്ണ ഹരേ ഹരേ',
         mahamantra2: 'ഹരേ രാമ ഹരേ രാമ രാമ രാമ ഹരേ ഹരേ',
+        sriKrishnaCaitanyaMantra: 'ജയ് ശ്രീ കൃഷ്ണ ചൈതന്യ പ്രഭു നിത്യാനന്ദ ശ്രീ അദ്വൈത ഗദാധര ശ്രീവാസാദി ഗൗര ഭക്ത വൃന്ദ',
         resetCurrentRoundToast: '🔄 നിലവിലെ ചക്രം റീസെറ്റ് ചെയ്തു! 🙏',
         resetRoundsCompletedToast: '🔄 പൂർത്തിയായ ചക്രങ്ങൾ റീസെറ്റ് ചെയ്തു! 🙏',
         resetMahaRoundsToast: '🔄 മഹാ ചക്രങ്ങൾ റീസെറ്റ് ചെയ്തു! 🙏',
@@ -263,6 +275,7 @@ export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
         chantSubtext: 'हरे कृष्ण',
         mahamantra1: 'हरे कृष्ण हरे कृष्ण कृष्ण कृष्ण हरे हरे',
         mahamantra2: 'हरे राम हरे राम राम राम हरे हरे',
+        sriKrishnaCaitanyaMantra: 'जय श्री कृष्ण चैतन्य प्रभु नित्यनंद श्री अद्वैत गदाधर श्रीवासादि गौर भक्त वृंदा',
         resetCurrentRoundToast: '🔄 वर्तमान चक्र रीसेट झाले! 🙏',
         resetRoundsCompletedToast: '🔄 पूर्ण झालेले चक्रे रीसेट झाली! 🙏',
         resetMahaRoundsToast: '🔄 महा चक्रे रीसेट झाली! 🙏',
@@ -290,6 +303,7 @@ export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
         chantSubtext: 'હરે કૃષ્ણ',
         mahamantra1: 'હરે કૃષ્ણ હરે કૃષ્ણ કૃષ્ણ કૃષ્ણ હરે હરે',
         mahamantra2: 'હરે રામ હરે રામ રામ રામ હરે હરે',
+        sriKrishnaCaitanyaMantra: 'જૈ શ્રી કૃષ્ણ ચૈતન્ય પ્રભુ નિત્યાનંદ શ્રી અદ્વૈત ગદાધર શ્રીવાસાદિ ગૌર ભક્ત વૃંદ',
         resetCurrentRoundToast: '🔄 વર્તમાન ચક્ર રીસેટ થયું! 🙏',
         resetRoundsCompletedToast: '🔄 પૂર્ણ થયેલ ચક્રો રીસેટ થયા! 🙏',
         resetMahaRoundsToast: '🔄 મહા ચક્રો રીસેટ થયા! 🙏',
@@ -317,6 +331,7 @@ export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
         chantSubtext: 'হরে কৃষ্ণ',
         mahamantra1: 'হরে কৃষ্ণ হরে কৃষ্ণ কৃষ্ণ কৃষ্ণ হরে হরে',
         mahamantra2: 'হরে রাম হরে রাম রাম রাম হরে হরে',
+        sriKrishnaCaitanyaMantra: 'জয় শ্রী কৃষ্ণ চৈতন্য প্রভু নিত্যানন্দ শ্রী অদ্বৈত গদাধর শ্রীবাসাদী গৌর ভক্ত বৃন্দ',
         resetCurrentRoundToast: '🔄 বর্তমান চক্র রিসেট হয়েছে! 🙏',
         resetRoundsCompletedToast: '🔄 সম্পন্ন চক্র রিসেট হয়েছে! 🙏',
         resetMahaRoundsToast: '🔄 মহা চক্র রিসেট হয়েছে! 🙏',
@@ -344,6 +359,7 @@ export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
         chantSubtext: 'ਹਰੇ ਕ੍ਰਿਸ਼ਨਾ',
         mahamantra1: 'ਹਰੇ ਕ੍ਰਿਸ਼ਨਾ ਹਰੇ ਕ੍ਰਿਸ਼ਨਾ ਕ੍ਰਿਸ਼ਨਾ ਕ੍ਰਿਸ਼ਨਾ ਹਰੇ ਹਰੇ',
         mahamantra2: 'ਹਰੇ ਰਾਮ ਹਰੇ ਰਾਮ ਰਾਮ ਰਾਮ ਹਰੇ ਹਰੇ',
+        sriKrishnaCaitanyaMantra: 'ਜੈ ਸ੍ਰੀ ਕ੍ਰਿਸ਼ਨਾ ਚੈਤਨ੍ਯ ਪ੍ਰਭੁ ਨਿਤ੍ਯਾਨੰਦ ਸ੍ਰੀ ਅਦ੍ਵੈਤ ਗਦਾਧਰ ਸ੍ਰੀਵਾਸਾਦਿ ਗੌਰ ਭਕ੍ਤ ਵ੍ਰਿੰਦ',
         resetCurrentRoundToast: '🔄 ਮੌਜੂਦਾ ਚੱਕਰ ਰੀਸੈਟ ਹੋ ਗਿਆ! 🙏',
         resetRoundsCompletedToast: '🔄 ਪੂਰੇ ਹੋਏ ਚੱਕਰ ਰੀਸੈਟ ਹੋ ਗਏ! 🙏',
         resetMahaRoundsToast: '🔄 ਮਹਾ ਚੱਕਰ ਰੀਸੈਟ ਹੋ ਗਏ! 🙏',
@@ -371,6 +387,7 @@ export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
         chantSubtext: 'ہرے کرشنا',
         mahamantra1: 'ہرے کرشنا ہرے کرشنا کرشنا کرشنا ہرے ہرے',
         mahamantra2: 'ہرے رام ہرے رام رام رام ہرے ہرے',
+        sriKrishnaCaitanyaMantra: 'جے شری کرشن چیتنیا پربھو نیتینندا شری ادوائتا گدھادھر شری واسدی گور بھکت وند',
         resetCurrentRoundToast: '🔄 موجودہ چکر ری سیٹ ہو گیا! 🙏',
         resetRoundsCompletedToast: '🔄 مکمل چکر ری سیٹ ہو گئے! 🙏',
         resetMahaRoundsToast: '🔄 مہا چکر ری سیٹ ہو گئے! 🙏',
@@ -446,6 +463,10 @@ export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
   isAudioPlaying: boolean = false;
   isContinuousPlaying: boolean = false;
   isContinuousPaused: boolean = false;
+  
+  // Sri Krishna Caitanya modal state
+  showSriKrishnaCaitanyaModal: boolean = false;
+  isSriKrishnaCaitanyaPlaying: boolean = false;
 
   // Audio elements
   private tickAudio: HTMLAudioElement | null = null;
@@ -482,16 +503,7 @@ export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
   ];
 
   constructor(private themeService: ThemeService) {
-    addIcons({
-      flowerOutline,
-      refreshOutline,
-      languageOutline,
-      closeOutline,
-      musicalNotesOutline,
-      playOutline,
-      pauseOutline,
-      bonfireOutline
-    });
+    addIcons({flowerOutline,refreshOutline,musicalNotesOutline,languageOutline,musicalNotes,closeOutline,playOutline,pauseOutline,bonfireOutline});
   }
 
   ngOnInit() {
@@ -820,10 +832,35 @@ export class ChantPage implements OnInit, AfterViewInit, OnDestroy {
     try {
       if (this.sriKrishnaCaitanyaAudio) {
         this.sriKrishnaCaitanyaAudio.currentTime = 0;
+        
+        // Set up event listeners
+        this.sriKrishnaCaitanyaAudio.onplay = () => {
+          this.isSriKrishnaCaitanyaPlaying = true;
+          this.showSriKrishnaCaitanyaModal = true;
+        };
+        
+        this.sriKrishnaCaitanyaAudio.onended = () => {
+          this.isSriKrishnaCaitanyaPlaying = false;
+          this.showSriKrishnaCaitanyaModal = false;
+        };
+        
+        this.sriKrishnaCaitanyaAudio.onpause = () => {
+          this.isSriKrishnaCaitanyaPlaying = false;
+          this.showSriKrishnaCaitanyaModal = false;
+        };
+        
         this.sriKrishnaCaitanyaAudio.play().catch(e => console.warn('Sri Krishna Caitanya audio play failed:', e));
       }
     } catch (error) {
       console.warn('Sri Krishna Caitanya audio playback error:', error);
+    }
+  }
+
+  // Close Sri Krishna Caitanya modal
+  closeSriKrishnaCaitanyaModal() {
+    this.showSriKrishnaCaitanyaModal = false;
+    if (this.sriKrishnaCaitanyaAudio && !this.sriKrishnaCaitanyaAudio.paused) {
+      this.sriKrishnaCaitanyaAudio.pause();
     }
   }
 
