@@ -228,4 +228,10 @@ export class BlogFormComponent implements OnInit, OnChanges {
     };
     return labels[fieldName] || fieldName;
   }
+
+  // Handle Quill editor content changes
+  onContentChanged(event: any) {
+    console.log('Quill editor content changed:', event);
+    console.log('Content HTML:', event.html);
+  }
 }

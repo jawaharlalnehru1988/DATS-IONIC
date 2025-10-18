@@ -130,6 +130,12 @@ export const routes: Routes = [
     canActivate: [LanguageGuard],
     data: { language: 'en' }
   },
+  {
+    path: 'blog-editor',
+    loadComponent: () => import('./blog-editor/blog-editor.page').then( m => m.BlogEditorPage),
+    canActivate: [LanguageGuard],
+    data: { language: 'en' }
+  },
   
   // Language-prefixed routes for non-English languages
   {
@@ -216,6 +222,10 @@ export const routes: Routes = [
       {
         path: 'rich-text-demo',
         loadComponent: () => import('./rich-text-demo/rich-text-demo.page').then( m => m.RichTextDemoPage)
+      },
+      {
+        path: 'blog-editor',
+        loadComponent: () => import('./blog-editor/blog-editor.page').then( m => m.BlogEditorPage)
       },
       {
         path: '',

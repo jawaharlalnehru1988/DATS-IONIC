@@ -1,0 +1,94 @@
+<app-reusable-header
+  [titleKey]="'articlesTitle'"
+  [translucent]="true"
+  [showMenuButton]="false">
+</app-reusable-header>
+
+<ion-content class="blog-editor-content">
+  <div class="editor-container">
+    
+    <!-- Header Actions -->
+    <div class="header-actions">
+      <ion-button 
+        fill="clear" 
+        color="medium"
+        (click)="goBack()">
+        <ion-icon name="arrow-back" slot="start"></ion-icon>
+        Back to Articles
+      </ion-button>
+      
+      <div class="action-buttons">
+        <ion-button 
+          fill="outline" 
+          color="primary"
+          (click)="copyHtmlToClipboard()">
+          <ion-icon name="code-outline" slot="start"></ion-icon>
+          Copy HTML
+        </ion-button>
+        
+        <ion-button 
+          fill="outline" 
+          color="secondary"
+          (click)="copyPlainTextToClipboard()">
+          <ion-icon name="document-text-outline" slot="start"></ion-icon>
+          Copy Text
+        </ion-button>
+        
+        <ion-button 
+          fill="outline" 
+          color="tertiary"
+          (click)="copyEmbedCodeToClipboard()">
+          <ion-icon name="copy-outline" slot="start"></ion-icon>
+          Copy Embed
+        </ion-button>
+        
+        <ion-button 
+          fill="outline" 
+          color="warning"
+          (click)="clearEditor()">
+          <ion-icon name="refresh-outline" slot="start"></ion-icon>
+          Clear
+        </ion-button>
+      </div>
+    </div>
+
+    <!-- Rich Text Editor -->
+    <ion-card class="editor-card">
+      <ion-card-header>
+        <ion-card-title>Rich Text Editor</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="quill-editor-container">
+          <quill-editor
+            [ngModel]="editorContent"
+            (ngModelChange)="editorContent = $event"
+            placeholder="Start writing or paste your content from Word, Google Docs, or any other rich text source..."
+            [modules]="quillConfig"
+            [style.height]="'500px'"
+            (onContentChanged)="onContentChanged($event)">
+          </quill-editor>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Content Preview -->
+    <ion-card class="preview-card" *ngIf="showPreview">
+      <ion-card-header>
+        <ion-card-title>Content Preview</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="content-preview" [innerHTML]="editorContent"></div>
+      </ion-card-content>
+    </ion-card>
+
+  </div>
+</ion-content>
+
+<!-- Toast for feedback -->
+<ion-toast
+  [isOpen]="isToastOpen"
+  [message]="toastMessage"
+  [color]="toastColor"
+  duration="3000"
+  (didDismiss)="isToastOpen = false">
+</ion-toast>

@@ -205,6 +205,10 @@ export class ArticlesComponent implements OnInit, OnDestroy {
     this.isFormOpen = true;
   }
 
+  openBlogEditor() {
+    this.router.navigate(['/blog-editor']);
+  }
+
   closeBlogForm() {
     this.isFormOpen = false;
     this.editingBlog = null;

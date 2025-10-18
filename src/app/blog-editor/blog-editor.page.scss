@@ -1,0 +1,220 @@
+.blog-editor-content {
+  --padding-top: 0;
+  --padding-bottom: 0;
+  --padding-start: 0;
+  --padding-end: 0;
+}
+
+.editor-container {
+  padding: 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 20px;
+  background: var(--ion-color-light);
+  border-radius: 12px;
+  border: 2px solid var(--ion-color-primary-tint);
+  
+  .action-buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+}
+
+.editor-card {
+  margin-bottom: 20px;
+  
+  .quill-editor-container {
+    .ql-container {
+      font-family: var(--ion-font-family);
+      font-size: 16px;
+      line-height: 1.6;
+      border-radius: 0 0 8px 8px;
+    }
+    
+    .ql-editor {
+      min-height: 500px !important;
+      padding: 20px;
+      font-size: 16px;
+      
+      &.ql-blank::before {
+        font-style: italic;
+        color: var(--ion-color-medium);
+        left: 20px;
+        right: 20px;
+      }
+      
+      // Better spacing for content
+      p {
+        margin-bottom: 1em;
+      }
+      
+      h1, h2, h3, h4, h5, h6 {
+        margin-top: 1.5em;
+        margin-bottom: 0.5em;
+      }
+      
+      ul, ol {
+        padding-left: 1.5em;
+      }
+      
+      blockquote {
+        border-left: 4px solid var(--ion-color-primary);
+        margin-left: 0;
+        padding-left: 16px;
+        font-style: italic;
+      }
+    }
+    
+    .ql-toolbar {
+      border: 1px solid var(--ion-color-light-shade);
+      border-radius: 8px 8px 0 0;
+      background: var(--ion-color-light-tint);
+      padding: 12px;
+      
+      .ql-picker-label {
+        color: var(--ion-color-dark);
+      }
+      
+      .ql-stroke {
+        stroke: var(--ion-color-dark);
+      }
+      
+      .ql-fill {
+        fill: var(--ion-color-dark);
+      }
+      
+      .ql-picker-options {
+        background: var(--ion-color-light);
+        border: 1px solid var(--ion-color-light-shade);
+        border-radius: 4px;
+      }
+      
+      button {
+        &:hover {
+          background: var(--ion-color-primary-tint);
+          border-radius: 4px;
+        }
+      }
+    }
+  }
+}
+
+.preview-card {
+  .content-preview {
+    padding: 16px;
+    background: var(--ion-color-light-tint);
+    border-radius: 8px;
+    border: 1px solid var(--ion-color-light-shade);
+    min-height: 200px;
+    
+    // Style the preview content
+    h1, h2, h3, h4, h5, h6 {
+      color: var(--ion-color-primary);
+      margin-top: 1.2em;
+      margin-bottom: 0.6em;
+    }
+    
+    p {
+      margin-bottom: 1em;
+      line-height: 1.6;
+    }
+    
+    ul, ol {
+      padding-left: 1.5em;
+      margin-bottom: 1em;
+    }
+    
+    blockquote {
+      border-left: 4px solid var(--ion-color-primary);
+      padding-left: 16px;
+      margin: 1em 0;
+      font-style: italic;
+      background: var(--ion-color-light);
+      padding: 12px 16px;
+    }
+    
+    code {
+      background: var(--ion-color-dark-tint);
+      color: var(--ion-color-light);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+    }
+    
+    pre {
+      background: var(--ion-color-dark-tint);
+      color: var(--ion-color-light);
+      padding: 16px;
+      border-radius: 8px;
+      overflow-x: auto;
+      
+      code {
+        background: none;
+        padding: 0;
+      }
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .header-actions {
+    flex-direction: column;
+    gap: 16px;
+    
+    .action-buttons {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+  
+  .editor-card .quill-editor-container {
+    .ql-toolbar {
+      font-size: 12px;
+      padding: 8px;
+    }
+    
+    .ql-editor {
+      min-height: 400px !important;
+      padding: 16px;
+      font-size: 14px;
+    }
+  }
+}
+
+// Theme support
+:host(.theme-royal) {
+  .header-actions {
+    background: linear-gradient(135deg, rgba(138, 43, 226, 0.1), rgba(75, 0, 130, 0.1));
+    border-color: rgba(138, 43, 226, 0.3);
+  }
+}
+
+:host(.theme-ocean) {
+  .header-actions {
+    background: linear-gradient(135deg, rgba(0, 119, 190, 0.1), rgba(0, 150, 136, 0.1));
+    border-color: rgba(0, 119, 190, 0.3);
+  }
+}
+
+:host(.theme-sunset) {
+  .header-actions {
+    background: linear-gradient(135deg, rgba(255, 87, 34, 0.1), rgba(255, 193, 7, 0.1));
+    border-color: rgba(255, 87, 34, 0.3);
+  }
+}
+
+:host(.theme-forest) {
+  .header-actions {
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(139, 195, 74, 0.1));
+    border-color: rgba(76, 175, 80, 0.3);
+  }
+}

@@ -8,9 +8,14 @@
 <ion-content>
 
   <div class="add-blog-section" *appShowForRoles="['admin']">
-    <ion-button (click)="openAddBlogForm()" fill="solid" expand="block" class="add-blog-btn">
+    <ion-button (click)="openAddBlogForm()" fill="outline" expand="block" class="add-blog-btn">
       <ion-icon name="add" slot="start"></ion-icon>
-      Add New Blog
+      Add New Blog (Modal)
+    </ion-button>
+    
+    <ion-button (click)="openBlogEditor()" fill="solid" expand="block" class="add-blog-btn" style="margin-top: 8px;">
+      <ion-icon name="create" slot="start"></ion-icon>
+      Blog Editor (Full Page)
     </ion-button>
   </div>
 

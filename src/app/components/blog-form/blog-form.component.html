@@ -107,7 +107,8 @@
                     <quill-editor
                       formControlName="content"
                       placeholder="Write your blog content here..."
-                      [style.height]="'300px'">
+                      [style.height]="'300px'"
+                      (onContentChanged)="onContentChanged($event)">
                     </quill-editor>
                     @if (getErrorMessage('content')) {
                       <div class="error-message">

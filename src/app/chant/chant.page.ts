@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, OnDestroy, HostBinding } from '@angular/core';
-import { IonContent, IonButton, IonProgressBar, IonToast, IonAlert, IonPopover, IonIcon, IonFab, IonFabButton, IonModal, IonHeader, IonToolbar, IonTitle, IonButtons } from '@ionic/angular/standalone';
+import { IonContent, IonButton, IonProgressBar, IonToast, IonAlert, IonPopover, IonIcon, IonFab, IonFabButton } from '@ionic/angular/standalone';
 
 import { Subscription } from 'rxjs';
 import { addIcons } from 'ionicons';
@@ -71,11 +71,6 @@ interface SoundOption {
     IonIcon,
     IonFab,
     IonFabButton,
-    IonModal,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
-    IonButtons,
     ReusableHeaderComponent
 ]
 })
