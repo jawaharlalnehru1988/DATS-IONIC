@@ -1,75 +1,65 @@
 import { Injectable } from '@angular/core';
-import { AuthService } from './auth.service';
-import { Observable, map } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RoleBasedUIService {
 
-  constructor(private authService: AuthService) {}
+  constructor() { }
 
   /**
    * Check if user has permission to see certain UI elements
+   * UPDATED: Now always returns true to remove role-based restrictions
    */
   canShowAdminFeatures(): Observable<boolean> {
-    return this.authService.currentUser$.pipe(
-      map(user => user?.role === 'admin')
-    );
+    return of(true);
   }
 
   canShowDevoteeFeatures(): Observable<boolean> {
-    return this.authService.currentUser$.pipe(
-      map(user => user?.role === 'guest' || user?.role === 'admin')
-    );
+    return of(true);
   }
 
   canShowPremiumFeatures(): Observable<boolean> {
-    return this.authService.currentUser$.pipe(
-      map(user => user?.role === 'premium' || user?.role === 'admin')
-    );
+    return of(true);
   }
 
   /**
    * Check if user is authenticated
+   * UPDATED: Now always returns true to remove auth restrictions
    */
   isUserAuthenticated(): Observable<boolean> {
-    return this.authService.isAuthenticated$;
+    return of(true);
   }
 
   /**
    * Get current user role
+   * UPDATED: Returns 'admin' by default to bypass checks
    */
   getCurrentUserRole(): Observable<string | null> {
-    return this.authService.currentUser$.pipe(
-      map(user => user?.role || null)
-    );
+    return of('admin');
   }
 
   /**
    * Check if user can access specific features based on role
+   * UPDATED: Now always returns true
    */
   hasRole(role: string): Observable<boolean> {
-    return this.authService.currentUser$.pipe(
-      map(user => user?.role === role)
-    );
+    return of(true);
   }
 
   /**
    * Check if user has any of the specified roles
+   * UPDATED: Now always returns true
    */
   hasAnyRole(roles: string[]): Observable<boolean> {
-    return this.authService.currentUser$.pipe(
-      map(user => user ? roles.includes(user.role) : false)
-    );
+    return of(true);
   }
 
   /**
    * Get user display name for UI
    */
   getUserDisplayName(): Observable<string> {
-    return this.authService.currentUser$.pipe(
-      map(user => user?.name || 'Guest User')
-    );
+    return of('Guest User');
   }
 }
